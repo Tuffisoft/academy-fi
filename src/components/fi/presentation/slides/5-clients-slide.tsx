@@ -5,7 +5,11 @@ import {
   slideHeading,
   slideSubheading,
 } from "@/components/fi/presentation/slide-card";
-import { AutoReveal, ClickReveal, ClickSteps } from "@/components/fi/presentation/reveal";
+import {
+  AutoReveal,
+  ClickReveal,
+  ClickSteps,
+} from "@/components/fi/presentation/reveal";
 
 type ClientItem = {
   name: string;
@@ -17,7 +21,10 @@ type ClientItem = {
 
 // Logo filenames live in public/clients and aren't localised, so they're mapped here
 // rather than in the translation files. Order here also controls display order.
-const clientLogos: Record<string, { logo?: string; logoLight?: string; logoDark?: string }> = {
+const clientLogos: Record<
+  string,
+  { logo?: string; logoLight?: string; logoDark?: string }
+> = {
   spvg: { logo: "spvg.png" },
   schoner: { logo: "schoner.png" },
   mittt: { logo: "MITTT.png" },
@@ -86,7 +93,11 @@ export async function ClientsSlide() {
         </AutoReveal>
         <div className="grid flex-1 grid-cols-3 gap-4 overflow-y-auto">
           {clients.map((client, index) => (
-            <ClickReveal at={index + 1} key={client.id} className="flex flex-col gap-1.5">
+            <ClickReveal
+              at={index + 1}
+              key={client.id}
+              className="flex flex-col gap-1.5"
+            >
               <a
                 href={client.link}
                 target="_blank"
