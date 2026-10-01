@@ -1,0 +1,341 @@
+{
+  "nav": {
+    "presentation": "Präsentation",
+    "learning": "Lernen"
+  },
+  "home": {
+    "title": "Academy Fi",
+    "presentationCardTitle": "Präsentation",
+    "presentationCardDescription": "Das interaktive Deck für den ersten Tag.",
+    "learningCardTitle": "Lernen",
+    "learningCardDescription": "Wöchentlicher Fokus, Aufgaben und Reflexionen — folgt in Kürze."
+  },
+  "auth": {
+    "signInTitle": "Bei Academy Fi anmelden",
+    "signInDescription": "Konten werden von Fi eingerichtet — es gibt keine eigene Registrierung.",
+    "email": "E-Mail",
+    "password": "Passwort",
+    "signIn": "Anmelden",
+    "signingIn": "Anmeldung läuft...",
+    "signOut": "Abmelden",
+    "genericError": "Anmeldung nicht möglich.",
+    "login": "Anmelden",
+    "dashboard": "Dashboard",
+    "resetPasswordTitle": "Passwort festlegen",
+    "resetPasswordDescription": "Wähle ein Passwort, um dein Konto einzurichten.",
+    "newPassword": "Neues Passwort",
+    "confirmPassword": "Passwort bestätigen",
+    "resetPassword": "Passwort festlegen",
+    "resettingPassword": "Wird gespeichert\u2026",
+    "resetPasswordMismatch": "Die Passwörter stimmen nicht überein.",
+    "resetPasswordInvalidToken": "Dieser Link ist ungültig oder abgelaufen."
+  },
+  "dashboard": {
+    "welcome": "Willkommen, {name}",
+    "ownerDescription": "Als Nächstes folgt das Owner-Dashboard: Interns, Aufgaben und Feedback im Überblick.",
+    "internDescription": "Als Nächstes folgt dein Lern-Dashboard: wöchentliche Aufgaben, Reflexionen und Feedback.",
+    "signedInAs": "Angemeldet als {email}."
+  },
+  "presentation": {
+    "title": "Präsentation",
+    "description": "Öffne die Onboarding-Slideshow.",
+    "open": "Öffnen",
+    "welcome": {
+      "heading": "Willkommen bei"
+    },
+    "internet": {
+      "heading": "Das Internet",
+      "subheading": "Eine kurze Geschichte – und warum ich es liebe.",
+      "points": [
+        "1969: Das ARPANET sendet die erste Nachricht zwischen zwei Computern.",
+        "1991: Tim Berners-Lee veröffentlicht die erste Website.",
+        "1996: Meine erste Berührung mit dem Internet. In einen Internetcafé in Dublin.",
+        "Heute: Milliarden Menschen, in Echtzeit verbunden.",
+        "Warum ich es liebe: Jeder kann von überall etwas bauen und der ganzen Welt zeigen."
+      ]
+    },
+    "studioFi": {
+      "heading": "Studio Fi",
+      "tagline": "Maßgeschneiderte Websites",
+      "points": [
+        "Gegründet im Juni 2025.",
+        "Websites in drei Sprachen: Irisch, Englisch und Deutsch.",
+        "Kundenfokus, schnelle Reaktionszeiten und clevere Lösungen.",
+        "Ein Raum, in dem Menschen ihre eigene Ecke des Internets kontrollieren — fernab starrer WordPress-Vorlagen."
+      ]
+    },
+    "stack": {
+      "heading": "Womit ich baue",
+      "subheading": "Die Werkzeuge hinter jedem Studio-Fi-Projekt.",
+      "categories": [
+        {
+          "id": "key",
+          "label": "Kernwerkzeuge",
+          "tools": [
+            {
+              "name": "Next.js",
+              "logo": "next.png",
+              "description": "React-Framework für Routing, Rendering und APIs."
+            },
+            {
+              "name": "GitHub",
+              "logo": "github.png",
+              "description": "Wo der Code lebt — Versionskontrolle und Zusammenarbeit."
+            },
+            {
+              "name": "Vercel",
+              "logo": "vercel.png",
+              "description": "Plattform für Deployment und Hosting."
+            },
+            {
+              "name": "shadcn/ui",
+              "logo": "shadcn.png",
+              "description": "Zugängliche, anpassbare Komponenten-Bausteine."
+            },
+            {
+              "name": "Tailwind CSS",
+              "logo": "tailwind.png",
+              "description": "Utility-first CSS für schnelles, einheitliches Styling."
+            },
+            {
+              "name": "Motion",
+              "logo": "motion.png",
+              "description": "React-freundliche Animationen und Gesten."
+            }
+          ]
+        },
+        {
+          "id": "must-know",
+          "label": "Grundwissen",
+          "tools": [
+            {
+              "name": "React",
+              "logo": "react.png",
+              "description": "Die UI-Bibliothek, mit der alles gebaut wird."
+            },
+            {
+              "name": "HTML",
+              "logo": "html.png",
+              "description": "Die Struktur, auf der jede Seite aufbaut."
+            },
+            {
+              "name": "TypeScript",
+              "logo": "ts.png",
+              "description": "Typisiertes JavaScript, das Fehler früh erkennt."
+            },
+            {
+              "name": "CSS",
+              "logo": "css.png",
+              "description": "Die Sprache, die jede Seite gestaltet."
+            }
+          ]
+        },
+        {
+          "id": "optional",
+          "label": "Optional",
+          "tools": [
+            {
+              "name": "Better Auth",
+              "logo": "better-auth.png",
+              "description": "Anmeldung per Zugangsdaten und Sitzungen, gesichert mit bcrypt und JWTs."
+            },
+            {
+              "name": "Prisma",
+              "logo": "prisma.png",
+              "description": "Typsicherer Datenbank-Client und Migrationen."
+            },
+            {
+              "name": "Neon",
+              "logo": "neon.png",
+              "description": "Serverloses Postgres-Hosting."
+            },
+            {
+              "name": "PostgreSQL",
+              "logo": "postgressql.png",
+              "description": "Eine zuverlässige, relationale Datenbank."
+            },
+            {
+              "name": "UploadThing",
+              "logo": "uploadthing.png",
+              "description": "Einfache, typsichere Datei-Uploads."
+            },
+            {
+              "name": "Resend",
+              "logo": "resend.png",
+              "description": "Entwicklerfreundlicher Transaktions-E-Mail-Versand."
+            },
+            {
+              "name": "Puppeteer",
+              "logo": "puppeteer.png",
+              "description": "Ein Headless-Browser für PDFs und Screenshots."
+            },
+            {
+              "name": "TipTap",
+              "logo": "tiptap.png",
+              "description": "Ein erweiterbarer Rich-Text-Editor."
+            },
+            {
+              "name": "Zod",
+              "logo": "zod.png",
+              "description": "Schema-Validierung für typsichere Formulare."
+            },
+            {
+              "name": "Lucide",
+              "logo": "lucide.png",
+              "description": "Ein klares, einheitliches Icon-Set."
+            },
+            {
+              "name": "next-intl",
+              "logo": "next-intl.png",
+              "description": "Lokalisierte Routen und Inhalte auf Englisch und Irisch."
+            },
+            {
+              "name": "ESLint",
+              "logo": "eslint.png",
+              "description": "Erkennt Fehler und erzwingt Code-Stil."
+            },
+            {
+              "name": "GitHub Copilot",
+              "logo": "Co-pilot.png",
+              "description": "KI-Programmierassistent für schnelleren, saubereren Code."
+            },
+            {
+              "name": "Awwwards",
+              "logo": "awwwards.png",
+              "description": "Eine Quelle für Design-Inspiration und Handwerk."
+            },
+            {
+              "name": "React Bits",
+              "logo": "react-bits.png",
+              "description": "Fertige animierte React-Komponenten."
+            },
+            {
+              "name": "TweakCN",
+              "logo": "tweakcn.png",
+              "description": "Theme-Editor für shadcn/ui-Designsysteme."
+            }
+          ]
+        }
+      ],
+      "future": {
+        "heading": "Als Nächstes",
+        "items": [
+          {
+            "name": "pdfcn",
+            "description": "Anpassbare PDF-Komponenten für React, aufgebaut auf Takumi und Forme, verteilt über shadcn."
+          }
+        ]
+      }
+    },
+    "clients": {
+      "heading": "Für wen ich gebaut habe",
+      "subheading": "Einige der Menschen und Projekte, für die ich gebaut habe.",
+      "items": {
+        "spvg": {
+          "name": "SpVg Hagen Hardissen",
+          "link": "https://www.hagen-hardissen.de/",
+          "description": "Vereinswebsite für einen lokalen Fußballverein in Hagen-Hardissen. News, Spielpläne und Kaderseiten.",
+          "highlight": "CMS-gestützte News & Spielpläne für einen lokalen Fußballverein",
+          "tags": "Next.js, CMS, Sport"
+        },
+        "schoner": {
+          "name": "Schöner Moment",
+          "link": "https://www.schoenermoment.com/",
+          "description": "Visitenkarten-Website für einen lokalen Pflegedienst in Lage, der hauptsächlich ältere Menschen betreut. Warmes, elegantes Design mit schönen Animationen.",
+          "highlight": "Animierte Visitenkarten-Website für einen lokalen Pflegedienst in Lage",
+          "tags": "Next.js, Animationen, Pflegedienst"
+        },
+        "mittt": {
+          "name": "M.I.T.T.T.",
+          "link": "https://www.mittt.de/",
+          "description": "Umfassende Plattform für ein Therapiehunde-Ausbildungsinstitut in Deutschland. Buchungssystem, Online-Shop, Blog, Newsletter und Community — eine echte Komplettlösung.",
+          "highlight": "Komplettplattform für ein Therapiehunde-Ausbildungsinstitut — Buchung, Shop, Blog, Newsletter & Community",
+          "tags": "Next.js, Buchung, Shop, Blog, Community"
+        },
+        "restory": {
+          "name": "Re:Story",
+          "link": "https://www.restory.ie/",
+          "description": "Mehrsprachige E-Commerce-Website für Re:Story, ein Geschäft im Zentrum von Limerick, das lokale Kunst und Kunsthandwerk verkauft. Kunden können Produkte über ein einzigartiges E-Mail-Bestellsystem durchstöbern und bestellen.",
+          "highlight": "Mehrsprachiger Kunsthandwerksladen in Limerick mit einzigartigem E-Mail-Bestellsystem",
+          "tags": "Next.js, E-Commerce, Mehrsprachig, Kunsthandwerk"
+        },
+        "treestory": {
+          "name": "Tree Story",
+          "link": "https://www.treestory.ie/",
+          "description": "Website für Tree Story, einen lokalen Wald in Irland, der Menschen jeden Alters einlädt, die Natur zu erkunden und zu genießen. Mit einem Blog voller Geschichten, Anleitungen und saisonaler Updates aus dem Wald.",
+          "highlight": "Naturnahe Website mit Blog für einen irischen Wald, offen für alle Altersgruppen",
+          "tags": "Next.js, Blog, Natur, Community"
+        },
+        "wemakespace": {
+          "name": "We Make Space",
+          "link": "https://www.wemakespace.ie/",
+          "description": "Website für We Make Space, ein Unternehmen, das wunderschön gestaltete modulare Gartenräume aus Stahl anbietet. Klare, architektonische Ästhetik, die die maßgeschneiderten Außenstrukturen zeigt.",
+          "highlight": "Elegante Produktpräsentation für ein Unternehmen für modulare Stahl-Gartenräume",
+          "tags": "Next.js, Produkt, Architektur, Gartendesign"
+        },
+        "bredinnaboinne": {
+          "name": "Bréidín na Bóinne",
+          "link": "https://www.breidin-na-boine.ie/",
+          "description": "Website für Bréidín na Bóinne, eine Weberin aus Ráth Chairn, Co. Meath, mit monatlichem Content-Plan und E-Mail-Anfragen zu Öffnungszeiten und Käufen.",
+          "highlight": "Monatlich aktualisierte Handwerks-Website für eine Weberin aus Ráth Chairn, mit E-Mail-Anfragen",
+          "tags": "Next.js, Content-Plan, Handwerk"
+        },
+        "clononycastle": {
+          "name": "Clonony Castle",
+          "link": "https://www.clononycastle.com/",
+          "description": "Historische Website für Clonony Castle, die die Geschichte der Burg erzählt. Entstanden durch eine Empfehlung von Fionán von Re:Story.",
+          "highlight": "Geschichtsträchtige Website für eine historische irische Burg",
+          "tags": "Next.js, Kulturerbe, Geschichte"
+        },
+        "rathchairn": {
+          "name": "Ráth Chairn",
+          "link": "https://rath-chairn.vercel.app/",
+          "description": "Plattform für Ráth Chairn, eine irischsprachige Gaeltacht-Region, die ihre Geschichte erzählt und Veranstaltungen sowie Kurse mit Login und Kursverkauf anbietet. Noch nicht live.",
+          "highlight": "Login-geschützte Plattform für die Ráth-Chairn-Gaeltacht — Geschichte, Veranstaltungen & Kursverkauf",
+          "tags": "Next.js, Auth, E-Commerce, Gaeltacht"
+        }
+      }
+    }
+  },
+  "users": {
+    "title": "Nutzer",
+    "description": "Alle für Academy Fi eingerichteten Konten.",
+    "name": "Name",
+    "email": "E-Mail",
+    "role": "Rolle",
+    "status": "Status",
+    "active": "Aktiv",
+    "banned": "Gesperrt",
+    "addUser": "Nutzer hinzufügen",
+    "createTitle": "Nutzer erstellen",
+    "createDescription": "Ein neues Konto für Academy Fi einrichten.",
+    "password": "Passwort",
+    "selectRole": "Rolle auswählen",
+    "create": "Erstellen",
+    "creating": "Wird erstellt\u2026",
+    "createSuccess": "Nutzer erstellt.",
+    "createError": "Nutzer konnte nicht erstellt werden.",
+    "deleteUser": "Nutzer löschen",
+    "deleteTitle": "{name} löschen?",
+    "deleteDescription": "Dies entfernt das Konto dauerhaft und kann nicht rückgängig gemacht werden.",
+    "cancel": "Abbrechen",
+    "delete": "Löschen",
+    "deleting": "Wird gelöscht\u2026",
+    "deleteSuccess": "Nutzer gelöscht.",
+    "deleteError": "Nutzer konnte nicht gelöscht werden.",
+    "changePassword": "Passwort ändern",
+    "changePasswordTitle": "Passwort ändern",
+    "changePasswordDescription": "Ein neues Passwort für dieses Konto festlegen.",
+    "changingPassword": "Wird gespeichert\u2026",
+    "changePasswordSuccess": "Passwort aktualisiert.",
+    "changePasswordError": "Passwort konnte nicht aktualisiert werden.",
+    "language": "Sprache",
+    "selectLanguage": "Sprache auswählen"
+  },
+  "email": {
+    "subject": "Lege dein Academy-Fi-Passwort fest",
+    "greeting": "Hallo {name},",
+    "intro": "Für dich wurde ein Konto bei Academy Fi erstellt. Lege dein Passwort fest, um loszulegen:",
+    "expiry": "Dieser Link läuft in 1 Stunde ab."
+  }
+}

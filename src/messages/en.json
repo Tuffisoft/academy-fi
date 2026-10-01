@@ -1,0 +1,341 @@
+{
+  "nav": {
+    "presentation": "Presentation",
+    "learning": "Learning"
+  },
+  "home": {
+    "title": "Academy Fi",
+    "presentationCardTitle": "Presentation",
+    "presentationCardDescription": "The interactive day-one deck.",
+    "learningCardTitle": "Learning",
+    "learningCardDescription": "Weekly focus, assignments, and reflections — coming soon."
+  },
+  "auth": {
+    "signInTitle": "Sign in to Academy Fi",
+    "signInDescription": "Accounts are provisioned by Fi — there is no self sign-up.",
+    "email": "Email",
+    "password": "Password",
+    "signIn": "Sign in",
+    "signingIn": "Signing in...",
+    "signOut": "Sign out",
+    "genericError": "Unable to sign in.",
+    "login": "Log in",
+    "dashboard": "Dashboard",
+    "resetPasswordTitle": "Set your password",
+    "resetPasswordDescription": "Choose a password to finish setting up your account.",
+    "newPassword": "New password",
+    "confirmPassword": "Confirm password",
+    "resetPassword": "Set password",
+    "resettingPassword": "Saving\u2026",
+    "resetPasswordMismatch": "Passwords do not match.",
+    "resetPasswordInvalidToken": "This link is invalid or has expired."
+  },
+  "dashboard": {
+    "welcome": "Welcome, {name}",
+    "ownerDescription": "Owner dashboard is coming next: review interns, assignments and feedback.",
+    "internDescription": "Your learning dashboard is coming next: weekly assignments, reflections and feedback.",
+    "signedInAs": "Signed in as {email}."
+  },
+  "presentation": {
+    "title": "Presentation",
+    "description": "Open the onboarding slideshow.",
+    "open": "Open",
+    "welcome": {
+      "heading": "Welcome to"
+    },
+    "internet": {
+      "heading": "The Internet",
+      "subheading": "A short history, and why I love it.",
+      "points": [
+        "1969: ARPANET sends its first message between two computers.",
+        "1991: Tim Berners-Lee publishes the first website.",
+        "1996: My first encounter with the Internet. In an Internet café in Dublin.",
+        "Today: billions of people, connected in real time.",
+        "Why I love it: anyone, anywhere, can build something and put it in front of the world."
+      ]
+    },
+    "studioFi": {
+      "heading": "Studio Fi",
+      "tagline": "Tailor-Made Websites",
+      "points": [
+        "Founded in June 2025.",
+        "Building websites in three languages: Irish, English, and German.",
+        "Customer-focused, fast response times, and clever solutions.",
+        "Giving people a space to control their own corner of the internet — away from rigid WordPress templates."
+      ]
+    },
+    "stack": {
+      "heading": "What I Build With",
+      "subheading": "The tools behind every Studio Fi project.",
+      "categories": [
+        {
+          "id": "key",
+          "label": "Key Tools",
+          "tools": [
+            {
+              "name": "Next.js",
+              "logo": "next.png",
+              "description": "React framework for routing, rendering, and APIs."
+            },
+            {
+              "name": "GitHub",
+              "logo": "github.png",
+              "description": "Where the code lives — version control and collaboration."
+            },
+            {
+              "name": "Vercel",
+              "logo": "vercel.png",
+              "description": "Deployment and hosting platform."
+            },
+            {
+              "name": "shadcn/ui",
+              "logo": "shadcn.png",
+              "description": "Accessible, themeable component primitives."
+            },
+            {
+              "name": "Tailwind CSS",
+              "logo": "tailwind.png",
+              "description": "Utility-first CSS for fast, consistent styling."
+            },
+            {
+              "name": "Motion",
+              "logo": "motion.png",
+              "description": "React-friendly animations and gestures."
+            }
+          ]
+        },
+        {
+          "id": "must-know",
+          "label": "Must Know",
+          "tools": [
+            {
+              "name": "React",
+              "logo": "react.png",
+              "description": "The UI library everything is built with."
+            },
+            {
+              "name": "HTML",
+              "logo": "html.png",
+              "description": "The structure every page is built on."
+            },
+            {
+              "name": "TypeScript",
+              "logo": "ts.png",
+              "description": "Typed JavaScript that catches mistakes early."
+            },
+            {
+              "name": "CSS",
+              "logo": "css.png",
+              "description": "The language that styles every page."
+            }
+          ]
+        },
+        {
+          "id": "optional",
+          "label": "Optional",
+          "tools": [
+            {
+              "name": "Better Auth",
+              "logo": "better-auth.png",
+              "description": "Credential and session-based sign-in, secured with bcrypt and JWTs."
+            },
+            {
+              "name": "Prisma",
+              "logo": "prisma.png",
+              "description": "Type-safe database client and schema migrations."
+            },
+            {
+              "name": "Neon",
+              "logo": "neon.png",
+              "description": "Serverless Postgres hosting."
+            },
+            {
+              "name": "PostgreSQL",
+              "logo": "postgressql.png",
+              "description": "A reliable, relational database engine."
+            },
+            {
+              "name": "UploadThing",
+              "logo": "uploadthing.png",
+              "description": "Simple, typed file upload handling."
+            },
+            {
+              "name": "Resend",
+              "logo": "resend.png",
+              "description": "Developer-friendly transactional email."
+            },
+            {
+              "name": "Puppeteer",
+              "logo": "puppeteer.png",
+              "description": "A headless browser for generating PDFs and screenshots."
+            },
+            {
+              "name": "TipTap",
+              "logo": "tiptap.png",
+              "description": "An extensible rich-text editor."
+            },
+            {
+              "name": "Zod",
+              "logo": "zod.png",
+              "description": "Schema validation that powers type-safe forms."
+            },
+            {
+              "name": "Lucide",
+              "logo": "lucide.png",
+              "description": "A clean, consistent icon set."
+            },
+            {
+              "name": "next-intl",
+              "logo": "next-intl.png",
+              "description": "Localised routes and content in English and Irish."
+            },
+            {
+              "name": "ESLint",
+              "logo": "eslint.png",
+              "description": "Catches bugs and enforces code style."
+            },
+            {
+              "name": "GitHub Copilot",
+              "logo": "Co-pilot.png",
+              "description": "AI pair programmer for faster, cleaner code."
+            },
+            {
+              "name": "Awwwards",
+              "logo": "awwwards.png",
+              "description": "A source of design inspiration and craft."
+            },
+            {
+              "name": "React Bits",
+              "logo": "react-bits.png",
+              "description": "Ready-made animated React components."
+            },
+            {
+              "name": "TweakCN",
+              "logo": "tweakcn.png",
+              "description": "Theme editor for shadcn/ui design systems."
+            }
+          ]
+        }
+      ],
+      "future": {
+        "heading": "Exploring Next",
+        "items": [
+          {
+            "name": "pdfcn",
+            "description": "Customizable PDF components for React, built on Takumi and Forme, distributed via shadcn."
+          }
+        ]
+      }
+    },
+    "clients": {
+      "heading": "Who I've Built For",
+      "subheading": "A few of the people and projects I've built for.",
+      "items": {
+        "spvg": {
+          "name": "SpVg Hagen Hardissen",
+          "link": "https://www.hagen-hardissen.de/",
+          "description": "Club website for a local football association in Hagen-Hardissen, Germany. News, fixtures, and squad pages.",
+          "highlight": "CMS-driven news & fixtures for a community football club",
+          "tags": "Next.js, CMS, Sports"
+        },
+        "schoner": {
+          "name": "Schöner Moment",
+          "link": "https://www.schoenermoment.com/",
+          "description": "Business card website for a local care service in Lage, Germany, supporting mainly elderly residents. Warm, elegant design with beautiful animations.",
+          "highlight": "Animated business card site for a local care service in Lage",
+          "tags": "Next.js, Animations, Care Services"
+        },
+        "mittt": {
+          "name": "M.I.T.T.T.",
+          "link": "https://www.mittt.de/",
+          "description": "Comprehensive platform for a dog therapy training institute in Germany. Booking system, online shop, blog, newsletter, and community — a true all-in-one website.",
+          "highlight": "All-in-one platform for a dog therapy training institute — booking, shop, blog, newsletter & community",
+          "tags": "Next.js, Booking, Shop, Blog, Community"
+        },
+        "restory": {
+          "name": "Re:Story",
+          "link": "https://www.restory.ie/",
+          "description": "Multilingual e-commerce website for Re:Story, a shop in Limerick city centre selling local arts and crafts. Customers can browse and order products through a unique email-based ordering system.",
+          "highlight": "Multilingual arts & crafts shop in Limerick with a unique email ordering system",
+          "tags": "Next.js, E-commerce, Multilingual, Arts & Crafts"
+        },
+        "treestory": {
+          "name": "Tree Story",
+          "link": "https://www.treestory.ie/",
+          "description": "Website for Tree Story, a local forest in Ireland that welcomes people of all ages to explore and enjoy nature. Features a blog with stories, guides, and seasonal updates from the forest.",
+          "highlight": "Nature-first website with a blog for a local Irish forest open to all ages",
+          "tags": "Next.js, Blog, Nature, Community"
+        },
+        "wemakespace": {
+          "name": "We Make Space",
+          "link": "https://www.wemakespace.ie/",
+          "description": "Website for We Make Space, a company offering beautifully designed modular garden spaces built from steel. Clean, architectural aesthetic showcasing their bespoke outdoor structures and the many ways to bring one home.",
+          "highlight": "Sleek product showcase for a modular steel garden space company",
+          "tags": "Next.js, Product, Architecture, Garden Design"
+        },
+        "bredinnaboinne": {
+          "name": "Bréidín na Bóinne",
+          "link": "https://www.breidin-na-boine.ie/",
+          "description": "Website for Bréidín na Bóinne, a weaver based in Ráth Chairn, Co. Meath, with a monthly content plan and email enquiries for opening times and purchases.",
+          "highlight": "Monthly-updated craft site for a Ráth Chairn weaver, with email-based enquiries",
+          "tags": "Next.js, Content Plan, Craft"
+        },
+        "clononycastle": {
+          "name": "Clonony Castle",
+          "link": "https://www.clononycastle.com/",
+          "description": "Heritage history website for Clonony Castle, telling the story of the castle and its history. Came through a referral from Fionán at Re:Story.",
+          "highlight": "Heritage storytelling site for a historic Irish castle",
+          "tags": "Next.js, Heritage, History"
+        },
+        "rathchairn": {
+          "name": "Ráth Chairn",
+          "link": "https://rath-chairn.vercel.app/",
+          "description": "Platform for Ráth Chairn, a local Irish-speaking Gaeltacht area, telling its history and offering events and classes with login and course purchasing. Not yet live.",
+          "highlight": "Login-gated platform for the Ráth Chairn Gaeltacht — history, events & course sales",
+          "tags": "Next.js, Auth, E-commerce, Gaeltacht"
+        }
+      }
+    }
+  },
+  "users": {
+    "title": "Users",
+    "description": "Everyone provisioned for Academy Fi.",
+    "name": "Name",
+    "email": "Email",
+    "role": "Role",
+    "status": "Status",
+    "active": "Active",
+    "banned": "Banned",
+    "addUser": "Add user",
+    "createTitle": "Create user",
+    "createDescription": "Provision a new account for Academy Fi.",
+    "password": "Password",
+    "selectRole": "Select a role",
+    "create": "Create",
+    "creating": "Creating\u2026",
+    "createSuccess": "User created.",
+    "createError": "Could not create user.",
+    "deleteUser": "Delete user",
+    "deleteTitle": "Delete {name}?",
+    "deleteDescription": "This permanently removes the account and cannot be undone.",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "deleting": "Deleting\u2026",
+    "deleteSuccess": "User deleted.",
+    "deleteError": "Could not delete user.",
+    "changePassword": "Change password",
+    "changePasswordTitle": "Change password",
+    "changePasswordDescription": "Set a new password for this account.",
+    "changingPassword": "Saving\u2026",
+    "changePasswordSuccess": "Password updated.",
+    "changePasswordError": "Could not update password.",
+    "language": "Language",
+    "selectLanguage": "Select a language"
+  },
+  "email": {
+    "subject": "Set your Academy Fi password",
+    "greeting": "Hi {name},",
+    "intro": "An account has been created for you on Academy Fi. Set your password to get started:",
+    "expiry": "This link expires in 1 hour."
+  }
+}

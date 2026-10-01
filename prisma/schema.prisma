@@ -1,0 +1,129 @@
+generator client {
+    provider = "prisma-client"
+    output   = "../src/generated/prisma"
+}
+
+datasource db {
+    provider = "postgresql"
+}
+
+enum Role {
+    OWNER
+    INTERN
+}
+
+model WeeklyAssignment {
+    id                 String       @id @default(cuid())
+    internId           String
+    intern             User         @relation("AssignmentsForIntern", fields: [internId], references: [id])
+    weekOf             DateTime
+    focus              String
+    description        String
+    acceptanceCriteria String
+    createdById        String
+    createdBy          User         @relation("AssignmentsCreatedBy", fields: [createdById], references: [id])
+    createdAt          DateTime     @default(now())
+    updatedAt          DateTime     @updatedAt
+    reflections        Reflection[]
+}
+
+model Reflection {
+    id           String           @id @default(cuid())
+    assignmentId String
+    assignment   WeeklyAssignment @relation(fields: [assignmentId], references: [id])
+    internId     String
+    intern       User             @relation("ReflectionsForIntern", fields: [internId], references: [id])
+    workDone     String
+    learning     String
+    blocker      String?
+    workLink     String?
+    nextStep     String
+    createdAt    DateTime         @default(now())
+    updatedAt    DateTime         @updatedAt
+    feedback     MentorFeedback[]
+}
+
+model MentorFeedback {
+    id           String     @id @default(cuid())
+    reflectionId String
+    reflection   Reflection @relation(fields: [reflectionId], references: [id])
+    authorId     String
+    author       User       @relation("FeedbackByAuthor", fields: [authorId], references: [id])
+    message      String
+    createdAt    DateTime   @default(now())
+}
+
+model User {
+    id                  String             @id
+    name                String
+    email               String
+    emailVerified       Boolean            @default(false)
+    image               String?
+    createdAt           DateTime           @default(now())
+    updatedAt           DateTime           @updatedAt
+    role                String             @default("INTERN")
+    locale              String             @default("en")
+    sessions            Session[]
+    accounts            Account[]
+    assignmentsAsIntern WeeklyAssignment[] @relation("AssignmentsForIntern")
+    assignmentsCreated  WeeklyAssignment[] @relation("AssignmentsCreatedBy")
+    reflections         Reflection[]       @relation("ReflectionsForIntern")
+    feedbackAuthored    MentorFeedback[]   @relation("FeedbackByAuthor")
+
+    banned     Boolean?  @default(false)
+    banReason  String?
+    banExpires DateTime?
+
+    @@unique([email])
+    @@map("user")
+}
+
+model Session {
+    id        String   @id
+    expiresAt DateTime
+    token     String
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+    ipAddress String?
+    userAgent String?
+    userId    String
+    user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+    impersonatedBy String?
+
+    @@unique([token])
+    @@index([userId])
+    @@map("session")
+}
+
+model Account {
+    id                    String    @id
+    accountId             String
+    providerId            String
+    userId                String
+    user                  User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+    accessToken           String?
+    refreshToken          String?
+    idToken               String?
+    accessTokenExpiresAt  DateTime?
+    refreshTokenExpiresAt DateTime?
+    scope                 String?
+    password              String?
+    createdAt             DateTime  @default(now())
+    updatedAt             DateTime  @updatedAt
+
+    @@index([userId])
+    @@map("account")
+}
+
+model Verification {
+    id         String   @id
+    identifier String
+    value      String
+    expiresAt  DateTime
+    createdAt  DateTime @default(now())
+    updatedAt  DateTime @updatedAt
+
+    @@index([identifier])
+    @@map("verification")
+}
