@@ -483,10 +483,6 @@ export type ReflectionUncheckedUpdateManyWithoutAssignmentNestedInput = {
   deleteMany?: Prisma.ReflectionScalarWhereInput | Prisma.ReflectionScalarWhereInput[]
 }
 
-export type NullableStringFieldUpdateOperationsInput = {
-  set?: string | null
-}
-
 export type ReflectionCreateNestedOneWithoutFeedbackInput = {
   create?: Prisma.XOR<Prisma.ReflectionCreateWithoutFeedbackInput, Prisma.ReflectionUncheckedCreateWithoutFeedbackInput>
   connectOrCreate?: Prisma.ReflectionCreateOrConnectWithoutFeedbackInput

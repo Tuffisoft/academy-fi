@@ -8,7 +8,11 @@
     "presentationCardTitle": "Präsentation",
     "presentationCardDescription": "Das interaktive Deck für den ersten Tag.",
     "learningCardTitle": "Lernen",
-    "learningCardDescription": "Wöchentlicher Fokus, Aufgaben und Reflexionen — folgt in Kürze."
+    "learningCardDescription": "Wöchentlicher Fokus, Aufgaben und Reflexionen.",
+    "openLearning": "Lernen öffnen",
+    "objectivesCardTitle": "Wöchentliche Ziele",
+    "objectivesCardDescription": "Verfolge und verwalte Praktikantenziele.",
+    "openObjectives": "Ziele öffnen"
   },
   "auth": {
     "signInTitle": "Bei Academy Fi anmelden",
@@ -34,7 +38,10 @@
     "welcome": "Willkommen, {name}",
     "ownerDescription": "Als Nächstes folgt das Owner-Dashboard: Interns, Aufgaben und Feedback im Überblick.",
     "internDescription": "Als Nächstes folgt dein Lern-Dashboard: wöchentliche Aufgaben, Reflexionen und Feedback.",
-    "signedInAs": "Angemeldet als {email}."
+    "signedInAs": "Angemeldet als {email}.",
+    "weeklyObjectivesTitle": "Wöchentliche Ziele",
+    "noObjectivesYet": "Noch keine Ziele zugewiesen.",
+    "checklistError": "Checklisten-Punkt konnte nicht aktualisiert werden."
   },
   "presentation": {
     "title": "Präsentation",
@@ -59,6 +66,9 @@
       "tagline": "Maßgeschneiderte Websites",
       "points": [
         "Gegründet im Juni 2025.",
+        "Bootcamp: den MERN-Stack gelernt.",
+        "OrangeFluid: mit Shopware gebaut.",
+        "Nach OrangeFluid: WordPress, dann React, bis ich den Stack fand, den ich mag.",
         "Websites in drei Sprachen: Irisch, Englisch und Deutsch.",
         "Kundenfokus, schnelle Reaktionszeiten und clevere Lösungen.",
         "Ein Raum, in dem Menschen ihre eigene Ecke des Internets kontrollieren — fernab starrer WordPress-Vorlagen."
@@ -295,7 +305,290 @@
           "tags": "Next.js, Auth, E-Commerce, Gaeltacht"
         }
       }
+    },
+    "strengthsWeaknesses": {
+      "heading": "Die Stärken und Schwächen von Studio Fi",
+      "subheading": "Ein kleines Studio mit persönlichem Ansatz und Raum zum Wachsen.",
+      "strengthsHeading": "Stärken",
+      "weaknessesHeading": "Schwächen",
+      "strengths": [
+        {
+          "title": "Persönlicher Service",
+          "description": "Kunden sprechen während des gesamten Projekts direkt mit mir."
+        },
+        {
+          "title": "Schnelle Entscheidungen",
+          "description": "Kein großer Agenturprozess bremst gute Ideen aus."
+        },
+        {
+          "title": "Individuelle Websites",
+          "description": "Jedes Projekt wird auf den Kunden zugeschnitten statt in ein starres WordPress-Template gepresst."
+        }
+      ],
+      "weaknesses": [
+        {
+          "title": "Begrenzte Kapazität",
+          "description": "Als kleines Studio kann ich nur eine begrenzte Anzahl großer Projekte gleichzeitig bearbeiten."
+        },
+        {
+          "title": "Zu viele Rollen",
+          "description": "Eine Person übernimmt derzeit Design, Entwicklung, Kommunikation und Organisation."
+        },
+        {
+          "title": "Prozesse im Aufbau",
+          "description": "Einige Systeme und Prozesse werden mit dem Wachstum von Studio Fi noch entwickelt."
+        }
+      ]
+    },
+    "rolesFuture": {
+      "heading": "Rollen & Die Zukunft",
+      "subheading": "Die fünf Bereiche von Studio Fi aufteilen, ausprobieren und gemeinsam wachsen.",
+      "departments": [
+        {
+          "name": "Kundengewinnung",
+          "description": "Potenzielle Kleinunternehmer-Kunden finden und ansprechen."
+        },
+        {
+          "name": "Marketing",
+          "description": "Die Arbeit, das Portfolio und die Online-Präsenz von Studio Fi bewerben."
+        },
+        {
+          "name": "Design",
+          "description": "UI/UX und visuelle Identität für jedes Kundenprojekt."
+        },
+        {
+          "name": "Programmierung",
+          "description": "Die eigentlichen Websites und Funktionen bauen."
+        },
+        {
+          "name": "Kundenbeziehungen",
+          "description": "Kommunikation, Erwartungsmanagement und laufende Kundenbetreuung."
+        }
+      ],
+      "plan": "Calem und Adrian teilen sich diese fünf Bereiche und helfen sich gegenseitig in jedem davon. Über 1–2 Monate probieren sie jeden Bereich aus, setzen auf ihre Stärken und beginnen, echtes Wachstum zu sehen."
+    },
+    "houseRules": {
+      "heading": "Hausregeln",
+      "subheading": "Ein kurzer, etwas themenfremder Hinweis — ihr arbeitet in einem Familienhaus.",
+      "rules": [
+        {
+          "title": "Keine Schuhe",
+          "description": "Bitte zieht die Schuhe an der Tür aus."
+        },
+        {
+          "title": "Manche Räume sind tabu",
+          "description": "Die Schlafzimmer und das Bad im Erdgeschoss sind privat — bitte bleibt dort draußen."
+        },
+        {
+          "title": "Bitte respektiert das Haus",
+          "description": "Auch wenn ich keinen Zweifel habe, dass ihr das sowieso tun werdet."
+        }
+      ]
+    },
+    "product": {
+      "heading": "Das Produkt",
+      "subheading": "Eine Visitenkarten-Website ist der Köder. Ein individuelles CRM ist der eigentliche Verkauf.",
+      "problem": "Kleine Unternehmen führen ihr gesamtes Geschäft hinter einem Marketing-Tool — einer Website — statt mit einem System, das zu ihrer Arbeitsweise passt.",
+      "insight": "WordPress war erfolgreich, weil es Menschen Kontrolle gab. Wir können weiter gehen: eine Website mit Backend, komplett um den Kunden herum gebaut.",
+      "pillars": [
+        {
+          "title": "Visitenkarten-Website",
+          "description": "Eine professionelle Eingangstür — der Einstiegspunkt, den jeder Kunde erwartet."
+        },
+        {
+          "title": "Individuelles Dashboard",
+          "description": "Ein Backend, das alles kann, was der Kunde braucht — weil wir es bauen."
+        },
+        {
+          "title": "Integriertes CRM",
+          "description": "Kunden, Buchungen und Verkäufe an einem Ort verwalten."
+        },
+        {
+          "title": "Das Geschäft führen, nicht nur bewerben",
+          "description": "Seminare organisieren, Kleidung verkaufen, Kunden verwalten — alles über dieselbe Seite."
+        }
+      ],
+      "closing": "Individuelle Websites und CRMs, gebaut für den Kunden, zu einem Preis, den sich kleine Unternehmen wirklich leisten können."
+    },
+    "challengeBreak": {
+      "heading": "Macht eine Pause",
+      "subheading": "Eine Stunde, vielleicht eineinhalb — geht spazieren, holt euch einen Kaffee in der Küche, entspannt euch.",
+      "challengeHeading": "Die Herausforderung",
+      "challenge": "Überlegt euch währenddessen eine Strategie, um Kunden zu gewinnen."
+    },
+    "strategy": {
+      "heading": "Meine Strategie",
+      "subheading": "Wie aus einem kalten Lead ein Kunde wird — ich halte überall danach Ausschau.",
+      "steps": [
+        {
+          "title": "Entdecken",
+          "description": "Überall nach kleinen Unternehmen Ausschau halten, die eine bessere Online-Präsenz gebrauchen könnten."
+        },
+        {
+          "title": "Recherchieren",
+          "description": "Das Unternehmen genauer ansehen — was sie tun, wen sie bedienen, was ihnen fehlt."
+        },
+        {
+          "title": "Design",
+          "description": "Ein Design entwerfen, das genau zu diesem Unternehmen passt."
+        },
+        {
+          "title": "Bauen & veröffentlichen",
+          "description": "Die eigentliche Website bauen und live stellen — kein Mockup, ein echtes funktionierendes Beispiel."
+        },
+        {
+          "title": "Kontakt aufnehmen",
+          "description": "Sie zu den Leads von Studio Fi hinzufügen und eine freundliche E-Mail oder Instagram-Nachricht mit dem Live-Link schicken."
+        }
+      ],
+      "example": "https://www.studio-fi.com/de/autohaus-osning"
+    },
+    "clientAcquisition": {
+      "heading": "Wie ich bisher Kunden gewonnen habe",
+      "subheading": "Ein Blick darauf, woher meine Kunden tatsächlich kommen.",
+      "sources": {
+        "selfContact": "Eigene Kontaktaufnahme",
+        "familyFriends": "Familie & Freunde",
+        "clientRecommendations": "Kundenempfehlungen",
+        "coldOutreach": "Kaltakquise",
+        "clientOutreach": "Kundenakquise"
+      }
+    },
+    "discussion": {
+      "heading": "Lasst uns Diskutieren",
+      "subheading": "Was ist euch in der Pause eingefallen? Besprecht es und haltet die wichtigsten Ideen unten fest.",
+      "prompts": [
+        "Wo würdet ihr nach potenziellen Kunden suchen?",
+        "Was würde ein Unternehmen überzeugen, ja zu sagen?",
+        "Wie würdet ihr Kontakt aufnehmen — E-Mail, Instagram, persönlich?"
+      ],
+      "notesLabel": "Eure Notizen",
+      "notesPlaceholder": "Schreibt eure Ideen hier auf..."
+    },
+    "academyFiPanel": {
+      "heading": "Academy Fi vs. Studio Fi",
+      "subheading": "Zwei Panels, zwei Aufgaben — nicht verwechseln.",
+      "intro": "Diese App, die ihr den ganzen Tag benutzt habt, ist Academy Fi. Hier läuft keine Kundenarbeit — hier wird euer Praktikum dokumentiert.",
+      "pillars": [
+        {
+          "title": "Academy Fi",
+          "description": "Hier dokumentiert ihr euer Praktikum: Abteilungen, Aufgaben, Reflexionen und Feedback."
+        },
+        {
+          "title": "Studio Fi",
+          "description": "Hier dokumentiert ihr die eigentliche Arbeit für Studio Fi: Kunden, Projekte und das individuelle CRM aus der Produkt-Folie."
+        }
+      ],
+      "closing": "Gleiche Idee, zwei Systeme — Studio Fi baut seine eigenen Tools genauso, wie es sie für Kunden baut."
+    },
+    "wrapUp": {
+      "heading": "Der Rest des Tages",
+      "subheading": "Der Rest des heutigen Tages ist offene Diskussionszeit — Strategie, Ideen und die fünf Abteilungen.",
+      "departments": [
+        "Kundenakquise",
+        "Marketing",
+        "Design",
+        "Programmierung",
+        "Kundenbetreuung"
+      ],
+      "prompt": "Hinterfragt es, schlagt neue Abteilungen vor und sagt uns, wohin euer Interesse tendiert."
     }
+  },
+  "learning": {
+    "title": "Lernen",
+    "description": "Euer wöchentlicher Fokus, Aufgaben, Reflexionen und Abteilungs-Ressourcen."
+  },
+  "departments": {
+    "title": "Abteilungen",
+    "description": "Ressourcen für jede der fünf Abteilungen von Studio Fi.",
+    "empty": "Noch keine Abteilungen.",
+    "manageTitle": "Abteilungen verwalten",
+    "manageDescription": "Abteilungen und Ressourcen hinzufügen, mit denen Praktikanten starten können.",
+    "addDepartment": "Abteilung hinzufügen",
+    "createTitle": "Neue Abteilung",
+    "createDescription": "Erstellt eine Abteilung, zu der Praktikanten Ressourcen durchsuchen können.",
+    "name": "Name",
+    "departmentDescription": "Beschreibung",
+    "create": "Erstellen",
+    "creating": "Wird erstellt…",
+    "createSuccess": "Abteilung erstellt.",
+    "createError": "Abteilung konnte nicht erstellt werden.",
+    "deleteDepartment": "Abteilung löschen",
+    "deleteTitle": "{name} löschen?",
+    "deleteDescription": "Dadurch werden auch alle zugehörigen Ressourcen entfernt. Dies kann nicht rückgängig gemacht werden.",
+    "cancel": "Abbrechen",
+    "delete": "Löschen",
+    "deleting": "Wird gelöscht…",
+    "deleteSuccess": "Abteilung gelöscht.",
+    "deleteError": "Abteilung konnte nicht gelöscht werden.",
+    "addResource": "Ressource hinzufügen",
+    "resourceCreateTitle": "Neue Ressource",
+    "resourceCreateDescription": "Fügt einen Link für diese Abteilung hinzu.",
+    "resourceTitle": "Titel",
+    "resourceUrl": "URL",
+    "resourceNote": "Notiz",
+    "resourceCreateSuccess": "Ressource hinzugefügt.",
+    "resourceCreateError": "Ressource konnte nicht hinzugefügt werden.",
+    "deleteResource": "Ressource löschen",
+    "resourceDeleteError": "Ressource konnte nicht gelöscht werden."
+  },
+  "planner": {
+    "title": "Diese Woche",
+    "none": "Noch keine Aufgabe — schaut später noch einmal vorbei, sobald Fi euren Fokus für die Woche festgelegt hat.",
+    "manageTitle": "Wöchentliche Aufgaben",
+    "manageDescription": "Legt den Fokus der Woche pro Praktikant fest und seht euch deren Reflexionen an.",
+    "addAssignment": "Aufgabe hinzufügen",
+    "createTitle": "Neue wöchentliche Aufgabe",
+    "createDescription": "Legt Fokus, Beschreibung und Erfolgskriterien für die Woche fest.",
+    "intern": "Praktikant",
+    "selectIntern": "Praktikant auswählen",
+    "weekOf": "Woche vom",
+    "focus": "Fokus",
+    "assignmentDescription": "Beschreibung",
+    "acceptanceCriteria": "Erfolgskriterien",
+    "checklistItems": "Checklisten-Punkte",
+    "checklistItemsPlaceholder": "Ein Punkt pro Zeile",
+    "create": "Erstellen",
+    "creating": "Wird erstellt…",
+    "createSuccess": "Aufgabe erstellt.",
+    "createError": "Aufgabe konnte nicht erstellt werden.",
+    "empty": "Noch keine Aufgaben.",
+    "checklist": "Checkliste dieser Woche",
+    "checklistProgress": "{done}/{total} erledigt",
+    "checklistError": "Checklisten-Punkt konnte nicht aktualisiert werden.",
+    "reflectionHeading": "Eure Reflexion",
+    "workDone": "Woran habt ihr gearbeitet?",
+    "learning": "Was habt ihr gelernt?",
+    "blocker": "Gab es Hindernisse?",
+    "workLink": "Link zu eurer Arbeit",
+    "nextStep": "Was kommt als Nächstes?",
+    "saving": "Wird gespeichert…",
+    "saveReflection": "Reflexion speichern",
+    "reflectionSuccess": "Reflexion gespeichert.",
+    "reflectionError": "Reflexion konnte nicht gespeichert werden.",
+    "noReflectionYet": "Noch keine Reflexion eingereicht.",
+    "feedbackHeading": "Feedback",
+    "feedbackPlaceholder": "Feedback zu dieser Reflexion schreiben...",
+    "addFeedback": "Feedback hinzufügen",
+    "feedbackSuccess": "Feedback hinzugefügt.",
+    "feedbackError": "Feedback konnte nicht hinzugefügt werden."
+  },
+  "objectives": {
+    "title": "Wöchentliche Ziele",
+    "description": "Zeige und verwalte wöchentliche Aufgaben für alle Praktikanten.",
+    "allObjectivesTitle": "Alle Ziele",
+    "allObjectivesDescription": "Verfolge den Fortschritt und die Reflexionen für jede wöchentliche Aufgabe eines Praktikanten.",
+    "noObjectives": "Noch keine Ziele erstellt. Erstelle eines um zu beginnen.",
+    "progress": "Fortschritt",
+    "reflectionSubmitted": "Reflexion eingereicht",
+    "awaitingReflection": "Reflexion ausstehend",
+    "feedbackGiven": "Feedback gegeben",
+    "weekOf": "Woche ab"
+  },
+  "assignments": {
+    "title": "Meine Aufgaben",
+    "description": "Zeige alle deine wöchentlichen Aufgaben, Aufträge und deinen Fortschritt.",
+    "noAssignments": "Du hast noch keine Aufgaben."
   },
   "users": {
     "title": "Nutzer",

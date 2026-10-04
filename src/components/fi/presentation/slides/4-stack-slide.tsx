@@ -28,8 +28,8 @@ function ToolTile({ tool }: { tool: Tool }) {
           />
         </div>
       )}
-      <span className="text-xs font-semibold">{tool.name}</span>
-      <span className="text-muted-foreground text-[11px] leading-tight">
+      <span className="text-base font-semibold">{tool.name}</span>
+      <span className="text-muted-foreground text-sm leading-tight">
         {tool.description}
       </span>
     </div>
@@ -72,7 +72,7 @@ export async function StackSlide() {
             <div key={category.id} className="flex flex-col gap-2">
               <ClickReveal
                 at={category.labelStep}
-                className="text-muted-foreground text-xs font-medium tracking-wide uppercase"
+                className="text-muted-foreground text-base font-medium tracking-wide uppercase"
               >
                 {category.label}
               </ClickReveal>
@@ -88,7 +88,7 @@ export async function StackSlide() {
           <div className="flex flex-col gap-2 pt-3">
             <ClickReveal
               at={futureLabelStep}
-              className="text-muted-foreground text-xs font-medium tracking-wide uppercase"
+              className="text-muted-foreground text-base font-medium tracking-wide uppercase"
             >
               {future.heading}
             </ClickReveal>

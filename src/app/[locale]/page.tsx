@@ -1,29 +1,28 @@
-import { useTranslations } from "next-intl";
+"use client";
+
+import Image from "next/image";
+import { useTheme } from "next-themes";
+import { Link } from "@/i18n/navigation";
 
 export default function Home() {
-  const t = useTranslations("home");
+  const { theme } = useTheme();
+
+  const logoSrc =
+    theme === "dark"
+      ? "/logo/academy-fi/logo-dark.png"
+      : "/logo/academy-fi/logo-light.png";
 
   return (
-    <div className="flex flex-col flex-1 items-center justify-center">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-center gap-8 py-32 px-16">
-        <h1 className="text-3xl font-semibold">{t("title")}</h1>
-        <div className="grid w-full gap-6 sm:grid-cols-2">
-          <div className="rounded-lg border border-border bg-card p-6 text-card-foreground">
-            <h2 className="text-xl font-semibold">
-              {t("presentationCardTitle")}
-            </h2>
-            <p className="mt-2 text-muted-foreground">
-              {t("presentationCardDescription")}
-            </p>
-          </div>
-          <div className="rounded-lg border border-border bg-card p-6 text-card-foreground">
-            <h2 className="text-xl font-semibold">{t("learningCardTitle")}</h2>
-            <p className="mt-2 text-muted-foreground">
-              {t("learningCardDescription")}
-            </p>
-          </div>
-        </div>
-      </main>
+    <div className="flex flex-1 items-center justify-center">
+      <Link href="/dashboard" className="transition-opacity hover:opacity-80">
+        <Image
+          src={logoSrc}
+          alt="Academy Fi"
+          width={200}
+          height={200}
+          priority
+        />
+      </Link>
     </div>
   );
 }

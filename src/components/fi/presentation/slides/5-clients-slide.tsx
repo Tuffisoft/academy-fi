@@ -106,11 +106,13 @@ export async function ClientsSlide() {
               >
                 <ClientLogo id={client.id} name={client.name} />
               </a>
-              <span className="text-xs font-semibold">{client.highlight}</span>
-              <span className="text-muted-foreground text-[11px] leading-tight">
+              <span className="text-base font-semibold">
+                {client.highlight}
+              </span>
+              <span className="text-muted-foreground text-sm leading-tight">
                 {client.description}
               </span>
-              <span className="text-muted-foreground/70 text-[10px] tracking-wide uppercase">
+              <span className="text-muted-foreground/70 text-xs tracking-wide uppercase">
                 {client.tags}
               </span>
             </ClickReveal>

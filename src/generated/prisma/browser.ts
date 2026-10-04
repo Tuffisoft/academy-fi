@@ -23,6 +23,16 @@ export * from './enums';
  */
 export type WeeklyAssignment = Prisma.WeeklyAssignmentModel
 /**
+ * Model AssignmentChecklistItem
+ * 
+ */
+export type AssignmentChecklistItem = Prisma.AssignmentChecklistItemModel
+/**
+ * Model TaskStage
+ * 
+ */
+export type TaskStage = Prisma.TaskStageModel
+/**
  * Model Reflection
  * 
  */
@@ -32,6 +42,21 @@ export type Reflection = Prisma.ReflectionModel
  * 
  */
 export type MentorFeedback = Prisma.MentorFeedbackModel
+/**
+ * Model DiscussionNote
+ * 
+ */
+export type DiscussionNote = Prisma.DiscussionNoteModel
+/**
+ * Model Department
+ * 
+ */
+export type Department = Prisma.DepartmentModel
+/**
+ * Model DepartmentResource
+ * 
+ */
+export type DepartmentResource = Prisma.DepartmentResourceModel
 /**
  * Model User
  * 

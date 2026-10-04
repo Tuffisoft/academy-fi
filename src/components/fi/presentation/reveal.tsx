@@ -56,7 +56,7 @@ export function ClickSteps({
 
   const handleClick = (event: MouseEvent<HTMLDivElement>) => {
     const target = event.target as HTMLElement;
-    if (target.closest("button, a")) return;
+    if (target.closest("button, a, textarea, input, label")) return;
     triggerAdvance();
   };
 

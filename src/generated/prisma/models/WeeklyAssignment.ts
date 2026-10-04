@@ -217,6 +217,7 @@ export type WeeklyAssignmentWhereInput = {
   intern?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   createdBy?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   reflections?: Prisma.ReflectionListRelationFilter
+  checklistItems?: Prisma.AssignmentChecklistItemListRelationFilter
 }
 
 export type WeeklyAssignmentOrderByWithRelationInput = {
@@ -232,6 +233,7 @@ export type WeeklyAssignmentOrderByWithRelationInput = {
   intern?: Prisma.UserOrderByWithRelationInput
   createdBy?: Prisma.UserOrderByWithRelationInput
   reflections?: Prisma.ReflectionOrderByRelationAggregateInput
+  checklistItems?: Prisma.AssignmentChecklistItemOrderByRelationAggregateInput
 }
 
 export type WeeklyAssignmentWhereUniqueInput = Prisma.AtLeast<{
@@ -250,6 +252,7 @@ export type WeeklyAssignmentWhereUniqueInput = Prisma.AtLeast<{
   intern?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   createdBy?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   reflections?: Prisma.ReflectionListRelationFilter
+  checklistItems?: Prisma.AssignmentChecklistItemListRelationFilter
 }, "id">
 
 export type WeeklyAssignmentOrderByWithAggregationInput = {
@@ -293,6 +296,7 @@ export type WeeklyAssignmentCreateInput = {
   intern: Prisma.UserCreateNestedOneWithoutAssignmentsAsInternInput
   createdBy: Prisma.UserCreateNestedOneWithoutAssignmentsCreatedInput
   reflections?: Prisma.ReflectionCreateNestedManyWithoutAssignmentInput
+  checklistItems?: Prisma.AssignmentChecklistItemCreateNestedManyWithoutAssignmentInput
 }
 
 export type WeeklyAssignmentUncheckedCreateInput = {
@@ -306,6 +310,7 @@ export type WeeklyAssignmentUncheckedCreateInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   reflections?: Prisma.ReflectionUncheckedCreateNestedManyWithoutAssignmentInput
+  checklistItems?: Prisma.AssignmentChecklistItemUncheckedCreateNestedManyWithoutAssignmentInput
 }
 
 export type WeeklyAssignmentUpdateInput = {
@@ -319,6 +324,7 @@ export type WeeklyAssignmentUpdateInput = {
   intern?: Prisma.UserUpdateOneRequiredWithoutAssignmentsAsInternNestedInput
   createdBy?: Prisma.UserUpdateOneRequiredWithoutAssignmentsCreatedNestedInput
   reflections?: Prisma.ReflectionUpdateManyWithoutAssignmentNestedInput
+  checklistItems?: Prisma.AssignmentChecklistItemUpdateManyWithoutAssignmentNestedInput
 }
 
 export type WeeklyAssignmentUncheckedUpdateInput = {
@@ -332,6 +338,7 @@ export type WeeklyAssignmentUncheckedUpdateInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   reflections?: Prisma.ReflectionUncheckedUpdateManyWithoutAssignmentNestedInput
+  checklistItems?: Prisma.AssignmentChecklistItemUncheckedUpdateManyWithoutAssignmentNestedInput
 }
 
 export type WeeklyAssignmentCreateManyInput = {
@@ -425,6 +432,20 @@ export type StringFieldUpdateOperationsInput = {
 
 export type DateTimeFieldUpdateOperationsInput = {
   set?: Date | string
+}
+
+export type WeeklyAssignmentCreateNestedOneWithoutChecklistItemsInput = {
+  create?: Prisma.XOR<Prisma.WeeklyAssignmentCreateWithoutChecklistItemsInput, Prisma.WeeklyAssignmentUncheckedCreateWithoutChecklistItemsInput>
+  connectOrCreate?: Prisma.WeeklyAssignmentCreateOrConnectWithoutChecklistItemsInput
+  connect?: Prisma.WeeklyAssignmentWhereUniqueInput
+}
+
+export type WeeklyAssignmentUpdateOneRequiredWithoutChecklistItemsNestedInput = {
+  create?: Prisma.XOR<Prisma.WeeklyAssignmentCreateWithoutChecklistItemsInput, Prisma.WeeklyAssignmentUncheckedCreateWithoutChecklistItemsInput>
+  connectOrCreate?: Prisma.WeeklyAssignmentCreateOrConnectWithoutChecklistItemsInput
+  upsert?: Prisma.WeeklyAssignmentUpsertWithoutChecklistItemsInput
+  connect?: Prisma.WeeklyAssignmentWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.WeeklyAssignmentUpdateToOneWithWhereWithoutChecklistItemsInput, Prisma.WeeklyAssignmentUpdateWithoutChecklistItemsInput>, Prisma.WeeklyAssignmentUncheckedUpdateWithoutChecklistItemsInput>
 }
 
 export type WeeklyAssignmentCreateNestedOneWithoutReflectionsInput = {
@@ -525,6 +546,74 @@ export type WeeklyAssignmentUncheckedUpdateManyWithoutCreatedByNestedInput = {
   deleteMany?: Prisma.WeeklyAssignmentScalarWhereInput | Prisma.WeeklyAssignmentScalarWhereInput[]
 }
 
+export type WeeklyAssignmentCreateWithoutChecklistItemsInput = {
+  id?: string
+  weekOf: Date | string
+  focus: string
+  description: string
+  acceptanceCriteria: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  intern: Prisma.UserCreateNestedOneWithoutAssignmentsAsInternInput
+  createdBy: Prisma.UserCreateNestedOneWithoutAssignmentsCreatedInput
+  reflections?: Prisma.ReflectionCreateNestedManyWithoutAssignmentInput
+}
+
+export type WeeklyAssignmentUncheckedCreateWithoutChecklistItemsInput = {
+  id?: string
+  internId: string
+  weekOf: Date | string
+  focus: string
+  description: string
+  acceptanceCriteria: string
+  createdById: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  reflections?: Prisma.ReflectionUncheckedCreateNestedManyWithoutAssignmentInput
+}
+
+export type WeeklyAssignmentCreateOrConnectWithoutChecklistItemsInput = {
+  where: Prisma.WeeklyAssignmentWhereUniqueInput
+  create: Prisma.XOR<Prisma.WeeklyAssignmentCreateWithoutChecklistItemsInput, Prisma.WeeklyAssignmentUncheckedCreateWithoutChecklistItemsInput>
+}
+
+export type WeeklyAssignmentUpsertWithoutChecklistItemsInput = {
+  update: Prisma.XOR<Prisma.WeeklyAssignmentUpdateWithoutChecklistItemsInput, Prisma.WeeklyAssignmentUncheckedUpdateWithoutChecklistItemsInput>
+  create: Prisma.XOR<Prisma.WeeklyAssignmentCreateWithoutChecklistItemsInput, Prisma.WeeklyAssignmentUncheckedCreateWithoutChecklistItemsInput>
+  where?: Prisma.WeeklyAssignmentWhereInput
+}
+
+export type WeeklyAssignmentUpdateToOneWithWhereWithoutChecklistItemsInput = {
+  where?: Prisma.WeeklyAssignmentWhereInput
+  data: Prisma.XOR<Prisma.WeeklyAssignmentUpdateWithoutChecklistItemsInput, Prisma.WeeklyAssignmentUncheckedUpdateWithoutChecklistItemsInput>
+}
+
+export type WeeklyAssignmentUpdateWithoutChecklistItemsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  weekOf?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  focus?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.StringFieldUpdateOperationsInput | string
+  acceptanceCriteria?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  intern?: Prisma.UserUpdateOneRequiredWithoutAssignmentsAsInternNestedInput
+  createdBy?: Prisma.UserUpdateOneRequiredWithoutAssignmentsCreatedNestedInput
+  reflections?: Prisma.ReflectionUpdateManyWithoutAssignmentNestedInput
+}
+
+export type WeeklyAssignmentUncheckedUpdateWithoutChecklistItemsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  internId?: Prisma.StringFieldUpdateOperationsInput | string
+  weekOf?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  focus?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.StringFieldUpdateOperationsInput | string
+  acceptanceCriteria?: Prisma.StringFieldUpdateOperationsInput | string
+  createdById?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  reflections?: Prisma.ReflectionUncheckedUpdateManyWithoutAssignmentNestedInput
+}
+
 export type WeeklyAssignmentCreateWithoutReflectionsInput = {
   id?: string
   weekOf: Date | string
@@ -535,6 +624,7 @@ export type WeeklyAssignmentCreateWithoutReflectionsInput = {
   updatedAt?: Date | string
   intern: Prisma.UserCreateNestedOneWithoutAssignmentsAsInternInput
   createdBy: Prisma.UserCreateNestedOneWithoutAssignmentsCreatedInput
+  checklistItems?: Prisma.AssignmentChecklistItemCreateNestedManyWithoutAssignmentInput
 }
 
 export type WeeklyAssignmentUncheckedCreateWithoutReflectionsInput = {
@@ -547,6 +637,7 @@ export type WeeklyAssignmentUncheckedCreateWithoutReflectionsInput = {
   createdById: string
   createdAt?: Date | string
   updatedAt?: Date | string
+  checklistItems?: Prisma.AssignmentChecklistItemUncheckedCreateNestedManyWithoutAssignmentInput
 }
 
 export type WeeklyAssignmentCreateOrConnectWithoutReflectionsInput = {
@@ -575,6 +666,7 @@ export type WeeklyAssignmentUpdateWithoutReflectionsInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   intern?: Prisma.UserUpdateOneRequiredWithoutAssignmentsAsInternNestedInput
   createdBy?: Prisma.UserUpdateOneRequiredWithoutAssignmentsCreatedNestedInput
+  checklistItems?: Prisma.AssignmentChecklistItemUpdateManyWithoutAssignmentNestedInput
 }
 
 export type WeeklyAssignmentUncheckedUpdateWithoutReflectionsInput = {
@@ -587,6 +679,7 @@ export type WeeklyAssignmentUncheckedUpdateWithoutReflectionsInput = {
   createdById?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  checklistItems?: Prisma.AssignmentChecklistItemUncheckedUpdateManyWithoutAssignmentNestedInput
 }
 
 export type WeeklyAssignmentCreateWithoutInternInput = {
@@ -599,6 +692,7 @@ export type WeeklyAssignmentCreateWithoutInternInput = {
   updatedAt?: Date | string
   createdBy: Prisma.UserCreateNestedOneWithoutAssignmentsCreatedInput
   reflections?: Prisma.ReflectionCreateNestedManyWithoutAssignmentInput
+  checklistItems?: Prisma.AssignmentChecklistItemCreateNestedManyWithoutAssignmentInput
 }
 
 export type WeeklyAssignmentUncheckedCreateWithoutInternInput = {
@@ -611,6 +705,7 @@ export type WeeklyAssignmentUncheckedCreateWithoutInternInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   reflections?: Prisma.ReflectionUncheckedCreateNestedManyWithoutAssignmentInput
+  checklistItems?: Prisma.AssignmentChecklistItemUncheckedCreateNestedManyWithoutAssignmentInput
 }
 
 export type WeeklyAssignmentCreateOrConnectWithoutInternInput = {
@@ -633,6 +728,7 @@ export type WeeklyAssignmentCreateWithoutCreatedByInput = {
   updatedAt?: Date | string
   intern: Prisma.UserCreateNestedOneWithoutAssignmentsAsInternInput
   reflections?: Prisma.ReflectionCreateNestedManyWithoutAssignmentInput
+  checklistItems?: Prisma.AssignmentChecklistItemCreateNestedManyWithoutAssignmentInput
 }
 
 export type WeeklyAssignmentUncheckedCreateWithoutCreatedByInput = {
@@ -645,6 +741,7 @@ export type WeeklyAssignmentUncheckedCreateWithoutCreatedByInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   reflections?: Prisma.ReflectionUncheckedCreateNestedManyWithoutAssignmentInput
+  checklistItems?: Prisma.AssignmentChecklistItemUncheckedCreateNestedManyWithoutAssignmentInput
 }
 
 export type WeeklyAssignmentCreateOrConnectWithoutCreatedByInput = {
@@ -736,6 +833,7 @@ export type WeeklyAssignmentUpdateWithoutInternInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdBy?: Prisma.UserUpdateOneRequiredWithoutAssignmentsCreatedNestedInput
   reflections?: Prisma.ReflectionUpdateManyWithoutAssignmentNestedInput
+  checklistItems?: Prisma.AssignmentChecklistItemUpdateManyWithoutAssignmentNestedInput
 }
 
 export type WeeklyAssignmentUncheckedUpdateWithoutInternInput = {
@@ -748,6 +846,7 @@ export type WeeklyAssignmentUncheckedUpdateWithoutInternInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   reflections?: Prisma.ReflectionUncheckedUpdateManyWithoutAssignmentNestedInput
+  checklistItems?: Prisma.AssignmentChecklistItemUncheckedUpdateManyWithoutAssignmentNestedInput
 }
 
 export type WeeklyAssignmentUncheckedUpdateManyWithoutInternInput = {
@@ -771,6 +870,7 @@ export type WeeklyAssignmentUpdateWithoutCreatedByInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   intern?: Prisma.UserUpdateOneRequiredWithoutAssignmentsAsInternNestedInput
   reflections?: Prisma.ReflectionUpdateManyWithoutAssignmentNestedInput
+  checklistItems?: Prisma.AssignmentChecklistItemUpdateManyWithoutAssignmentNestedInput
 }
 
 export type WeeklyAssignmentUncheckedUpdateWithoutCreatedByInput = {
@@ -783,6 +883,7 @@ export type WeeklyAssignmentUncheckedUpdateWithoutCreatedByInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   reflections?: Prisma.ReflectionUncheckedUpdateManyWithoutAssignmentNestedInput
+  checklistItems?: Prisma.AssignmentChecklistItemUncheckedUpdateManyWithoutAssignmentNestedInput
 }
 
 export type WeeklyAssignmentUncheckedUpdateManyWithoutCreatedByInput = {
@@ -803,10 +904,12 @@ export type WeeklyAssignmentUncheckedUpdateManyWithoutCreatedByInput = {
 
 export type WeeklyAssignmentCountOutputType = {
   reflections: number
+  checklistItems: number
 }
 
 export type WeeklyAssignmentCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   reflections?: boolean | WeeklyAssignmentCountOutputTypeCountReflectionsArgs
+  checklistItems?: boolean | WeeklyAssignmentCountOutputTypeCountChecklistItemsArgs
 }
 
 /**
@@ -826,6 +929,13 @@ export type WeeklyAssignmentCountOutputTypeCountReflectionsArgs<ExtArgs extends 
   where?: Prisma.ReflectionWhereInput
 }
 
+/**
+ * WeeklyAssignmentCountOutputType without action
+ */
+export type WeeklyAssignmentCountOutputTypeCountChecklistItemsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.AssignmentChecklistItemWhereInput
+}
+
 
 export type WeeklyAssignmentSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -840,6 +950,7 @@ export type WeeklyAssignmentSelect<ExtArgs extends runtime.Types.Extensions.Inte
   intern?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   createdBy?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   reflections?: boolean | Prisma.WeeklyAssignment$reflectionsArgs<ExtArgs>
+  checklistItems?: boolean | Prisma.WeeklyAssignment$checklistItemsArgs<ExtArgs>
   _count?: boolean | Prisma.WeeklyAssignmentCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["weeklyAssignment"]>
 
@@ -888,6 +999,7 @@ export type WeeklyAssignmentInclude<ExtArgs extends runtime.Types.Extensions.Int
   intern?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   createdBy?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   reflections?: boolean | Prisma.WeeklyAssignment$reflectionsArgs<ExtArgs>
+  checklistItems?: boolean | Prisma.WeeklyAssignment$checklistItemsArgs<ExtArgs>
   _count?: boolean | Prisma.WeeklyAssignmentCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type WeeklyAssignmentIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -905,6 +1017,7 @@ export type $WeeklyAssignmentPayload<ExtArgs extends runtime.Types.Extensions.In
     intern: Prisma.$UserPayload<ExtArgs>
     createdBy: Prisma.$UserPayload<ExtArgs>
     reflections: Prisma.$ReflectionPayload<ExtArgs>[]
+    checklistItems: Prisma.$AssignmentChecklistItemPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1313,6 +1426,7 @@ export interface Prisma__WeeklyAssignmentClient<T, Null = never, ExtArgs extends
   intern<T extends Prisma.UserDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UserDefaultArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   createdBy<T extends Prisma.UserDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UserDefaultArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   reflections<T extends Prisma.WeeklyAssignment$reflectionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.WeeklyAssignment$reflectionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ReflectionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  checklistItems<T extends Prisma.WeeklyAssignment$checklistItemsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.WeeklyAssignment$checklistItemsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AssignmentChecklistItemPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1773,6 +1887,30 @@ export type WeeklyAssignment$reflectionsArgs<ExtArgs extends runtime.Types.Exten
   take?: number
   skip?: number
   distinct?: Prisma.ReflectionScalarFieldEnum | Prisma.ReflectionScalarFieldEnum[]
+}
+
+/**
+ * WeeklyAssignment.checklistItems
+ */
+export type WeeklyAssignment$checklistItemsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the AssignmentChecklistItem
+   */
+  select?: Prisma.AssignmentChecklistItemSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the AssignmentChecklistItem
+   */
+  omit?: Prisma.AssignmentChecklistItemOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.AssignmentChecklistItemInclude<ExtArgs> | null
+  where?: Prisma.AssignmentChecklistItemWhereInput
+  orderBy?: Prisma.AssignmentChecklistItemOrderByWithRelationInput | Prisma.AssignmentChecklistItemOrderByWithRelationInput[]
+  cursor?: Prisma.AssignmentChecklistItemWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.AssignmentChecklistItemScalarFieldEnum | Prisma.AssignmentChecklistItemScalarFieldEnum[]
 }
 
 /**

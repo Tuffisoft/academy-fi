@@ -13,18 +13,43 @@ enum Role {
 }
 
 model WeeklyAssignment {
-    id                 String       @id @default(cuid())
+    id                 String                    @id @default(cuid())
     internId           String
-    intern             User         @relation("AssignmentsForIntern", fields: [internId], references: [id])
+    intern             User                      @relation("AssignmentsForIntern", fields: [internId], references: [id])
     weekOf             DateTime
     focus              String
     description        String
     acceptanceCriteria String
     createdById        String
-    createdBy          User         @relation("AssignmentsCreatedBy", fields: [createdById], references: [id])
-    createdAt          DateTime     @default(now())
-    updatedAt          DateTime     @updatedAt
+    createdBy          User                      @relation("AssignmentsCreatedBy", fields: [createdById], references: [id])
+    createdAt          DateTime                  @default(now())
+    updatedAt          DateTime                  @updatedAt
     reflections        Reflection[]
+    checklistItems     AssignmentChecklistItem[]
+}
+
+model AssignmentChecklistItem {
+    id           String           @id @default(cuid())
+    assignmentId String
+    assignment   WeeklyAssignment @relation(fields: [assignmentId], references: [id], onDelete: Cascade)
+    label        String
+    order        Int              @default(0)
+    completed    Boolean          @default(false)
+    completedAt  DateTime?
+    stages       TaskStage[]
+}
+
+model TaskStage {
+    id              String                  @id @default(cuid())
+    checklistItemId String
+    checklistItem   AssignmentChecklistItem @relation(fields: [checklistItemId], references: [id], onDelete: Cascade)
+    title           String
+    order           Int                     @default(0)
+    completed       Boolean                 @default(false)
+    completedAt     DateTime?
+    documentation   String?
+    createdAt       DateTime                @default(now())
+    updatedAt       DateTime                @updatedAt
 }
 
 model Reflection {
@@ -53,6 +78,38 @@ model MentorFeedback {
     createdAt    DateTime   @default(now())
 }
 
+model DiscussionNote {
+    id        String   @id @default(cuid())
+    userId    String   @unique
+    user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+    content   String
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+}
+
+model Department {
+    id          String               @id @default(cuid())
+    name        String
+    nameEN      String
+    nameDE      String
+    description String?
+    order       Int                  @default(0)
+    resources   DepartmentResource[]
+    createdAt   DateTime             @default(now())
+    updatedAt   DateTime             @updatedAt
+}
+
+model DepartmentResource {
+    id           String     @id @default(cuid())
+    departmentId String
+    department   Department @relation(fields: [departmentId], references: [id], onDelete: Cascade)
+    title        String
+    url          String
+    note         String?
+    order        Int        @default(0)
+    createdAt    DateTime   @default(now())
+}
+
 model User {
     id                  String             @id
     name                String
@@ -69,6 +126,7 @@ model User {
     assignmentsCreated  WeeklyAssignment[] @relation("AssignmentsCreatedBy")
     reflections         Reflection[]       @relation("ReflectionsForIntern")
     feedbackAuthored    MentorFeedback[]   @relation("FeedbackByAuthor")
+    discussionNote      DiscussionNote?
 
     banned     Boolean?  @default(false)
     banReason  String?

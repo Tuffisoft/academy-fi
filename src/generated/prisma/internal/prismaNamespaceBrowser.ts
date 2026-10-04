@@ -52,8 +52,13 @@ export const AnyNull = runtime.AnyNull
 
 export const ModelName = {
   WeeklyAssignment: 'WeeklyAssignment',
+  AssignmentChecklistItem: 'AssignmentChecklistItem',
+  TaskStage: 'TaskStage',
   Reflection: 'Reflection',
   MentorFeedback: 'MentorFeedback',
+  DiscussionNote: 'DiscussionNote',
+  Department: 'Department',
+  DepartmentResource: 'DepartmentResource',
   User: 'User',
   Session: 'Session',
   Account: 'Account',
@@ -91,6 +96,33 @@ export const WeeklyAssignmentScalarFieldEnum = {
 export type WeeklyAssignmentScalarFieldEnum = (typeof WeeklyAssignmentScalarFieldEnum)[keyof typeof WeeklyAssignmentScalarFieldEnum]
 
 
+export const AssignmentChecklistItemScalarFieldEnum = {
+  id: 'id',
+  assignmentId: 'assignmentId',
+  label: 'label',
+  order: 'order',
+  completed: 'completed',
+  completedAt: 'completedAt'
+} as const
+
+export type AssignmentChecklistItemScalarFieldEnum = (typeof AssignmentChecklistItemScalarFieldEnum)[keyof typeof AssignmentChecklistItemScalarFieldEnum]
+
+
+export const TaskStageScalarFieldEnum = {
+  id: 'id',
+  checklistItemId: 'checklistItemId',
+  title: 'title',
+  order: 'order',
+  completed: 'completed',
+  completedAt: 'completedAt',
+  documentation: 'documentation',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type TaskStageScalarFieldEnum = (typeof TaskStageScalarFieldEnum)[keyof typeof TaskStageScalarFieldEnum]
+
+
 export const ReflectionScalarFieldEnum = {
   id: 'id',
   assignmentId: 'assignmentId',
@@ -116,6 +148,44 @@ export const MentorFeedbackScalarFieldEnum = {
 } as const
 
 export type MentorFeedbackScalarFieldEnum = (typeof MentorFeedbackScalarFieldEnum)[keyof typeof MentorFeedbackScalarFieldEnum]
+
+
+export const DiscussionNoteScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  content: 'content',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type DiscussionNoteScalarFieldEnum = (typeof DiscussionNoteScalarFieldEnum)[keyof typeof DiscussionNoteScalarFieldEnum]
+
+
+export const DepartmentScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  nameEN: 'nameEN',
+  nameDE: 'nameDE',
+  description: 'description',
+  order: 'order',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type DepartmentScalarFieldEnum = (typeof DepartmentScalarFieldEnum)[keyof typeof DepartmentScalarFieldEnum]
+
+
+export const DepartmentResourceScalarFieldEnum = {
+  id: 'id',
+  departmentId: 'departmentId',
+  title: 'title',
+  url: 'url',
+  note: 'note',
+  order: 'order',
+  createdAt: 'createdAt'
+} as const
+
+export type DepartmentResourceScalarFieldEnum = (typeof DepartmentResourceScalarFieldEnum)[keyof typeof DepartmentResourceScalarFieldEnum]
 
 
 export const UserScalarFieldEnum = {

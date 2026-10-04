@@ -95,6 +95,9 @@ export function PresentationViewer({
 
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
+      const target = event.target as HTMLElement | null;
+      if (target?.closest("textarea, input")) return;
+
       if (event.key === "Backspace" || event.key === "ArrowLeft") {
         event.preventDefault();
         handlePrevSlide();

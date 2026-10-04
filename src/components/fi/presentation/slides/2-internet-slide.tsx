@@ -12,8 +12,11 @@ import {
   ClickSteps,
   StepVisual,
 } from "@/components/fi/presentation/reveal";
+import { LinkPreview } from "@/components/fi/presentation/link-preview";
 
 // One icon per reveal step (0 = initial view).
+// Index of the "1991: ... first website" point, which gets a clickable preview.
+const FIRST_WEBSITE_POINT_INDEX = 1;
 const visualSteps = [
   { Icon: Globe, label: "The Internet" },
   { Icon: Network, label: "ARPANET, 1969" },
@@ -53,7 +56,18 @@ export async function InternetSlide() {
         <ul className="relative mt-2 flex flex-col gap-2">
           {points.map((point, index) => (
             <ClickReveal at={index + 1} key={point}>
-              <li className={slideBody}>{point}</li>
+              <li className={slideBody}>
+                {index === FIRST_WEBSITE_POINT_INDEX ? (
+                  <LinkPreview
+                    href="https://info.cern.ch/hypertext/WWW/TheProject.html"
+                    label="The first website"
+                  >
+                    {point}
+                  </LinkPreview>
+                ) : (
+                  point
+                )}
+              </li>
             </ClickReveal>
           ))}
         </ul>

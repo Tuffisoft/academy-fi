@@ -2,9 +2,9 @@ import { cn } from "cn";
 import { Card, CardContent } from "@/components/ui/card";
 
 // Shared typography so text sizing stays consistent across all slides.
-export const slideHeading = "text-3xl font-semibold";
-export const slideSubheading = "text-xl text-muted-foreground";
-export const slideBody = "text-lg";
+export const slideHeading = "text-6xl font-semibold";
+export const slideSubheading = "text-3xl text-muted-foreground";
+export const slideBody = "text-2xl";
 
 export function SlideCard({
   children,

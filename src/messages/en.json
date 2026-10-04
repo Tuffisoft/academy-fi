@@ -8,7 +8,11 @@
     "presentationCardTitle": "Presentation",
     "presentationCardDescription": "The interactive day-one deck.",
     "learningCardTitle": "Learning",
-    "learningCardDescription": "Weekly focus, assignments, and reflections — coming soon."
+    "learningCardDescription": "Weekly focus, assignments, and reflections.",
+    "openLearning": "Open Learning",
+    "objectivesCardTitle": "Weekly Objectives",
+    "objectivesCardDescription": "Track and manage intern objectives.",
+    "openObjectives": "Open Objectives"
   },
   "auth": {
     "signInTitle": "Sign in to Academy Fi",
@@ -34,7 +38,10 @@
     "welcome": "Welcome, {name}",
     "ownerDescription": "Owner dashboard is coming next: review interns, assignments and feedback.",
     "internDescription": "Your learning dashboard is coming next: weekly assignments, reflections and feedback.",
-    "signedInAs": "Signed in as {email}."
+    "signedInAs": "Signed in as {email}.",
+    "weeklyObjectivesTitle": "Weekly Objectives",
+    "noObjectivesYet": "No objectives assigned yet.",
+    "checklistError": "Unable to update checklist item."
   },
   "presentation": {
     "title": "Presentation",
@@ -59,6 +66,9 @@
       "tagline": "Tailor-Made Websites",
       "points": [
         "Founded in June 2025.",
+        "Bootcamp: learned the MERN stack.",
+        "OrangeFluid: built on Shopware.",
+        "After leaving OrangeFluid: WordPress, then React, until finding the stack I like.",
         "Building websites in three languages: Irish, English, and German.",
         "Customer-focused, fast response times, and clever solutions.",
         "Giving people a space to control their own corner of the internet — away from rigid WordPress templates."
@@ -295,7 +305,290 @@
           "tags": "Next.js, Auth, E-commerce, Gaeltacht"
         }
       }
+    },
+    "strengthsWeaknesses": {
+      "heading": "The Strengths and Weaknesses of Studio Fi",
+      "subheading": "A small studio with a personal approach and room to grow.",
+      "strengthsHeading": "Strengths",
+      "weaknessesHeading": "Weaknesses",
+      "strengths": [
+        {
+          "title": "Personal service",
+          "description": "Clients speak directly with me throughout the project."
+        },
+        {
+          "title": "Fast decisions",
+          "description": "There is no large agency process slowing down useful ideas."
+        },
+        {
+          "title": "Custom websites",
+          "description": "Each project is built around the client instead of a rigid WordPress template."
+        }
+      ],
+      "weaknesses": [
+        {
+          "title": "Limited capacity",
+          "description": "As a small studio, there is a limit to how many large projects I can handle at once."
+        },
+        {
+          "title": "Too many roles",
+          "description": "One person currently carries design, development, communication, and operations."
+        },
+        {
+          "title": "Developing processes",
+          "description": "Some systems and processes are still being built as Studio Fi grows."
+        }
+      ]
+    },
+    "rolesFuture": {
+      "heading": "Roles & The Future",
+      "subheading": "Splitting Studio Fi's five departments, testing and growing together.",
+      "departments": [
+        {
+          "name": "Customer Acquisition",
+          "description": "Finding and approaching potential small-business clients."
+        },
+        {
+          "name": "Marketing",
+          "description": "Promoting Studio Fi's work, portfolio, and online presence."
+        },
+        {
+          "name": "Design",
+          "description": "UI/UX and visual identity for every client project."
+        },
+        {
+          "name": "Programming",
+          "description": "Building the actual websites and features."
+        },
+        {
+          "name": "Client Relations",
+          "description": "Communication, expectations, and ongoing client support."
+        }
+      ],
+      "plan": "Calem and Adrian will split these five departments between them, helping each other across every one. Over 1–2 months, they'll test each department, lean into their strengths, and start seeing real growth."
+    },
+    "houseRules": {
+      "heading": "House Rules",
+      "subheading": "A quick, slightly off-topic note — you'll be working out of a family home.",
+      "rules": [
+        {
+          "title": "No shoes",
+          "description": "Please take your shoes off at the door."
+        },
+        {
+          "title": "Some rooms are off limits",
+          "description": "The downstairs bedrooms and bathroom are private — please stay out of those."
+        },
+        {
+          "title": "Please respect the house",
+          "description": "Though I have no doubt you will anyway."
+        }
+      ]
+    },
+    "product": {
+      "heading": "The Product",
+      "subheading": "A business-card website is the hook. A custom CRM is the real sell.",
+      "problem": "Small businesses manage everything behind a marketing tool — a website — instead of a system built around how they actually run.",
+      "insight": "WordPress won because it gave people control. We can go further: a website with a backend, built entirely around the client.",
+      "pillars": [
+        {
+          "title": "Business-card website",
+          "description": "A professional front door — the entry point every client expects."
+        },
+        {
+          "title": "Custom dashboard",
+          "description": "A backend that does whatever the client needs, because we build it."
+        },
+        {
+          "title": "Built-in CRM",
+          "description": "Track customers, bookings, and sales in one place."
+        },
+        {
+          "title": "Run the business, not just market it",
+          "description": "Set up seminars, sell clothes, manage clients — all from the same site."
+        }
+      ],
+      "closing": "Custom websites and CRMs, built for the client, at a price small businesses can actually afford."
+    },
+    "challengeBreak": {
+      "heading": "Take a Break",
+      "subheading": "An hour, maybe an hour and a half — go for a walk, grab a coffee in the kitchen, chill out.",
+      "challengeHeading": "The Challenge",
+      "challenge": "While you're out, come up with a strategy to win customers."
+    },
+    "strategy": {
+      "heading": "My Strategy",
+      "subheading": "How a cold lead becomes a client — my eyes are open for this everywhere.",
+      "steps": [
+        {
+          "title": "Spot",
+          "description": "Keep an eye out everywhere for small businesses that could use a better online presence."
+        },
+        {
+          "title": "Research",
+          "description": "Look into the business — what they do, who they serve, what they're missing."
+        },
+        {
+          "title": "Design",
+          "description": "Sketch out a design built specifically for that business."
+        },
+        {
+          "title": "Build & deploy",
+          "description": "Build the actual site and put it live — no mockup, a real working example."
+        },
+        {
+          "title": "Reach out",
+          "description": "Add them to Studio Fi's leads and send a friendly email or Instagram message with the live link."
+        }
+      ],
+      "example": "https://www.studio-fi.com/de/autohaus-osning"
+    },
+    "clientAcquisition": {
+      "heading": "How I've Got Clients So Far",
+      "subheading": "A look at where my clients have actually come from.",
+      "sources": {
+        "selfContact": "Self contact",
+        "familyFriends": "Family & friends",
+        "clientRecommendations": "Client recommendations",
+        "coldOutreach": "Cold outreach",
+        "clientOutreach": "Client outreach"
+      }
+    },
+    "discussion": {
+      "heading": "Let's Discuss",
+      "subheading": "What did you come up with during the break? Talk it through, then jot the key ideas down below.",
+      "prompts": [
+        "Where would you look for potential clients?",
+        "What would make a business say yes?",
+        "How would you reach out — email, Instagram, in person?"
+      ],
+      "notesLabel": "Your notes",
+      "notesPlaceholder": "Write down your ideas here..."
+    },
+    "academyFiPanel": {
+      "heading": "Academy Fi vs. Studio Fi",
+      "subheading": "Two panels, two jobs — don't mix them up.",
+      "intro": "This app you've been using all day is Academy Fi. It's not where client work happens — it's where your internship gets logged.",
+      "pillars": [
+        {
+          "title": "Academy Fi",
+          "description": "Where you log your internship: departments, assignments, reflections, and feedback."
+        },
+        {
+          "title": "Studio Fi",
+          "description": "Where you log the actual work for Studio Fi: clients, projects, and the custom CRM from the product slide."
+        }
+      ],
+      "closing": "Same idea, two systems — Studio Fi builds its own tools the same way it builds them for clients."
+    },
+    "wrapUp": {
+      "heading": "The Rest of the Day",
+      "subheading": "The rest of today is open discussion time — strategy, ideas, and the five departments.",
+      "departments": [
+        "Customer Acquisition",
+        "Marketing",
+        "Design",
+        "Programming",
+        "Client Relations"
+      ],
+      "prompt": "Push back, propose new departments, and tell us where your interest leans."
     }
+  },
+  "learning": {
+    "title": "Learning",
+    "description": "Your weekly focus, assignments, reflections, and department resources."
+  },
+  "departments": {
+    "title": "Departments",
+    "description": "Resources for each of Studio Fi's five departments.",
+    "empty": "No departments yet.",
+    "manageTitle": "Manage Departments",
+    "manageDescription": "Add departments and the resources interns can use to get started.",
+    "addDepartment": "Add department",
+    "createTitle": "New department",
+    "createDescription": "Create a department interns can browse resources for.",
+    "name": "Name",
+    "departmentDescription": "Description",
+    "create": "Create",
+    "creating": "Creating\u2026",
+    "createSuccess": "Department created.",
+    "createError": "Unable to create department.",
+    "deleteDepartment": "Delete department",
+    "deleteTitle": "Delete {name}?",
+    "deleteDescription": "This also removes all of its resources. This cannot be undone.",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "deleting": "Deleting\u2026",
+    "deleteSuccess": "Department deleted.",
+    "deleteError": "Unable to delete department.",
+    "addResource": "Add resource",
+    "resourceCreateTitle": "New resource",
+    "resourceCreateDescription": "Add a link for this department.",
+    "resourceTitle": "Title",
+    "resourceUrl": "URL",
+    "resourceNote": "Note",
+    "resourceCreateSuccess": "Resource added.",
+    "resourceCreateError": "Unable to add resource.",
+    "deleteResource": "Delete resource",
+    "resourceDeleteError": "Unable to delete resource."
+  },
+  "planner": {
+    "title": "This Week",
+    "none": "No assignment yet \u2014 check back once Fi sets your focus for the week.",
+    "manageTitle": "Weekly Assignments",
+    "manageDescription": "Set the week's focus per intern and review their reflections.",
+    "addAssignment": "Add assignment",
+    "createTitle": "New weekly assignment",
+    "createDescription": "Set the focus, description, and acceptance criteria for the week.",
+    "intern": "Intern",
+    "selectIntern": "Select an intern",
+    "weekOf": "Week of",
+    "focus": "Focus",
+    "assignmentDescription": "Description",
+    "acceptanceCriteria": "Acceptance criteria",
+    "checklistItems": "Checklist items",
+    "checklistItemsPlaceholder": "One item per line",
+    "create": "Create",
+    "creating": "Creating\u2026",
+    "createSuccess": "Assignment created.",
+    "createError": "Unable to create assignment.",
+    "empty": "No assignments yet.",
+    "checklist": "This week's checklist",
+    "checklistProgress": "{done}/{total} done",
+    "checklistError": "Unable to update checklist item.",
+    "reflectionHeading": "Your reflection",
+    "workDone": "What did you work on?",
+    "learning": "What did you learn?",
+    "blocker": "Any blockers?",
+    "workLink": "Link to your work",
+    "nextStep": "What's next?",
+    "saving": "Saving\u2026",
+    "saveReflection": "Save reflection",
+    "reflectionSuccess": "Reflection saved.",
+    "reflectionError": "Unable to save reflection.",
+    "noReflectionYet": "No reflection submitted yet.",
+    "feedbackHeading": "Feedback",
+    "feedbackPlaceholder": "Write feedback on this reflection...",
+    "addFeedback": "Add feedback",
+    "feedbackSuccess": "Feedback added.",
+    "feedbackError": "Unable to add feedback."
+  },
+  "objectives": {
+    "title": "Weekly Objectives",
+    "description": "View and manage weekly assignments for all interns.",
+    "allObjectivesTitle": "All Objectives",
+    "allObjectivesDescription": "Track progress and reflections for each intern's weekly assignments.",
+    "noObjectives": "No objectives created yet. Create one to get started.",
+    "progress": "Progress",
+    "reflectionSubmitted": "Reflection submitted",
+    "awaitingReflection": "Awaiting reflection",
+    "feedbackGiven": "Feedback given",
+    "weekOf": "Week of"
+  },
+  "assignments": {
+    "title": "My Assignments",
+    "description": "View all your weekly assignments, tasks, and progress.",
+    "noAssignments": "You don't have any assignments yet."
   },
   "users": {
     "title": "Users",

@@ -23,6 +23,7 @@ import { CreateUserDialog } from "@/components/fi/dashboard/create-user-dialog";
 import { ChangePasswordDialog } from "@/components/fi/dashboard/change-password-dialog";
 import { DeleteUserButton } from "@/components/fi/dashboard/delete-user-button";
 import { PresentationCard } from "@/components/fi/dashboard/presentation-card";
+import { ObjectivesCard } from "@/components/fi/dashboard/objectives-card";
 
 export async function AdminDashboard() {
   const [currentUser, t, users] = await Promise.all([
@@ -34,6 +35,7 @@ export async function AdminDashboard() {
   return (
     <div className="flex flex-col gap-6">
       <PresentationCard />
+      <ObjectivesCard />
       <Card>
         <CardHeader>
           <CardTitle>{t("title")}</CardTitle>

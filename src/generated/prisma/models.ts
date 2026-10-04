@@ -9,8 +9,13 @@
  * 🟢 You can import this file directly.
  */
 export type * from './models/WeeklyAssignment'
+export type * from './models/AssignmentChecklistItem'
+export type * from './models/TaskStage'
 export type * from './models/Reflection'
 export type * from './models/MentorFeedback'
+export type * from './models/DiscussionNote'
+export type * from './models/Department'
+export type * from './models/DepartmentResource'
 export type * from './models/User'
 export type * from './models/Session'
 export type * from './models/Account'
