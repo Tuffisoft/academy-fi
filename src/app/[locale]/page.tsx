@@ -1,26 +1,26 @@
-"use client";
-
 import Image from "next/image";
-import { useTheme } from "next-themes";
 import { Link } from "@/i18n/navigation";
 
 export default function Home() {
-  const { theme } = useTheme();
-
-  const logoSrc =
-    theme === "dark"
-      ? "/logo/academy-fi/logo-dark.png"
-      : "/logo/academy-fi/logo-light.png";
-
   return (
     <div className="flex flex-1 items-center justify-center">
       <Link href="/dashboard" className="transition-opacity hover:opacity-80">
+        {/* Both rendered; the `dark` class on <html> decides which is visible, so no JS theme lookup is needed. */}
         <Image
-          src={logoSrc}
+          src="/logo/academy-fi/logo-light.png"
           alt="Academy Fi"
           width={200}
           height={200}
           priority
+          className="dark:hidden"
+        />
+        <Image
+          src="/logo/academy-fi/logo-dark.png"
+          alt="Academy Fi"
+          width={200}
+          height={200}
+          priority
+          className="hidden dark:block"
         />
       </Link>
     </div>

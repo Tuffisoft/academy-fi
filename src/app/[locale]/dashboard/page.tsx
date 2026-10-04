@@ -5,6 +5,8 @@ import { DashboardHeader } from "@/components/fi/dashboard/dashboard-header";
 import { AccountMenu } from "@/components/fi/dashboard/account-menu";
 import { AdminDashboard } from "@/components/fi/dashboard/AdminDashboard";
 import { LearningCard } from "@/components/fi/dashboard/learning-card";
+import { ObjectivesCard } from "@/components/fi/dashboard/objectives-card";
+import { PresentationCard } from "@/components/fi/dashboard/presentation-card";
 import { WeeklyObjectivesCard } from "@/components/fi/dashboard/weekly-objectives-card";
 import { BreadcrumbNav } from "@/components/fi/breadcrumb-nav";
 import {
@@ -42,9 +44,10 @@ export default async function DashboardPage() {
         </Card>
         {isOwner ? (
           <>
-            <AdminDashboard />
-            <WeeklyObjectivesCard assignments={assignments} />
+            <ObjectivesCard />
             <LearningCard />
+            <PresentationCard />
+            <AdminDashboard />
           </>
         ) : (
           <>

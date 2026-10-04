@@ -4,6 +4,7 @@ import type { Metadata } from "next";
 import { Raleway, Lora, Fira_Code } from "next/font/google";
 import { notFound } from "next/navigation";
 import { hasLocale, NextIntlClientProvider } from "next-intl";
+import { getTranslations } from "next-intl/server";
 import { routing } from "@/i18n/routing";
 import "../globals.css";
 import { ThemeProvider } from "@/lib/providers/theme-provider";
@@ -25,10 +26,19 @@ const fontMono = Fira_Code({
   variable: "--font-mono",
 });
 
-export const metadata: Metadata = {
-  title: "Academy Fi",
-  description: "Learning how to develop modern websites",
-};
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}): Promise<Metadata> {
+  const { locale } = await params;
+  const t = await getTranslations({ locale, namespace: "home" });
+
+  return {
+    title: t("title"),
+    description: t("learningCardDescription"),
+  };
+}
 
 export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }));
