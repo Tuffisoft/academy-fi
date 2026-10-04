@@ -53,6 +53,7 @@ export default async function DashboardPage() {
           <>
             <WeeklyObjectivesCard assignments={assignments} />
             <LearningCard />
+            <PresentationCard />
           </>
         )}
       </main>

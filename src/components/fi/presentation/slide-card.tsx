@@ -16,6 +16,7 @@ export function SlideCard({
   return (
     <Card>
       <CardContent
+        data-slide-card
         className={cn(
           "flex aspect-video flex-col items-center justify-center gap-2 p-6 text-center",
           className,

@@ -10,6 +10,7 @@ import {
   ClickReveal,
   ClickSteps,
 } from "@/components/fi/presentation/reveal";
+import { LinkPreview } from "@/components/fi/presentation/link-preview";
 
 type ClientItem = {
   name: string;
@@ -98,14 +99,13 @@ export async function ClientsSlide() {
               key={client.id}
               className="flex flex-col gap-1.5"
             >
-              <a
+              <LinkPreview
                 href={client.link}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex h-10 items-center"
+                label={client.name}
+                triggerClassName="flex h-10 items-center no-underline"
               >
                 <ClientLogo id={client.id} name={client.name} />
-              </a>
+              </LinkPreview>
               <span className="text-base font-semibold">
                 {client.highlight}
               </span>
