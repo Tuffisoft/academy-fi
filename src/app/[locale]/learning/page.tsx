@@ -24,7 +24,7 @@ export default async function LearningPage() {
             <ManageDepartments />
           </>
         ) : (
-          <DepartmentsList />
+          <DepartmentsList userId={user.id} />
         )}
       </main>
     </div>

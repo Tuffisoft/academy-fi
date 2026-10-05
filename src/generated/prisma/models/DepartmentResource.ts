@@ -42,6 +42,7 @@ export type DepartmentResourceMinAggregateOutputType = {
   note: string | null
   order: number | null
   createdAt: Date | null
+  createdById: string | null
 }
 
 export type DepartmentResourceMaxAggregateOutputType = {
@@ -52,6 +53,7 @@ export type DepartmentResourceMaxAggregateOutputType = {
   note: string | null
   order: number | null
   createdAt: Date | null
+  createdById: string | null
 }
 
 export type DepartmentResourceCountAggregateOutputType = {
@@ -62,6 +64,7 @@ export type DepartmentResourceCountAggregateOutputType = {
   note: number
   order: number
   createdAt: number
+  createdById: number
   _all: number
 }
 
@@ -82,6 +85,7 @@ export type DepartmentResourceMinAggregateInputType = {
   note?: true
   order?: true
   createdAt?: true
+  createdById?: true
 }
 
 export type DepartmentResourceMaxAggregateInputType = {
@@ -92,6 +96,7 @@ export type DepartmentResourceMaxAggregateInputType = {
   note?: true
   order?: true
   createdAt?: true
+  createdById?: true
 }
 
 export type DepartmentResourceCountAggregateInputType = {
@@ -102,6 +107,7 @@ export type DepartmentResourceCountAggregateInputType = {
   note?: true
   order?: true
   createdAt?: true
+  createdById?: true
   _all?: true
 }
 
@@ -199,6 +205,7 @@ export type DepartmentResourceGroupByOutputType = {
   note: string | null
   order: number
   createdAt: Date
+  createdById: string | null
   _count: DepartmentResourceCountAggregateOutputType | null
   _avg: DepartmentResourceAvgAggregateOutputType | null
   _sum: DepartmentResourceSumAggregateOutputType | null
@@ -232,7 +239,9 @@ export type DepartmentResourceWhereInput = {
   note?: Prisma.StringNullableFilter<"DepartmentResource"> | string | null
   order?: Prisma.IntFilter<"DepartmentResource"> | number
   createdAt?: Prisma.DateTimeFilter<"DepartmentResource"> | Date | string
+  createdById?: Prisma.StringNullableFilter<"DepartmentResource"> | string | null
   department?: Prisma.XOR<Prisma.DepartmentScalarRelationFilter, Prisma.DepartmentWhereInput>
+  createdBy?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
 }
 
 export type DepartmentResourceOrderByWithRelationInput = {
@@ -243,7 +252,9 @@ export type DepartmentResourceOrderByWithRelationInput = {
   note?: Prisma.SortOrderInput | Prisma.SortOrder
   order?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
+  createdById?: Prisma.SortOrderInput | Prisma.SortOrder
   department?: Prisma.DepartmentOrderByWithRelationInput
+  createdBy?: Prisma.UserOrderByWithRelationInput
 }
 
 export type DepartmentResourceWhereUniqueInput = Prisma.AtLeast<{
@@ -257,7 +268,9 @@ export type DepartmentResourceWhereUniqueInput = Prisma.AtLeast<{
   note?: Prisma.StringNullableFilter<"DepartmentResource"> | string | null
   order?: Prisma.IntFilter<"DepartmentResource"> | number
   createdAt?: Prisma.DateTimeFilter<"DepartmentResource"> | Date | string
+  createdById?: Prisma.StringNullableFilter<"DepartmentResource"> | string | null
   department?: Prisma.XOR<Prisma.DepartmentScalarRelationFilter, Prisma.DepartmentWhereInput>
+  createdBy?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
 }, "id">
 
 export type DepartmentResourceOrderByWithAggregationInput = {
@@ -268,6 +281,7 @@ export type DepartmentResourceOrderByWithAggregationInput = {
   note?: Prisma.SortOrderInput | Prisma.SortOrder
   order?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
+  createdById?: Prisma.SortOrderInput | Prisma.SortOrder
   _count?: Prisma.DepartmentResourceCountOrderByAggregateInput
   _avg?: Prisma.DepartmentResourceAvgOrderByAggregateInput
   _max?: Prisma.DepartmentResourceMaxOrderByAggregateInput
@@ -286,6 +300,7 @@ export type DepartmentResourceScalarWhereWithAggregatesInput = {
   note?: Prisma.StringNullableWithAggregatesFilter<"DepartmentResource"> | string | null
   order?: Prisma.IntWithAggregatesFilter<"DepartmentResource"> | number
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"DepartmentResource"> | Date | string
+  createdById?: Prisma.StringNullableWithAggregatesFilter<"DepartmentResource"> | string | null
 }
 
 export type DepartmentResourceCreateInput = {
@@ -296,6 +311,7 @@ export type DepartmentResourceCreateInput = {
   order?: number
   createdAt?: Date | string
   department: Prisma.DepartmentCreateNestedOneWithoutResourcesInput
+  createdBy?: Prisma.UserCreateNestedOneWithoutResourcesAddedInput
 }
 
 export type DepartmentResourceUncheckedCreateInput = {
@@ -306,6 +322,7 @@ export type DepartmentResourceUncheckedCreateInput = {
   note?: string | null
   order?: number
   createdAt?: Date | string
+  createdById?: string | null
 }
 
 export type DepartmentResourceUpdateInput = {
@@ -316,6 +333,7 @@ export type DepartmentResourceUpdateInput = {
   order?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   department?: Prisma.DepartmentUpdateOneRequiredWithoutResourcesNestedInput
+  createdBy?: Prisma.UserUpdateOneWithoutResourcesAddedNestedInput
 }
 
 export type DepartmentResourceUncheckedUpdateInput = {
@@ -326,6 +344,7 @@ export type DepartmentResourceUncheckedUpdateInput = {
   note?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   order?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  createdById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type DepartmentResourceCreateManyInput = {
@@ -336,6 +355,7 @@ export type DepartmentResourceCreateManyInput = {
   note?: string | null
   order?: number
   createdAt?: Date | string
+  createdById?: string | null
 }
 
 export type DepartmentResourceUpdateManyMutationInput = {
@@ -355,6 +375,7 @@ export type DepartmentResourceUncheckedUpdateManyInput = {
   note?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   order?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  createdById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type DepartmentResourceListRelationFilter = {
@@ -375,6 +396,7 @@ export type DepartmentResourceCountOrderByAggregateInput = {
   note?: Prisma.SortOrder
   order?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
+  createdById?: Prisma.SortOrder
 }
 
 export type DepartmentResourceAvgOrderByAggregateInput = {
@@ -389,6 +411,7 @@ export type DepartmentResourceMaxOrderByAggregateInput = {
   note?: Prisma.SortOrder
   order?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
+  createdById?: Prisma.SortOrder
 }
 
 export type DepartmentResourceMinOrderByAggregateInput = {
@@ -399,6 +422,7 @@ export type DepartmentResourceMinOrderByAggregateInput = {
   note?: Prisma.SortOrder
   order?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
+  createdById?: Prisma.SortOrder
 }
 
 export type DepartmentResourceSumOrderByAggregateInput = {
@@ -447,6 +471,48 @@ export type DepartmentResourceUncheckedUpdateManyWithoutDepartmentNestedInput = 
   deleteMany?: Prisma.DepartmentResourceScalarWhereInput | Prisma.DepartmentResourceScalarWhereInput[]
 }
 
+export type DepartmentResourceCreateNestedManyWithoutCreatedByInput = {
+  create?: Prisma.XOR<Prisma.DepartmentResourceCreateWithoutCreatedByInput, Prisma.DepartmentResourceUncheckedCreateWithoutCreatedByInput> | Prisma.DepartmentResourceCreateWithoutCreatedByInput[] | Prisma.DepartmentResourceUncheckedCreateWithoutCreatedByInput[]
+  connectOrCreate?: Prisma.DepartmentResourceCreateOrConnectWithoutCreatedByInput | Prisma.DepartmentResourceCreateOrConnectWithoutCreatedByInput[]
+  createMany?: Prisma.DepartmentResourceCreateManyCreatedByInputEnvelope
+  connect?: Prisma.DepartmentResourceWhereUniqueInput | Prisma.DepartmentResourceWhereUniqueInput[]
+}
+
+export type DepartmentResourceUncheckedCreateNestedManyWithoutCreatedByInput = {
+  create?: Prisma.XOR<Prisma.DepartmentResourceCreateWithoutCreatedByInput, Prisma.DepartmentResourceUncheckedCreateWithoutCreatedByInput> | Prisma.DepartmentResourceCreateWithoutCreatedByInput[] | Prisma.DepartmentResourceUncheckedCreateWithoutCreatedByInput[]
+  connectOrCreate?: Prisma.DepartmentResourceCreateOrConnectWithoutCreatedByInput | Prisma.DepartmentResourceCreateOrConnectWithoutCreatedByInput[]
+  createMany?: Prisma.DepartmentResourceCreateManyCreatedByInputEnvelope
+  connect?: Prisma.DepartmentResourceWhereUniqueInput | Prisma.DepartmentResourceWhereUniqueInput[]
+}
+
+export type DepartmentResourceUpdateManyWithoutCreatedByNestedInput = {
+  create?: Prisma.XOR<Prisma.DepartmentResourceCreateWithoutCreatedByInput, Prisma.DepartmentResourceUncheckedCreateWithoutCreatedByInput> | Prisma.DepartmentResourceCreateWithoutCreatedByInput[] | Prisma.DepartmentResourceUncheckedCreateWithoutCreatedByInput[]
+  connectOrCreate?: Prisma.DepartmentResourceCreateOrConnectWithoutCreatedByInput | Prisma.DepartmentResourceCreateOrConnectWithoutCreatedByInput[]
+  upsert?: Prisma.DepartmentResourceUpsertWithWhereUniqueWithoutCreatedByInput | Prisma.DepartmentResourceUpsertWithWhereUniqueWithoutCreatedByInput[]
+  createMany?: Prisma.DepartmentResourceCreateManyCreatedByInputEnvelope
+  set?: Prisma.DepartmentResourceWhereUniqueInput | Prisma.DepartmentResourceWhereUniqueInput[]
+  disconnect?: Prisma.DepartmentResourceWhereUniqueInput | Prisma.DepartmentResourceWhereUniqueInput[]
+  delete?: Prisma.DepartmentResourceWhereUniqueInput | Prisma.DepartmentResourceWhereUniqueInput[]
+  connect?: Prisma.DepartmentResourceWhereUniqueInput | Prisma.DepartmentResourceWhereUniqueInput[]
+  update?: Prisma.DepartmentResourceUpdateWithWhereUniqueWithoutCreatedByInput | Prisma.DepartmentResourceUpdateWithWhereUniqueWithoutCreatedByInput[]
+  updateMany?: Prisma.DepartmentResourceUpdateManyWithWhereWithoutCreatedByInput | Prisma.DepartmentResourceUpdateManyWithWhereWithoutCreatedByInput[]
+  deleteMany?: Prisma.DepartmentResourceScalarWhereInput | Prisma.DepartmentResourceScalarWhereInput[]
+}
+
+export type DepartmentResourceUncheckedUpdateManyWithoutCreatedByNestedInput = {
+  create?: Prisma.XOR<Prisma.DepartmentResourceCreateWithoutCreatedByInput, Prisma.DepartmentResourceUncheckedCreateWithoutCreatedByInput> | Prisma.DepartmentResourceCreateWithoutCreatedByInput[] | Prisma.DepartmentResourceUncheckedCreateWithoutCreatedByInput[]
+  connectOrCreate?: Prisma.DepartmentResourceCreateOrConnectWithoutCreatedByInput | Prisma.DepartmentResourceCreateOrConnectWithoutCreatedByInput[]
+  upsert?: Prisma.DepartmentResourceUpsertWithWhereUniqueWithoutCreatedByInput | Prisma.DepartmentResourceUpsertWithWhereUniqueWithoutCreatedByInput[]
+  createMany?: Prisma.DepartmentResourceCreateManyCreatedByInputEnvelope
+  set?: Prisma.DepartmentResourceWhereUniqueInput | Prisma.DepartmentResourceWhereUniqueInput[]
+  disconnect?: Prisma.DepartmentResourceWhereUniqueInput | Prisma.DepartmentResourceWhereUniqueInput[]
+  delete?: Prisma.DepartmentResourceWhereUniqueInput | Prisma.DepartmentResourceWhereUniqueInput[]
+  connect?: Prisma.DepartmentResourceWhereUniqueInput | Prisma.DepartmentResourceWhereUniqueInput[]
+  update?: Prisma.DepartmentResourceUpdateWithWhereUniqueWithoutCreatedByInput | Prisma.DepartmentResourceUpdateWithWhereUniqueWithoutCreatedByInput[]
+  updateMany?: Prisma.DepartmentResourceUpdateManyWithWhereWithoutCreatedByInput | Prisma.DepartmentResourceUpdateManyWithWhereWithoutCreatedByInput[]
+  deleteMany?: Prisma.DepartmentResourceScalarWhereInput | Prisma.DepartmentResourceScalarWhereInput[]
+}
+
 export type DepartmentResourceCreateWithoutDepartmentInput = {
   id?: string
   title: string
@@ -454,6 +520,7 @@ export type DepartmentResourceCreateWithoutDepartmentInput = {
   note?: string | null
   order?: number
   createdAt?: Date | string
+  createdBy?: Prisma.UserCreateNestedOneWithoutResourcesAddedInput
 }
 
 export type DepartmentResourceUncheckedCreateWithoutDepartmentInput = {
@@ -463,6 +530,7 @@ export type DepartmentResourceUncheckedCreateWithoutDepartmentInput = {
   note?: string | null
   order?: number
   createdAt?: Date | string
+  createdById?: string | null
 }
 
 export type DepartmentResourceCreateOrConnectWithoutDepartmentInput = {
@@ -502,6 +570,53 @@ export type DepartmentResourceScalarWhereInput = {
   note?: Prisma.StringNullableFilter<"DepartmentResource"> | string | null
   order?: Prisma.IntFilter<"DepartmentResource"> | number
   createdAt?: Prisma.DateTimeFilter<"DepartmentResource"> | Date | string
+  createdById?: Prisma.StringNullableFilter<"DepartmentResource"> | string | null
+}
+
+export type DepartmentResourceCreateWithoutCreatedByInput = {
+  id?: string
+  title: string
+  url: string
+  note?: string | null
+  order?: number
+  createdAt?: Date | string
+  department: Prisma.DepartmentCreateNestedOneWithoutResourcesInput
+}
+
+export type DepartmentResourceUncheckedCreateWithoutCreatedByInput = {
+  id?: string
+  departmentId: string
+  title: string
+  url: string
+  note?: string | null
+  order?: number
+  createdAt?: Date | string
+}
+
+export type DepartmentResourceCreateOrConnectWithoutCreatedByInput = {
+  where: Prisma.DepartmentResourceWhereUniqueInput
+  create: Prisma.XOR<Prisma.DepartmentResourceCreateWithoutCreatedByInput, Prisma.DepartmentResourceUncheckedCreateWithoutCreatedByInput>
+}
+
+export type DepartmentResourceCreateManyCreatedByInputEnvelope = {
+  data: Prisma.DepartmentResourceCreateManyCreatedByInput | Prisma.DepartmentResourceCreateManyCreatedByInput[]
+  skipDuplicates?: boolean
+}
+
+export type DepartmentResourceUpsertWithWhereUniqueWithoutCreatedByInput = {
+  where: Prisma.DepartmentResourceWhereUniqueInput
+  update: Prisma.XOR<Prisma.DepartmentResourceUpdateWithoutCreatedByInput, Prisma.DepartmentResourceUncheckedUpdateWithoutCreatedByInput>
+  create: Prisma.XOR<Prisma.DepartmentResourceCreateWithoutCreatedByInput, Prisma.DepartmentResourceUncheckedCreateWithoutCreatedByInput>
+}
+
+export type DepartmentResourceUpdateWithWhereUniqueWithoutCreatedByInput = {
+  where: Prisma.DepartmentResourceWhereUniqueInput
+  data: Prisma.XOR<Prisma.DepartmentResourceUpdateWithoutCreatedByInput, Prisma.DepartmentResourceUncheckedUpdateWithoutCreatedByInput>
+}
+
+export type DepartmentResourceUpdateManyWithWhereWithoutCreatedByInput = {
+  where: Prisma.DepartmentResourceScalarWhereInput
+  data: Prisma.XOR<Prisma.DepartmentResourceUpdateManyMutationInput, Prisma.DepartmentResourceUncheckedUpdateManyWithoutCreatedByInput>
 }
 
 export type DepartmentResourceCreateManyDepartmentInput = {
@@ -511,6 +626,7 @@ export type DepartmentResourceCreateManyDepartmentInput = {
   note?: string | null
   order?: number
   createdAt?: Date | string
+  createdById?: string | null
 }
 
 export type DepartmentResourceUpdateWithoutDepartmentInput = {
@@ -520,6 +636,7 @@ export type DepartmentResourceUpdateWithoutDepartmentInput = {
   note?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   order?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  createdBy?: Prisma.UserUpdateOneWithoutResourcesAddedNestedInput
 }
 
 export type DepartmentResourceUncheckedUpdateWithoutDepartmentInput = {
@@ -529,10 +646,52 @@ export type DepartmentResourceUncheckedUpdateWithoutDepartmentInput = {
   note?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   order?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  createdById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type DepartmentResourceUncheckedUpdateManyWithoutDepartmentInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  url?: Prisma.StringFieldUpdateOperationsInput | string
+  note?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  order?: Prisma.IntFieldUpdateOperationsInput | number
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  createdById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+}
+
+export type DepartmentResourceCreateManyCreatedByInput = {
+  id?: string
+  departmentId: string
+  title: string
+  url: string
+  note?: string | null
+  order?: number
+  createdAt?: Date | string
+}
+
+export type DepartmentResourceUpdateWithoutCreatedByInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  url?: Prisma.StringFieldUpdateOperationsInput | string
+  note?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  order?: Prisma.IntFieldUpdateOperationsInput | number
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  department?: Prisma.DepartmentUpdateOneRequiredWithoutResourcesNestedInput
+}
+
+export type DepartmentResourceUncheckedUpdateWithoutCreatedByInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  departmentId?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  url?: Prisma.StringFieldUpdateOperationsInput | string
+  note?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  order?: Prisma.IntFieldUpdateOperationsInput | number
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
+export type DepartmentResourceUncheckedUpdateManyWithoutCreatedByInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  departmentId?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   url?: Prisma.StringFieldUpdateOperationsInput | string
   note?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -550,7 +709,9 @@ export type DepartmentResourceSelect<ExtArgs extends runtime.Types.Extensions.In
   note?: boolean
   order?: boolean
   createdAt?: boolean
+  createdById?: boolean
   department?: boolean | Prisma.DepartmentDefaultArgs<ExtArgs>
+  createdBy?: boolean | Prisma.DepartmentResource$createdByArgs<ExtArgs>
 }, ExtArgs["result"]["departmentResource"]>
 
 export type DepartmentResourceSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -561,7 +722,9 @@ export type DepartmentResourceSelectCreateManyAndReturn<ExtArgs extends runtime.
   note?: boolean
   order?: boolean
   createdAt?: boolean
+  createdById?: boolean
   department?: boolean | Prisma.DepartmentDefaultArgs<ExtArgs>
+  createdBy?: boolean | Prisma.DepartmentResource$createdByArgs<ExtArgs>
 }, ExtArgs["result"]["departmentResource"]>
 
 export type DepartmentResourceSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -572,7 +735,9 @@ export type DepartmentResourceSelectUpdateManyAndReturn<ExtArgs extends runtime.
   note?: boolean
   order?: boolean
   createdAt?: boolean
+  createdById?: boolean
   department?: boolean | Prisma.DepartmentDefaultArgs<ExtArgs>
+  createdBy?: boolean | Prisma.DepartmentResource$createdByArgs<ExtArgs>
 }, ExtArgs["result"]["departmentResource"]>
 
 export type DepartmentResourceSelectScalar = {
@@ -583,23 +748,28 @@ export type DepartmentResourceSelectScalar = {
   note?: boolean
   order?: boolean
   createdAt?: boolean
+  createdById?: boolean
 }
 
-export type DepartmentResourceOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "departmentId" | "title" | "url" | "note" | "order" | "createdAt", ExtArgs["result"]["departmentResource"]>
+export type DepartmentResourceOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "departmentId" | "title" | "url" | "note" | "order" | "createdAt" | "createdById", ExtArgs["result"]["departmentResource"]>
 export type DepartmentResourceInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   department?: boolean | Prisma.DepartmentDefaultArgs<ExtArgs>
+  createdBy?: boolean | Prisma.DepartmentResource$createdByArgs<ExtArgs>
 }
 export type DepartmentResourceIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   department?: boolean | Prisma.DepartmentDefaultArgs<ExtArgs>
+  createdBy?: boolean | Prisma.DepartmentResource$createdByArgs<ExtArgs>
 }
 export type DepartmentResourceIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   department?: boolean | Prisma.DepartmentDefaultArgs<ExtArgs>
+  createdBy?: boolean | Prisma.DepartmentResource$createdByArgs<ExtArgs>
 }
 
 export type $DepartmentResourcePayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "DepartmentResource"
   objects: {
     department: Prisma.$DepartmentPayload<ExtArgs>
+    createdBy: Prisma.$UserPayload<ExtArgs> | null
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -609,6 +779,7 @@ export type $DepartmentResourcePayload<ExtArgs extends runtime.Types.Extensions.
     note: string | null
     order: number
     createdAt: Date
+    createdById: string | null
   }, ExtArgs["result"]["departmentResource"]>
   composites: {}
 }
@@ -1004,6 +1175,7 @@ readonly fields: DepartmentResourceFieldRefs;
 export interface Prisma__DepartmentResourceClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
   department<T extends Prisma.DepartmentDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.DepartmentDefaultArgs<ExtArgs>>): Prisma.Prisma__DepartmentClient<runtime.Types.Result.GetResult<Prisma.$DepartmentPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  createdBy<T extends Prisma.DepartmentResource$createdByArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.DepartmentResource$createdByArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1040,6 +1212,7 @@ export interface DepartmentResourceFieldRefs {
   readonly note: Prisma.FieldRef<"DepartmentResource", 'String'>
   readonly order: Prisma.FieldRef<"DepartmentResource", 'Int'>
   readonly createdAt: Prisma.FieldRef<"DepartmentResource", 'DateTime'>
+  readonly createdById: Prisma.FieldRef<"DepartmentResource", 'String'>
 }
     
 
@@ -1438,6 +1611,25 @@ export type DepartmentResourceDeleteManyArgs<ExtArgs extends runtime.Types.Exten
    * Limit how many DepartmentResources to delete.
    */
   limit?: number
+}
+
+/**
+ * DepartmentResource.createdBy
+ */
+export type DepartmentResource$createdByArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the User
+   */
+  select?: Prisma.UserSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the User
+   */
+  omit?: Prisma.UserOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.UserInclude<ExtArgs> | null
+  where?: Prisma.UserWhereInput
 }
 
 /**

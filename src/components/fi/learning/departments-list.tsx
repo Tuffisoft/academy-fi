@@ -7,8 +7,10 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { AddResourceDialog } from "@/components/fi/learning/add-resource-dialog";
+import { DeleteResourceButton } from "@/components/fi/learning/delete-resource-button";
 
-export async function DepartmentsList() {
+export async function DepartmentsList({ userId }: { userId: string }) {
   const [t, locale, departments] = await Promise.all([
     getTranslations("departments"),
     getLocale(),
@@ -41,7 +43,7 @@ export async function DepartmentsList() {
             {department.resources.length > 0 && (
               <ul className="mt-3 flex flex-col gap-1.5">
                 {department.resources.map((resource) => (
-                  <li key={resource.id}>
+                  <li key={resource.id} className="flex items-center gap-2">
                     <a
                       href={resource.url}
                       target="_blank"
@@ -55,10 +57,17 @@ export async function DepartmentsList() {
                         {resource.note}
                       </span>
                     )}
+                    {/* Interns can only remove resources they added */}
+                    {resource.createdById === userId && (
+                      <DeleteResourceButton resourceId={resource.id} />
+                    )}
                   </li>
                 ))}
               </ul>
             )}
+            <div className="mt-3">
+              <AddResourceDialog departmentId={department.id} />
+            </div>
           </div>
         ))}
       </CardContent>

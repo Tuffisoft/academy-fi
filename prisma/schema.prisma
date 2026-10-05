@@ -108,6 +108,8 @@ model DepartmentResource {
     note         String?
     order        Int        @default(0)
     createdAt    DateTime   @default(now())
+    createdById  String?
+    createdBy    User?      @relation("ResourcesAddedBy", fields: [createdById], references: [id], onDelete: SetNull)
 }
 
 model User {
@@ -127,6 +129,7 @@ model User {
     reflections         Reflection[]       @relation("ReflectionsForIntern")
     feedbackAuthored    MentorFeedback[]   @relation("FeedbackByAuthor")
     discussionNote      DiscussionNote?
+    resourcesAdded      DepartmentResource[] @relation("ResourcesAddedBy")
 
     banned     Boolean?  @default(false)
     banReason  String?
