@@ -170,7 +170,9 @@ export function TaskDetailsModal({
             <div className="space-y-3 rounded-lg bg-muted p-4 text-sm">
               {assignment.description && (
                 <div>
-                  <h3 className="font-medium mb-1">{t("assignmentDescription")}</h3>
+                  <h3 className="font-medium mb-1">
+                    {t("assignmentDescription")}
+                  </h3>
                   <p className="whitespace-pre-wrap text-muted-foreground">
                     {assignment.description}
                   </p>
@@ -178,7 +180,9 @@ export function TaskDetailsModal({
               )}
               {assignment.acceptanceCriteria && (
                 <div>
-                  <h3 className="font-medium mb-1">{t("acceptanceCriteria")}</h3>
+                  <h3 className="font-medium mb-1">
+                    {t("acceptanceCriteria")}
+                  </h3>
                   <p className="whitespace-pre-wrap text-muted-foreground">
                     {assignment.acceptanceCriteria}
                   </p>
@@ -301,18 +305,14 @@ export function TaskDetailsModal({
                 ))}
               </div>
             ) : (
-              <p className="text-sm text-muted-foreground">
-                {t("noStages")}
-              </p>
+              <p className="text-sm text-muted-foreground">{t("noStages")}</p>
             )}
           </div>
 
           {/* Add New Stage */}
           <div className="space-y-2 border-t pt-4">
             <h3 className="font-medium text-sm">{t("addStageTitle")}</h3>
-            <p className="text-xs text-muted-foreground">
-              {t("addStageHelp")}
-            </p>
+            <p className="text-xs text-muted-foreground">{t("addStageHelp")}</p>
             <div className="flex gap-2">
               <Input
                 ref={stageInputRef}
