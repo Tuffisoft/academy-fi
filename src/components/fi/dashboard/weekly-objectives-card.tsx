@@ -40,6 +40,8 @@ type ChecklistItem = {
 type Assignment = {
   id: string;
   focus: string;
+  description?: string;
+  acceptanceCriteria?: string;
   weekOf: Date;
   checklistItems: ChecklistItem[];
 } | null;
@@ -50,6 +52,8 @@ export function WeeklyObjectivesCard({
   assignments: Array<{
     id: string;
     focus: string;
+    description?: string;
+    acceptanceCriteria?: string;
     weekOf: Date;
     checklistItems: ChecklistItem[];
   }>;
@@ -60,12 +64,16 @@ export function WeeklyObjectivesCard({
   const [selectedAssignmentId, setSelectedAssignmentId] = useState<
     string | null
   >(assignments[0]?.id ?? null);
-  const [selectedTask, setSelectedTask] = useState<ChecklistItem | null>(null);
+  const [selectedTaskId, setSelectedTaskId] = useState<string | null>(null);
   const [modalOpen, setModalOpen] = useState(false);
 
   const assignment = selectedAssignmentId
     ? (assignments.find((a) => a.id === selectedAssignmentId) ?? null)
     : null;
+
+  // Resolve from props so the modal reflects data after router.refresh()
+  const selectedTask =
+    assignment?.checklistItems.find((i) => i.id === selectedTaskId) ?? null;
 
   if (assignments.length === 0) {
     return (
@@ -90,7 +98,7 @@ export function WeeklyObjectivesCard({
   }
 
   const handleTaskClick = (task: ChecklistItem) => {
-    setSelectedTask(task);
+    setSelectedTaskId(task.id);
     setModalOpen(true);
   };
 
@@ -176,9 +184,10 @@ export function WeeklyObjectivesCard({
         </CardContent>
       </Card>
 
-      {selectedTask && (
+      {selectedTask && assignment && (
         <TaskDetailsModal
           task={selectedTask}
+          assignment={assignment}
           open={modalOpen}
           onOpenChange={setModalOpen}
         />

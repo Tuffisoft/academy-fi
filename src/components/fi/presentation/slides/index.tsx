@@ -17,7 +17,7 @@ import { WrapUpSlide } from "@/components/fi/presentation/slides/14-wrap-up-slid
 // Order here controls the order the slides play in
 export const slides = [
   <WelcomeSlide key="welcome" />,
-  <InternetSlide key="internet" />,
+ /*  <InternetSlide key="internet" />, */
   <StudioFiIntroSlide key="studio-fi-intro" />,
   <StackSlide key="stack" />,
   <ClientsSlide key="clients" />,

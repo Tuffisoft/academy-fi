@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useTransition } from "react";
+import { useRef, useState, useTransition } from "react";
 import { useTranslations } from "next-intl";
 import { useRouter } from "@/i18n/navigation";
 import { toast } from "sonner";
@@ -9,6 +9,7 @@ import {
   createTaskStageAction,
   updateTaskStageAction,
   deleteTaskStageAction,
+  toggleChecklistItemAction,
 } from "@/lib/actions/assignments.actions";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -17,6 +18,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import {
   Dialog,
   DialogContent,
+  DialogDescription,
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
@@ -38,12 +40,20 @@ type ChecklistItem = {
 
 interface TaskDetailsModalProps {
   task: ChecklistItem;
+  // Parent assignment, so the intern sees what the task belongs to
+  assignment: {
+    focus: string;
+    description?: string;
+    acceptanceCriteria?: string;
+    weekOf: Date;
+  };
   open: boolean;
   onOpenChange: (open: boolean) => void;
 }
 
 export function TaskDetailsModal({
   task,
+  assignment,
   open,
   onOpenChange,
 }: TaskDetailsModalProps) {
@@ -52,19 +62,29 @@ export function TaskDetailsModal({
   const [isPending, startTransition] = useTransition();
   const [newStageName, setNewStageName] = useState("");
   const [editingStageId, setEditingStageId] = useState<string | null>(null);
+  // Local draft so typing never waits on the server
+  const [docDraft, setDocDraft] = useState("");
+  const stageInputRef = useRef<HTMLInputElement>(null);
 
   const handleAddStage = () => {
-    if (!newStageName.trim()) return;
+    const title = newStageName.trim();
+    if (!title) return;
 
     startTransition(async () => {
       try {
-        await createTaskStageAction(task.id, newStageName);
+        await createTaskStageAction(task.id, title);
         setNewStageName("");
+        stageInputRef.current?.focus();
         router.refresh();
       } catch {
-        toast.error("Failed to add stage");
+        toast.error(t("stageAddError"));
       }
     });
+  };
+
+  const startEditingDoc = (stage: TaskStage) => {
+    setEditingStageId(stage.id);
+    setDocDraft(stage.documentation ?? "");
   };
 
   const handleStageToggle = (stage: TaskStage) => {
@@ -77,18 +97,20 @@ export function TaskDetailsModal({
         );
         router.refresh();
       } catch {
-        toast.error("Failed to update stage");
+        toast.error(t("stageUpdateError"));
       }
     });
   };
 
-  const handleDocumentation = (stage: TaskStage, documentation: string) => {
+  const handleSaveDocumentation = (stage: TaskStage) => {
     startTransition(async () => {
       try {
-        await updateTaskStageAction(stage.id, stage.completed, documentation);
+        await updateTaskStageAction(stage.id, stage.completed, docDraft);
+        setEditingStageId(null);
+        toast.success(t("docSaved"));
         router.refresh();
       } catch {
-        toast.error("Failed to save documentation");
+        toast.error(t("docSaveError"));
       }
     });
   };
@@ -99,7 +121,18 @@ export function TaskDetailsModal({
         await deleteTaskStageAction(stageId);
         router.refresh();
       } catch {
-        toast.error("Failed to delete stage");
+        toast.error(t("stageDeleteError"));
+      }
+    });
+  };
+
+  const handleTaskToggle = (completed: boolean) => {
+    startTransition(async () => {
+      try {
+        await toggleChecklistItemAction(task.id, completed);
+        router.refresh();
+      } catch {
+        toast.error(t("checklistError"));
       }
     });
   };
@@ -115,14 +148,50 @@ export function TaskDetailsModal({
       <DialogContent className="max-w-2xl max-h-[80vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle>{task.label}</DialogTitle>
+          <DialogDescription>
+            {assignment.focus} •{" "}
+            {new Date(assignment.weekOf).toLocaleDateString()}
+          </DialogDescription>
         </DialogHeader>
 
         <div className="space-y-6">
+          {/* Task status */}
+          <label className="flex items-center gap-3 text-sm font-medium">
+            <Checkbox
+              checked={task.completed}
+              onCheckedChange={(checked) => handleTaskToggle(checked === true)}
+              disabled={isPending}
+            />
+            {t("markTaskComplete")}
+          </label>
+
+          {/* Assignment context */}
+          {(assignment.description || assignment.acceptanceCriteria) && (
+            <div className="space-y-3 rounded-lg bg-muted p-4 text-sm">
+              {assignment.description && (
+                <div>
+                  <h3 className="font-medium mb-1">{t("assignmentDescription")}</h3>
+                  <p className="whitespace-pre-wrap text-muted-foreground">
+                    {assignment.description}
+                  </p>
+                </div>
+              )}
+              {assignment.acceptanceCriteria && (
+                <div>
+                  <h3 className="font-medium mb-1">{t("acceptanceCriteria")}</h3>
+                  <p className="whitespace-pre-wrap text-muted-foreground">
+                    {assignment.acceptanceCriteria}
+                  </p>
+                </div>
+              )}
+            </div>
+          )}
+
           {/* Progress */}
           {task.stages.length > 0 && (
             <div>
               <div className="flex justify-between items-center mb-2">
-                <span className="text-sm font-medium">Progress</span>
+                <span className="text-sm font-medium">{t("taskProgress")}</span>
                 <span className="text-sm text-muted-foreground">
                   {completedStages}/{task.stages.length}
                 </span>
@@ -134,7 +203,7 @@ export function TaskDetailsModal({
                 />
               </div>
               <p className="text-xs text-muted-foreground mt-1">
-                {progressPercent}% complete
+                {t("taskPercentComplete", { percent: progressPercent })}
               </p>
             </div>
           )}
@@ -142,9 +211,9 @@ export function TaskDetailsModal({
           {/* Stages List */}
           <div className="space-y-3">
             <div className="flex justify-between items-center">
-              <h3 className="font-medium">Stages</h3>
+              <h3 className="font-medium">{t("stagesTitle")}</h3>
               <span className="text-xs text-muted-foreground">
-                {task.stages.length} stages
+                {t("stagesCount", { count: task.stages.length })}
               </span>
             </div>
 
@@ -187,25 +256,33 @@ export function TaskDetailsModal({
                       {editingStageId === stage.id ? (
                         <div className="space-y-2">
                           <Textarea
-                            value={stage.documentation || ""}
-                            onChange={(e) => {
-                              handleDocumentation(stage, e.target.value);
-                            }}
-                            placeholder="What did you do to complete this stage? (e.g., Built 5 pages using React, styled with Tailwind...)"
+                            value={docDraft}
+                            onChange={(e) => setDocDraft(e.target.value)}
+                            placeholder={t("docPlaceholder")}
                             className="text-sm"
-                            disabled={isPending}
+                            autoFocus
                           />
-                          <Button
-                            size="sm"
-                            variant="outline"
-                            onClick={() => setEditingStageId(null)}
-                          >
-                            Done
-                          </Button>
+                          <div className="flex gap-2">
+                            <Button
+                              size="sm"
+                              onClick={() => handleSaveDocumentation(stage)}
+                              disabled={isPending}
+                            >
+                              {t("docSave")}
+                            </Button>
+                            <Button
+                              size="sm"
+                              variant="outline"
+                              onClick={() => setEditingStageId(null)}
+                              disabled={isPending}
+                            >
+                              {t("docCancel")}
+                            </Button>
+                          </div>
                         </div>
                       ) : (
                         <div
-                          onClick={() => setEditingStageId(stage.id)}
+                          onClick={() => startEditingDoc(stage)}
                           className="cursor-pointer p-2 rounded border border-dashed border-muted-foreground/30 hover:border-muted-foreground/50 transition-colors"
                         >
                           {stage.documentation ? (
@@ -214,7 +291,7 @@ export function TaskDetailsModal({
                             </p>
                           ) : (
                             <p className="text-sm text-muted-foreground italic">
-                              Click to add documentation...
+                              {t("docClickToAdd")}
                             </p>
                           )}
                         </div>
@@ -225,22 +302,26 @@ export function TaskDetailsModal({
               </div>
             ) : (
               <p className="text-sm text-muted-foreground">
-                No stages added yet. Add one below to start tracking progress.
+                {t("noStages")}
               </p>
             )}
           </div>
 
           {/* Add New Stage */}
           <div className="space-y-2 border-t pt-4">
-            <h3 className="font-medium text-sm">Add Stage</h3>
+            <h3 className="font-medium text-sm">{t("addStageTitle")}</h3>
+            <p className="text-xs text-muted-foreground">
+              {t("addStageHelp")}
+            </p>
             <div className="flex gap-2">
               <Input
+                ref={stageInputRef}
                 value={newStageName}
                 onChange={(e) => setNewStageName(e.target.value)}
-                placeholder="e.g., Design, Development, Testing..."
-                disabled={isPending}
-                onKeyPress={(e) => {
-                  if (e.key === "Enter") {
+                placeholder={t("addStagePlaceholder")}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter" && !isPending) {
+                    e.preventDefault();
                     handleAddStage();
                   }
                 }}
@@ -251,6 +332,7 @@ export function TaskDetailsModal({
                 disabled={isPending || !newStageName.trim()}
               >
                 <Plus className="h-4 w-4" />
+                {t("addStageButton")}
               </Button>
             </div>
           </div>

@@ -32,6 +32,7 @@ type Assignment = {
   id: string;
   focus: string;
   description: string;
+  acceptanceCriteria?: string;
   weekOf: Date;
   checklistItems: ChecklistItem[];
   reflections: Array<{
@@ -47,11 +48,20 @@ interface AssignmentsListProps {
 
 export function AssignmentsList({ assignments }: AssignmentsListProps) {
   const [expandedId, setExpandedId] = useState<string | null>(null);
-  const [selectedTask, setSelectedTask] = useState<ChecklistItem | null>(null);
+  const [selectedTaskId, setSelectedTaskId] = useState<string | null>(null);
   const [modalOpen, setModalOpen] = useState(false);
 
+  // Resolve from props so the modal reflects data after router.refresh()
+  const selectedAssignment =
+    assignments.find((a) =>
+      a.checklistItems.some((i) => i.id === selectedTaskId),
+    ) ?? null;
+  const selectedTask =
+    selectedAssignment?.checklistItems.find((i) => i.id === selectedTaskId) ??
+    null;
+
   const handleTaskClick = (task: ChecklistItem) => {
-    setSelectedTask(task);
+    setSelectedTaskId(task.id);
     setModalOpen(true);
   };
 
@@ -200,9 +210,10 @@ export function AssignmentsList({ assignments }: AssignmentsListProps) {
         })}
       </div>
 
-      {selectedTask && (
+      {selectedTask && selectedAssignment && (
         <TaskDetailsModal
           task={selectedTask}
+          assignment={selectedAssignment}
           open={modalOpen}
           onOpenChange={setModalOpen}
         />

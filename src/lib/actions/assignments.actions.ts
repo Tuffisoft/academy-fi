@@ -112,9 +112,13 @@ export async function addMentorFeedbackAction(
 
 export async function createTaskStageAction(
   checklistItemId: string,
-  title: string,
+  rawTitle: string,
 ) {
   const user = await requireUser();
+  const title = rawTitle.trim();
+  if (!title) {
+    throw new Error("Stage title is required.");
+  }
 
   const item = await prisma.assignmentChecklistItem.findUnique({
     where: { id: checklistItemId },
