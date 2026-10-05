@@ -79,7 +79,9 @@ export function UploadDocumentDialog({
       <DialogContent>
         <DialogHeader>
           <DialogTitle>{t("documentUploadTitle")}</DialogTitle>
-          <DialogDescription>{t("documentUploadDescription")}</DialogDescription>
+          <DialogDescription>
+            {t("documentUploadDescription")}
+          </DialogDescription>
         </DialogHeader>
         <form action={handleSubmit}>
           <FieldGroup>
