@@ -5,6 +5,7 @@ import { DashboardHeader } from "@/components/fi/dashboard/dashboard-header";
 import { AccountMenu } from "@/components/fi/dashboard/account-menu";
 import { AdminDashboard } from "@/components/fi/dashboard/AdminDashboard";
 import { LearningCard } from "@/components/fi/dashboard/learning-card";
+import { IdeasCard } from "@/components/fi/dashboard/ideas-card";
 import { ObjectivesCard } from "@/components/fi/dashboard/objectives-card";
 import { PresentationCard } from "@/components/fi/dashboard/presentation-card";
 import { WeeklyObjectivesCard } from "@/components/fi/dashboard/weekly-objectives-card";
@@ -46,6 +47,7 @@ export default async function DashboardPage() {
           <>
             <ObjectivesCard />
             <LearningCard />
+            <IdeasCard />
             <PresentationCard />
             <AdminDashboard />
           </>
@@ -53,6 +55,7 @@ export default async function DashboardPage() {
           <>
             <WeeklyObjectivesCard assignments={assignments} />
             <LearningCard />
+            <IdeasCard />
             <PresentationCard />
           </>
         )}

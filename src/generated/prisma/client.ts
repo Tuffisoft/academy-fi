@@ -82,6 +82,16 @@ export type Department = Prisma.DepartmentModel
  */
 export type DepartmentResource = Prisma.DepartmentResourceModel
 /**
+ * Model Idea
+ * 
+ */
+export type Idea = Prisma.IdeaModel
+/**
+ * Model IdeaNote
+ * 
+ */
+export type IdeaNote = Prisma.IdeaNoteModel
+/**
  * Model User
  * 
  */

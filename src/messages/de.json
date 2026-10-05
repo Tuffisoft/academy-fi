@@ -12,7 +12,10 @@
     "openLearning": "Lernen öffnen",
     "objectivesCardTitle": "Wöchentliche Ziele",
     "objectivesCardDescription": "Verfolge und verwalte Praktikantenziele.",
-    "openObjectives": "Ziele öffnen"
+    "openObjectives": "Ziele öffnen",
+    "ideasCardTitle": "Ideen-Hub",
+    "ideasCardDescription": "Wirf Ideen ein und ergänze Notizen zu den Ideen der anderen.",
+    "openIdeas": "Ideen-Hub öffnen"
   },
   "auth": {
     "signInTitle": "Bei Academy Fi anmelden",
@@ -552,6 +555,45 @@
     "resourceCreateError": "Ressource konnte nicht hinzugefügt werden.",
     "deleteResource": "Ressource löschen",
     "resourceDeleteError": "Ressource konnte nicht gelöscht werden."
+  },
+  "ideas": {
+    "title": "Ideen-Hub",
+    "description": "Wirf eine Idee ein und ergänze Notizen zu jeder Idee, um gemeinsam darauf aufzubauen.",
+    "empty": "Noch keine Ideen. Sei der Erste, der eine hinzufügt.",
+    "searchPlaceholder": "Ideen, Notizen oder Personen suchen...",
+    "sortLabel": "Sortieren nach",
+    "sort": {
+      "newest": "Neueste zuerst",
+      "oldest": "Älteste zuerst",
+      "activity": "Letzte Aktivität",
+      "mostNotes": "Meiste Notizen"
+    },
+    "noResults": "Keine Ideen entsprechen deiner Suche.",
+    "addIdea": "Idee hinzufügen",
+    "createTitle": "Neue Idee",
+    "createDescription": "Teile eine Idee mit dem Team. Andere können Notizen dazu ergänzen.",
+    "ideaTitle": "Titel",
+    "ideaDescription": "Details (optional)",
+    "create": "Hinzufügen",
+    "creating": "Wird hinzugefügt\u2026",
+    "createSuccess": "Idee hinzugefügt.",
+    "createError": "Idee konnte nicht hinzugefügt werden.",
+    "byAuthor": "von {name}",
+    "formerMember": "Ehemaliges Mitglied",
+    "notesTitle": "Notizen ({count})",
+    "noNotes": "Noch keine Notizen.",
+    "notePlaceholder": "Notiz zu dieser Idee hinzufügen...",
+    "addNote": "Notiz hinzufügen",
+    "noteAddError": "Notiz konnte nicht hinzugefügt werden.",
+    "deleteNote": "Notiz löschen",
+    "noteDeleteError": "Notiz konnte nicht gelöscht werden.",
+    "deleteIdea": "Idee löschen",
+    "deleteTitle": "\"{title}\" löschen?",
+    "deleteDescription": "Dadurch werden auch alle Notizen entfernt. Dies kann nicht rückgängig gemacht werden.",
+    "cancel": "Abbrechen",
+    "delete": "Löschen",
+    "deleteSuccess": "Idee gelöscht.",
+    "deleteError": "Idee konnte nicht gelöscht werden."
   },
   "planner": {
     "title": "Diese Woche",

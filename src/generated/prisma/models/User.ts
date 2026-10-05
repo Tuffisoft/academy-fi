@@ -246,6 +246,8 @@ export type UserWhereInput = {
   feedbackAuthored?: Prisma.MentorFeedbackListRelationFilter
   discussionNote?: Prisma.XOR<Prisma.DiscussionNoteNullableScalarRelationFilter, Prisma.DiscussionNoteWhereInput> | null
   resourcesAdded?: Prisma.DepartmentResourceListRelationFilter
+  ideas?: Prisma.IdeaListRelationFilter
+  ideaNotes?: Prisma.IdeaNoteListRelationFilter
 }
 
 export type UserOrderByWithRelationInput = {
@@ -269,6 +271,8 @@ export type UserOrderByWithRelationInput = {
   feedbackAuthored?: Prisma.MentorFeedbackOrderByRelationAggregateInput
   discussionNote?: Prisma.DiscussionNoteOrderByWithRelationInput
   resourcesAdded?: Prisma.DepartmentResourceOrderByRelationAggregateInput
+  ideas?: Prisma.IdeaOrderByRelationAggregateInput
+  ideaNotes?: Prisma.IdeaNoteOrderByRelationAggregateInput
 }
 
 export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -295,6 +299,8 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   feedbackAuthored?: Prisma.MentorFeedbackListRelationFilter
   discussionNote?: Prisma.XOR<Prisma.DiscussionNoteNullableScalarRelationFilter, Prisma.DiscussionNoteWhereInput> | null
   resourcesAdded?: Prisma.DepartmentResourceListRelationFilter
+  ideas?: Prisma.IdeaListRelationFilter
+  ideaNotes?: Prisma.IdeaNoteListRelationFilter
 }, "id" | "email">
 
 export type UserOrderByWithAggregationInput = {
@@ -354,6 +360,8 @@ export type UserCreateInput = {
   feedbackAuthored?: Prisma.MentorFeedbackCreateNestedManyWithoutAuthorInput
   discussionNote?: Prisma.DiscussionNoteCreateNestedOneWithoutUserInput
   resourcesAdded?: Prisma.DepartmentResourceCreateNestedManyWithoutCreatedByInput
+  ideas?: Prisma.IdeaCreateNestedManyWithoutAuthorInput
+  ideaNotes?: Prisma.IdeaNoteCreateNestedManyWithoutAuthorInput
 }
 
 export type UserUncheckedCreateInput = {
@@ -377,6 +385,8 @@ export type UserUncheckedCreateInput = {
   feedbackAuthored?: Prisma.MentorFeedbackUncheckedCreateNestedManyWithoutAuthorInput
   discussionNote?: Prisma.DiscussionNoteUncheckedCreateNestedOneWithoutUserInput
   resourcesAdded?: Prisma.DepartmentResourceUncheckedCreateNestedManyWithoutCreatedByInput
+  ideas?: Prisma.IdeaUncheckedCreateNestedManyWithoutAuthorInput
+  ideaNotes?: Prisma.IdeaNoteUncheckedCreateNestedManyWithoutAuthorInput
 }
 
 export type UserUpdateInput = {
@@ -400,6 +410,8 @@ export type UserUpdateInput = {
   feedbackAuthored?: Prisma.MentorFeedbackUpdateManyWithoutAuthorNestedInput
   discussionNote?: Prisma.DiscussionNoteUpdateOneWithoutUserNestedInput
   resourcesAdded?: Prisma.DepartmentResourceUpdateManyWithoutCreatedByNestedInput
+  ideas?: Prisma.IdeaUpdateManyWithoutAuthorNestedInput
+  ideaNotes?: Prisma.IdeaNoteUpdateManyWithoutAuthorNestedInput
 }
 
 export type UserUncheckedUpdateInput = {
@@ -423,6 +435,8 @@ export type UserUncheckedUpdateInput = {
   feedbackAuthored?: Prisma.MentorFeedbackUncheckedUpdateManyWithoutAuthorNestedInput
   discussionNote?: Prisma.DiscussionNoteUncheckedUpdateOneWithoutUserNestedInput
   resourcesAdded?: Prisma.DepartmentResourceUncheckedUpdateManyWithoutCreatedByNestedInput
+  ideas?: Prisma.IdeaUncheckedUpdateManyWithoutAuthorNestedInput
+  ideaNotes?: Prisma.IdeaNoteUncheckedUpdateManyWithoutAuthorNestedInput
 }
 
 export type UserCreateManyInput = {
@@ -611,6 +625,38 @@ export type UserUpdateOneWithoutResourcesAddedNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutResourcesAddedInput, Prisma.UserUpdateWithoutResourcesAddedInput>, Prisma.UserUncheckedUpdateWithoutResourcesAddedInput>
 }
 
+export type UserCreateNestedOneWithoutIdeasInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutIdeasInput, Prisma.UserUncheckedCreateWithoutIdeasInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutIdeasInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneWithoutIdeasNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutIdeasInput, Prisma.UserUncheckedCreateWithoutIdeasInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutIdeasInput
+  upsert?: Prisma.UserUpsertWithoutIdeasInput
+  disconnect?: Prisma.UserWhereInput | boolean
+  delete?: Prisma.UserWhereInput | boolean
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutIdeasInput, Prisma.UserUpdateWithoutIdeasInput>, Prisma.UserUncheckedUpdateWithoutIdeasInput>
+}
+
+export type UserCreateNestedOneWithoutIdeaNotesInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutIdeaNotesInput, Prisma.UserUncheckedCreateWithoutIdeaNotesInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutIdeaNotesInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneWithoutIdeaNotesNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutIdeaNotesInput, Prisma.UserUncheckedCreateWithoutIdeaNotesInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutIdeaNotesInput
+  upsert?: Prisma.UserUpsertWithoutIdeaNotesInput
+  disconnect?: Prisma.UserWhereInput | boolean
+  delete?: Prisma.UserWhereInput | boolean
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutIdeaNotesInput, Prisma.UserUpdateWithoutIdeaNotesInput>, Prisma.UserUncheckedUpdateWithoutIdeaNotesInput>
+}
+
 export type NullableBoolFieldUpdateOperationsInput = {
   set?: boolean | null
 }
@@ -663,6 +709,8 @@ export type UserCreateWithoutAssignmentsAsInternInput = {
   feedbackAuthored?: Prisma.MentorFeedbackCreateNestedManyWithoutAuthorInput
   discussionNote?: Prisma.DiscussionNoteCreateNestedOneWithoutUserInput
   resourcesAdded?: Prisma.DepartmentResourceCreateNestedManyWithoutCreatedByInput
+  ideas?: Prisma.IdeaCreateNestedManyWithoutAuthorInput
+  ideaNotes?: Prisma.IdeaNoteCreateNestedManyWithoutAuthorInput
 }
 
 export type UserUncheckedCreateWithoutAssignmentsAsInternInput = {
@@ -685,6 +733,8 @@ export type UserUncheckedCreateWithoutAssignmentsAsInternInput = {
   feedbackAuthored?: Prisma.MentorFeedbackUncheckedCreateNestedManyWithoutAuthorInput
   discussionNote?: Prisma.DiscussionNoteUncheckedCreateNestedOneWithoutUserInput
   resourcesAdded?: Prisma.DepartmentResourceUncheckedCreateNestedManyWithoutCreatedByInput
+  ideas?: Prisma.IdeaUncheckedCreateNestedManyWithoutAuthorInput
+  ideaNotes?: Prisma.IdeaNoteUncheckedCreateNestedManyWithoutAuthorInput
 }
 
 export type UserCreateOrConnectWithoutAssignmentsAsInternInput = {
@@ -712,6 +762,8 @@ export type UserCreateWithoutAssignmentsCreatedInput = {
   feedbackAuthored?: Prisma.MentorFeedbackCreateNestedManyWithoutAuthorInput
   discussionNote?: Prisma.DiscussionNoteCreateNestedOneWithoutUserInput
   resourcesAdded?: Prisma.DepartmentResourceCreateNestedManyWithoutCreatedByInput
+  ideas?: Prisma.IdeaCreateNestedManyWithoutAuthorInput
+  ideaNotes?: Prisma.IdeaNoteCreateNestedManyWithoutAuthorInput
 }
 
 export type UserUncheckedCreateWithoutAssignmentsCreatedInput = {
@@ -734,6 +786,8 @@ export type UserUncheckedCreateWithoutAssignmentsCreatedInput = {
   feedbackAuthored?: Prisma.MentorFeedbackUncheckedCreateNestedManyWithoutAuthorInput
   discussionNote?: Prisma.DiscussionNoteUncheckedCreateNestedOneWithoutUserInput
   resourcesAdded?: Prisma.DepartmentResourceUncheckedCreateNestedManyWithoutCreatedByInput
+  ideas?: Prisma.IdeaUncheckedCreateNestedManyWithoutAuthorInput
+  ideaNotes?: Prisma.IdeaNoteUncheckedCreateNestedManyWithoutAuthorInput
 }
 
 export type UserCreateOrConnectWithoutAssignmentsCreatedInput = {
@@ -772,6 +826,8 @@ export type UserUpdateWithoutAssignmentsAsInternInput = {
   feedbackAuthored?: Prisma.MentorFeedbackUpdateManyWithoutAuthorNestedInput
   discussionNote?: Prisma.DiscussionNoteUpdateOneWithoutUserNestedInput
   resourcesAdded?: Prisma.DepartmentResourceUpdateManyWithoutCreatedByNestedInput
+  ideas?: Prisma.IdeaUpdateManyWithoutAuthorNestedInput
+  ideaNotes?: Prisma.IdeaNoteUpdateManyWithoutAuthorNestedInput
 }
 
 export type UserUncheckedUpdateWithoutAssignmentsAsInternInput = {
@@ -794,6 +850,8 @@ export type UserUncheckedUpdateWithoutAssignmentsAsInternInput = {
   feedbackAuthored?: Prisma.MentorFeedbackUncheckedUpdateManyWithoutAuthorNestedInput
   discussionNote?: Prisma.DiscussionNoteUncheckedUpdateOneWithoutUserNestedInput
   resourcesAdded?: Prisma.DepartmentResourceUncheckedUpdateManyWithoutCreatedByNestedInput
+  ideas?: Prisma.IdeaUncheckedUpdateManyWithoutAuthorNestedInput
+  ideaNotes?: Prisma.IdeaNoteUncheckedUpdateManyWithoutAuthorNestedInput
 }
 
 export type UserUpsertWithoutAssignmentsCreatedInput = {
@@ -827,6 +885,8 @@ export type UserUpdateWithoutAssignmentsCreatedInput = {
   feedbackAuthored?: Prisma.MentorFeedbackUpdateManyWithoutAuthorNestedInput
   discussionNote?: Prisma.DiscussionNoteUpdateOneWithoutUserNestedInput
   resourcesAdded?: Prisma.DepartmentResourceUpdateManyWithoutCreatedByNestedInput
+  ideas?: Prisma.IdeaUpdateManyWithoutAuthorNestedInput
+  ideaNotes?: Prisma.IdeaNoteUpdateManyWithoutAuthorNestedInput
 }
 
 export type UserUncheckedUpdateWithoutAssignmentsCreatedInput = {
@@ -849,6 +909,8 @@ export type UserUncheckedUpdateWithoutAssignmentsCreatedInput = {
   feedbackAuthored?: Prisma.MentorFeedbackUncheckedUpdateManyWithoutAuthorNestedInput
   discussionNote?: Prisma.DiscussionNoteUncheckedUpdateOneWithoutUserNestedInput
   resourcesAdded?: Prisma.DepartmentResourceUncheckedUpdateManyWithoutCreatedByNestedInput
+  ideas?: Prisma.IdeaUncheckedUpdateManyWithoutAuthorNestedInput
+  ideaNotes?: Prisma.IdeaNoteUncheckedUpdateManyWithoutAuthorNestedInput
 }
 
 export type UserCreateWithoutReflectionsInput = {
@@ -871,6 +933,8 @@ export type UserCreateWithoutReflectionsInput = {
   feedbackAuthored?: Prisma.MentorFeedbackCreateNestedManyWithoutAuthorInput
   discussionNote?: Prisma.DiscussionNoteCreateNestedOneWithoutUserInput
   resourcesAdded?: Prisma.DepartmentResourceCreateNestedManyWithoutCreatedByInput
+  ideas?: Prisma.IdeaCreateNestedManyWithoutAuthorInput
+  ideaNotes?: Prisma.IdeaNoteCreateNestedManyWithoutAuthorInput
 }
 
 export type UserUncheckedCreateWithoutReflectionsInput = {
@@ -893,6 +957,8 @@ export type UserUncheckedCreateWithoutReflectionsInput = {
   feedbackAuthored?: Prisma.MentorFeedbackUncheckedCreateNestedManyWithoutAuthorInput
   discussionNote?: Prisma.DiscussionNoteUncheckedCreateNestedOneWithoutUserInput
   resourcesAdded?: Prisma.DepartmentResourceUncheckedCreateNestedManyWithoutCreatedByInput
+  ideas?: Prisma.IdeaUncheckedCreateNestedManyWithoutAuthorInput
+  ideaNotes?: Prisma.IdeaNoteUncheckedCreateNestedManyWithoutAuthorInput
 }
 
 export type UserCreateOrConnectWithoutReflectionsInput = {
@@ -931,6 +997,8 @@ export type UserUpdateWithoutReflectionsInput = {
   feedbackAuthored?: Prisma.MentorFeedbackUpdateManyWithoutAuthorNestedInput
   discussionNote?: Prisma.DiscussionNoteUpdateOneWithoutUserNestedInput
   resourcesAdded?: Prisma.DepartmentResourceUpdateManyWithoutCreatedByNestedInput
+  ideas?: Prisma.IdeaUpdateManyWithoutAuthorNestedInput
+  ideaNotes?: Prisma.IdeaNoteUpdateManyWithoutAuthorNestedInput
 }
 
 export type UserUncheckedUpdateWithoutReflectionsInput = {
@@ -953,6 +1021,8 @@ export type UserUncheckedUpdateWithoutReflectionsInput = {
   feedbackAuthored?: Prisma.MentorFeedbackUncheckedUpdateManyWithoutAuthorNestedInput
   discussionNote?: Prisma.DiscussionNoteUncheckedUpdateOneWithoutUserNestedInput
   resourcesAdded?: Prisma.DepartmentResourceUncheckedUpdateManyWithoutCreatedByNestedInput
+  ideas?: Prisma.IdeaUncheckedUpdateManyWithoutAuthorNestedInput
+  ideaNotes?: Prisma.IdeaNoteUncheckedUpdateManyWithoutAuthorNestedInput
 }
 
 export type UserCreateWithoutFeedbackAuthoredInput = {
@@ -975,6 +1045,8 @@ export type UserCreateWithoutFeedbackAuthoredInput = {
   reflections?: Prisma.ReflectionCreateNestedManyWithoutInternInput
   discussionNote?: Prisma.DiscussionNoteCreateNestedOneWithoutUserInput
   resourcesAdded?: Prisma.DepartmentResourceCreateNestedManyWithoutCreatedByInput
+  ideas?: Prisma.IdeaCreateNestedManyWithoutAuthorInput
+  ideaNotes?: Prisma.IdeaNoteCreateNestedManyWithoutAuthorInput
 }
 
 export type UserUncheckedCreateWithoutFeedbackAuthoredInput = {
@@ -997,6 +1069,8 @@ export type UserUncheckedCreateWithoutFeedbackAuthoredInput = {
   reflections?: Prisma.ReflectionUncheckedCreateNestedManyWithoutInternInput
   discussionNote?: Prisma.DiscussionNoteUncheckedCreateNestedOneWithoutUserInput
   resourcesAdded?: Prisma.DepartmentResourceUncheckedCreateNestedManyWithoutCreatedByInput
+  ideas?: Prisma.IdeaUncheckedCreateNestedManyWithoutAuthorInput
+  ideaNotes?: Prisma.IdeaNoteUncheckedCreateNestedManyWithoutAuthorInput
 }
 
 export type UserCreateOrConnectWithoutFeedbackAuthoredInput = {
@@ -1035,6 +1109,8 @@ export type UserUpdateWithoutFeedbackAuthoredInput = {
   reflections?: Prisma.ReflectionUpdateManyWithoutInternNestedInput
   discussionNote?: Prisma.DiscussionNoteUpdateOneWithoutUserNestedInput
   resourcesAdded?: Prisma.DepartmentResourceUpdateManyWithoutCreatedByNestedInput
+  ideas?: Prisma.IdeaUpdateManyWithoutAuthorNestedInput
+  ideaNotes?: Prisma.IdeaNoteUpdateManyWithoutAuthorNestedInput
 }
 
 export type UserUncheckedUpdateWithoutFeedbackAuthoredInput = {
@@ -1057,6 +1133,8 @@ export type UserUncheckedUpdateWithoutFeedbackAuthoredInput = {
   reflections?: Prisma.ReflectionUncheckedUpdateManyWithoutInternNestedInput
   discussionNote?: Prisma.DiscussionNoteUncheckedUpdateOneWithoutUserNestedInput
   resourcesAdded?: Prisma.DepartmentResourceUncheckedUpdateManyWithoutCreatedByNestedInput
+  ideas?: Prisma.IdeaUncheckedUpdateManyWithoutAuthorNestedInput
+  ideaNotes?: Prisma.IdeaNoteUncheckedUpdateManyWithoutAuthorNestedInput
 }
 
 export type UserCreateWithoutDiscussionNoteInput = {
@@ -1079,6 +1157,8 @@ export type UserCreateWithoutDiscussionNoteInput = {
   reflections?: Prisma.ReflectionCreateNestedManyWithoutInternInput
   feedbackAuthored?: Prisma.MentorFeedbackCreateNestedManyWithoutAuthorInput
   resourcesAdded?: Prisma.DepartmentResourceCreateNestedManyWithoutCreatedByInput
+  ideas?: Prisma.IdeaCreateNestedManyWithoutAuthorInput
+  ideaNotes?: Prisma.IdeaNoteCreateNestedManyWithoutAuthorInput
 }
 
 export type UserUncheckedCreateWithoutDiscussionNoteInput = {
@@ -1101,6 +1181,8 @@ export type UserUncheckedCreateWithoutDiscussionNoteInput = {
   reflections?: Prisma.ReflectionUncheckedCreateNestedManyWithoutInternInput
   feedbackAuthored?: Prisma.MentorFeedbackUncheckedCreateNestedManyWithoutAuthorInput
   resourcesAdded?: Prisma.DepartmentResourceUncheckedCreateNestedManyWithoutCreatedByInput
+  ideas?: Prisma.IdeaUncheckedCreateNestedManyWithoutAuthorInput
+  ideaNotes?: Prisma.IdeaNoteUncheckedCreateNestedManyWithoutAuthorInput
 }
 
 export type UserCreateOrConnectWithoutDiscussionNoteInput = {
@@ -1139,6 +1221,8 @@ export type UserUpdateWithoutDiscussionNoteInput = {
   reflections?: Prisma.ReflectionUpdateManyWithoutInternNestedInput
   feedbackAuthored?: Prisma.MentorFeedbackUpdateManyWithoutAuthorNestedInput
   resourcesAdded?: Prisma.DepartmentResourceUpdateManyWithoutCreatedByNestedInput
+  ideas?: Prisma.IdeaUpdateManyWithoutAuthorNestedInput
+  ideaNotes?: Prisma.IdeaNoteUpdateManyWithoutAuthorNestedInput
 }
 
 export type UserUncheckedUpdateWithoutDiscussionNoteInput = {
@@ -1161,6 +1245,8 @@ export type UserUncheckedUpdateWithoutDiscussionNoteInput = {
   reflections?: Prisma.ReflectionUncheckedUpdateManyWithoutInternNestedInput
   feedbackAuthored?: Prisma.MentorFeedbackUncheckedUpdateManyWithoutAuthorNestedInput
   resourcesAdded?: Prisma.DepartmentResourceUncheckedUpdateManyWithoutCreatedByNestedInput
+  ideas?: Prisma.IdeaUncheckedUpdateManyWithoutAuthorNestedInput
+  ideaNotes?: Prisma.IdeaNoteUncheckedUpdateManyWithoutAuthorNestedInput
 }
 
 export type UserCreateWithoutResourcesAddedInput = {
@@ -1183,6 +1269,8 @@ export type UserCreateWithoutResourcesAddedInput = {
   reflections?: Prisma.ReflectionCreateNestedManyWithoutInternInput
   feedbackAuthored?: Prisma.MentorFeedbackCreateNestedManyWithoutAuthorInput
   discussionNote?: Prisma.DiscussionNoteCreateNestedOneWithoutUserInput
+  ideas?: Prisma.IdeaCreateNestedManyWithoutAuthorInput
+  ideaNotes?: Prisma.IdeaNoteCreateNestedManyWithoutAuthorInput
 }
 
 export type UserUncheckedCreateWithoutResourcesAddedInput = {
@@ -1205,6 +1293,8 @@ export type UserUncheckedCreateWithoutResourcesAddedInput = {
   reflections?: Prisma.ReflectionUncheckedCreateNestedManyWithoutInternInput
   feedbackAuthored?: Prisma.MentorFeedbackUncheckedCreateNestedManyWithoutAuthorInput
   discussionNote?: Prisma.DiscussionNoteUncheckedCreateNestedOneWithoutUserInput
+  ideas?: Prisma.IdeaUncheckedCreateNestedManyWithoutAuthorInput
+  ideaNotes?: Prisma.IdeaNoteUncheckedCreateNestedManyWithoutAuthorInput
 }
 
 export type UserCreateOrConnectWithoutResourcesAddedInput = {
@@ -1243,6 +1333,8 @@ export type UserUpdateWithoutResourcesAddedInput = {
   reflections?: Prisma.ReflectionUpdateManyWithoutInternNestedInput
   feedbackAuthored?: Prisma.MentorFeedbackUpdateManyWithoutAuthorNestedInput
   discussionNote?: Prisma.DiscussionNoteUpdateOneWithoutUserNestedInput
+  ideas?: Prisma.IdeaUpdateManyWithoutAuthorNestedInput
+  ideaNotes?: Prisma.IdeaNoteUpdateManyWithoutAuthorNestedInput
 }
 
 export type UserUncheckedUpdateWithoutResourcesAddedInput = {
@@ -1265,6 +1357,232 @@ export type UserUncheckedUpdateWithoutResourcesAddedInput = {
   reflections?: Prisma.ReflectionUncheckedUpdateManyWithoutInternNestedInput
   feedbackAuthored?: Prisma.MentorFeedbackUncheckedUpdateManyWithoutAuthorNestedInput
   discussionNote?: Prisma.DiscussionNoteUncheckedUpdateOneWithoutUserNestedInput
+  ideas?: Prisma.IdeaUncheckedUpdateManyWithoutAuthorNestedInput
+  ideaNotes?: Prisma.IdeaNoteUncheckedUpdateManyWithoutAuthorNestedInput
+}
+
+export type UserCreateWithoutIdeasInput = {
+  id: string
+  name: string
+  email: string
+  emailVerified?: boolean
+  image?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  role?: string
+  locale?: string
+  banned?: boolean | null
+  banReason?: string | null
+  banExpires?: Date | string | null
+  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
+  accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
+  assignmentsAsIntern?: Prisma.WeeklyAssignmentCreateNestedManyWithoutInternInput
+  assignmentsCreated?: Prisma.WeeklyAssignmentCreateNestedManyWithoutCreatedByInput
+  reflections?: Prisma.ReflectionCreateNestedManyWithoutInternInput
+  feedbackAuthored?: Prisma.MentorFeedbackCreateNestedManyWithoutAuthorInput
+  discussionNote?: Prisma.DiscussionNoteCreateNestedOneWithoutUserInput
+  resourcesAdded?: Prisma.DepartmentResourceCreateNestedManyWithoutCreatedByInput
+  ideaNotes?: Prisma.IdeaNoteCreateNestedManyWithoutAuthorInput
+}
+
+export type UserUncheckedCreateWithoutIdeasInput = {
+  id: string
+  name: string
+  email: string
+  emailVerified?: boolean
+  image?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  role?: string
+  locale?: string
+  banned?: boolean | null
+  banReason?: string | null
+  banExpires?: Date | string | null
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
+  accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
+  assignmentsAsIntern?: Prisma.WeeklyAssignmentUncheckedCreateNestedManyWithoutInternInput
+  assignmentsCreated?: Prisma.WeeklyAssignmentUncheckedCreateNestedManyWithoutCreatedByInput
+  reflections?: Prisma.ReflectionUncheckedCreateNestedManyWithoutInternInput
+  feedbackAuthored?: Prisma.MentorFeedbackUncheckedCreateNestedManyWithoutAuthorInput
+  discussionNote?: Prisma.DiscussionNoteUncheckedCreateNestedOneWithoutUserInput
+  resourcesAdded?: Prisma.DepartmentResourceUncheckedCreateNestedManyWithoutCreatedByInput
+  ideaNotes?: Prisma.IdeaNoteUncheckedCreateNestedManyWithoutAuthorInput
+}
+
+export type UserCreateOrConnectWithoutIdeasInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutIdeasInput, Prisma.UserUncheckedCreateWithoutIdeasInput>
+}
+
+export type UserUpsertWithoutIdeasInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutIdeasInput, Prisma.UserUncheckedUpdateWithoutIdeasInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutIdeasInput, Prisma.UserUncheckedCreateWithoutIdeasInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutIdeasInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutIdeasInput, Prisma.UserUncheckedUpdateWithoutIdeasInput>
+}
+
+export type UserUpdateWithoutIdeasInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  role?: Prisma.StringFieldUpdateOperationsInput | string
+  locale?: Prisma.StringFieldUpdateOperationsInput | string
+  banned?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  banReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  banExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
+  accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
+  assignmentsAsIntern?: Prisma.WeeklyAssignmentUpdateManyWithoutInternNestedInput
+  assignmentsCreated?: Prisma.WeeklyAssignmentUpdateManyWithoutCreatedByNestedInput
+  reflections?: Prisma.ReflectionUpdateManyWithoutInternNestedInput
+  feedbackAuthored?: Prisma.MentorFeedbackUpdateManyWithoutAuthorNestedInput
+  discussionNote?: Prisma.DiscussionNoteUpdateOneWithoutUserNestedInput
+  resourcesAdded?: Prisma.DepartmentResourceUpdateManyWithoutCreatedByNestedInput
+  ideaNotes?: Prisma.IdeaNoteUpdateManyWithoutAuthorNestedInput
+}
+
+export type UserUncheckedUpdateWithoutIdeasInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  role?: Prisma.StringFieldUpdateOperationsInput | string
+  locale?: Prisma.StringFieldUpdateOperationsInput | string
+  banned?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  banReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  banExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
+  accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
+  assignmentsAsIntern?: Prisma.WeeklyAssignmentUncheckedUpdateManyWithoutInternNestedInput
+  assignmentsCreated?: Prisma.WeeklyAssignmentUncheckedUpdateManyWithoutCreatedByNestedInput
+  reflections?: Prisma.ReflectionUncheckedUpdateManyWithoutInternNestedInput
+  feedbackAuthored?: Prisma.MentorFeedbackUncheckedUpdateManyWithoutAuthorNestedInput
+  discussionNote?: Prisma.DiscussionNoteUncheckedUpdateOneWithoutUserNestedInput
+  resourcesAdded?: Prisma.DepartmentResourceUncheckedUpdateManyWithoutCreatedByNestedInput
+  ideaNotes?: Prisma.IdeaNoteUncheckedUpdateManyWithoutAuthorNestedInput
+}
+
+export type UserCreateWithoutIdeaNotesInput = {
+  id: string
+  name: string
+  email: string
+  emailVerified?: boolean
+  image?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  role?: string
+  locale?: string
+  banned?: boolean | null
+  banReason?: string | null
+  banExpires?: Date | string | null
+  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
+  accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
+  assignmentsAsIntern?: Prisma.WeeklyAssignmentCreateNestedManyWithoutInternInput
+  assignmentsCreated?: Prisma.WeeklyAssignmentCreateNestedManyWithoutCreatedByInput
+  reflections?: Prisma.ReflectionCreateNestedManyWithoutInternInput
+  feedbackAuthored?: Prisma.MentorFeedbackCreateNestedManyWithoutAuthorInput
+  discussionNote?: Prisma.DiscussionNoteCreateNestedOneWithoutUserInput
+  resourcesAdded?: Prisma.DepartmentResourceCreateNestedManyWithoutCreatedByInput
+  ideas?: Prisma.IdeaCreateNestedManyWithoutAuthorInput
+}
+
+export type UserUncheckedCreateWithoutIdeaNotesInput = {
+  id: string
+  name: string
+  email: string
+  emailVerified?: boolean
+  image?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  role?: string
+  locale?: string
+  banned?: boolean | null
+  banReason?: string | null
+  banExpires?: Date | string | null
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
+  accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
+  assignmentsAsIntern?: Prisma.WeeklyAssignmentUncheckedCreateNestedManyWithoutInternInput
+  assignmentsCreated?: Prisma.WeeklyAssignmentUncheckedCreateNestedManyWithoutCreatedByInput
+  reflections?: Prisma.ReflectionUncheckedCreateNestedManyWithoutInternInput
+  feedbackAuthored?: Prisma.MentorFeedbackUncheckedCreateNestedManyWithoutAuthorInput
+  discussionNote?: Prisma.DiscussionNoteUncheckedCreateNestedOneWithoutUserInput
+  resourcesAdded?: Prisma.DepartmentResourceUncheckedCreateNestedManyWithoutCreatedByInput
+  ideas?: Prisma.IdeaUncheckedCreateNestedManyWithoutAuthorInput
+}
+
+export type UserCreateOrConnectWithoutIdeaNotesInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutIdeaNotesInput, Prisma.UserUncheckedCreateWithoutIdeaNotesInput>
+}
+
+export type UserUpsertWithoutIdeaNotesInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutIdeaNotesInput, Prisma.UserUncheckedUpdateWithoutIdeaNotesInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutIdeaNotesInput, Prisma.UserUncheckedCreateWithoutIdeaNotesInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutIdeaNotesInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutIdeaNotesInput, Prisma.UserUncheckedUpdateWithoutIdeaNotesInput>
+}
+
+export type UserUpdateWithoutIdeaNotesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  role?: Prisma.StringFieldUpdateOperationsInput | string
+  locale?: Prisma.StringFieldUpdateOperationsInput | string
+  banned?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  banReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  banExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
+  accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
+  assignmentsAsIntern?: Prisma.WeeklyAssignmentUpdateManyWithoutInternNestedInput
+  assignmentsCreated?: Prisma.WeeklyAssignmentUpdateManyWithoutCreatedByNestedInput
+  reflections?: Prisma.ReflectionUpdateManyWithoutInternNestedInput
+  feedbackAuthored?: Prisma.MentorFeedbackUpdateManyWithoutAuthorNestedInput
+  discussionNote?: Prisma.DiscussionNoteUpdateOneWithoutUserNestedInput
+  resourcesAdded?: Prisma.DepartmentResourceUpdateManyWithoutCreatedByNestedInput
+  ideas?: Prisma.IdeaUpdateManyWithoutAuthorNestedInput
+}
+
+export type UserUncheckedUpdateWithoutIdeaNotesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  role?: Prisma.StringFieldUpdateOperationsInput | string
+  locale?: Prisma.StringFieldUpdateOperationsInput | string
+  banned?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  banReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  banExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
+  accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
+  assignmentsAsIntern?: Prisma.WeeklyAssignmentUncheckedUpdateManyWithoutInternNestedInput
+  assignmentsCreated?: Prisma.WeeklyAssignmentUncheckedUpdateManyWithoutCreatedByNestedInput
+  reflections?: Prisma.ReflectionUncheckedUpdateManyWithoutInternNestedInput
+  feedbackAuthored?: Prisma.MentorFeedbackUncheckedUpdateManyWithoutAuthorNestedInput
+  discussionNote?: Prisma.DiscussionNoteUncheckedUpdateOneWithoutUserNestedInput
+  resourcesAdded?: Prisma.DepartmentResourceUncheckedUpdateManyWithoutCreatedByNestedInput
+  ideas?: Prisma.IdeaUncheckedUpdateManyWithoutAuthorNestedInput
 }
 
 export type UserCreateWithoutSessionsInput = {
@@ -1287,6 +1605,8 @@ export type UserCreateWithoutSessionsInput = {
   feedbackAuthored?: Prisma.MentorFeedbackCreateNestedManyWithoutAuthorInput
   discussionNote?: Prisma.DiscussionNoteCreateNestedOneWithoutUserInput
   resourcesAdded?: Prisma.DepartmentResourceCreateNestedManyWithoutCreatedByInput
+  ideas?: Prisma.IdeaCreateNestedManyWithoutAuthorInput
+  ideaNotes?: Prisma.IdeaNoteCreateNestedManyWithoutAuthorInput
 }
 
 export type UserUncheckedCreateWithoutSessionsInput = {
@@ -1309,6 +1629,8 @@ export type UserUncheckedCreateWithoutSessionsInput = {
   feedbackAuthored?: Prisma.MentorFeedbackUncheckedCreateNestedManyWithoutAuthorInput
   discussionNote?: Prisma.DiscussionNoteUncheckedCreateNestedOneWithoutUserInput
   resourcesAdded?: Prisma.DepartmentResourceUncheckedCreateNestedManyWithoutCreatedByInput
+  ideas?: Prisma.IdeaUncheckedCreateNestedManyWithoutAuthorInput
+  ideaNotes?: Prisma.IdeaNoteUncheckedCreateNestedManyWithoutAuthorInput
 }
 
 export type UserCreateOrConnectWithoutSessionsInput = {
@@ -1347,6 +1669,8 @@ export type UserUpdateWithoutSessionsInput = {
   feedbackAuthored?: Prisma.MentorFeedbackUpdateManyWithoutAuthorNestedInput
   discussionNote?: Prisma.DiscussionNoteUpdateOneWithoutUserNestedInput
   resourcesAdded?: Prisma.DepartmentResourceUpdateManyWithoutCreatedByNestedInput
+  ideas?: Prisma.IdeaUpdateManyWithoutAuthorNestedInput
+  ideaNotes?: Prisma.IdeaNoteUpdateManyWithoutAuthorNestedInput
 }
 
 export type UserUncheckedUpdateWithoutSessionsInput = {
@@ -1369,6 +1693,8 @@ export type UserUncheckedUpdateWithoutSessionsInput = {
   feedbackAuthored?: Prisma.MentorFeedbackUncheckedUpdateManyWithoutAuthorNestedInput
   discussionNote?: Prisma.DiscussionNoteUncheckedUpdateOneWithoutUserNestedInput
   resourcesAdded?: Prisma.DepartmentResourceUncheckedUpdateManyWithoutCreatedByNestedInput
+  ideas?: Prisma.IdeaUncheckedUpdateManyWithoutAuthorNestedInput
+  ideaNotes?: Prisma.IdeaNoteUncheckedUpdateManyWithoutAuthorNestedInput
 }
 
 export type UserCreateWithoutAccountsInput = {
@@ -1391,6 +1717,8 @@ export type UserCreateWithoutAccountsInput = {
   feedbackAuthored?: Prisma.MentorFeedbackCreateNestedManyWithoutAuthorInput
   discussionNote?: Prisma.DiscussionNoteCreateNestedOneWithoutUserInput
   resourcesAdded?: Prisma.DepartmentResourceCreateNestedManyWithoutCreatedByInput
+  ideas?: Prisma.IdeaCreateNestedManyWithoutAuthorInput
+  ideaNotes?: Prisma.IdeaNoteCreateNestedManyWithoutAuthorInput
 }
 
 export type UserUncheckedCreateWithoutAccountsInput = {
@@ -1413,6 +1741,8 @@ export type UserUncheckedCreateWithoutAccountsInput = {
   feedbackAuthored?: Prisma.MentorFeedbackUncheckedCreateNestedManyWithoutAuthorInput
   discussionNote?: Prisma.DiscussionNoteUncheckedCreateNestedOneWithoutUserInput
   resourcesAdded?: Prisma.DepartmentResourceUncheckedCreateNestedManyWithoutCreatedByInput
+  ideas?: Prisma.IdeaUncheckedCreateNestedManyWithoutAuthorInput
+  ideaNotes?: Prisma.IdeaNoteUncheckedCreateNestedManyWithoutAuthorInput
 }
 
 export type UserCreateOrConnectWithoutAccountsInput = {
@@ -1451,6 +1781,8 @@ export type UserUpdateWithoutAccountsInput = {
   feedbackAuthored?: Prisma.MentorFeedbackUpdateManyWithoutAuthorNestedInput
   discussionNote?: Prisma.DiscussionNoteUpdateOneWithoutUserNestedInput
   resourcesAdded?: Prisma.DepartmentResourceUpdateManyWithoutCreatedByNestedInput
+  ideas?: Prisma.IdeaUpdateManyWithoutAuthorNestedInput
+  ideaNotes?: Prisma.IdeaNoteUpdateManyWithoutAuthorNestedInput
 }
 
 export type UserUncheckedUpdateWithoutAccountsInput = {
@@ -1473,6 +1805,8 @@ export type UserUncheckedUpdateWithoutAccountsInput = {
   feedbackAuthored?: Prisma.MentorFeedbackUncheckedUpdateManyWithoutAuthorNestedInput
   discussionNote?: Prisma.DiscussionNoteUncheckedUpdateOneWithoutUserNestedInput
   resourcesAdded?: Prisma.DepartmentResourceUncheckedUpdateManyWithoutCreatedByNestedInput
+  ideas?: Prisma.IdeaUncheckedUpdateManyWithoutAuthorNestedInput
+  ideaNotes?: Prisma.IdeaNoteUncheckedUpdateManyWithoutAuthorNestedInput
 }
 
 
@@ -1488,6 +1822,8 @@ export type UserCountOutputType = {
   reflections: number
   feedbackAuthored: number
   resourcesAdded: number
+  ideas: number
+  ideaNotes: number
 }
 
 export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1498,6 +1834,8 @@ export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.I
   reflections?: boolean | UserCountOutputTypeCountReflectionsArgs
   feedbackAuthored?: boolean | UserCountOutputTypeCountFeedbackAuthoredArgs
   resourcesAdded?: boolean | UserCountOutputTypeCountResourcesAddedArgs
+  ideas?: boolean | UserCountOutputTypeCountIdeasArgs
+  ideaNotes?: boolean | UserCountOutputTypeCountIdeaNotesArgs
 }
 
 /**
@@ -1559,6 +1897,20 @@ export type UserCountOutputTypeCountResourcesAddedArgs<ExtArgs extends runtime.T
   where?: Prisma.DepartmentResourceWhereInput
 }
 
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountIdeasArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.IdeaWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountIdeaNotesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.IdeaNoteWhereInput
+}
+
 
 export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -1581,6 +1933,8 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   feedbackAuthored?: boolean | Prisma.User$feedbackAuthoredArgs<ExtArgs>
   discussionNote?: boolean | Prisma.User$discussionNoteArgs<ExtArgs>
   resourcesAdded?: boolean | Prisma.User$resourcesAddedArgs<ExtArgs>
+  ideas?: boolean | Prisma.User$ideasArgs<ExtArgs>
+  ideaNotes?: boolean | Prisma.User$ideaNotesArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["user"]>
 
@@ -1639,6 +1993,8 @@ export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   feedbackAuthored?: boolean | Prisma.User$feedbackAuthoredArgs<ExtArgs>
   discussionNote?: boolean | Prisma.User$discussionNoteArgs<ExtArgs>
   resourcesAdded?: boolean | Prisma.User$resourcesAddedArgs<ExtArgs>
+  ideas?: boolean | Prisma.User$ideasArgs<ExtArgs>
+  ideaNotes?: boolean | Prisma.User$ideaNotesArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type UserIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
@@ -1655,6 +2011,8 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     feedbackAuthored: Prisma.$MentorFeedbackPayload<ExtArgs>[]
     discussionNote: Prisma.$DiscussionNotePayload<ExtArgs> | null
     resourcesAdded: Prisma.$DepartmentResourcePayload<ExtArgs>[]
+    ideas: Prisma.$IdeaPayload<ExtArgs>[]
+    ideaNotes: Prisma.$IdeaNotePayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -2071,6 +2429,8 @@ export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Typ
   feedbackAuthored<T extends Prisma.User$feedbackAuthoredArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$feedbackAuthoredArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$MentorFeedbackPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   discussionNote<T extends Prisma.User$discussionNoteArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$discussionNoteArgs<ExtArgs>>): Prisma.Prisma__DiscussionNoteClient<runtime.Types.Result.GetResult<Prisma.$DiscussionNotePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   resourcesAdded<T extends Prisma.User$resourcesAddedArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$resourcesAddedArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$DepartmentResourcePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  ideas<T extends Prisma.User$ideasArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$ideasArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$IdeaPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  ideaNotes<T extends Prisma.User$ideaNotesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$ideaNotesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$IdeaNotePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -2689,6 +3049,54 @@ export type User$resourcesAddedArgs<ExtArgs extends runtime.Types.Extensions.Int
   take?: number
   skip?: number
   distinct?: Prisma.DepartmentResourceScalarFieldEnum | Prisma.DepartmentResourceScalarFieldEnum[]
+}
+
+/**
+ * User.ideas
+ */
+export type User$ideasArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Idea
+   */
+  select?: Prisma.IdeaSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Idea
+   */
+  omit?: Prisma.IdeaOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.IdeaInclude<ExtArgs> | null
+  where?: Prisma.IdeaWhereInput
+  orderBy?: Prisma.IdeaOrderByWithRelationInput | Prisma.IdeaOrderByWithRelationInput[]
+  cursor?: Prisma.IdeaWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.IdeaScalarFieldEnum | Prisma.IdeaScalarFieldEnum[]
+}
+
+/**
+ * User.ideaNotes
+ */
+export type User$ideaNotesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the IdeaNote
+   */
+  select?: Prisma.IdeaNoteSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the IdeaNote
+   */
+  omit?: Prisma.IdeaNoteOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.IdeaNoteInclude<ExtArgs> | null
+  where?: Prisma.IdeaNoteWhereInput
+  orderBy?: Prisma.IdeaNoteOrderByWithRelationInput | Prisma.IdeaNoteOrderByWithRelationInput[]
+  cursor?: Prisma.IdeaNoteWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.IdeaNoteScalarFieldEnum | Prisma.IdeaNoteScalarFieldEnum[]
 }
 
 /**

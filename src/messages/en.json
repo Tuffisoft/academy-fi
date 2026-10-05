@@ -12,7 +12,10 @@
     "openLearning": "Open Learning",
     "objectivesCardTitle": "Weekly Objectives",
     "objectivesCardDescription": "Track and manage intern objectives.",
-    "openObjectives": "Open Objectives"
+    "openObjectives": "Open Objectives",
+    "ideasCardTitle": "Idea Hub",
+    "ideasCardDescription": "Throw in ideas and add notes to each other's.",
+    "openIdeas": "Open Idea Hub"
   },
   "auth": {
     "signInTitle": "Sign in to Academy Fi",
@@ -552,6 +555,45 @@
     "resourceCreateError": "Unable to add resource.",
     "deleteResource": "Delete resource",
     "resourceDeleteError": "Unable to delete resource."
+  },
+  "ideas": {
+    "title": "Idea Hub",
+    "description": "Throw in an idea, and add notes to any idea to build on it together.",
+    "empty": "No ideas yet. Be the first to add one.",
+    "searchPlaceholder": "Search ideas, notes, or people...",
+    "sortLabel": "Sort by",
+    "sort": {
+      "newest": "Newest first",
+      "oldest": "Oldest first",
+      "activity": "Recent activity",
+      "mostNotes": "Most notes"
+    },
+    "noResults": "No ideas match your search.",
+    "addIdea": "Add idea",
+    "createTitle": "New idea",
+    "createDescription": "Share an idea with the team. Others can add notes to it.",
+    "ideaTitle": "Title",
+    "ideaDescription": "Details (optional)",
+    "create": "Add",
+    "creating": "Adding\u2026",
+    "createSuccess": "Idea added.",
+    "createError": "Unable to add idea.",
+    "byAuthor": "by {name}",
+    "formerMember": "Former member",
+    "notesTitle": "Notes ({count})",
+    "noNotes": "No notes yet.",
+    "notePlaceholder": "Add a note to this idea...",
+    "addNote": "Add note",
+    "noteAddError": "Unable to add note.",
+    "deleteNote": "Delete note",
+    "noteDeleteError": "Unable to delete note.",
+    "deleteIdea": "Delete idea",
+    "deleteTitle": "Delete \"{title}\"?",
+    "deleteDescription": "This also removes all of its notes. This cannot be undone.",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "deleteSuccess": "Idea deleted.",
+    "deleteError": "Unable to delete idea."
   },
   "planner": {
     "title": "This Week",

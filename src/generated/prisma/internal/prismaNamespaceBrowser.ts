@@ -59,6 +59,8 @@ export const ModelName = {
   DiscussionNote: 'DiscussionNote',
   Department: 'Department',
   DepartmentResource: 'DepartmentResource',
+  Idea: 'Idea',
+  IdeaNote: 'IdeaNote',
   User: 'User',
   Session: 'Session',
   Account: 'Account',
@@ -187,6 +189,29 @@ export const DepartmentResourceScalarFieldEnum = {
 } as const
 
 export type DepartmentResourceScalarFieldEnum = (typeof DepartmentResourceScalarFieldEnum)[keyof typeof DepartmentResourceScalarFieldEnum]
+
+
+export const IdeaScalarFieldEnum = {
+  id: 'id',
+  title: 'title',
+  description: 'description',
+  authorId: 'authorId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type IdeaScalarFieldEnum = (typeof IdeaScalarFieldEnum)[keyof typeof IdeaScalarFieldEnum]
+
+
+export const IdeaNoteScalarFieldEnum = {
+  id: 'id',
+  ideaId: 'ideaId',
+  authorId: 'authorId',
+  content: 'content',
+  createdAt: 'createdAt'
+} as const
+
+export type IdeaNoteScalarFieldEnum = (typeof IdeaNoteScalarFieldEnum)[keyof typeof IdeaNoteScalarFieldEnum]
 
 
 export const UserScalarFieldEnum = {
