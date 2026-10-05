@@ -1607,7 +1607,10 @@ export const DepartmentResourceScalarFieldEnum = {
   note: 'note',
   order: 'order',
   createdAt: 'createdAt',
-  createdById: 'createdById'
+  createdById: 'createdById',
+  fileKey: 'fileKey',
+  fileName: 'fileName',
+  fileSize: 'fileSize'
 } as const
 
 export type DepartmentResourceScalarFieldEnum = (typeof DepartmentResourceScalarFieldEnum)[keyof typeof DepartmentResourceScalarFieldEnum]

@@ -554,7 +554,17 @@
     "resourceCreateSuccess": "Ressource hinzugefügt.",
     "resourceCreateError": "Ressource konnte nicht hinzugefügt werden.",
     "deleteResource": "Ressource löschen",
-    "resourceDeleteError": "Ressource konnte nicht gelöscht werden."
+    "resourceDeleteError": "Ressource konnte nicht gelöscht werden.",
+    "uploadDocument": "Dokument hochladen",
+    "documentUploadTitle": "Dokument hochladen",
+    "documentUploadDescription": "Teile eine Datei mit dieser Abteilung.",
+    "documentFile": "Datei",
+    "documentFileHelp": "PDF, Word, Excel, PowerPoint, Text oder Bild, bis zu 16 MB.",
+    "documentFileRequired": "Wähle eine Datei zum Hochladen aus.",
+    "upload": "Hochladen",
+    "uploading": "Wird hochgeladen…",
+    "documentUploadSuccess": "Dokument hochgeladen.",
+    "documentUploadError": "Dokument konnte nicht hochgeladen werden."
   },
   "ideas": {
     "title": "Ideen-Hub",
@@ -641,6 +651,17 @@
     "description": "Zeige und verwalte wöchentliche Aufgaben für alle Praktikanten.",
     "allObjectivesTitle": "Alle Ziele",
     "allObjectivesDescription": "Verfolge den Fortschritt und die Reflexionen für jede wöchentliche Aufgabe eines Praktikanten.",
+    "filters": {
+      "searchPlaceholder": "Ziele, Aufgaben oder Praktikanten suchen...",
+      "internLabel": "Praktikant",
+      "allInterns": "Alle Praktikanten",
+      "status": {
+        "all": "Alle",
+        "open": "Offen",
+        "finished": "Abgeschlossen"
+      },
+      "noResults": "Keine Ziele entsprechen deinen Filtern."
+    },
     "noObjectives": "Noch keine Ziele erstellt. Erstelle eines um zu beginnen.",
     "progress": "Fortschritt",
     "reflectionSubmitted": "Reflexion eingereicht",

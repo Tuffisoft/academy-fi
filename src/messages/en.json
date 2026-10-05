@@ -554,7 +554,17 @@
     "resourceCreateSuccess": "Resource added.",
     "resourceCreateError": "Unable to add resource.",
     "deleteResource": "Delete resource",
-    "resourceDeleteError": "Unable to delete resource."
+    "resourceDeleteError": "Unable to delete resource.",
+    "uploadDocument": "Upload document",
+    "documentUploadTitle": "Upload a document",
+    "documentUploadDescription": "Share a file with this department.",
+    "documentFile": "File",
+    "documentFileHelp": "PDF, Word, Excel, PowerPoint, text or image, up to 16 MB.",
+    "documentFileRequired": "Choose a file to upload.",
+    "upload": "Upload",
+    "uploading": "Uploading\u2026",
+    "documentUploadSuccess": "Document uploaded.",
+    "documentUploadError": "Unable to upload document."
   },
   "ideas": {
     "title": "Idea Hub",
@@ -641,6 +651,17 @@
     "description": "View and manage weekly assignments for all interns.",
     "allObjectivesTitle": "All Objectives",
     "allObjectivesDescription": "Track progress and reflections for each intern's weekly assignments.",
+    "filters": {
+      "searchPlaceholder": "Search objectives, tasks, or interns...",
+      "internLabel": "Intern",
+      "allInterns": "All interns",
+      "status": {
+        "all": "All",
+        "open": "Open",
+        "finished": "Finished"
+      },
+      "noResults": "No objectives match your filters."
+    },
     "noObjectives": "No objectives created yet. Create one to get started.",
     "progress": "Progress",
     "reflectionSubmitted": "Reflection submitted",

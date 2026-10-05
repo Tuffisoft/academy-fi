@@ -110,6 +110,10 @@ model DepartmentResource {
     createdAt    DateTime   @default(now())
     createdById  String?
     createdBy    User?      @relation("ResourcesAddedBy", fields: [createdById], references: [id], onDelete: SetNull)
+    // Set only for uploaded documents; url then points at the hosted file
+    fileKey      String?    @unique
+    fileName     String?
+    fileSize     Int?
 }
 
 model Idea {

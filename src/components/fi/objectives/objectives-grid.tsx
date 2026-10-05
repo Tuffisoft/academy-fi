@@ -1,6 +1,7 @@
 import { getTranslations } from "next-intl/server";
 import { getAssignmentsOverview } from "@/lib/data/assignments";
 import { ObjectiveCardWrapper } from "./objective-card-wrapper";
+import { ObjectivesFilter, type ObjectiveItem } from "./objectives-filter";
 import {
   Card,
   CardContent,
@@ -33,27 +34,30 @@ export async function ObjectivesGrid() {
     );
   }
 
-  // Group assignments by intern
-  const grouped = assignments.reduce(
-    (acc, assignment) => {
-      const internId = assignment.intern.id;
-      if (!acc[internId]) {
-        acc[internId] = {
-          intern: assignment.intern,
-          assignments: [],
-        };
-      }
-      acc[internId].assignments.push(assignment);
-      return acc;
-    },
-    {} as Record<
-      string,
-      {
-        intern: { id: string; name: string };
-        assignments: typeof assignments;
-      }
-    >,
-  );
+  // Finished = has tasks and every task is done
+  const items: ObjectiveItem[] = assignments.map((assignment) => ({
+    id: assignment.id,
+    internId: assignment.intern.id,
+    internName: assignment.intern.name,
+    status:
+      assignment.checklistItems.length > 0 &&
+      assignment.checklistItems.every((item) => item.completed)
+        ? "finished"
+        : "open",
+    searchText: [
+      assignment.focus,
+      assignment.description,
+      assignment.acceptanceCriteria,
+      assignment.intern.name,
+      ...assignment.checklistItems.flatMap((item) => [
+        item.label,
+        ...item.stages.map((stage) => stage.title),
+      ]),
+    ]
+      .join(" ")
+      .toLowerCase(),
+    card: <ObjectiveCardWrapper assignment={assignment} />,
+  }));
 
   return (
     <div className="flex flex-col gap-6">
@@ -67,19 +71,7 @@ export async function ObjectivesGrid() {
         </CardHeader>
       </Card>
 
-      {Object.values(grouped).map((group) => (
-        <div key={group.intern.id} className="flex flex-col gap-3">
-          <h2 className="text-xl font-semibold">{group.intern.name}</h2>
-          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-            {group.assignments.map((assignment) => (
-              <ObjectiveCardWrapper
-                key={assignment.id}
-                assignment={assignment}
-              />
-            ))}
-          </div>
-        </div>
-      ))}
+      <ObjectivesFilter items={items} />
     </div>
   );
 }

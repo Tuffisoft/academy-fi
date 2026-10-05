@@ -1,4 +1,5 @@
 import { getTranslations, getLocale } from "next-intl/server";
+import { FileText } from "lucide-react";
 import { getDepartments } from "@/lib/data/departments";
 import {
   Card,
@@ -10,6 +11,7 @@ import {
 } from "@/components/ui/card";
 import { CreateDepartmentDialog } from "@/components/fi/learning/create-department-dialog";
 import { AddResourceDialog } from "@/components/fi/learning/add-resource-dialog";
+import { UploadDocumentDialog } from "@/components/fi/learning/upload-document-dialog";
 import { DeleteDepartmentButton } from "@/components/fi/learning/delete-department-button";
 import { DeleteResourceButton } from "@/components/fi/learning/delete-resource-button";
 
@@ -66,11 +68,16 @@ export async function ManageDepartments() {
                   key={resource.id}
                   className="flex items-center justify-between gap-2 text-sm"
                 >
-                  <span>
+                  <span className="flex items-center gap-2">
+                    {/* Uploaded documents get a file icon */}
+                    {resource.fileKey && (
+                      <FileText className="text-muted-foreground h-4 w-4 shrink-0" />
+                    )}
                     <a
                       href={resource.url}
                       target="_blank"
                       rel="noopener noreferrer"
+                      title={resource.fileName ?? undefined}
                       className="text-primary font-medium underline underline-offset-4"
                     >
                       {resource.title}
@@ -85,8 +92,9 @@ export async function ManageDepartments() {
                 </li>
               ))}
             </ul>
-            <div className="mt-3">
+            <div className="mt-3 flex flex-wrap gap-2">
               <AddResourceDialog departmentId={department.id} />
+              <UploadDocumentDialog departmentId={department.id} />
             </div>
           </div>
         ))}

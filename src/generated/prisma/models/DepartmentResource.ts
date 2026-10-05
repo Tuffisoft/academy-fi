@@ -28,10 +28,12 @@ export type AggregateDepartmentResource = {
 
 export type DepartmentResourceAvgAggregateOutputType = {
   order: number | null
+  fileSize: number | null
 }
 
 export type DepartmentResourceSumAggregateOutputType = {
   order: number | null
+  fileSize: number | null
 }
 
 export type DepartmentResourceMinAggregateOutputType = {
@@ -43,6 +45,9 @@ export type DepartmentResourceMinAggregateOutputType = {
   order: number | null
   createdAt: Date | null
   createdById: string | null
+  fileKey: string | null
+  fileName: string | null
+  fileSize: number | null
 }
 
 export type DepartmentResourceMaxAggregateOutputType = {
@@ -54,6 +59,9 @@ export type DepartmentResourceMaxAggregateOutputType = {
   order: number | null
   createdAt: Date | null
   createdById: string | null
+  fileKey: string | null
+  fileName: string | null
+  fileSize: number | null
 }
 
 export type DepartmentResourceCountAggregateOutputType = {
@@ -65,16 +73,21 @@ export type DepartmentResourceCountAggregateOutputType = {
   order: number
   createdAt: number
   createdById: number
+  fileKey: number
+  fileName: number
+  fileSize: number
   _all: number
 }
 
 
 export type DepartmentResourceAvgAggregateInputType = {
   order?: true
+  fileSize?: true
 }
 
 export type DepartmentResourceSumAggregateInputType = {
   order?: true
+  fileSize?: true
 }
 
 export type DepartmentResourceMinAggregateInputType = {
@@ -86,6 +99,9 @@ export type DepartmentResourceMinAggregateInputType = {
   order?: true
   createdAt?: true
   createdById?: true
+  fileKey?: true
+  fileName?: true
+  fileSize?: true
 }
 
 export type DepartmentResourceMaxAggregateInputType = {
@@ -97,6 +113,9 @@ export type DepartmentResourceMaxAggregateInputType = {
   order?: true
   createdAt?: true
   createdById?: true
+  fileKey?: true
+  fileName?: true
+  fileSize?: true
 }
 
 export type DepartmentResourceCountAggregateInputType = {
@@ -108,6 +127,9 @@ export type DepartmentResourceCountAggregateInputType = {
   order?: true
   createdAt?: true
   createdById?: true
+  fileKey?: true
+  fileName?: true
+  fileSize?: true
   _all?: true
 }
 
@@ -206,6 +228,9 @@ export type DepartmentResourceGroupByOutputType = {
   order: number
   createdAt: Date
   createdById: string | null
+  fileKey: string | null
+  fileName: string | null
+  fileSize: number | null
   _count: DepartmentResourceCountAggregateOutputType | null
   _avg: DepartmentResourceAvgAggregateOutputType | null
   _sum: DepartmentResourceSumAggregateOutputType | null
@@ -240,6 +265,9 @@ export type DepartmentResourceWhereInput = {
   order?: Prisma.IntFilter<"DepartmentResource"> | number
   createdAt?: Prisma.DateTimeFilter<"DepartmentResource"> | Date | string
   createdById?: Prisma.StringNullableFilter<"DepartmentResource"> | string | null
+  fileKey?: Prisma.StringNullableFilter<"DepartmentResource"> | string | null
+  fileName?: Prisma.StringNullableFilter<"DepartmentResource"> | string | null
+  fileSize?: Prisma.IntNullableFilter<"DepartmentResource"> | number | null
   department?: Prisma.XOR<Prisma.DepartmentScalarRelationFilter, Prisma.DepartmentWhereInput>
   createdBy?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
 }
@@ -253,12 +281,16 @@ export type DepartmentResourceOrderByWithRelationInput = {
   order?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   createdById?: Prisma.SortOrderInput | Prisma.SortOrder
+  fileKey?: Prisma.SortOrderInput | Prisma.SortOrder
+  fileName?: Prisma.SortOrderInput | Prisma.SortOrder
+  fileSize?: Prisma.SortOrderInput | Prisma.SortOrder
   department?: Prisma.DepartmentOrderByWithRelationInput
   createdBy?: Prisma.UserOrderByWithRelationInput
 }
 
 export type DepartmentResourceWhereUniqueInput = Prisma.AtLeast<{
   id?: string
+  fileKey?: string
   AND?: Prisma.DepartmentResourceWhereInput | Prisma.DepartmentResourceWhereInput[]
   OR?: Prisma.DepartmentResourceWhereInput[]
   NOT?: Prisma.DepartmentResourceWhereInput | Prisma.DepartmentResourceWhereInput[]
@@ -269,9 +301,11 @@ export type DepartmentResourceWhereUniqueInput = Prisma.AtLeast<{
   order?: Prisma.IntFilter<"DepartmentResource"> | number
   createdAt?: Prisma.DateTimeFilter<"DepartmentResource"> | Date | string
   createdById?: Prisma.StringNullableFilter<"DepartmentResource"> | string | null
+  fileName?: Prisma.StringNullableFilter<"DepartmentResource"> | string | null
+  fileSize?: Prisma.IntNullableFilter<"DepartmentResource"> | number | null
   department?: Prisma.XOR<Prisma.DepartmentScalarRelationFilter, Prisma.DepartmentWhereInput>
   createdBy?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
-}, "id">
+}, "id" | "fileKey">
 
 export type DepartmentResourceOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
@@ -282,6 +316,9 @@ export type DepartmentResourceOrderByWithAggregationInput = {
   order?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   createdById?: Prisma.SortOrderInput | Prisma.SortOrder
+  fileKey?: Prisma.SortOrderInput | Prisma.SortOrder
+  fileName?: Prisma.SortOrderInput | Prisma.SortOrder
+  fileSize?: Prisma.SortOrderInput | Prisma.SortOrder
   _count?: Prisma.DepartmentResourceCountOrderByAggregateInput
   _avg?: Prisma.DepartmentResourceAvgOrderByAggregateInput
   _max?: Prisma.DepartmentResourceMaxOrderByAggregateInput
@@ -301,6 +338,9 @@ export type DepartmentResourceScalarWhereWithAggregatesInput = {
   order?: Prisma.IntWithAggregatesFilter<"DepartmentResource"> | number
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"DepartmentResource"> | Date | string
   createdById?: Prisma.StringNullableWithAggregatesFilter<"DepartmentResource"> | string | null
+  fileKey?: Prisma.StringNullableWithAggregatesFilter<"DepartmentResource"> | string | null
+  fileName?: Prisma.StringNullableWithAggregatesFilter<"DepartmentResource"> | string | null
+  fileSize?: Prisma.IntNullableWithAggregatesFilter<"DepartmentResource"> | number | null
 }
 
 export type DepartmentResourceCreateInput = {
@@ -310,6 +350,9 @@ export type DepartmentResourceCreateInput = {
   note?: string | null
   order?: number
   createdAt?: Date | string
+  fileKey?: string | null
+  fileName?: string | null
+  fileSize?: number | null
   department: Prisma.DepartmentCreateNestedOneWithoutResourcesInput
   createdBy?: Prisma.UserCreateNestedOneWithoutResourcesAddedInput
 }
@@ -323,6 +366,9 @@ export type DepartmentResourceUncheckedCreateInput = {
   order?: number
   createdAt?: Date | string
   createdById?: string | null
+  fileKey?: string | null
+  fileName?: string | null
+  fileSize?: number | null
 }
 
 export type DepartmentResourceUpdateInput = {
@@ -332,6 +378,9 @@ export type DepartmentResourceUpdateInput = {
   note?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   order?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  fileKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  fileName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  fileSize?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   department?: Prisma.DepartmentUpdateOneRequiredWithoutResourcesNestedInput
   createdBy?: Prisma.UserUpdateOneWithoutResourcesAddedNestedInput
 }
@@ -345,6 +394,9 @@ export type DepartmentResourceUncheckedUpdateInput = {
   order?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  fileKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  fileName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  fileSize?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
 }
 
 export type DepartmentResourceCreateManyInput = {
@@ -356,6 +408,9 @@ export type DepartmentResourceCreateManyInput = {
   order?: number
   createdAt?: Date | string
   createdById?: string | null
+  fileKey?: string | null
+  fileName?: string | null
+  fileSize?: number | null
 }
 
 export type DepartmentResourceUpdateManyMutationInput = {
@@ -365,6 +420,9 @@ export type DepartmentResourceUpdateManyMutationInput = {
   note?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   order?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  fileKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  fileName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  fileSize?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
 }
 
 export type DepartmentResourceUncheckedUpdateManyInput = {
@@ -376,6 +434,9 @@ export type DepartmentResourceUncheckedUpdateManyInput = {
   order?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  fileKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  fileName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  fileSize?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
 }
 
 export type DepartmentResourceListRelationFilter = {
@@ -397,10 +458,14 @@ export type DepartmentResourceCountOrderByAggregateInput = {
   order?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   createdById?: Prisma.SortOrder
+  fileKey?: Prisma.SortOrder
+  fileName?: Prisma.SortOrder
+  fileSize?: Prisma.SortOrder
 }
 
 export type DepartmentResourceAvgOrderByAggregateInput = {
   order?: Prisma.SortOrder
+  fileSize?: Prisma.SortOrder
 }
 
 export type DepartmentResourceMaxOrderByAggregateInput = {
@@ -412,6 +477,9 @@ export type DepartmentResourceMaxOrderByAggregateInput = {
   order?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   createdById?: Prisma.SortOrder
+  fileKey?: Prisma.SortOrder
+  fileName?: Prisma.SortOrder
+  fileSize?: Prisma.SortOrder
 }
 
 export type DepartmentResourceMinOrderByAggregateInput = {
@@ -423,10 +491,14 @@ export type DepartmentResourceMinOrderByAggregateInput = {
   order?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   createdById?: Prisma.SortOrder
+  fileKey?: Prisma.SortOrder
+  fileName?: Prisma.SortOrder
+  fileSize?: Prisma.SortOrder
 }
 
 export type DepartmentResourceSumOrderByAggregateInput = {
   order?: Prisma.SortOrder
+  fileSize?: Prisma.SortOrder
 }
 
 export type DepartmentResourceCreateNestedManyWithoutDepartmentInput = {
@@ -469,6 +541,14 @@ export type DepartmentResourceUncheckedUpdateManyWithoutDepartmentNestedInput = 
   update?: Prisma.DepartmentResourceUpdateWithWhereUniqueWithoutDepartmentInput | Prisma.DepartmentResourceUpdateWithWhereUniqueWithoutDepartmentInput[]
   updateMany?: Prisma.DepartmentResourceUpdateManyWithWhereWithoutDepartmentInput | Prisma.DepartmentResourceUpdateManyWithWhereWithoutDepartmentInput[]
   deleteMany?: Prisma.DepartmentResourceScalarWhereInput | Prisma.DepartmentResourceScalarWhereInput[]
+}
+
+export type NullableIntFieldUpdateOperationsInput = {
+  set?: number | null
+  increment?: number
+  decrement?: number
+  multiply?: number
+  divide?: number
 }
 
 export type DepartmentResourceCreateNestedManyWithoutCreatedByInput = {
@@ -520,6 +600,9 @@ export type DepartmentResourceCreateWithoutDepartmentInput = {
   note?: string | null
   order?: number
   createdAt?: Date | string
+  fileKey?: string | null
+  fileName?: string | null
+  fileSize?: number | null
   createdBy?: Prisma.UserCreateNestedOneWithoutResourcesAddedInput
 }
 
@@ -531,6 +614,9 @@ export type DepartmentResourceUncheckedCreateWithoutDepartmentInput = {
   order?: number
   createdAt?: Date | string
   createdById?: string | null
+  fileKey?: string | null
+  fileName?: string | null
+  fileSize?: number | null
 }
 
 export type DepartmentResourceCreateOrConnectWithoutDepartmentInput = {
@@ -571,6 +657,9 @@ export type DepartmentResourceScalarWhereInput = {
   order?: Prisma.IntFilter<"DepartmentResource"> | number
   createdAt?: Prisma.DateTimeFilter<"DepartmentResource"> | Date | string
   createdById?: Prisma.StringNullableFilter<"DepartmentResource"> | string | null
+  fileKey?: Prisma.StringNullableFilter<"DepartmentResource"> | string | null
+  fileName?: Prisma.StringNullableFilter<"DepartmentResource"> | string | null
+  fileSize?: Prisma.IntNullableFilter<"DepartmentResource"> | number | null
 }
 
 export type DepartmentResourceCreateWithoutCreatedByInput = {
@@ -580,6 +669,9 @@ export type DepartmentResourceCreateWithoutCreatedByInput = {
   note?: string | null
   order?: number
   createdAt?: Date | string
+  fileKey?: string | null
+  fileName?: string | null
+  fileSize?: number | null
   department: Prisma.DepartmentCreateNestedOneWithoutResourcesInput
 }
 
@@ -591,6 +683,9 @@ export type DepartmentResourceUncheckedCreateWithoutCreatedByInput = {
   note?: string | null
   order?: number
   createdAt?: Date | string
+  fileKey?: string | null
+  fileName?: string | null
+  fileSize?: number | null
 }
 
 export type DepartmentResourceCreateOrConnectWithoutCreatedByInput = {
@@ -627,6 +722,9 @@ export type DepartmentResourceCreateManyDepartmentInput = {
   order?: number
   createdAt?: Date | string
   createdById?: string | null
+  fileKey?: string | null
+  fileName?: string | null
+  fileSize?: number | null
 }
 
 export type DepartmentResourceUpdateWithoutDepartmentInput = {
@@ -636,6 +734,9 @@ export type DepartmentResourceUpdateWithoutDepartmentInput = {
   note?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   order?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  fileKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  fileName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  fileSize?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   createdBy?: Prisma.UserUpdateOneWithoutResourcesAddedNestedInput
 }
 
@@ -647,6 +748,9 @@ export type DepartmentResourceUncheckedUpdateWithoutDepartmentInput = {
   order?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  fileKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  fileName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  fileSize?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
 }
 
 export type DepartmentResourceUncheckedUpdateManyWithoutDepartmentInput = {
@@ -657,6 +761,9 @@ export type DepartmentResourceUncheckedUpdateManyWithoutDepartmentInput = {
   order?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  fileKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  fileName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  fileSize?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
 }
 
 export type DepartmentResourceCreateManyCreatedByInput = {
@@ -667,6 +774,9 @@ export type DepartmentResourceCreateManyCreatedByInput = {
   note?: string | null
   order?: number
   createdAt?: Date | string
+  fileKey?: string | null
+  fileName?: string | null
+  fileSize?: number | null
 }
 
 export type DepartmentResourceUpdateWithoutCreatedByInput = {
@@ -676,6 +786,9 @@ export type DepartmentResourceUpdateWithoutCreatedByInput = {
   note?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   order?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  fileKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  fileName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  fileSize?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   department?: Prisma.DepartmentUpdateOneRequiredWithoutResourcesNestedInput
 }
 
@@ -687,6 +800,9 @@ export type DepartmentResourceUncheckedUpdateWithoutCreatedByInput = {
   note?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   order?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  fileKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  fileName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  fileSize?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
 }
 
 export type DepartmentResourceUncheckedUpdateManyWithoutCreatedByInput = {
@@ -697,6 +813,9 @@ export type DepartmentResourceUncheckedUpdateManyWithoutCreatedByInput = {
   note?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   order?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  fileKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  fileName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  fileSize?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
 }
 
 
@@ -710,6 +829,9 @@ export type DepartmentResourceSelect<ExtArgs extends runtime.Types.Extensions.In
   order?: boolean
   createdAt?: boolean
   createdById?: boolean
+  fileKey?: boolean
+  fileName?: boolean
+  fileSize?: boolean
   department?: boolean | Prisma.DepartmentDefaultArgs<ExtArgs>
   createdBy?: boolean | Prisma.DepartmentResource$createdByArgs<ExtArgs>
 }, ExtArgs["result"]["departmentResource"]>
@@ -723,6 +845,9 @@ export type DepartmentResourceSelectCreateManyAndReturn<ExtArgs extends runtime.
   order?: boolean
   createdAt?: boolean
   createdById?: boolean
+  fileKey?: boolean
+  fileName?: boolean
+  fileSize?: boolean
   department?: boolean | Prisma.DepartmentDefaultArgs<ExtArgs>
   createdBy?: boolean | Prisma.DepartmentResource$createdByArgs<ExtArgs>
 }, ExtArgs["result"]["departmentResource"]>
@@ -736,6 +861,9 @@ export type DepartmentResourceSelectUpdateManyAndReturn<ExtArgs extends runtime.
   order?: boolean
   createdAt?: boolean
   createdById?: boolean
+  fileKey?: boolean
+  fileName?: boolean
+  fileSize?: boolean
   department?: boolean | Prisma.DepartmentDefaultArgs<ExtArgs>
   createdBy?: boolean | Prisma.DepartmentResource$createdByArgs<ExtArgs>
 }, ExtArgs["result"]["departmentResource"]>
@@ -749,9 +877,12 @@ export type DepartmentResourceSelectScalar = {
   order?: boolean
   createdAt?: boolean
   createdById?: boolean
+  fileKey?: boolean
+  fileName?: boolean
+  fileSize?: boolean
 }
 
-export type DepartmentResourceOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "departmentId" | "title" | "url" | "note" | "order" | "createdAt" | "createdById", ExtArgs["result"]["departmentResource"]>
+export type DepartmentResourceOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "departmentId" | "title" | "url" | "note" | "order" | "createdAt" | "createdById" | "fileKey" | "fileName" | "fileSize", ExtArgs["result"]["departmentResource"]>
 export type DepartmentResourceInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   department?: boolean | Prisma.DepartmentDefaultArgs<ExtArgs>
   createdBy?: boolean | Prisma.DepartmentResource$createdByArgs<ExtArgs>
@@ -780,6 +911,9 @@ export type $DepartmentResourcePayload<ExtArgs extends runtime.Types.Extensions.
     order: number
     createdAt: Date
     createdById: string | null
+    fileKey: string | null
+    fileName: string | null
+    fileSize: number | null
   }, ExtArgs["result"]["departmentResource"]>
   composites: {}
 }
@@ -1213,6 +1347,9 @@ export interface DepartmentResourceFieldRefs {
   readonly order: Prisma.FieldRef<"DepartmentResource", 'Int'>
   readonly createdAt: Prisma.FieldRef<"DepartmentResource", 'DateTime'>
   readonly createdById: Prisma.FieldRef<"DepartmentResource", 'String'>
+  readonly fileKey: Prisma.FieldRef<"DepartmentResource", 'String'>
+  readonly fileName: Prisma.FieldRef<"DepartmentResource", 'String'>
+  readonly fileSize: Prisma.FieldRef<"DepartmentResource", 'Int'>
 }
     
 
