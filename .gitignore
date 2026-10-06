@@ -42,3 +42,9 @@ next-env.d.ts
 
 # docs
 /docs
+
+# Private files exchanged through the cloud
+/.cloud-data/
+
+# Chat database, website profiles and attachments
+/.chat-data/

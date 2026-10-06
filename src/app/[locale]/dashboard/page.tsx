@@ -1,4 +1,7 @@
-import { getTranslations } from "next-intl/server";
+import { getLocale, getTranslations } from "next-intl/server";
+import Link from "next/link";
+import { Cloud, MessageCircle } from "lucide-react";
+import { buttonVariants } from "@/components/ui/button";
 import { requireUser } from "@/lib/session";
 import { getAllAssignmentsForIntern } from "@/lib/data/assignments";
 import { DashboardHeader } from "@/components/fi/dashboard/dashboard-header";
@@ -21,6 +24,7 @@ import {
 export default async function DashboardPage() {
   const user = await requireUser();
   const t = await getTranslations("dashboard");
+  const locale = await getLocale();
   const isOwner = user.role === "OWNER";
 
   const assignments = isOwner ? [] : await getAllAssignmentsForIntern(user.id);
@@ -32,6 +36,26 @@ export default async function DashboardPage() {
         <BreadcrumbNav items={[]} />
       </div>
       <main className="flex flex-1 flex-col gap-6 p-6">
+        <div className="flex flex-wrap justify-end gap-3">
+          <Link
+            href="/cloud/index.html"
+            prefetch={false}
+            aria-label={locale === "de" ? "Cloud-System öffnen" : "Open cloud storage"}
+            className={buttonVariants({ size: "lg" })}
+          >
+            <Cloud aria-hidden="true" />
+            {locale === "de" ? "Cloud-System" : "Cloud"}
+          </Link>
+          <Link
+            href="/chat/index.html"
+            prefetch={false}
+            aria-label={locale === "de" ? "Chat öffnen" : "Open chat"}
+            className={buttonVariants({ size: "lg" })}
+          >
+            <MessageCircle aria-hidden="true" />
+            Chat
+          </Link>
+        </div>
         <Card>
           <CardHeader>
             <CardTitle>{t("welcome", { name: user.name })}</CardTitle>

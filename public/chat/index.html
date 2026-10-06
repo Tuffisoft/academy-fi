@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="robots" content="noindex,nofollow">
+  <meta name="description" content="Der Academy Fi Chat mit Kanälen, Direktnachrichten und Sprach- und Videoräumen.">
+  <title>Academy Fi Chat</title>
+  <script>
+    (() => { const media = matchMedia('(prefers-color-scheme: dark)'); const sync = () => { let preference = 'system'; try { preference = localStorage.getItem('theme') || preference; } catch {} document.documentElement.classList.toggle('dark', preference === 'dark' || (preference !== 'light' && media.matches)); }; sync(); media.addEventListener('change', sync); addEventListener('storage', event => { if (!event.key || event.key === 'theme') sync(); }); })();
+  </script>
+  <link rel="preload" href="/cloud/raleway-latin.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="/chat/chat.css">
+  <script src="/chat/chat.js" defer></script>
+</head>
+<body>
+  <div class="chat-shell" id="chatShell" hidden>
+    <nav class="server-rail" aria-label="Server und Navigation">
+      <a class="brand-logo" href="/de/dashboard" aria-label="Zum Dashboard">AF</a>
+      <div class="rail-divider"></div>
+      <div id="serverList" class="server-list"></div>
+      <button id="createServer" class="server-circle add-server" aria-label="Server erstellen" title="Server erstellen">+</button>
+      <button id="joinServer" class="server-circle" aria-label="Server beitreten" title="Server beitreten" data-icon="compass"></button>
+      <div class="rail-spacer"></div>
+      <a class="server-circle" href="/cloud/index.html" aria-label="Cloud öffnen" title="Cloud öffnen" data-icon="cloud"></a>
+      <a class="server-circle" href="/de/dashboard" aria-label="Zum Dashboard" title="Zum Dashboard" data-icon="home"></a>
+    </nav>
+    <aside class="chat-sidebar" id="channelSidebar">
+      <button class="server-heading" id="serverMenu" aria-label="Server verwalten"><span id="serverName">Academy Fi</span><span data-icon="chevron"></span></button>
+      <button class="icon-button mobile-only mobile-close" id="closeMobileSidebar" aria-label="Kanäle schließen" data-icon="close"></button>
+      <div class="sidebar-scroll">
+        <label class="sidebar-search"><span class="sr-only">Kanäle und Mitglieder suchen</span><input id="sidebarSearch" type="search" placeholder="Kanäle oder Mitglieder suchen…" maxlength="100"><span data-icon="search"></span></label>
+        <div id="channelList"></div>
+        <div class="section-heading"><span>Direktnachrichten</span></div>
+        <div id="directList" class="direct-list"></div>
+        <p class="sidebar-hint" id="directHint">Wähle ein Mitglied, um einen privaten Chat zu öffnen.</p>
+      </div>
+      <div class="self-profile"><span class="avatar small" id="selfAvatar"></span><div><strong id="selfName"></strong><span class="muted">Mit Website-Konto angemeldet</span></div></div>
+    </aside>
+    <main class="chat-main">
+      <header class="chat-header">
+        <button id="mobileMenu" class="icon-button mobile-only" aria-label="Kanäle anzeigen" aria-controls="channelSidebar" aria-expanded="false" data-icon="menu"></button>
+        <span class="channel-icon" id="chatIcon" data-icon="hash"></span>
+        <div class="header-title"><h1 id="chatName">allgemein</h1><p id="chatSubtitle">Der gemeinsame Chat für Academy Fi</p></div>
+        <span class="connection" id="connectionStatus" role="status">Verbinden…</span>
+        <button class="icon-button" id="audioCall" aria-label="Sprachanruf starten" title="Sprachanruf starten" data-icon="mic" hidden></button>
+        <button class="icon-button" id="videoCall" aria-label="Videoanruf starten" title="Videoanruf starten" data-icon="video" hidden></button>
+        <button class="icon-button" id="toggleMembers" aria-label="Mitglieder anzeigen" title="Mitglieder anzeigen" data-icon="users" aria-expanded="true"></button>
+      </header>
+      <div class="message-scroll" id="messageScroll">
+        <div class="chat-welcome" id="chatWelcome"><div class="welcome-icon" data-icon="hash"></div><h2 id="welcomeTitle">Willkommen im Chat</h2><p id="welcomeText">Hier beginnt euer Austausch.</p></div>
+        <button id="loadOlder" class="older-button" hidden>Ältere Nachrichten laden</button>
+        <div id="messageList" role="log" aria-label="Chat-Nachrichten" aria-live="polite" aria-relevant="additions"></div>
+      </div>
+      <section class="media-panel" id="mediaPanel" aria-label="Sprach- und Videochat" hidden>
+        <div class="media-intro" id="mediaIntro"><div class="welcome-icon" id="mediaIcon" data-icon="mic"></div><h2 id="mediaTitle">Sprachraum</h2><p id="mediaDescription">Tritt dem Raum bei, um mit den anderen zu sprechen.</p><button class="primary" id="joinCall">Raum beitreten</button></div>
+        <div class="call-grid" id="callGrid" hidden></div>
+        <div class="call-controls" id="callControls" hidden><button id="toggleMic" class="icon-button" aria-label="Mikrofon stummschalten" data-icon="mic"></button><button id="toggleCamera" class="icon-button" aria-label="Kamera ausschalten" data-icon="video" hidden></button><span id="callStatus" role="status">Verbunden</span><button id="leaveCall" class="danger">Anruf verlassen</button></div>
+      </section>
+      <form class="composer" id="messageForm">
+        <div class="pending-attachment" id="pendingAttachment" hidden><span data-icon="file"></span><span id="pendingName"></span><button id="removeAttachment" type="button" class="icon-button" aria-label="Anhang entfernen" data-icon="close"></button></div>
+        <div class="composer-box"><button id="attachFile" type="button" class="icon-button" aria-label="Datei anhängen" title="Datei anhängen" data-icon="plus"></button><label class="sr-only" for="messageInput">Nachricht schreiben</label><textarea id="messageInput" placeholder="Nachricht an #allgemein" rows="1" maxlength="4000"></textarea><button id="emojiButton" type="button" class="icon-button" aria-label="Emoji auswählen" aria-expanded="false" data-icon="smile"></button><button class="primary send-button" id="sendButton" type="submit" aria-label="Nachricht senden" data-icon="send"></button></div>
+        <div class="emoji-popover" id="emojiPicker" hidden></div>
+        <p class="composer-hint">Enter zum Senden · Umschalt + Enter für eine neue Zeile</p>
+        <input type="file" id="attachmentInput" hidden>
+      </form>
+    </main>
+    <aside class="members-panel" id="membersPanel" aria-label="Server-Mitglieder"><div class="section-heading">Mitglieder</div><div id="memberList"></div></aside>
+  </div>
+  <main class="login-gate" id="loginGate"><div class="login-card"><div class="welcome-icon" data-icon="chat"></div><p class="eyebrow">ACADEMY FI</p><h1>Dein gemeinsamer Chat</h1><p id="gateMessage" role="status">Der Chat wird geöffnet…</p><a id="signInLink" class="primary button" href="/de/dashboard" hidden>Mit Website-Konto anmelden</a><button id="retrySession" hidden>Erneut prüfen</button><a class="gate-back" href="/cloud/index.html">Zur Cloud</a></div></main>
+  <dialog id="actionDialog"><form id="actionForm"><div class="dialog-heading"><h2 id="dialogTitle"></h2><button type="button" id="closeDialog" class="icon-button" aria-label="Dialog schließen" data-icon="close"></button></div><div id="dialogContent"></div><p id="dialogError" class="form-error" role="alert" hidden></p><div class="dialog-actions"><button id="cancelDialog" type="button">Abbrechen</button><button id="submitDialog" class="primary" type="submit">Speichern</button></div></form></dialog>
+  <div class="toast" id="toast" role="alert" hidden></div>
+</body>
+</html>
