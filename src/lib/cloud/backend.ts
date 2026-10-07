@@ -1,0 +1,11 @@
+import { onlineStorage } from "@/lib/exchange/database";
+import * as local from "./storage";
+import * as remote from "./postgres";
+export { CloudStorageError, contentDisposition } from "./storage";
+export const getCloudLimits = () => onlineStorage() ? { uploadMaxBytes:100*1024*1024,maxUploadFiles:100 } : local.getCloudLimits();
+export const listCloudDirectory = (path = "") => (onlineStorage() ? remote : local).listCloudDirectory(path);
+export const createCloudDirectory = (path:string,name:string) => (onlineStorage() ? remote : local).createCloudDirectory(path,name);
+export const uploadCloudFiles = (path:string,files:readonly File[]) => (onlineStorage() ? remote : local).uploadCloudFiles(path,files);
+export const deleteCloudPath = (path:string) => (onlineStorage() ? remote : local).deleteCloudPath(path);
+export const openCloudFile = (path:string) => (onlineStorage() ? remote : local).openCloudFile(path);
+export const createCloudZip = (paths:readonly string[]) => (onlineStorage() ? remote : local).createCloudZip(paths);

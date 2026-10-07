@@ -36,7 +36,7 @@
   function avatar(name, small = false, online = false) { return node('span',`avatar${small?' small':''}${online?' online-avatar':''}`,initials(name)); }
   function notify(message) { $('toast').textContent=message; $('toast').hidden=false; clearTimeout(notify.timer); notify.timer=setTimeout(() => { $('toast').hidden=true; },5000); }
   const roles = {ADMIN:'Inhaber',MODERATOR:'Moderator',GUEST:'Mitglied'};
-  let profile = null, csrf = '', iceServers = [], events = null;
+  let profile = null, csrf = '', iceServers = [], events = null, onlineStorage = false;
   let data = {servers:[],channels:[],members:[],directs:[]};
   let serverId = 'academy-fi', channelId = 'allgemein', directId = null, activeMessages = [], hasMore = false;
   let attachment = null, uploading = false, sending = false, generation = 0, messageSignature = '', refreshing = false, refreshAgain = false, membersOpen = innerWidth > 1200;
@@ -62,7 +62,7 @@
     try {
       const session = await api('session');
       if(!session.profile) { await showGate(); return; }
-      profile=session.profile; csrf=session.csrf; iceServers=session.iceServers;
+      profile=session.profile; csrf=session.csrf; iceServers=session.iceServers; onlineStorage=Boolean(session.onlineStorage);
       $('selfAvatar').textContent=initials(profile.name); $('selfName').textContent=profile.name;
       $('loginGate').hidden=true; $('chatShell').hidden=false;
       $('membersPanel').hidden=!membersOpen; $('chatShell').classList.toggle('members-hidden',!membersOpen); $('toggleMembers').setAttribute('aria-expanded',String(membersOpen));
@@ -199,8 +199,12 @@
     const expected=generation; const form=new FormData(); form.append('file',file); Object.entries(destination()).forEach(([key,value])=>form.append(key,value));
     uploading=true; $('sendButton').disabled=true; $('pendingAttachment').hidden=false; $('pendingName').textContent=`${file.name} wird hochgeladen…`;
     try {
-      const response=await fetch('/api/chat?action=upload',{method:'POST',credentials:'same-origin',headers:{'x-chat-csrf':csrf},body:form}); const result=await response.json();
-      if(!response.ok || !result.ok) throw new Error(result.error || 'Der Upload ist fehlgeschlagen.');
+      let result;
+      if(onlineStorage) result=await window.AcademyFileUpload({endpoint:'/api/chat',csrfHeader:'x-chat-csrf',csrf,file,metadata:destination()});
+      else {
+        const response=await fetch('/api/chat?action=upload',{method:'POST',credentials:'same-origin',headers:{'x-chat-csrf':csrf},body:form}); result=await response.json();
+        if(!response.ok || !result.ok) throw new Error(result.error || 'Der Upload ist fehlgeschlagen.');
+      }
       if(expected!==generation) return;
       attachment=result.attachment; $('pendingName').textContent=attachment.name;
     } catch(error) { clearAttachment(); notify(error.message); }

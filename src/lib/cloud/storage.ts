@@ -79,7 +79,7 @@ function configuredUploadBytes(): number {
   );
 }
 
-function safeName(name: string): string {
+export function safeName(name: string): string {
   if (
     typeof name !== "string" || !name || name !== name.trim() || name === "." || name === ".." ||
     /[\u0000-\u001f\u007f\\/:*?"<>|]/.test(name) || /[. ]$/.test(name) ||
@@ -112,7 +112,7 @@ function isInsideRoot(root: string, target: string): boolean {
   return relative === "" || (!relative.startsWith(`..${path.sep}`) && relative !== ".." && !path.isAbsolute(relative));
 }
 
-function uniqueName(original: string, index: number): string {
+export function uniqueName(original: string, index: number): string {
   if (index === 0) return original;
   const extension = path.extname(original);
   const suffix = ` (${index})${extension}`;
@@ -124,7 +124,7 @@ function uniqueName(original: string, index: number): string {
   return safeName(base + suffix);
 }
 
-const mimeTypes: Record<string, string> = {
+export const mimeTypes: Record<string, string> = {
   ".pdf": "application/pdf", ".png": "image/png", ".jpg": "image/jpeg", ".jpeg": "image/jpeg",
   ".gif": "image/gif", ".webp": "image/webp", ".avif": "image/avif", ".bmp": "image/bmp",
   ".ico": "image/x-icon", ".svg": "image/svg+xml", ".mp4": "video/mp4", ".webm": "video/webm",

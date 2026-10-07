@@ -1,4 +1,7 @@
-import { randomBytes, timingSafeEqual } from "node:crypto";
+import { createHash, randomBytes, timingSafeEqual } from "node:crypto";
+import { onlineStorage } from "@/lib/exchange/database";
+import { ExchangeStorageError, uploadBody, writeChunk, cancelFile } from "@/lib/exchange/files";
+import { beginCloudUpload, finishCloudUpload } from "@/lib/cloud/postgres";
 import { NextRequest, NextResponse } from "next/server";
 import {
   CloudStorageError,
@@ -10,7 +13,7 @@ import {
   listCloudDirectory,
   openCloudFile,
   uploadCloudFiles,
-} from "@/lib/cloud/storage";
+} from "@/lib/cloud/backend";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -23,7 +26,7 @@ function json(data: unknown, status = 200) {
 }
 
 function fail(error: unknown) {
-  if (error instanceof CloudStorageError) {
+  if (error instanceof CloudStorageError || error instanceof ExchangeStorageError) {
     return json({ ok: false, error: error.message }, error.status);
   }
   console.error("Cloud request failed:", error);
@@ -113,6 +116,7 @@ export async function GET(request: NextRequest) {
       const response = json({
         ok: true,
         loggedIn: true,
+        onlineStorage: onlineStorage(),
         csrf,
         uploadMaxBytes: limits.uploadMaxBytes,
         uploadMaxFile: `${Math.round(limits.uploadMaxBytes / 1024 / 1024)} MB`,
@@ -162,6 +166,24 @@ export async function POST(request: NextRequest) {
       return json({ ok: false, error: "Die Anfrage kommt nicht von dieser Webseite." }, 403);
     }
     const action = request.nextUrl.searchParams.get("api");
+    if (onlineStorage() && ["upload-begin","upload-chunk","upload-finish","upload-cancel"].includes(action || "")) {
+      const token=request.headers.get("x-csrf-token") || "";
+      if(!validCsrf(request,token)) throw new CloudStorageError("Bitte lade den Cloud-Bereich erneut.",403);
+      const owner=createHash("sha256").update(token).digest("hex");
+      if(action === "upload-chunk") {
+        await writeChunk(request.nextUrl.searchParams.get("id") || "","cloud",owner,Number(request.nextUrl.searchParams.get("part")),await uploadBody(request));
+        return json({ok:true});
+      }
+      if(!request.headers.get("content-type")?.startsWith("application/json")) throw new CloudStorageError("Ungültiges Anfrageformat.");
+      let data: Record<string,unknown>;
+      try { data=JSON.parse((await uploadBody(request,65536)).toString("utf8")); }
+      catch(error) { if(error instanceof ExchangeStorageError) throw error; throw new CloudStorageError("Ungültige Upload-Daten."); }
+      if(!data || typeof data!=="object" || Array.isArray(data)) throw new CloudStorageError("Ungültige Upload-Daten.");
+      if(action === "upload-begin") return json({ok:true,...await beginCloudUpload(String(data.path || ""),String(data.name || ""),Number(data.size),owner)});
+      if(action === "upload-finish") return json({ok:true,...await finishCloudUpload(String(data.id || ""),owner)});
+      await cancelFile(String(data.id || ""),"cloud",owner);
+      return json({ok:true});
+    }
     if (!["mkdir", "upload", "delete", "zip"].includes(action ?? "")) {
       return json({ ok: false, error: "Diese Dateiaktion wurde nicht gefunden." }, 404);
     }

@@ -7,6 +7,13 @@ import { ac, owner, intern } from "@/lib/permissions";
 import { sendResetPasswordEmail } from "@/lib/email";
 
 export const auth = betterAuth({
+  // Vercel assigns a new address to every deployment. Trust only this project's
+  // exact platform-provided hosts, in addition to the configured website URL.
+  trustedOrigins: [
+    process.env.BETTER_AUTH_URL,
+    ...[process.env.VERCEL_URL, process.env.VERCEL_BRANCH_URL, process.env.VERCEL_PROJECT_PRODUCTION_URL]
+      .filter(Boolean).map(host => `https://${host}`),
+  ].filter((origin): origin is string => Boolean(origin)),
   database: prismaAdapter(prisma, { provider: "postgresql" }),
   user: {
     additionalFields: {

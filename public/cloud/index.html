@@ -6,6 +6,7 @@
   <meta name="description" content="Dateien in der gemeinsamen Academy Fi Cloud hochladen, ordnen und austauschen.">
   <meta name="robots" content="noindex, nofollow">
   <title>Academy Fi Cloud</title>
+  <script src="/exchange-upload.js"></script>
   <script>
     (function () {
       const systemTheme = window.matchMedia("(prefers-color-scheme: dark)");
@@ -310,6 +311,11 @@
     }
 
     function apiUpload(formData, onProgress) {
+      if (state.onlineStorage) {
+        const controller = new AbortController();
+        state.uploadRequest = controller;
+        return window.AcademyFileUpload({endpoint:API_URL,csrfHeader:'X-CSRF-Token',csrf:csrfToken,file:formData.get('files[]'),metadata:{path:formData.get('path') || ''},onProgress,signal:controller.signal}).finally(() => {state.uploadRequest=null;});
+      }
       return new Promise((resolve, reject) => {
         const request = new XMLHttpRequest();
         state.uploadRequest = request;
@@ -641,6 +647,7 @@
       setBusy(true, "Verbindung wird hergestellt...");
       try {
         const data = await apiGet("status");
+        state.onlineStorage = Boolean(data.onlineStorage);
         csrfToken = data.csrf || "";
         if (!csrfToken) throw new Error("Die Cloud konnte nicht gestartet werden. Bitte lade die Seite erneut.");
         showApp();
