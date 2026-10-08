@@ -138,6 +138,34 @@ model IdeaNote {
     createdAt DateTime @default(now())
 }
 
+model DailyPlan {
+    id        String           @id @default(cuid())
+    userId    String
+    user      User             @relation("DailyPlansByUser", fields: [userId], references: [id], onDelete: Cascade)
+    // Calendar day as "YYYY-MM-DD" to avoid timezone shifts
+    date      String
+    title     String
+    stages    DailyPlanStage[]
+    createdAt DateTime         @default(now())
+    updatedAt DateTime         @updatedAt
+
+    @@unique([userId, date])
+}
+
+model DailyPlanStage {
+    id          String    @id @default(cuid())
+    planId      String
+    plan        DailyPlan @relation(fields: [planId], references: [id], onDelete: Cascade)
+    // Null for top-level stages; set for subsections (one level deep)
+    parentId    String?
+    parent      DailyPlanStage?  @relation("StageSubsections", fields: [parentId], references: [id], onDelete: Cascade)
+    subsections DailyPlanStage[] @relation("StageSubsections")
+    title       String
+    order       Int       @default(0)
+    completed   Boolean   @default(false)
+    completedAt DateTime?
+}
+
 model User {
     id                  String               @id
     name                String
@@ -158,6 +186,7 @@ model User {
     resourcesAdded      DepartmentResource[] @relation("ResourcesAddedBy")
     ideas               Idea[]               @relation("IdeasByAuthor")
     ideaNotes           IdeaNote[]           @relation("IdeaNotesByAuthor")
+    dailyPlans          DailyPlan[]          @relation("DailyPlansByUser")
 
     banned     Boolean?  @default(false)
     banReason  String?

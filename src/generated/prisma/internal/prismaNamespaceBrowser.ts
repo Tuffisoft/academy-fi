@@ -61,6 +61,8 @@ export const ModelName = {
   DepartmentResource: 'DepartmentResource',
   Idea: 'Idea',
   IdeaNote: 'IdeaNote',
+  DailyPlan: 'DailyPlan',
+  DailyPlanStage: 'DailyPlanStage',
   User: 'User',
   Session: 'Session',
   Account: 'Account',
@@ -215,6 +217,31 @@ export const IdeaNoteScalarFieldEnum = {
 } as const
 
 export type IdeaNoteScalarFieldEnum = (typeof IdeaNoteScalarFieldEnum)[keyof typeof IdeaNoteScalarFieldEnum]
+
+
+export const DailyPlanScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  date: 'date',
+  title: 'title',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type DailyPlanScalarFieldEnum = (typeof DailyPlanScalarFieldEnum)[keyof typeof DailyPlanScalarFieldEnum]
+
+
+export const DailyPlanStageScalarFieldEnum = {
+  id: 'id',
+  planId: 'planId',
+  parentId: 'parentId',
+  title: 'title',
+  order: 'order',
+  completed: 'completed',
+  completedAt: 'completedAt'
+} as const
+
+export type DailyPlanStageScalarFieldEnum = (typeof DailyPlanStageScalarFieldEnum)[keyof typeof DailyPlanStageScalarFieldEnum]
 
 
 export const UserScalarFieldEnum = {
