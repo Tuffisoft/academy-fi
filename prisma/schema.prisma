@@ -153,16 +153,16 @@ model DailyPlan {
 }
 
 model DailyPlanStage {
-    id          String    @id @default(cuid())
+    id          String           @id @default(cuid())
     planId      String
-    plan        DailyPlan @relation(fields: [planId], references: [id], onDelete: Cascade)
+    plan        DailyPlan        @relation(fields: [planId], references: [id], onDelete: Cascade)
     // Null for top-level stages; set for subsections (one level deep)
     parentId    String?
     parent      DailyPlanStage?  @relation("StageSubsections", fields: [parentId], references: [id], onDelete: Cascade)
     subsections DailyPlanStage[] @relation("StageSubsections")
     title       String
-    order       Int       @default(0)
-    completed   Boolean   @default(false)
+    order       Int              @default(0)
+    completed   Boolean          @default(false)
     completedAt DateTime?
 }
 

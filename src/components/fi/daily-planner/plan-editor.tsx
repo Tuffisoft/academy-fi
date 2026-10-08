@@ -38,7 +38,13 @@ type Plan = {
   stages: PlanStage[];
 };
 
-export function PlanEditor({ date, plan }: { date: string; plan: Plan | null }) {
+export function PlanEditor({
+  date,
+  plan,
+}: {
+  date: string;
+  plan: Plan | null;
+}) {
   const t = useTranslations("dailyPlanner");
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
@@ -74,10 +80,7 @@ export function PlanEditor({ date, plan }: { date: string; plan: Plan | null }) 
             className="flex gap-2"
             action={(formData) => {
               const title = String(formData.get("title") ?? "");
-              run(
-                () => upsertDailyPlanAction({ date, title }),
-                t("saveError"),
-              );
+              run(() => upsertDailyPlanAction({ date, title }), t("saveError"));
             }}
           >
             <Input
@@ -180,10 +183,7 @@ export function PlanEditor({ date, plan }: { date: string; plan: Plan | null }) 
                 <AlertDialogCancel>{t("cancel")}</AlertDialogCancel>
                 <AlertDialogAction
                   onClick={() =>
-                    run(
-                      () => deleteDailyPlanAction(plan.id),
-                      t("deleteError"),
-                    )
+                    run(() => deleteDailyPlanAction(plan.id), t("deleteError"))
                   }
                 >
                   {t("delete")}

@@ -37,7 +37,11 @@ export function SortableList<T extends { id: string }>({
     if (dragId && dragId !== targetId) {
       const ids = items.map((i) => i.id).filter((id) => id !== dragId);
       // Insert at the target's slot (same semantics as the drop indicator)
-      ids.splice(items.findIndex((i) => i.id === targetId), 0, dragId);
+      ids.splice(
+        items.findIndex((i) => i.id === targetId),
+        0,
+        dragId,
+      );
       onReorder(ids);
     }
     reset();
@@ -57,8 +61,10 @@ export function SortableList<T extends { id: string }>({
             className={cn(
               "relative flex flex-col gap-2 rounded-md",
               dragId === item.id && "opacity-40",
-              showBefore && "before:absolute before:-top-1.5 before:inset-x-0 before:h-0.5 before:rounded before:bg-primary",
-              showAfter && "after:absolute after:-bottom-1.5 after:inset-x-0 after:h-0.5 after:rounded after:bg-primary",
+              showBefore &&
+                "before:absolute before:-top-1.5 before:inset-x-0 before:h-0.5 before:rounded before:bg-primary",
+              showAfter &&
+                "after:absolute after:-bottom-1.5 after:inset-x-0 after:h-0.5 after:rounded after:bg-primary",
             )}
             onDragOver={(e) => {
               // Ignore drags that started in a different list (e.g. a nested one)
