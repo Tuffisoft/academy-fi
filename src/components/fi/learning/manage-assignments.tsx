@@ -1,4 +1,5 @@
 import { getTranslations } from "next-intl/server";
+import { requireUser } from "@/lib/session";
 import { getAssignmentsOverview, getInterns } from "@/lib/data/assignments";
 import {
   Card,
@@ -13,10 +14,11 @@ import { CreateAssignmentDialog } from "@/components/fi/learning/create-assignme
 import { AssignmentFeedbackForm } from "@/components/fi/learning/assignment-feedback-form";
 
 export async function ManageAssignments() {
+  const user = await requireUser();
   const [t, assignments, interns] = await Promise.all([
     getTranslations("planner"),
     getAssignmentsOverview(),
-    getInterns(),
+    getInterns(user.id),
   ]);
 
   return (
@@ -25,7 +27,7 @@ export async function ManageAssignments() {
         <CardTitle>{t("manageTitle")}</CardTitle>
         <CardDescription>{t("manageDescription")}</CardDescription>
         <CardAction>
-          <CreateAssignmentDialog interns={interns} />
+          <CreateAssignmentDialog interns={interns} currentUserId={user.id} />
         </CardAction>
       </CardHeader>
       <CardContent className="flex flex-col gap-4">

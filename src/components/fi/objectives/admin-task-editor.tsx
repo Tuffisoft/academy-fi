@@ -136,10 +136,10 @@ export function AdminTaskEditor({ assignment }: AdminTaskEditorProps) {
             </p>
           </div>
           <DropdownMenu>
-            <DropdownMenuTrigger>
-              <Button variant="ghost" size="sm">
-                <MoreVertical className="h-4 w-4" />
-              </Button>
+            <DropdownMenuTrigger
+              render={<Button variant="ghost" size="sm" />}
+            >
+              <MoreVertical className="h-4 w-4" />
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
               <DropdownMenuItem
