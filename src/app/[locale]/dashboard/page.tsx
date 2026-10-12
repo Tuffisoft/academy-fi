@@ -8,6 +8,7 @@ import { DashboardHeader } from "@/components/fi/dashboard/dashboard-header";
 import { AccountMenu } from "@/components/fi/dashboard/account-menu";
 import { AdminDashboard } from "@/components/fi/dashboard/AdminDashboard";
 import { LearningCard } from "@/components/fi/dashboard/learning-card";
+import { DailyPlannerCard } from "@/components/fi/dashboard/daily-planner-card";
 import { IdeasCard } from "@/components/fi/dashboard/ideas-card";
 import { ObjectivesCard } from "@/components/fi/dashboard/objectives-card";
 import { PresentationCard } from "@/components/fi/dashboard/presentation-card";
@@ -70,6 +71,7 @@ export default async function DashboardPage() {
         {isOwner ? (
           <>
             <ObjectivesCard />
+            <DailyPlannerCard />
             <LearningCard />
             <IdeasCard />
             <PresentationCard />
@@ -78,6 +80,7 @@ export default async function DashboardPage() {
         ) : (
           <>
             <WeeklyObjectivesCard assignments={assignments} />
+            <DailyPlannerCard />
             <LearningCard />
             <IdeasCard />
             <PresentationCard />

@@ -248,6 +248,7 @@ export type UserWhereInput = {
   resourcesAdded?: Prisma.DepartmentResourceListRelationFilter
   ideas?: Prisma.IdeaListRelationFilter
   ideaNotes?: Prisma.IdeaNoteListRelationFilter
+  dailyPlans?: Prisma.DailyPlanListRelationFilter
 }
 
 export type UserOrderByWithRelationInput = {
@@ -273,6 +274,7 @@ export type UserOrderByWithRelationInput = {
   resourcesAdded?: Prisma.DepartmentResourceOrderByRelationAggregateInput
   ideas?: Prisma.IdeaOrderByRelationAggregateInput
   ideaNotes?: Prisma.IdeaNoteOrderByRelationAggregateInput
+  dailyPlans?: Prisma.DailyPlanOrderByRelationAggregateInput
 }
 
 export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -301,6 +303,7 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   resourcesAdded?: Prisma.DepartmentResourceListRelationFilter
   ideas?: Prisma.IdeaListRelationFilter
   ideaNotes?: Prisma.IdeaNoteListRelationFilter
+  dailyPlans?: Prisma.DailyPlanListRelationFilter
 }, "id" | "email">
 
 export type UserOrderByWithAggregationInput = {
@@ -362,6 +365,7 @@ export type UserCreateInput = {
   resourcesAdded?: Prisma.DepartmentResourceCreateNestedManyWithoutCreatedByInput
   ideas?: Prisma.IdeaCreateNestedManyWithoutAuthorInput
   ideaNotes?: Prisma.IdeaNoteCreateNestedManyWithoutAuthorInput
+  dailyPlans?: Prisma.DailyPlanCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateInput = {
@@ -387,6 +391,7 @@ export type UserUncheckedCreateInput = {
   resourcesAdded?: Prisma.DepartmentResourceUncheckedCreateNestedManyWithoutCreatedByInput
   ideas?: Prisma.IdeaUncheckedCreateNestedManyWithoutAuthorInput
   ideaNotes?: Prisma.IdeaNoteUncheckedCreateNestedManyWithoutAuthorInput
+  dailyPlans?: Prisma.DailyPlanUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserUpdateInput = {
@@ -412,6 +417,7 @@ export type UserUpdateInput = {
   resourcesAdded?: Prisma.DepartmentResourceUpdateManyWithoutCreatedByNestedInput
   ideas?: Prisma.IdeaUpdateManyWithoutAuthorNestedInput
   ideaNotes?: Prisma.IdeaNoteUpdateManyWithoutAuthorNestedInput
+  dailyPlans?: Prisma.DailyPlanUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateInput = {
@@ -437,6 +443,7 @@ export type UserUncheckedUpdateInput = {
   resourcesAdded?: Prisma.DepartmentResourceUncheckedUpdateManyWithoutCreatedByNestedInput
   ideas?: Prisma.IdeaUncheckedUpdateManyWithoutAuthorNestedInput
   ideaNotes?: Prisma.IdeaNoteUncheckedUpdateManyWithoutAuthorNestedInput
+  dailyPlans?: Prisma.DailyPlanUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateManyInput = {
@@ -657,6 +664,20 @@ export type UserUpdateOneWithoutIdeaNotesNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutIdeaNotesInput, Prisma.UserUpdateWithoutIdeaNotesInput>, Prisma.UserUncheckedUpdateWithoutIdeaNotesInput>
 }
 
+export type UserCreateNestedOneWithoutDailyPlansInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutDailyPlansInput, Prisma.UserUncheckedCreateWithoutDailyPlansInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutDailyPlansInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutDailyPlansNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutDailyPlansInput, Prisma.UserUncheckedCreateWithoutDailyPlansInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutDailyPlansInput
+  upsert?: Prisma.UserUpsertWithoutDailyPlansInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutDailyPlansInput, Prisma.UserUpdateWithoutDailyPlansInput>, Prisma.UserUncheckedUpdateWithoutDailyPlansInput>
+}
+
 export type NullableBoolFieldUpdateOperationsInput = {
   set?: boolean | null
 }
@@ -711,6 +732,7 @@ export type UserCreateWithoutAssignmentsAsInternInput = {
   resourcesAdded?: Prisma.DepartmentResourceCreateNestedManyWithoutCreatedByInput
   ideas?: Prisma.IdeaCreateNestedManyWithoutAuthorInput
   ideaNotes?: Prisma.IdeaNoteCreateNestedManyWithoutAuthorInput
+  dailyPlans?: Prisma.DailyPlanCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutAssignmentsAsInternInput = {
@@ -735,6 +757,7 @@ export type UserUncheckedCreateWithoutAssignmentsAsInternInput = {
   resourcesAdded?: Prisma.DepartmentResourceUncheckedCreateNestedManyWithoutCreatedByInput
   ideas?: Prisma.IdeaUncheckedCreateNestedManyWithoutAuthorInput
   ideaNotes?: Prisma.IdeaNoteUncheckedCreateNestedManyWithoutAuthorInput
+  dailyPlans?: Prisma.DailyPlanUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutAssignmentsAsInternInput = {
@@ -764,6 +787,7 @@ export type UserCreateWithoutAssignmentsCreatedInput = {
   resourcesAdded?: Prisma.DepartmentResourceCreateNestedManyWithoutCreatedByInput
   ideas?: Prisma.IdeaCreateNestedManyWithoutAuthorInput
   ideaNotes?: Prisma.IdeaNoteCreateNestedManyWithoutAuthorInput
+  dailyPlans?: Prisma.DailyPlanCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutAssignmentsCreatedInput = {
@@ -788,6 +812,7 @@ export type UserUncheckedCreateWithoutAssignmentsCreatedInput = {
   resourcesAdded?: Prisma.DepartmentResourceUncheckedCreateNestedManyWithoutCreatedByInput
   ideas?: Prisma.IdeaUncheckedCreateNestedManyWithoutAuthorInput
   ideaNotes?: Prisma.IdeaNoteUncheckedCreateNestedManyWithoutAuthorInput
+  dailyPlans?: Prisma.DailyPlanUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutAssignmentsCreatedInput = {
@@ -828,6 +853,7 @@ export type UserUpdateWithoutAssignmentsAsInternInput = {
   resourcesAdded?: Prisma.DepartmentResourceUpdateManyWithoutCreatedByNestedInput
   ideas?: Prisma.IdeaUpdateManyWithoutAuthorNestedInput
   ideaNotes?: Prisma.IdeaNoteUpdateManyWithoutAuthorNestedInput
+  dailyPlans?: Prisma.DailyPlanUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutAssignmentsAsInternInput = {
@@ -852,6 +878,7 @@ export type UserUncheckedUpdateWithoutAssignmentsAsInternInput = {
   resourcesAdded?: Prisma.DepartmentResourceUncheckedUpdateManyWithoutCreatedByNestedInput
   ideas?: Prisma.IdeaUncheckedUpdateManyWithoutAuthorNestedInput
   ideaNotes?: Prisma.IdeaNoteUncheckedUpdateManyWithoutAuthorNestedInput
+  dailyPlans?: Prisma.DailyPlanUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserUpsertWithoutAssignmentsCreatedInput = {
@@ -887,6 +914,7 @@ export type UserUpdateWithoutAssignmentsCreatedInput = {
   resourcesAdded?: Prisma.DepartmentResourceUpdateManyWithoutCreatedByNestedInput
   ideas?: Prisma.IdeaUpdateManyWithoutAuthorNestedInput
   ideaNotes?: Prisma.IdeaNoteUpdateManyWithoutAuthorNestedInput
+  dailyPlans?: Prisma.DailyPlanUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutAssignmentsCreatedInput = {
@@ -911,6 +939,7 @@ export type UserUncheckedUpdateWithoutAssignmentsCreatedInput = {
   resourcesAdded?: Prisma.DepartmentResourceUncheckedUpdateManyWithoutCreatedByNestedInput
   ideas?: Prisma.IdeaUncheckedUpdateManyWithoutAuthorNestedInput
   ideaNotes?: Prisma.IdeaNoteUncheckedUpdateManyWithoutAuthorNestedInput
+  dailyPlans?: Prisma.DailyPlanUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutReflectionsInput = {
@@ -935,6 +964,7 @@ export type UserCreateWithoutReflectionsInput = {
   resourcesAdded?: Prisma.DepartmentResourceCreateNestedManyWithoutCreatedByInput
   ideas?: Prisma.IdeaCreateNestedManyWithoutAuthorInput
   ideaNotes?: Prisma.IdeaNoteCreateNestedManyWithoutAuthorInput
+  dailyPlans?: Prisma.DailyPlanCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutReflectionsInput = {
@@ -959,6 +989,7 @@ export type UserUncheckedCreateWithoutReflectionsInput = {
   resourcesAdded?: Prisma.DepartmentResourceUncheckedCreateNestedManyWithoutCreatedByInput
   ideas?: Prisma.IdeaUncheckedCreateNestedManyWithoutAuthorInput
   ideaNotes?: Prisma.IdeaNoteUncheckedCreateNestedManyWithoutAuthorInput
+  dailyPlans?: Prisma.DailyPlanUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutReflectionsInput = {
@@ -999,6 +1030,7 @@ export type UserUpdateWithoutReflectionsInput = {
   resourcesAdded?: Prisma.DepartmentResourceUpdateManyWithoutCreatedByNestedInput
   ideas?: Prisma.IdeaUpdateManyWithoutAuthorNestedInput
   ideaNotes?: Prisma.IdeaNoteUpdateManyWithoutAuthorNestedInput
+  dailyPlans?: Prisma.DailyPlanUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutReflectionsInput = {
@@ -1023,6 +1055,7 @@ export type UserUncheckedUpdateWithoutReflectionsInput = {
   resourcesAdded?: Prisma.DepartmentResourceUncheckedUpdateManyWithoutCreatedByNestedInput
   ideas?: Prisma.IdeaUncheckedUpdateManyWithoutAuthorNestedInput
   ideaNotes?: Prisma.IdeaNoteUncheckedUpdateManyWithoutAuthorNestedInput
+  dailyPlans?: Prisma.DailyPlanUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutFeedbackAuthoredInput = {
@@ -1047,6 +1080,7 @@ export type UserCreateWithoutFeedbackAuthoredInput = {
   resourcesAdded?: Prisma.DepartmentResourceCreateNestedManyWithoutCreatedByInput
   ideas?: Prisma.IdeaCreateNestedManyWithoutAuthorInput
   ideaNotes?: Prisma.IdeaNoteCreateNestedManyWithoutAuthorInput
+  dailyPlans?: Prisma.DailyPlanCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutFeedbackAuthoredInput = {
@@ -1071,6 +1105,7 @@ export type UserUncheckedCreateWithoutFeedbackAuthoredInput = {
   resourcesAdded?: Prisma.DepartmentResourceUncheckedCreateNestedManyWithoutCreatedByInput
   ideas?: Prisma.IdeaUncheckedCreateNestedManyWithoutAuthorInput
   ideaNotes?: Prisma.IdeaNoteUncheckedCreateNestedManyWithoutAuthorInput
+  dailyPlans?: Prisma.DailyPlanUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutFeedbackAuthoredInput = {
@@ -1111,6 +1146,7 @@ export type UserUpdateWithoutFeedbackAuthoredInput = {
   resourcesAdded?: Prisma.DepartmentResourceUpdateManyWithoutCreatedByNestedInput
   ideas?: Prisma.IdeaUpdateManyWithoutAuthorNestedInput
   ideaNotes?: Prisma.IdeaNoteUpdateManyWithoutAuthorNestedInput
+  dailyPlans?: Prisma.DailyPlanUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutFeedbackAuthoredInput = {
@@ -1135,6 +1171,7 @@ export type UserUncheckedUpdateWithoutFeedbackAuthoredInput = {
   resourcesAdded?: Prisma.DepartmentResourceUncheckedUpdateManyWithoutCreatedByNestedInput
   ideas?: Prisma.IdeaUncheckedUpdateManyWithoutAuthorNestedInput
   ideaNotes?: Prisma.IdeaNoteUncheckedUpdateManyWithoutAuthorNestedInput
+  dailyPlans?: Prisma.DailyPlanUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutDiscussionNoteInput = {
@@ -1159,6 +1196,7 @@ export type UserCreateWithoutDiscussionNoteInput = {
   resourcesAdded?: Prisma.DepartmentResourceCreateNestedManyWithoutCreatedByInput
   ideas?: Prisma.IdeaCreateNestedManyWithoutAuthorInput
   ideaNotes?: Prisma.IdeaNoteCreateNestedManyWithoutAuthorInput
+  dailyPlans?: Prisma.DailyPlanCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutDiscussionNoteInput = {
@@ -1183,6 +1221,7 @@ export type UserUncheckedCreateWithoutDiscussionNoteInput = {
   resourcesAdded?: Prisma.DepartmentResourceUncheckedCreateNestedManyWithoutCreatedByInput
   ideas?: Prisma.IdeaUncheckedCreateNestedManyWithoutAuthorInput
   ideaNotes?: Prisma.IdeaNoteUncheckedCreateNestedManyWithoutAuthorInput
+  dailyPlans?: Prisma.DailyPlanUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutDiscussionNoteInput = {
@@ -1223,6 +1262,7 @@ export type UserUpdateWithoutDiscussionNoteInput = {
   resourcesAdded?: Prisma.DepartmentResourceUpdateManyWithoutCreatedByNestedInput
   ideas?: Prisma.IdeaUpdateManyWithoutAuthorNestedInput
   ideaNotes?: Prisma.IdeaNoteUpdateManyWithoutAuthorNestedInput
+  dailyPlans?: Prisma.DailyPlanUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutDiscussionNoteInput = {
@@ -1247,6 +1287,7 @@ export type UserUncheckedUpdateWithoutDiscussionNoteInput = {
   resourcesAdded?: Prisma.DepartmentResourceUncheckedUpdateManyWithoutCreatedByNestedInput
   ideas?: Prisma.IdeaUncheckedUpdateManyWithoutAuthorNestedInput
   ideaNotes?: Prisma.IdeaNoteUncheckedUpdateManyWithoutAuthorNestedInput
+  dailyPlans?: Prisma.DailyPlanUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutResourcesAddedInput = {
@@ -1271,6 +1312,7 @@ export type UserCreateWithoutResourcesAddedInput = {
   discussionNote?: Prisma.DiscussionNoteCreateNestedOneWithoutUserInput
   ideas?: Prisma.IdeaCreateNestedManyWithoutAuthorInput
   ideaNotes?: Prisma.IdeaNoteCreateNestedManyWithoutAuthorInput
+  dailyPlans?: Prisma.DailyPlanCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutResourcesAddedInput = {
@@ -1295,6 +1337,7 @@ export type UserUncheckedCreateWithoutResourcesAddedInput = {
   discussionNote?: Prisma.DiscussionNoteUncheckedCreateNestedOneWithoutUserInput
   ideas?: Prisma.IdeaUncheckedCreateNestedManyWithoutAuthorInput
   ideaNotes?: Prisma.IdeaNoteUncheckedCreateNestedManyWithoutAuthorInput
+  dailyPlans?: Prisma.DailyPlanUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutResourcesAddedInput = {
@@ -1335,6 +1378,7 @@ export type UserUpdateWithoutResourcesAddedInput = {
   discussionNote?: Prisma.DiscussionNoteUpdateOneWithoutUserNestedInput
   ideas?: Prisma.IdeaUpdateManyWithoutAuthorNestedInput
   ideaNotes?: Prisma.IdeaNoteUpdateManyWithoutAuthorNestedInput
+  dailyPlans?: Prisma.DailyPlanUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutResourcesAddedInput = {
@@ -1359,6 +1403,7 @@ export type UserUncheckedUpdateWithoutResourcesAddedInput = {
   discussionNote?: Prisma.DiscussionNoteUncheckedUpdateOneWithoutUserNestedInput
   ideas?: Prisma.IdeaUncheckedUpdateManyWithoutAuthorNestedInput
   ideaNotes?: Prisma.IdeaNoteUncheckedUpdateManyWithoutAuthorNestedInput
+  dailyPlans?: Prisma.DailyPlanUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutIdeasInput = {
@@ -1383,6 +1428,7 @@ export type UserCreateWithoutIdeasInput = {
   discussionNote?: Prisma.DiscussionNoteCreateNestedOneWithoutUserInput
   resourcesAdded?: Prisma.DepartmentResourceCreateNestedManyWithoutCreatedByInput
   ideaNotes?: Prisma.IdeaNoteCreateNestedManyWithoutAuthorInput
+  dailyPlans?: Prisma.DailyPlanCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutIdeasInput = {
@@ -1407,6 +1453,7 @@ export type UserUncheckedCreateWithoutIdeasInput = {
   discussionNote?: Prisma.DiscussionNoteUncheckedCreateNestedOneWithoutUserInput
   resourcesAdded?: Prisma.DepartmentResourceUncheckedCreateNestedManyWithoutCreatedByInput
   ideaNotes?: Prisma.IdeaNoteUncheckedCreateNestedManyWithoutAuthorInput
+  dailyPlans?: Prisma.DailyPlanUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutIdeasInput = {
@@ -1447,6 +1494,7 @@ export type UserUpdateWithoutIdeasInput = {
   discussionNote?: Prisma.DiscussionNoteUpdateOneWithoutUserNestedInput
   resourcesAdded?: Prisma.DepartmentResourceUpdateManyWithoutCreatedByNestedInput
   ideaNotes?: Prisma.IdeaNoteUpdateManyWithoutAuthorNestedInput
+  dailyPlans?: Prisma.DailyPlanUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutIdeasInput = {
@@ -1471,6 +1519,7 @@ export type UserUncheckedUpdateWithoutIdeasInput = {
   discussionNote?: Prisma.DiscussionNoteUncheckedUpdateOneWithoutUserNestedInput
   resourcesAdded?: Prisma.DepartmentResourceUncheckedUpdateManyWithoutCreatedByNestedInput
   ideaNotes?: Prisma.IdeaNoteUncheckedUpdateManyWithoutAuthorNestedInput
+  dailyPlans?: Prisma.DailyPlanUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutIdeaNotesInput = {
@@ -1495,6 +1544,7 @@ export type UserCreateWithoutIdeaNotesInput = {
   discussionNote?: Prisma.DiscussionNoteCreateNestedOneWithoutUserInput
   resourcesAdded?: Prisma.DepartmentResourceCreateNestedManyWithoutCreatedByInput
   ideas?: Prisma.IdeaCreateNestedManyWithoutAuthorInput
+  dailyPlans?: Prisma.DailyPlanCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutIdeaNotesInput = {
@@ -1519,6 +1569,7 @@ export type UserUncheckedCreateWithoutIdeaNotesInput = {
   discussionNote?: Prisma.DiscussionNoteUncheckedCreateNestedOneWithoutUserInput
   resourcesAdded?: Prisma.DepartmentResourceUncheckedCreateNestedManyWithoutCreatedByInput
   ideas?: Prisma.IdeaUncheckedCreateNestedManyWithoutAuthorInput
+  dailyPlans?: Prisma.DailyPlanUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutIdeaNotesInput = {
@@ -1559,6 +1610,7 @@ export type UserUpdateWithoutIdeaNotesInput = {
   discussionNote?: Prisma.DiscussionNoteUpdateOneWithoutUserNestedInput
   resourcesAdded?: Prisma.DepartmentResourceUpdateManyWithoutCreatedByNestedInput
   ideas?: Prisma.IdeaUpdateManyWithoutAuthorNestedInput
+  dailyPlans?: Prisma.DailyPlanUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutIdeaNotesInput = {
@@ -1583,6 +1635,123 @@ export type UserUncheckedUpdateWithoutIdeaNotesInput = {
   discussionNote?: Prisma.DiscussionNoteUncheckedUpdateOneWithoutUserNestedInput
   resourcesAdded?: Prisma.DepartmentResourceUncheckedUpdateManyWithoutCreatedByNestedInput
   ideas?: Prisma.IdeaUncheckedUpdateManyWithoutAuthorNestedInput
+  dailyPlans?: Prisma.DailyPlanUncheckedUpdateManyWithoutUserNestedInput
+}
+
+export type UserCreateWithoutDailyPlansInput = {
+  id: string
+  name: string
+  email: string
+  emailVerified?: boolean
+  image?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  role?: string
+  locale?: string
+  banned?: boolean | null
+  banReason?: string | null
+  banExpires?: Date | string | null
+  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
+  accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
+  assignmentsAsIntern?: Prisma.WeeklyAssignmentCreateNestedManyWithoutInternInput
+  assignmentsCreated?: Prisma.WeeklyAssignmentCreateNestedManyWithoutCreatedByInput
+  reflections?: Prisma.ReflectionCreateNestedManyWithoutInternInput
+  feedbackAuthored?: Prisma.MentorFeedbackCreateNestedManyWithoutAuthorInput
+  discussionNote?: Prisma.DiscussionNoteCreateNestedOneWithoutUserInput
+  resourcesAdded?: Prisma.DepartmentResourceCreateNestedManyWithoutCreatedByInput
+  ideas?: Prisma.IdeaCreateNestedManyWithoutAuthorInput
+  ideaNotes?: Prisma.IdeaNoteCreateNestedManyWithoutAuthorInput
+}
+
+export type UserUncheckedCreateWithoutDailyPlansInput = {
+  id: string
+  name: string
+  email: string
+  emailVerified?: boolean
+  image?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  role?: string
+  locale?: string
+  banned?: boolean | null
+  banReason?: string | null
+  banExpires?: Date | string | null
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
+  accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
+  assignmentsAsIntern?: Prisma.WeeklyAssignmentUncheckedCreateNestedManyWithoutInternInput
+  assignmentsCreated?: Prisma.WeeklyAssignmentUncheckedCreateNestedManyWithoutCreatedByInput
+  reflections?: Prisma.ReflectionUncheckedCreateNestedManyWithoutInternInput
+  feedbackAuthored?: Prisma.MentorFeedbackUncheckedCreateNestedManyWithoutAuthorInput
+  discussionNote?: Prisma.DiscussionNoteUncheckedCreateNestedOneWithoutUserInput
+  resourcesAdded?: Prisma.DepartmentResourceUncheckedCreateNestedManyWithoutCreatedByInput
+  ideas?: Prisma.IdeaUncheckedCreateNestedManyWithoutAuthorInput
+  ideaNotes?: Prisma.IdeaNoteUncheckedCreateNestedManyWithoutAuthorInput
+}
+
+export type UserCreateOrConnectWithoutDailyPlansInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutDailyPlansInput, Prisma.UserUncheckedCreateWithoutDailyPlansInput>
+}
+
+export type UserUpsertWithoutDailyPlansInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutDailyPlansInput, Prisma.UserUncheckedUpdateWithoutDailyPlansInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutDailyPlansInput, Prisma.UserUncheckedCreateWithoutDailyPlansInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutDailyPlansInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutDailyPlansInput, Prisma.UserUncheckedUpdateWithoutDailyPlansInput>
+}
+
+export type UserUpdateWithoutDailyPlansInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  role?: Prisma.StringFieldUpdateOperationsInput | string
+  locale?: Prisma.StringFieldUpdateOperationsInput | string
+  banned?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  banReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  banExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
+  accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
+  assignmentsAsIntern?: Prisma.WeeklyAssignmentUpdateManyWithoutInternNestedInput
+  assignmentsCreated?: Prisma.WeeklyAssignmentUpdateManyWithoutCreatedByNestedInput
+  reflections?: Prisma.ReflectionUpdateManyWithoutInternNestedInput
+  feedbackAuthored?: Prisma.MentorFeedbackUpdateManyWithoutAuthorNestedInput
+  discussionNote?: Prisma.DiscussionNoteUpdateOneWithoutUserNestedInput
+  resourcesAdded?: Prisma.DepartmentResourceUpdateManyWithoutCreatedByNestedInput
+  ideas?: Prisma.IdeaUpdateManyWithoutAuthorNestedInput
+  ideaNotes?: Prisma.IdeaNoteUpdateManyWithoutAuthorNestedInput
+}
+
+export type UserUncheckedUpdateWithoutDailyPlansInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  role?: Prisma.StringFieldUpdateOperationsInput | string
+  locale?: Prisma.StringFieldUpdateOperationsInput | string
+  banned?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  banReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  banExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
+  accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
+  assignmentsAsIntern?: Prisma.WeeklyAssignmentUncheckedUpdateManyWithoutInternNestedInput
+  assignmentsCreated?: Prisma.WeeklyAssignmentUncheckedUpdateManyWithoutCreatedByNestedInput
+  reflections?: Prisma.ReflectionUncheckedUpdateManyWithoutInternNestedInput
+  feedbackAuthored?: Prisma.MentorFeedbackUncheckedUpdateManyWithoutAuthorNestedInput
+  discussionNote?: Prisma.DiscussionNoteUncheckedUpdateOneWithoutUserNestedInput
+  resourcesAdded?: Prisma.DepartmentResourceUncheckedUpdateManyWithoutCreatedByNestedInput
+  ideas?: Prisma.IdeaUncheckedUpdateManyWithoutAuthorNestedInput
+  ideaNotes?: Prisma.IdeaNoteUncheckedUpdateManyWithoutAuthorNestedInput
 }
 
 export type UserCreateWithoutSessionsInput = {
@@ -1607,6 +1776,7 @@ export type UserCreateWithoutSessionsInput = {
   resourcesAdded?: Prisma.DepartmentResourceCreateNestedManyWithoutCreatedByInput
   ideas?: Prisma.IdeaCreateNestedManyWithoutAuthorInput
   ideaNotes?: Prisma.IdeaNoteCreateNestedManyWithoutAuthorInput
+  dailyPlans?: Prisma.DailyPlanCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutSessionsInput = {
@@ -1631,6 +1801,7 @@ export type UserUncheckedCreateWithoutSessionsInput = {
   resourcesAdded?: Prisma.DepartmentResourceUncheckedCreateNestedManyWithoutCreatedByInput
   ideas?: Prisma.IdeaUncheckedCreateNestedManyWithoutAuthorInput
   ideaNotes?: Prisma.IdeaNoteUncheckedCreateNestedManyWithoutAuthorInput
+  dailyPlans?: Prisma.DailyPlanUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutSessionsInput = {
@@ -1671,6 +1842,7 @@ export type UserUpdateWithoutSessionsInput = {
   resourcesAdded?: Prisma.DepartmentResourceUpdateManyWithoutCreatedByNestedInput
   ideas?: Prisma.IdeaUpdateManyWithoutAuthorNestedInput
   ideaNotes?: Prisma.IdeaNoteUpdateManyWithoutAuthorNestedInput
+  dailyPlans?: Prisma.DailyPlanUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutSessionsInput = {
@@ -1695,6 +1867,7 @@ export type UserUncheckedUpdateWithoutSessionsInput = {
   resourcesAdded?: Prisma.DepartmentResourceUncheckedUpdateManyWithoutCreatedByNestedInput
   ideas?: Prisma.IdeaUncheckedUpdateManyWithoutAuthorNestedInput
   ideaNotes?: Prisma.IdeaNoteUncheckedUpdateManyWithoutAuthorNestedInput
+  dailyPlans?: Prisma.DailyPlanUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutAccountsInput = {
@@ -1719,6 +1892,7 @@ export type UserCreateWithoutAccountsInput = {
   resourcesAdded?: Prisma.DepartmentResourceCreateNestedManyWithoutCreatedByInput
   ideas?: Prisma.IdeaCreateNestedManyWithoutAuthorInput
   ideaNotes?: Prisma.IdeaNoteCreateNestedManyWithoutAuthorInput
+  dailyPlans?: Prisma.DailyPlanCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutAccountsInput = {
@@ -1743,6 +1917,7 @@ export type UserUncheckedCreateWithoutAccountsInput = {
   resourcesAdded?: Prisma.DepartmentResourceUncheckedCreateNestedManyWithoutCreatedByInput
   ideas?: Prisma.IdeaUncheckedCreateNestedManyWithoutAuthorInput
   ideaNotes?: Prisma.IdeaNoteUncheckedCreateNestedManyWithoutAuthorInput
+  dailyPlans?: Prisma.DailyPlanUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutAccountsInput = {
@@ -1783,6 +1958,7 @@ export type UserUpdateWithoutAccountsInput = {
   resourcesAdded?: Prisma.DepartmentResourceUpdateManyWithoutCreatedByNestedInput
   ideas?: Prisma.IdeaUpdateManyWithoutAuthorNestedInput
   ideaNotes?: Prisma.IdeaNoteUpdateManyWithoutAuthorNestedInput
+  dailyPlans?: Prisma.DailyPlanUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutAccountsInput = {
@@ -1807,6 +1983,7 @@ export type UserUncheckedUpdateWithoutAccountsInput = {
   resourcesAdded?: Prisma.DepartmentResourceUncheckedUpdateManyWithoutCreatedByNestedInput
   ideas?: Prisma.IdeaUncheckedUpdateManyWithoutAuthorNestedInput
   ideaNotes?: Prisma.IdeaNoteUncheckedUpdateManyWithoutAuthorNestedInput
+  dailyPlans?: Prisma.DailyPlanUncheckedUpdateManyWithoutUserNestedInput
 }
 
 
@@ -1824,6 +2001,7 @@ export type UserCountOutputType = {
   resourcesAdded: number
   ideas: number
   ideaNotes: number
+  dailyPlans: number
 }
 
 export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1836,6 +2014,7 @@ export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.I
   resourcesAdded?: boolean | UserCountOutputTypeCountResourcesAddedArgs
   ideas?: boolean | UserCountOutputTypeCountIdeasArgs
   ideaNotes?: boolean | UserCountOutputTypeCountIdeaNotesArgs
+  dailyPlans?: boolean | UserCountOutputTypeCountDailyPlansArgs
 }
 
 /**
@@ -1911,6 +2090,13 @@ export type UserCountOutputTypeCountIdeaNotesArgs<ExtArgs extends runtime.Types.
   where?: Prisma.IdeaNoteWhereInput
 }
 
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountDailyPlansArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.DailyPlanWhereInput
+}
+
 
 export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -1935,6 +2121,7 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   resourcesAdded?: boolean | Prisma.User$resourcesAddedArgs<ExtArgs>
   ideas?: boolean | Prisma.User$ideasArgs<ExtArgs>
   ideaNotes?: boolean | Prisma.User$ideaNotesArgs<ExtArgs>
+  dailyPlans?: boolean | Prisma.User$dailyPlansArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["user"]>
 
@@ -1995,6 +2182,7 @@ export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   resourcesAdded?: boolean | Prisma.User$resourcesAddedArgs<ExtArgs>
   ideas?: boolean | Prisma.User$ideasArgs<ExtArgs>
   ideaNotes?: boolean | Prisma.User$ideaNotesArgs<ExtArgs>
+  dailyPlans?: boolean | Prisma.User$dailyPlansArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type UserIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
@@ -2013,6 +2201,7 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     resourcesAdded: Prisma.$DepartmentResourcePayload<ExtArgs>[]
     ideas: Prisma.$IdeaPayload<ExtArgs>[]
     ideaNotes: Prisma.$IdeaNotePayload<ExtArgs>[]
+    dailyPlans: Prisma.$DailyPlanPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -2431,6 +2620,7 @@ export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Typ
   resourcesAdded<T extends Prisma.User$resourcesAddedArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$resourcesAddedArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$DepartmentResourcePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   ideas<T extends Prisma.User$ideasArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$ideasArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$IdeaPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   ideaNotes<T extends Prisma.User$ideaNotesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$ideaNotesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$IdeaNotePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  dailyPlans<T extends Prisma.User$dailyPlansArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$dailyPlansArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$DailyPlanPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -3097,6 +3287,30 @@ export type User$ideaNotesArgs<ExtArgs extends runtime.Types.Extensions.Internal
   take?: number
   skip?: number
   distinct?: Prisma.IdeaNoteScalarFieldEnum | Prisma.IdeaNoteScalarFieldEnum[]
+}
+
+/**
+ * User.dailyPlans
+ */
+export type User$dailyPlansArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the DailyPlan
+   */
+  select?: Prisma.DailyPlanSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the DailyPlan
+   */
+  omit?: Prisma.DailyPlanOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.DailyPlanInclude<ExtArgs> | null
+  where?: Prisma.DailyPlanWhereInput
+  orderBy?: Prisma.DailyPlanOrderByWithRelationInput | Prisma.DailyPlanOrderByWithRelationInput[]
+  cursor?: Prisma.DailyPlanWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.DailyPlanScalarFieldEnum | Prisma.DailyPlanScalarFieldEnum[]
 }
 
 /**

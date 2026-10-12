@@ -68,6 +68,16 @@ export type Idea = Prisma.IdeaModel
  */
 export type IdeaNote = Prisma.IdeaNoteModel
 /**
+ * Model DailyPlan
+ * 
+ */
+export type DailyPlan = Prisma.DailyPlanModel
+/**
+ * Model DailyPlanStage
+ * 
+ */
+export type DailyPlanStage = Prisma.DailyPlanStageModel
+/**
  * Model User
  * 
  */
