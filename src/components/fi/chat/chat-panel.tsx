@@ -162,7 +162,7 @@ export function ChatPanel({
     <section
       aria-label="Chatbereich"
       className={cn(
-        "flex min-h-0 min-w-0 flex-1 flex-col",
+        "flex min-h-0 min-w-0 flex-1 flex-col overflow-hidden",
         !active && "hidden md:flex",
       )}
     >
@@ -172,7 +172,7 @@ export function ChatPanel({
         role="log"
         aria-label="Nachrichten"
         aria-busy={loading}
-        className="fi-chat-wallpaper min-h-0 flex-1 space-y-2 overflow-y-auto overscroll-contain px-3 py-4 sm:px-8 sm:py-6"
+        className="fi-chat-wallpaper relative min-h-0 flex-1 space-y-2 overflow-y-auto overscroll-contain [scrollbar-gutter:stable] px-3 py-4 sm:px-8 sm:py-6"
         onScroll={() => {
           const log = logRef.current;
           if (log)
@@ -242,7 +242,7 @@ export function ChatPanel({
         ))}
       </div>
       {active && page && !page.canSend && (
-        <p className="border-t px-4 py-5 text-sm text-muted-foreground">
+        <p className="shrink-0 border-t px-4 py-5 text-sm text-muted-foreground">
           Du kannst wieder schreiben, sobald ihr bestätigte Kontakte seid und
           beide Konten verfügbar sind.
         </p>

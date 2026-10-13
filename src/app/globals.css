@@ -210,6 +210,7 @@
   background: var(--card);
 }
 .academy-dashboard[data-messenger-active="true"] {
+  flex: none;
   height: var(--messenger-height, 100dvh);
   min-height: 0;
   overflow: hidden;
@@ -226,15 +227,16 @@ html[data-messenger-active="true"] body > footer {
   display: none;
 }
 
+/* Keep page scrolling locked on every screen size while the chat is visible. */
+html[data-messenger-active="true"],
+html[data-messenger-active="true"] body {
+  height: 100%;
+  overflow: hidden;
+  overscroll-behavior: none;
+}
+
 /* Lists scroll independently; the composer stays inside the visual viewport. */
 @media (width < 48rem) {
-  html[data-messenger-active="true"],
-  html[data-messenger-active="true"] body {
-    height: 100%;
-    overflow: hidden;
-    overscroll-behavior: none;
-  }
-
   html[data-messenger-active="true"] body {
     position: fixed;
     inset: 0;
