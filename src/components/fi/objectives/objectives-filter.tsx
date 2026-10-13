@@ -81,10 +81,7 @@ export function ObjectivesFilter({ items }: { items: ObjectiveItem[] }) {
             className="pl-8"
           />
         </div>
-        <Select
-          value={internId}
-          onValueChange={(v) => v && setInternId(v)}
-        >
+        <Select value={internId} onValueChange={(v) => v && setInternId(v)}>
           <SelectTrigger
             className="w-full lg:w-52"
             aria-label={t("filters.internLabel")}

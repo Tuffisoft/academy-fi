@@ -29,13 +29,25 @@ import {
 
 type Intern = { id: string; name: string };
 
-export function CreateAssignmentDialog({ interns }: { interns: Intern[] }) {
+export function CreateAssignmentDialog({
+  interns,
+  currentUserId,
+}: {
+  interns: Intern[];
+  currentUserId: string;
+}) {
   const t = useTranslations("planner");
   const router = useRouter();
   const [open, setOpen] = useState(false);
   const [internId, setInternId] = useState(interns[0]?.id ?? "");
   const [isPending, startTransition] = useTransition();
   const selectedIntern = interns.find((i) => i.id === internId);
+
+  function label(person: Intern) {
+    return person.id === currentUserId
+      ? `${person.name} (${t("you")})`
+      : person.name;
+  }
 
   function handleSubmit(formData: FormData) {
     const weekOf = formData.get("weekOf") as string;
@@ -94,13 +106,13 @@ export function CreateAssignmentDialog({ interns }: { interns: Intern[] }) {
               >
                 <SelectTrigger id="internId">
                   <SelectValue placeholder={t("selectIntern")}>
-                    {selectedIntern?.name || t("selectIntern")}
+                    {selectedIntern ? label(selectedIntern) : t("selectIntern")}
                   </SelectValue>
                 </SelectTrigger>
                 <SelectContent>
                   {interns.map((intern) => (
                     <SelectItem key={intern.id} value={intern.id}>
-                      {intern.name}
+                      {label(intern)}
                     </SelectItem>
                   ))}
                 </SelectContent>

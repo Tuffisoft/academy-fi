@@ -43,9 +43,14 @@ export function getAssignmentsOverview() {
   });
 }
 
-export function getInterns() {
+export function getInterns(includeUserId?: string) {
   return prisma.user.findMany({
-    where: { role: "INTERN" },
+    where: {
+      OR: [
+        { role: "INTERN" },
+        ...(includeUserId ? [{ id: includeUserId }] : []),
+      ],
+    },
     select: { id: true, name: true },
     orderBy: { name: "asc" },
   });

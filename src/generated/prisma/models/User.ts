@@ -779,6 +779,20 @@ export type UserUpdateOneWithoutIdeaNotesNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutIdeaNotesInput, Prisma.UserUpdateWithoutIdeaNotesInput>, Prisma.UserUncheckedUpdateWithoutIdeaNotesInput>
 }
 
+export type UserCreateNestedOneWithoutDailyPlansInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutDailyPlansInput, Prisma.UserUncheckedCreateWithoutDailyPlansInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutDailyPlansInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutDailyPlansNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutDailyPlansInput, Prisma.UserUncheckedCreateWithoutDailyPlansInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutDailyPlansInput
+  upsert?: Prisma.UserUpsertWithoutDailyPlansInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutDailyPlansInput, Prisma.UserUpdateWithoutDailyPlansInput>, Prisma.UserUncheckedUpdateWithoutDailyPlansInput>
+}
+
 export type NullableBoolFieldUpdateOperationsInput = {
   set?: boolean | null
 }
@@ -3752,6 +3766,13 @@ export type UserCountOutputTypeCountSessionsArgs<ExtArgs extends runtime.Types.E
   where?: Prisma.SessionWhereInput
 }
 
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountDailyPlansArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.DailyPlanWhereInput
+}
+
 
 export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -5163,6 +5184,30 @@ export type User$sessionsArgs<ExtArgs extends runtime.Types.Extensions.InternalA
   take?: number
   skip?: number
   distinct?: Prisma.SessionScalarFieldEnum | Prisma.SessionScalarFieldEnum[]
+}
+
+/**
+ * User.dailyPlans
+ */
+export type User$dailyPlansArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the DailyPlan
+   */
+  select?: Prisma.DailyPlanSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the DailyPlan
+   */
+  omit?: Prisma.DailyPlanOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.DailyPlanInclude<ExtArgs> | null
+  where?: Prisma.DailyPlanWhereInput
+  orderBy?: Prisma.DailyPlanOrderByWithRelationInput | Prisma.DailyPlanOrderByWithRelationInput[]
+  cursor?: Prisma.DailyPlanWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.DailyPlanScalarFieldEnum | Prisma.DailyPlanScalarFieldEnum[]
 }
 
 /**

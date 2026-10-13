@@ -12,12 +12,14 @@ import {
 } from "@/components/ui/card";
 import { CreateAssignmentDialog } from "@/components/fi/learning/create-assignment-dialog";
 import { getInterns } from "@/lib/data/assignments";
+import { requireUser } from "@/lib/session";
 
 export async function ObjectivesGrid() {
+  const user = await requireUser();
   const [t, assignments, interns] = await Promise.all([
     getTranslations("objectives"),
     getAssignmentsOverview(),
-    getInterns(),
+    getInterns(user.id),
   ]);
 
   if (assignments.length === 0) {
@@ -27,7 +29,7 @@ export async function ObjectivesGrid() {
           <CardTitle>{t("allObjectivesTitle")}</CardTitle>
           <CardDescription>{t("noObjectives")}</CardDescription>
           <CardAction>
-            <CreateAssignmentDialog interns={interns} />
+            <CreateAssignmentDialog interns={interns} currentUserId={user.id} />
           </CardAction>
         </CardHeader>
       </Card>
@@ -66,7 +68,7 @@ export async function ObjectivesGrid() {
           <CardTitle>{t("allObjectivesTitle")}</CardTitle>
           <CardDescription>{t("allObjectivesDescription")}</CardDescription>
           <CardAction>
-            <CreateAssignmentDialog interns={interns} />
+            <CreateAssignmentDialog interns={interns} currentUserId={user.id} />
           </CardAction>
         </CardHeader>
       </Card>
