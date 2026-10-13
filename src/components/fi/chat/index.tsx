@@ -143,7 +143,6 @@ export default function Chat({
         <ChatNavigation
           active={active}
           incomingRequests={friends.snapshot.incoming.length}
-          unreadCount={chat.unreadCount}
           section={section}
           setSection={selectSection}
           setSearch={setSearch}
@@ -185,14 +184,11 @@ export default function Chat({
               loading={chat.loading}
               pending={chat.pending}
               loadingOlder={chat.loadingOlder}
-              conversations={chat.conversations}
-              unreadCount={chat.unreadCount}
               onBack={chat.close}
               onSend={chat.send}
               onEdit={chat.edit}
               onDelete={chat.remove}
               onLoadOlder={chat.loadOlder}
-              onOpen={(id) => void chat.open(id)}
               onRefresh={chat.refresh}
             />
           </>

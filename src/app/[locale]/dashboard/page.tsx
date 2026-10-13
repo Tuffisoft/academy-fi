@@ -1,6 +1,9 @@
 import { getTranslations } from "next-intl/server";
 import { requireUser } from "@/lib/session";
 import { getAllAssignmentsForIntern } from "@/lib/data/assignments";
+import { getConversationsForUser } from "@/lib/chat";
+import { isRealtimeConfigured } from "@/lib/realtime";
+import { RealtimeProvider } from "@/lib/providers/realtime-provider";
 import { DashboardHeader } from "@/components/fi/dashboard/dashboard-header";
 import { AccountMenu } from "@/components/fi/dashboard/account-menu";
 import { AdminDashboard } from "@/components/fi/dashboard/AdminDashboard";
@@ -24,11 +27,21 @@ export default async function DashboardPage() {
   const t = await getTranslations("dashboard");
   const isOwner = user.role === "OWNER";
 
-  const assignments = isOwner ? [] : await getAllAssignmentsForIntern(user.id);
+  const [assignments, conversations] = await Promise.all([
+    isOwner ? [] : getAllAssignmentsForIntern(user.id),
+    getConversationsForUser(user.id),
+  ]);
 
   return (
     <div className="flex flex-1 flex-col">
-      <DashboardHeader name={user.name} role={user.role ?? "INTERN"} />
+      <RealtimeProvider
+        key={user.id}
+        userId={user.id}
+        enabled={isRealtimeConfigured()}
+        initialConversations={conversations}
+      >
+        <DashboardHeader name={user.name} role={user.role ?? "INTERN"} />
+      </RealtimeProvider>
       <div className="px-6 pt-6">
         <BreadcrumbNav items={[]} />
       </div>

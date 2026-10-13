@@ -1,6 +1,7 @@
 {
   "nav": {
     "chat": "Chat",
+    "chatUnread": "Chat, {count, plural, one {# unread message} other {# unread messages}}",
     "presentation": "Presentation",
     "learning": "Learning"
   },

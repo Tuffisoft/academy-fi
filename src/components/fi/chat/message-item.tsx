@@ -42,7 +42,7 @@ export function MessageItem({
     <article
       aria-label={`Nachricht von ${authorName}`}
       className={cn(
-        "group flex items-end gap-1.5",
+        "group flex min-w-0 items-end gap-1.5",
         message.own ? "justify-end" : "justify-start",
       )}
     >
@@ -91,7 +91,7 @@ export function MessageItem({
             </div>
           </div>
         ) : (
-          <p className="whitespace-pre-wrap wrap-break-words text-[15px] leading-[1.45]">
+          <p className="whitespace-pre-wrap wrap-anywhere text-[15px] leading-[1.45]">
             {message.text}
           </p>
         )}
