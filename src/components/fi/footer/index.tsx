@@ -21,6 +21,7 @@ export function Footer() {
       <Button
         variant="outline"
         size="icon"
+        nativeButton={false}
         render={<Link href={session ? "/dashboard" : "/sign-in"} />}
       >
         {session ? (

@@ -64,7 +64,14 @@ export const ModelName = {
   User: 'User',
   Session: 'Session',
   Account: 'Account',
-  Verification: 'Verification'
+  Verification: 'Verification',
+  DailyPlan: 'DailyPlan',
+  DailyPlanStage: 'DailyPlanStage',
+  DirectConversation: 'DirectConversation',
+  ChatMembership: 'ChatMembership',
+  ChatMessage: 'ChatMessage',
+  Friendship: 'Friendship',
+  ChatEncryptionKey: 'ChatEncryptionKey'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -166,12 +173,12 @@ export type DiscussionNoteScalarFieldEnum = (typeof DiscussionNoteScalarFieldEnu
 export const DepartmentScalarFieldEnum = {
   id: 'id',
   name: 'name',
-  nameEN: 'nameEN',
-  nameDE: 'nameDE',
   description: 'description',
   order: 'order',
   createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
+  updatedAt: 'updatedAt',
+  nameDE: 'nameDE',
+  nameEN: 'nameEN'
 } as const
 
 export type DepartmentScalarFieldEnum = (typeof DepartmentScalarFieldEnum)[keyof typeof DepartmentScalarFieldEnum]
@@ -226,10 +233,11 @@ export const UserScalarFieldEnum = {
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
   role: 'role',
-  locale: 'locale',
   banned: 'banned',
   banReason: 'banReason',
-  banExpires: 'banExpires'
+  banExpires: 'banExpires',
+  locale: 'locale',
+  secureLoginVersion: 'secureLoginVersion'
 } as const
 
 export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
@@ -281,12 +289,109 @@ export const VerificationScalarFieldEnum = {
 export type VerificationScalarFieldEnum = (typeof VerificationScalarFieldEnum)[keyof typeof VerificationScalarFieldEnum]
 
 
+export const DailyPlanScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  date: 'date',
+  title: 'title',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type DailyPlanScalarFieldEnum = (typeof DailyPlanScalarFieldEnum)[keyof typeof DailyPlanScalarFieldEnum]
+
+
+export const DailyPlanStageScalarFieldEnum = {
+  id: 'id',
+  planId: 'planId',
+  title: 'title',
+  order: 'order',
+  completed: 'completed',
+  completedAt: 'completedAt',
+  parentId: 'parentId'
+} as const
+
+export type DailyPlanStageScalarFieldEnum = (typeof DailyPlanStageScalarFieldEnum)[keyof typeof DailyPlanStageScalarFieldEnum]
+
+
+export const DirectConversationScalarFieldEnum = {
+  id: 'id',
+  pairKey: 'pairKey',
+  firstUserId: 'firstUserId',
+  secondUserId: 'secondUserId',
+  nextSequence: 'nextSequence',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type DirectConversationScalarFieldEnum = (typeof DirectConversationScalarFieldEnum)[keyof typeof DirectConversationScalarFieldEnum]
+
+
+export const ChatMembershipScalarFieldEnum = {
+  conversationId: 'conversationId',
+  userId: 'userId',
+  hiddenAt: 'hiddenAt',
+  lastReadSequence: 'lastReadSequence'
+} as const
+
+export type ChatMembershipScalarFieldEnum = (typeof ChatMembershipScalarFieldEnum)[keyof typeof ChatMembershipScalarFieldEnum]
+
+
+export const ChatMessageScalarFieldEnum = {
+  id: 'id',
+  conversationId: 'conversationId',
+  senderId: 'senderId',
+  clientId: 'clientId',
+  sequence: 'sequence',
+  text: 'text',
+  encrypted: 'encrypted',
+  createdAt: 'createdAt',
+  editedAt: 'editedAt'
+} as const
+
+export type ChatMessageScalarFieldEnum = (typeof ChatMessageScalarFieldEnum)[keyof typeof ChatMessageScalarFieldEnum]
+
+
+export const FriendshipScalarFieldEnum = {
+  id: 'id',
+  pairKey: 'pairKey',
+  requesterId: 'requesterId',
+  recipientId: 'recipientId',
+  status: 'status',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type FriendshipScalarFieldEnum = (typeof FriendshipScalarFieldEnum)[keyof typeof FriendshipScalarFieldEnum]
+
+
+export const ChatEncryptionKeyScalarFieldEnum = {
+  userId: 'userId',
+  version: 'version',
+  publicKey: 'publicKey',
+  salt: 'salt',
+  nonce: 'nonce',
+  ciphertext: 'ciphertext',
+  createdAt: 'createdAt'
+} as const
+
+export type ChatEncryptionKeyScalarFieldEnum = (typeof ChatEncryptionKeyScalarFieldEnum)[keyof typeof ChatEncryptionKeyScalarFieldEnum]
+
+
 export const SortOrder = {
   asc: 'asc',
   desc: 'desc'
 } as const
 
 export type SortOrder = (typeof SortOrder)[keyof typeof SortOrder]
+
+
+export const NullableJsonNullValueInput = {
+  DbNull: DbNull,
+  JsonNull: JsonNull
+} as const
+
+export type NullableJsonNullValueInput = (typeof NullableJsonNullValueInput)[keyof typeof NullableJsonNullValueInput]
 
 
 export const QueryMode = {
@@ -303,4 +408,13 @@ export const NullsOrder = {
 } as const
 
 export type NullsOrder = (typeof NullsOrder)[keyof typeof NullsOrder]
+
+
+export const JsonNullValueFilter = {
+  DbNull: DbNull,
+  JsonNull: JsonNull,
+  AnyNull: AnyNull
+} as const
+
+export type JsonNullValueFilter = (typeof JsonNullValueFilter)[keyof typeof JsonNullValueFilter]
 

@@ -37,34 +37,34 @@ export type DepartmentSumAggregateOutputType = {
 export type DepartmentMinAggregateOutputType = {
   id: string | null
   name: string | null
-  nameEN: string | null
-  nameDE: string | null
   description: string | null
   order: number | null
   createdAt: Date | null
   updatedAt: Date | null
+  nameDE: string | null
+  nameEN: string | null
 }
 
 export type DepartmentMaxAggregateOutputType = {
   id: string | null
   name: string | null
-  nameEN: string | null
-  nameDE: string | null
   description: string | null
   order: number | null
   createdAt: Date | null
   updatedAt: Date | null
+  nameDE: string | null
+  nameEN: string | null
 }
 
 export type DepartmentCountAggregateOutputType = {
   id: number
   name: number
-  nameEN: number
-  nameDE: number
   description: number
   order: number
   createdAt: number
   updatedAt: number
+  nameDE: number
+  nameEN: number
   _all: number
 }
 
@@ -80,34 +80,34 @@ export type DepartmentSumAggregateInputType = {
 export type DepartmentMinAggregateInputType = {
   id?: true
   name?: true
-  nameEN?: true
-  nameDE?: true
   description?: true
   order?: true
   createdAt?: true
   updatedAt?: true
+  nameDE?: true
+  nameEN?: true
 }
 
 export type DepartmentMaxAggregateInputType = {
   id?: true
   name?: true
-  nameEN?: true
-  nameDE?: true
   description?: true
   order?: true
   createdAt?: true
   updatedAt?: true
+  nameDE?: true
+  nameEN?: true
 }
 
 export type DepartmentCountAggregateInputType = {
   id?: true
   name?: true
-  nameEN?: true
-  nameDE?: true
   description?: true
   order?: true
   createdAt?: true
   updatedAt?: true
+  nameDE?: true
+  nameEN?: true
   _all?: true
 }
 
@@ -200,12 +200,12 @@ export type DepartmentGroupByArgs<ExtArgs extends runtime.Types.Extensions.Inter
 export type DepartmentGroupByOutputType = {
   id: string
   name: string
-  nameEN: string
-  nameDE: string
   description: string | null
   order: number
   createdAt: Date
   updatedAt: Date
+  nameDE: string
+  nameEN: string
   _count: DepartmentCountAggregateOutputType | null
   _avg: DepartmentAvgAggregateOutputType | null
   _sum: DepartmentSumAggregateOutputType | null
@@ -234,24 +234,24 @@ export type DepartmentWhereInput = {
   NOT?: Prisma.DepartmentWhereInput | Prisma.DepartmentWhereInput[]
   id?: Prisma.StringFilter<"Department"> | string
   name?: Prisma.StringFilter<"Department"> | string
-  nameEN?: Prisma.StringFilter<"Department"> | string
-  nameDE?: Prisma.StringFilter<"Department"> | string
   description?: Prisma.StringNullableFilter<"Department"> | string | null
   order?: Prisma.IntFilter<"Department"> | number
   createdAt?: Prisma.DateTimeFilter<"Department"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Department"> | Date | string
+  nameDE?: Prisma.StringFilter<"Department"> | string
+  nameEN?: Prisma.StringFilter<"Department"> | string
   resources?: Prisma.DepartmentResourceListRelationFilter
 }
 
 export type DepartmentOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
-  nameEN?: Prisma.SortOrder
-  nameDE?: Prisma.SortOrder
   description?: Prisma.SortOrderInput | Prisma.SortOrder
   order?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  nameDE?: Prisma.SortOrder
+  nameEN?: Prisma.SortOrder
   resources?: Prisma.DepartmentResourceOrderByRelationAggregateInput
 }
 
@@ -261,24 +261,24 @@ export type DepartmentWhereUniqueInput = Prisma.AtLeast<{
   OR?: Prisma.DepartmentWhereInput[]
   NOT?: Prisma.DepartmentWhereInput | Prisma.DepartmentWhereInput[]
   name?: Prisma.StringFilter<"Department"> | string
-  nameEN?: Prisma.StringFilter<"Department"> | string
-  nameDE?: Prisma.StringFilter<"Department"> | string
   description?: Prisma.StringNullableFilter<"Department"> | string | null
   order?: Prisma.IntFilter<"Department"> | number
   createdAt?: Prisma.DateTimeFilter<"Department"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Department"> | Date | string
+  nameDE?: Prisma.StringFilter<"Department"> | string
+  nameEN?: Prisma.StringFilter<"Department"> | string
   resources?: Prisma.DepartmentResourceListRelationFilter
 }, "id">
 
 export type DepartmentOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
-  nameEN?: Prisma.SortOrder
-  nameDE?: Prisma.SortOrder
   description?: Prisma.SortOrderInput | Prisma.SortOrder
   order?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  nameDE?: Prisma.SortOrder
+  nameEN?: Prisma.SortOrder
   _count?: Prisma.DepartmentCountOrderByAggregateInput
   _avg?: Prisma.DepartmentAvgOrderByAggregateInput
   _max?: Prisma.DepartmentMaxOrderByAggregateInput
@@ -292,104 +292,104 @@ export type DepartmentScalarWhereWithAggregatesInput = {
   NOT?: Prisma.DepartmentScalarWhereWithAggregatesInput | Prisma.DepartmentScalarWhereWithAggregatesInput[]
   id?: Prisma.StringWithAggregatesFilter<"Department"> | string
   name?: Prisma.StringWithAggregatesFilter<"Department"> | string
-  nameEN?: Prisma.StringWithAggregatesFilter<"Department"> | string
-  nameDE?: Prisma.StringWithAggregatesFilter<"Department"> | string
   description?: Prisma.StringNullableWithAggregatesFilter<"Department"> | string | null
   order?: Prisma.IntWithAggregatesFilter<"Department"> | number
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Department"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Department"> | Date | string
+  nameDE?: Prisma.StringWithAggregatesFilter<"Department"> | string
+  nameEN?: Prisma.StringWithAggregatesFilter<"Department"> | string
 }
 
 export type DepartmentCreateInput = {
   id?: string
   name: string
-  nameEN: string
-  nameDE: string
   description?: string | null
   order?: number
   createdAt?: Date | string
   updatedAt?: Date | string
+  nameDE: string
+  nameEN: string
   resources?: Prisma.DepartmentResourceCreateNestedManyWithoutDepartmentInput
 }
 
 export type DepartmentUncheckedCreateInput = {
   id?: string
   name: string
-  nameEN: string
-  nameDE: string
   description?: string | null
   order?: number
   createdAt?: Date | string
   updatedAt?: Date | string
+  nameDE: string
+  nameEN: string
   resources?: Prisma.DepartmentResourceUncheckedCreateNestedManyWithoutDepartmentInput
 }
 
 export type DepartmentUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
-  nameEN?: Prisma.StringFieldUpdateOperationsInput | string
-  nameDE?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   order?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  nameDE?: Prisma.StringFieldUpdateOperationsInput | string
+  nameEN?: Prisma.StringFieldUpdateOperationsInput | string
   resources?: Prisma.DepartmentResourceUpdateManyWithoutDepartmentNestedInput
 }
 
 export type DepartmentUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
-  nameEN?: Prisma.StringFieldUpdateOperationsInput | string
-  nameDE?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   order?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  nameDE?: Prisma.StringFieldUpdateOperationsInput | string
+  nameEN?: Prisma.StringFieldUpdateOperationsInput | string
   resources?: Prisma.DepartmentResourceUncheckedUpdateManyWithoutDepartmentNestedInput
 }
 
 export type DepartmentCreateManyInput = {
   id?: string
   name: string
-  nameEN: string
-  nameDE: string
   description?: string | null
   order?: number
   createdAt?: Date | string
   updatedAt?: Date | string
+  nameDE: string
+  nameEN: string
 }
 
 export type DepartmentUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
-  nameEN?: Prisma.StringFieldUpdateOperationsInput | string
-  nameDE?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   order?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  nameDE?: Prisma.StringFieldUpdateOperationsInput | string
+  nameEN?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
 export type DepartmentUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
-  nameEN?: Prisma.StringFieldUpdateOperationsInput | string
-  nameDE?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   order?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  nameDE?: Prisma.StringFieldUpdateOperationsInput | string
+  nameEN?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
 export type DepartmentCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
-  nameEN?: Prisma.SortOrder
-  nameDE?: Prisma.SortOrder
   description?: Prisma.SortOrder
   order?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  nameDE?: Prisma.SortOrder
+  nameEN?: Prisma.SortOrder
 }
 
 export type DepartmentAvgOrderByAggregateInput = {
@@ -399,23 +399,23 @@ export type DepartmentAvgOrderByAggregateInput = {
 export type DepartmentMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
-  nameEN?: Prisma.SortOrder
-  nameDE?: Prisma.SortOrder
   description?: Prisma.SortOrder
   order?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  nameDE?: Prisma.SortOrder
+  nameEN?: Prisma.SortOrder
 }
 
 export type DepartmentMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
-  nameEN?: Prisma.SortOrder
-  nameDE?: Prisma.SortOrder
   description?: Prisma.SortOrder
   order?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  nameDE?: Prisma.SortOrder
+  nameEN?: Prisma.SortOrder
 }
 
 export type DepartmentSumOrderByAggregateInput = {
@@ -444,23 +444,23 @@ export type DepartmentUpdateOneRequiredWithoutResourcesNestedInput = {
 export type DepartmentCreateWithoutResourcesInput = {
   id?: string
   name: string
-  nameEN: string
-  nameDE: string
   description?: string | null
   order?: number
   createdAt?: Date | string
   updatedAt?: Date | string
+  nameDE: string
+  nameEN: string
 }
 
 export type DepartmentUncheckedCreateWithoutResourcesInput = {
   id?: string
   name: string
-  nameEN: string
-  nameDE: string
   description?: string | null
   order?: number
   createdAt?: Date | string
   updatedAt?: Date | string
+  nameDE: string
+  nameEN: string
 }
 
 export type DepartmentCreateOrConnectWithoutResourcesInput = {
@@ -482,23 +482,23 @@ export type DepartmentUpdateToOneWithWhereWithoutResourcesInput = {
 export type DepartmentUpdateWithoutResourcesInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
-  nameEN?: Prisma.StringFieldUpdateOperationsInput | string
-  nameDE?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   order?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  nameDE?: Prisma.StringFieldUpdateOperationsInput | string
+  nameEN?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
 export type DepartmentUncheckedUpdateWithoutResourcesInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
-  nameEN?: Prisma.StringFieldUpdateOperationsInput | string
-  nameDE?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   order?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  nameDE?: Prisma.StringFieldUpdateOperationsInput | string
+  nameEN?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
 
@@ -535,12 +535,12 @@ export type DepartmentCountOutputTypeCountResourcesArgs<ExtArgs extends runtime.
 export type DepartmentSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   name?: boolean
-  nameEN?: boolean
-  nameDE?: boolean
   description?: boolean
   order?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  nameDE?: boolean
+  nameEN?: boolean
   resources?: boolean | Prisma.Department$resourcesArgs<ExtArgs>
   _count?: boolean | Prisma.DepartmentCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["department"]>
@@ -548,37 +548,37 @@ export type DepartmentSelect<ExtArgs extends runtime.Types.Extensions.InternalAr
 export type DepartmentSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   name?: boolean
-  nameEN?: boolean
-  nameDE?: boolean
   description?: boolean
   order?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  nameDE?: boolean
+  nameEN?: boolean
 }, ExtArgs["result"]["department"]>
 
 export type DepartmentSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   name?: boolean
-  nameEN?: boolean
-  nameDE?: boolean
   description?: boolean
   order?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  nameDE?: boolean
+  nameEN?: boolean
 }, ExtArgs["result"]["department"]>
 
 export type DepartmentSelectScalar = {
   id?: boolean
   name?: boolean
-  nameEN?: boolean
-  nameDE?: boolean
   description?: boolean
   order?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  nameDE?: boolean
+  nameEN?: boolean
 }
 
-export type DepartmentOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "nameEN" | "nameDE" | "description" | "order" | "createdAt" | "updatedAt", ExtArgs["result"]["department"]>
+export type DepartmentOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "description" | "order" | "createdAt" | "updatedAt" | "nameDE" | "nameEN", ExtArgs["result"]["department"]>
 export type DepartmentInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   resources?: boolean | Prisma.Department$resourcesArgs<ExtArgs>
   _count?: boolean | Prisma.DepartmentCountOutputTypeDefaultArgs<ExtArgs>
@@ -594,12 +594,12 @@ export type $DepartmentPayload<ExtArgs extends runtime.Types.Extensions.Internal
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
     name: string
-    nameEN: string
-    nameDE: string
     description: string | null
     order: number
     createdAt: Date
     updatedAt: Date
+    nameDE: string
+    nameEN: string
   }, ExtArgs["result"]["department"]>
   composites: {}
 }
@@ -1026,12 +1026,12 @@ export interface Prisma__DepartmentClient<T, Null = never, ExtArgs extends runti
 export interface DepartmentFieldRefs {
   readonly id: Prisma.FieldRef<"Department", 'String'>
   readonly name: Prisma.FieldRef<"Department", 'String'>
-  readonly nameEN: Prisma.FieldRef<"Department", 'String'>
-  readonly nameDE: Prisma.FieldRef<"Department", 'String'>
   readonly description: Prisma.FieldRef<"Department", 'String'>
   readonly order: Prisma.FieldRef<"Department", 'Int'>
   readonly createdAt: Prisma.FieldRef<"Department", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"Department", 'DateTime'>
+  readonly nameDE: Prisma.FieldRef<"Department", 'String'>
+  readonly nameEN: Prisma.FieldRef<"Department", 'String'>
 }
     
 

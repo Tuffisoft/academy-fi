@@ -268,8 +268,8 @@ export type DepartmentResourceWhereInput = {
   fileKey?: Prisma.StringNullableFilter<"DepartmentResource"> | string | null
   fileName?: Prisma.StringNullableFilter<"DepartmentResource"> | string | null
   fileSize?: Prisma.IntNullableFilter<"DepartmentResource"> | number | null
-  department?: Prisma.XOR<Prisma.DepartmentScalarRelationFilter, Prisma.DepartmentWhereInput>
   createdBy?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
+  department?: Prisma.XOR<Prisma.DepartmentScalarRelationFilter, Prisma.DepartmentWhereInput>
 }
 
 export type DepartmentResourceOrderByWithRelationInput = {
@@ -284,8 +284,8 @@ export type DepartmentResourceOrderByWithRelationInput = {
   fileKey?: Prisma.SortOrderInput | Prisma.SortOrder
   fileName?: Prisma.SortOrderInput | Prisma.SortOrder
   fileSize?: Prisma.SortOrderInput | Prisma.SortOrder
-  department?: Prisma.DepartmentOrderByWithRelationInput
   createdBy?: Prisma.UserOrderByWithRelationInput
+  department?: Prisma.DepartmentOrderByWithRelationInput
 }
 
 export type DepartmentResourceWhereUniqueInput = Prisma.AtLeast<{
@@ -303,8 +303,8 @@ export type DepartmentResourceWhereUniqueInput = Prisma.AtLeast<{
   createdById?: Prisma.StringNullableFilter<"DepartmentResource"> | string | null
   fileName?: Prisma.StringNullableFilter<"DepartmentResource"> | string | null
   fileSize?: Prisma.IntNullableFilter<"DepartmentResource"> | number | null
-  department?: Prisma.XOR<Prisma.DepartmentScalarRelationFilter, Prisma.DepartmentWhereInput>
   createdBy?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
+  department?: Prisma.XOR<Prisma.DepartmentScalarRelationFilter, Prisma.DepartmentWhereInput>
 }, "id" | "fileKey">
 
 export type DepartmentResourceOrderByWithAggregationInput = {
@@ -353,8 +353,8 @@ export type DepartmentResourceCreateInput = {
   fileKey?: string | null
   fileName?: string | null
   fileSize?: number | null
-  department: Prisma.DepartmentCreateNestedOneWithoutResourcesInput
   createdBy?: Prisma.UserCreateNestedOneWithoutResourcesAddedInput
+  department: Prisma.DepartmentCreateNestedOneWithoutResourcesInput
 }
 
 export type DepartmentResourceUncheckedCreateInput = {
@@ -381,8 +381,8 @@ export type DepartmentResourceUpdateInput = {
   fileKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   fileName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   fileSize?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  department?: Prisma.DepartmentUpdateOneRequiredWithoutResourcesNestedInput
   createdBy?: Prisma.UserUpdateOneWithoutResourcesAddedNestedInput
+  department?: Prisma.DepartmentUpdateOneRequiredWithoutResourcesNestedInput
 }
 
 export type DepartmentResourceUncheckedUpdateInput = {
@@ -832,8 +832,8 @@ export type DepartmentResourceSelect<ExtArgs extends runtime.Types.Extensions.In
   fileKey?: boolean
   fileName?: boolean
   fileSize?: boolean
-  department?: boolean | Prisma.DepartmentDefaultArgs<ExtArgs>
   createdBy?: boolean | Prisma.DepartmentResource$createdByArgs<ExtArgs>
+  department?: boolean | Prisma.DepartmentDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["departmentResource"]>
 
 export type DepartmentResourceSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -848,8 +848,8 @@ export type DepartmentResourceSelectCreateManyAndReturn<ExtArgs extends runtime.
   fileKey?: boolean
   fileName?: boolean
   fileSize?: boolean
-  department?: boolean | Prisma.DepartmentDefaultArgs<ExtArgs>
   createdBy?: boolean | Prisma.DepartmentResource$createdByArgs<ExtArgs>
+  department?: boolean | Prisma.DepartmentDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["departmentResource"]>
 
 export type DepartmentResourceSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -864,8 +864,8 @@ export type DepartmentResourceSelectUpdateManyAndReturn<ExtArgs extends runtime.
   fileKey?: boolean
   fileName?: boolean
   fileSize?: boolean
-  department?: boolean | Prisma.DepartmentDefaultArgs<ExtArgs>
   createdBy?: boolean | Prisma.DepartmentResource$createdByArgs<ExtArgs>
+  department?: boolean | Prisma.DepartmentDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["departmentResource"]>
 
 export type DepartmentResourceSelectScalar = {
@@ -884,23 +884,23 @@ export type DepartmentResourceSelectScalar = {
 
 export type DepartmentResourceOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "departmentId" | "title" | "url" | "note" | "order" | "createdAt" | "createdById" | "fileKey" | "fileName" | "fileSize", ExtArgs["result"]["departmentResource"]>
 export type DepartmentResourceInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  department?: boolean | Prisma.DepartmentDefaultArgs<ExtArgs>
   createdBy?: boolean | Prisma.DepartmentResource$createdByArgs<ExtArgs>
+  department?: boolean | Prisma.DepartmentDefaultArgs<ExtArgs>
 }
 export type DepartmentResourceIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  department?: boolean | Prisma.DepartmentDefaultArgs<ExtArgs>
   createdBy?: boolean | Prisma.DepartmentResource$createdByArgs<ExtArgs>
+  department?: boolean | Prisma.DepartmentDefaultArgs<ExtArgs>
 }
 export type DepartmentResourceIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  department?: boolean | Prisma.DepartmentDefaultArgs<ExtArgs>
   createdBy?: boolean | Prisma.DepartmentResource$createdByArgs<ExtArgs>
+  department?: boolean | Prisma.DepartmentDefaultArgs<ExtArgs>
 }
 
 export type $DepartmentResourcePayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "DepartmentResource"
   objects: {
-    department: Prisma.$DepartmentPayload<ExtArgs>
     createdBy: Prisma.$UserPayload<ExtArgs> | null
+    department: Prisma.$DepartmentPayload<ExtArgs>
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1308,8 +1308,8 @@ readonly fields: DepartmentResourceFieldRefs;
  */
 export interface Prisma__DepartmentResourceClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
-  department<T extends Prisma.DepartmentDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.DepartmentDefaultArgs<ExtArgs>>): Prisma.Prisma__DepartmentClient<runtime.Types.Result.GetResult<Prisma.$DepartmentPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   createdBy<T extends Prisma.DepartmentResource$createdByArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.DepartmentResource$createdByArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  department<T extends Prisma.DepartmentDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.DepartmentDefaultArgs<ExtArgs>>): Prisma.Prisma__DepartmentClient<runtime.Types.Result.GetResult<Prisma.$DepartmentPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.

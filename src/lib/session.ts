@@ -4,7 +4,12 @@ import { redirect } from "@/i18n/navigation";
 import { auth } from "@/lib/auth";
 import type { Role } from "@/generated/prisma/enums";
 
+export function isAuthConfigured() {
+  return Boolean(process.env.DATABASE_URL && process.env.BETTER_AUTH_SECRET);
+}
+
 export async function getCurrentSession() {
+  if (!isAuthConfigured()) return null;
   return auth.api.getSession({ headers: await headers() });
 }
 

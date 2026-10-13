@@ -1,218 +1,321 @@
 generator client {
-    provider = "prisma-client"
-    output   = "../src/generated/prisma"
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
 }
 
 datasource db {
-    provider = "postgresql"
-}
-
-enum Role {
-    OWNER
-    INTERN
+  provider = "postgresql"
 }
 
 model WeeklyAssignment {
-    id                 String                    @id @default(cuid())
-    internId           String
-    intern             User                      @relation("AssignmentsForIntern", fields: [internId], references: [id])
-    weekOf             DateTime
-    focus              String
-    description        String
-    acceptanceCriteria String
-    createdById        String
-    createdBy          User                      @relation("AssignmentsCreatedBy", fields: [createdById], references: [id])
-    createdAt          DateTime                  @default(now())
-    updatedAt          DateTime                  @updatedAt
-    reflections        Reflection[]
-    checklistItems     AssignmentChecklistItem[]
+  id                 String                    @id @default(cuid())
+  internId           String
+  weekOf             DateTime
+  focus              String
+  description        String
+  acceptanceCriteria String
+  createdById        String
+  createdAt          DateTime                  @default(now())
+  updatedAt          DateTime                  @updatedAt
+  checklistItems     AssignmentChecklistItem[]
+  reflections        Reflection[]
+  createdBy          User                      @relation("AssignmentsCreatedBy", fields: [createdById], references: [id])
+  intern             User                      @relation("AssignmentsForIntern", fields: [internId], references: [id])
 }
 
 model AssignmentChecklistItem {
-    id           String           @id @default(cuid())
-    assignmentId String
-    assignment   WeeklyAssignment @relation(fields: [assignmentId], references: [id], onDelete: Cascade)
-    label        String
-    order        Int              @default(0)
-    completed    Boolean          @default(false)
-    completedAt  DateTime?
-    stages       TaskStage[]
+  id           String           @id @default(cuid())
+  assignmentId String
+  label        String
+  order        Int              @default(0)
+  completed    Boolean          @default(false)
+  completedAt  DateTime?
+  assignment   WeeklyAssignment @relation(fields: [assignmentId], references: [id], onDelete: Cascade)
+  stages       TaskStage[]
 }
 
 model TaskStage {
-    id              String                  @id @default(cuid())
-    checklistItemId String
-    checklistItem   AssignmentChecklistItem @relation(fields: [checklistItemId], references: [id], onDelete: Cascade)
-    title           String
-    order           Int                     @default(0)
-    completed       Boolean                 @default(false)
-    completedAt     DateTime?
-    documentation   String?
-    createdAt       DateTime                @default(now())
-    updatedAt       DateTime                @updatedAt
+  id              String                  @id @default(cuid())
+  checklistItemId String
+  title           String
+  order           Int                     @default(0)
+  completed       Boolean                 @default(false)
+  completedAt     DateTime?
+  documentation   String?
+  createdAt       DateTime                @default(now())
+  updatedAt       DateTime                @updatedAt
+  checklistItem   AssignmentChecklistItem @relation(fields: [checklistItemId], references: [id], onDelete: Cascade)
 }
 
 model Reflection {
-    id           String           @id @default(cuid())
-    assignmentId String
-    assignment   WeeklyAssignment @relation(fields: [assignmentId], references: [id])
-    internId     String
-    intern       User             @relation("ReflectionsForIntern", fields: [internId], references: [id])
-    workDone     String
-    learning     String
-    blocker      String?
-    workLink     String?
-    nextStep     String
-    createdAt    DateTime         @default(now())
-    updatedAt    DateTime         @updatedAt
-    feedback     MentorFeedback[]
+  id           String           @id @default(cuid())
+  assignmentId String
+  internId     String
+  workDone     String
+  learning     String
+  blocker      String?
+  workLink     String?
+  nextStep     String
+  createdAt    DateTime         @default(now())
+  updatedAt    DateTime         @updatedAt
+  feedback     MentorFeedback[]
+  assignment   WeeklyAssignment @relation(fields: [assignmentId], references: [id])
+  intern       User             @relation("ReflectionsForIntern", fields: [internId], references: [id])
 }
 
 model MentorFeedback {
-    id           String     @id @default(cuid())
-    reflectionId String
-    reflection   Reflection @relation(fields: [reflectionId], references: [id])
-    authorId     String
-    author       User       @relation("FeedbackByAuthor", fields: [authorId], references: [id])
-    message      String
-    createdAt    DateTime   @default(now())
+  id           String     @id @default(cuid())
+  reflectionId String
+  authorId     String
+  message      String
+  createdAt    DateTime   @default(now())
+  author       User       @relation("FeedbackByAuthor", fields: [authorId], references: [id])
+  reflection   Reflection @relation(fields: [reflectionId], references: [id])
 }
 
 model DiscussionNote {
-    id        String   @id @default(cuid())
-    userId    String   @unique
-    user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-    content   String
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
+  id        String   @id @default(cuid())
+  userId    String   @unique
+  content   String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model Department {
-    id          String               @id @default(cuid())
-    name        String
-    nameEN      String
-    nameDE      String
-    description String?
-    order       Int                  @default(0)
-    resources   DepartmentResource[]
-    createdAt   DateTime             @default(now())
-    updatedAt   DateTime             @updatedAt
+  id          String               @id @default(cuid())
+  name        String
+  description String?
+  order       Int                  @default(0)
+  createdAt   DateTime             @default(now())
+  updatedAt   DateTime             @updatedAt
+  nameDE      String
+  nameEN      String
+  resources   DepartmentResource[]
 }
 
 model DepartmentResource {
-    id           String     @id @default(cuid())
-    departmentId String
-    department   Department @relation(fields: [departmentId], references: [id], onDelete: Cascade)
-    title        String
-    url          String
-    note         String?
-    order        Int        @default(0)
-    createdAt    DateTime   @default(now())
-    createdById  String?
-    createdBy    User?      @relation("ResourcesAddedBy", fields: [createdById], references: [id], onDelete: SetNull)
-    // Set only for uploaded documents; url then points at the hosted file
-    fileKey      String?    @unique
-    fileName     String?
-    fileSize     Int?
+  id           String     @id @default(cuid())
+  departmentId String
+  title        String
+  url          String
+  note         String?
+  order        Int        @default(0)
+  createdAt    DateTime   @default(now())
+  createdById  String?
+  fileKey      String?    @unique
+  fileName     String?
+  fileSize     Int?
+  createdBy    User?      @relation("ResourcesAddedBy", fields: [createdById], references: [id])
+  department   Department @relation(fields: [departmentId], references: [id], onDelete: Cascade)
 }
 
 model Idea {
-    id          String     @id @default(cuid())
-    title       String
-    description String?
-    // SetNull keeps ideas and notes when their author's account is deleted
-    authorId    String?
-    author      User?      @relation("IdeasByAuthor", fields: [authorId], references: [id], onDelete: SetNull)
-    notes       IdeaNote[]
-    createdAt   DateTime   @default(now())
-    updatedAt   DateTime   @updatedAt
+  id          String     @id @default(cuid())
+  title       String
+  description String?
+  authorId    String?
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+  author      User?      @relation("IdeasByAuthor", fields: [authorId], references: [id])
+  notes       IdeaNote[]
 }
 
 model IdeaNote {
-    id        String   @id @default(cuid())
-    ideaId    String
-    idea      Idea     @relation(fields: [ideaId], references: [id], onDelete: Cascade)
-    authorId  String?
-    author    User?    @relation("IdeaNotesByAuthor", fields: [authorId], references: [id], onDelete: SetNull)
-    content   String
-    createdAt DateTime @default(now())
+  id        String   @id @default(cuid())
+  ideaId    String
+  authorId  String?
+  content   String
+  createdAt DateTime @default(now())
+  author    User?    @relation("IdeaNotesByAuthor", fields: [authorId], references: [id])
+  idea      Idea     @relation(fields: [ideaId], references: [id], onDelete: Cascade)
 }
 
 model User {
-    id                  String               @id
-    name                String
-    email               String
-    emailVerified       Boolean              @default(false)
-    image               String?
-    createdAt           DateTime             @default(now())
-    updatedAt           DateTime             @updatedAt
-    role                String               @default("INTERN")
-    locale              String               @default("en")
-    sessions            Session[]
-    accounts            Account[]
-    assignmentsAsIntern WeeklyAssignment[]   @relation("AssignmentsForIntern")
-    assignmentsCreated  WeeklyAssignment[]   @relation("AssignmentsCreatedBy")
-    reflections         Reflection[]         @relation("ReflectionsForIntern")
-    feedbackAuthored    MentorFeedback[]     @relation("FeedbackByAuthor")
-    discussionNote      DiscussionNote?
-    resourcesAdded      DepartmentResource[] @relation("ResourcesAddedBy")
-    ideas               Idea[]               @relation("IdeasByAuthor")
-    ideaNotes           IdeaNote[]           @relation("IdeaNotesByAuthor")
+  id                  String               @id
+  name                String
+  email               String               @unique
+  emailVerified       Boolean              @default(false)
+  image               String?
+  createdAt           DateTime             @default(now())
+  updatedAt           DateTime             @updatedAt
+  role                String               @default("INTERN")
+  banned              Boolean?             @default(false)
+  banReason           String?
+  banExpires          DateTime?
+  locale              String               @default("en")
+  secureLoginVersion  Int                  @default(0)
+  DailyPlan           DailyPlan[]
+  resourcesAdded      DepartmentResource[] @relation("ResourcesAddedBy")
+  discussionNote      DiscussionNote?
+  ideas               Idea[]               @relation("IdeasByAuthor")
+  ideaNotes           IdeaNote[]           @relation("IdeaNotesByAuthor")
+  feedbackAuthored    MentorFeedback[]     @relation("FeedbackByAuthor")
+  reflections         Reflection[]         @relation("ReflectionsForIntern")
+  assignmentsCreated  WeeklyAssignment[]   @relation("AssignmentsCreatedBy")
+  assignmentsAsIntern WeeklyAssignment[]   @relation("AssignmentsForIntern")
+  friendshipsSent     Friendship[]         @relation("FriendshipRequester")
+  friendshipsReceived Friendship[]         @relation("FriendshipRecipient")
+  directChatsFirst    DirectConversation[] @relation("DirectChatFirstUser")
+  directChatsSecond   DirectConversation[] @relation("DirectChatSecondUser")
+  chatMemberships     ChatMembership[]
+  chatMessages        ChatMessage[]
+  chatEncryptionKey   ChatEncryptionKey?
+  accounts            Account[]
+  sessions            Session[]
 
-    banned     Boolean?  @default(false)
-    banReason  String?
-    banExpires DateTime?
-
-    @@unique([email])
-    @@map("user")
+  @@map("user")
 }
 
 model Session {
-    id        String   @id
-    expiresAt DateTime
-    token     String
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
-    ipAddress String?
-    userAgent String?
-    userId    String
-    user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  id             String   @id
+  expiresAt      DateTime
+  token          String   @unique
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+  ipAddress      String?
+  userAgent      String?
+  userId         String
+  impersonatedBy String?
+  user           User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-    impersonatedBy String?
-
-    @@unique([token])
-    @@index([userId])
-    @@map("session")
+  @@index([userId])
+  @@map("session")
 }
 
 model Account {
-    id                    String    @id
-    accountId             String
-    providerId            String
-    userId                String
-    user                  User      @relation(fields: [userId], references: [id], onDelete: Cascade)
-    accessToken           String?
-    refreshToken          String?
-    idToken               String?
-    accessTokenExpiresAt  DateTime?
-    refreshTokenExpiresAt DateTime?
-    scope                 String?
-    password              String?
-    createdAt             DateTime  @default(now())
-    updatedAt             DateTime  @updatedAt
+  id                    String    @id
+  accountId             String
+  providerId            String
+  userId                String
+  accessToken           String?
+  refreshToken          String?
+  idToken               String?
+  accessTokenExpiresAt  DateTime?
+  refreshTokenExpiresAt DateTime?
+  scope                 String?
+  password              String?
+  createdAt             DateTime  @default(now())
+  updatedAt             DateTime  @updatedAt
+  user                  User      @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-    @@index([userId])
-    @@map("account")
+  @@index([userId])
+  @@map("account")
 }
 
 model Verification {
-    id         String   @id
-    identifier String
-    value      String
-    expiresAt  DateTime
-    createdAt  DateTime @default(now())
-    updatedAt  DateTime @updatedAt
+  id         String   @id
+  identifier String
+  value      String
+  expiresAt  DateTime
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
 
-    @@index([identifier])
-    @@map("verification")
+  @@index([identifier])
+  @@map("verification")
+}
+
+model DailyPlan {
+  id             String           @id
+  userId         String
+  date           String
+  title          String
+  createdAt      DateTime         @default(now())
+  updatedAt      DateTime
+  user           User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  DailyPlanStage DailyPlanStage[]
+
+  @@unique([userId, date])
+}
+
+model DailyPlanStage {
+  id                   String           @id
+  planId               String
+  title                String
+  order                Int              @default(0)
+  completed            Boolean          @default(false)
+  completedAt          DateTime?
+  parentId             String?
+  DailyPlanStage       DailyPlanStage?  @relation("DailyPlanStageToDailyPlanStage", fields: [parentId], references: [id], onDelete: Cascade)
+  other_DailyPlanStage DailyPlanStage[] @relation("DailyPlanStageToDailyPlanStage")
+  DailyPlan            DailyPlan        @relation(fields: [planId], references: [id], onDelete: Cascade)
+}
+
+enum Role {
+  OWNER
+  INTERN
+}
+
+enum FriendshipStatus {
+    PENDING
+    ACCEPTED
+}
+
+model DirectConversation {
+    id           String @id @default(cuid())
+    pairKey      String @unique
+    firstUserId  String
+    firstUser    User @relation("DirectChatFirstUser", fields: [firstUserId], references: [id], onDelete: Cascade)
+    secondUserId String
+    secondUser   User @relation("DirectChatSecondUser", fields: [secondUserId], references: [id], onDelete: Cascade)
+    nextSequence Int @default(0)
+    createdAt    DateTime @default(now())
+    updatedAt    DateTime @updatedAt
+    members      ChatMembership[]
+    messages     ChatMessage[]
+}
+
+model ChatMembership {
+    conversationId   String
+    conversation     DirectConversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+    userId           String
+    user             User @relation(fields: [userId], references: [id], onDelete: Cascade)
+    hiddenAt         DateTime?
+    lastReadSequence Int @default(0)
+
+    @@id([conversationId, userId])
+    @@index([userId, hiddenAt])
+}
+
+model ChatMessage {
+    id             String @id @default(cuid())
+    conversationId String
+    conversation   DirectConversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+    senderId       String
+    sender         User @relation(fields: [senderId], references: [id], onDelete: Cascade)
+    clientId       String
+    sequence       Int
+    text           String?
+    encrypted      Json?
+    createdAt      DateTime @default(now())
+    editedAt       DateTime?
+
+    @@unique([conversationId, sequence])
+    @@unique([senderId, clientId])
+}
+
+model Friendship {
+    id          String           @id @default(cuid())
+    pairKey     String           @unique
+    requesterId String
+    requester   User             @relation("FriendshipRequester", fields: [requesterId], references: [id], onDelete: Cascade)
+    recipientId String
+    recipient   User             @relation("FriendshipRecipient", fields: [recipientId], references: [id], onDelete: Cascade)
+    status      FriendshipStatus @default(PENDING)
+    createdAt   DateTime         @default(now())
+    updatedAt   DateTime         @updatedAt
+
+    @@index([requesterId, status])
+    @@index([recipientId, status])
+}
+
+model ChatEncryptionKey {
+    userId     String @id
+    user       User @relation(fields: [userId], references: [id], onDelete: Cascade)
+    version    Int
+    publicKey  String
+    salt       String
+    nonce      String
+    ciphertext String
+    createdAt  DateTime @default(now())
 }
