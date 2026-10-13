@@ -67,8 +67,6 @@ export const ModelName = {
   Session: 'Session',
   Account: 'Account',
   Verification: 'Verification',
-  DailyPlan: 'DailyPlan',
-  DailyPlanStage: 'DailyPlanStage',
   DirectConversation: 'DirectConversation',
   ChatMembership: 'ChatMembership',
   ChatMessage: 'ChatMessage',
@@ -314,31 +312,6 @@ export const VerificationScalarFieldEnum = {
 } as const
 
 export type VerificationScalarFieldEnum = (typeof VerificationScalarFieldEnum)[keyof typeof VerificationScalarFieldEnum]
-
-
-export const DailyPlanScalarFieldEnum = {
-  id: 'id',
-  userId: 'userId',
-  date: 'date',
-  title: 'title',
-  createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
-} as const
-
-export type DailyPlanScalarFieldEnum = (typeof DailyPlanScalarFieldEnum)[keyof typeof DailyPlanScalarFieldEnum]
-
-
-export const DailyPlanStageScalarFieldEnum = {
-  id: 'id',
-  planId: 'planId',
-  title: 'title',
-  order: 'order',
-  completed: 'completed',
-  completedAt: 'completedAt',
-  parentId: 'parentId'
-} as const
-
-export type DailyPlanStageScalarFieldEnum = (typeof DailyPlanStageScalarFieldEnum)[keyof typeof DailyPlanStageScalarFieldEnum]
 
 
 export const DirectConversationScalarFieldEnum = {

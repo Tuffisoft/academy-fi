@@ -122,16 +122,6 @@ export type Account = Prisma.AccountModel
  */
 export type Verification = Prisma.VerificationModel
 /**
- * Model DailyPlan
- * 
- */
-export type DailyPlan = Prisma.DailyPlanModel
-/**
- * Model DailyPlanStage
- * 
- */
-export type DailyPlanStage = Prisma.DailyPlanStageModel
-/**
  * Model DirectConversation
  * 
  */

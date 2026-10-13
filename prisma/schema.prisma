@@ -132,31 +132,31 @@ model IdeaNote {
 }
 
 model DailyPlan {
-    id        String           @id @default(cuid())
-    userId    String
-    user      User             @relation("DailyPlansByUser", fields: [userId], references: [id], onDelete: Cascade)
-    // Calendar day as "YYYY-MM-DD" to avoid timezone shifts
-    date      String
-    title     String
-    stages    DailyPlanStage[]
-    createdAt DateTime         @default(now())
-    updatedAt DateTime         @updatedAt
+  id        String           @id @default(cuid())
+  userId    String
+  user      User             @relation("DailyPlansByUser", fields: [userId], references: [id], onDelete: Cascade)
+  // Calendar day as "YYYY-MM-DD" to avoid timezone shifts
+  date      String
+  title     String
+  stages    DailyPlanStage[]
+  createdAt DateTime         @default(now())
+  updatedAt DateTime         @updatedAt
 
-    @@unique([userId, date])
+  @@unique([userId, date])
 }
 
 model DailyPlanStage {
-    id          String           @id @default(cuid())
-    planId      String
-    plan        DailyPlan        @relation(fields: [planId], references: [id], onDelete: Cascade)
-    // Null for top-level stages; set for subsections (one level deep)
-    parentId    String?
-    parent      DailyPlanStage?  @relation("StageSubsections", fields: [parentId], references: [id], onDelete: Cascade)
-    subsections DailyPlanStage[] @relation("StageSubsections")
-    title       String
-    order       Int              @default(0)
-    completed   Boolean          @default(false)
-    completedAt DateTime?
+  id          String           @id @default(cuid())
+  planId      String
+  plan        DailyPlan        @relation(fields: [planId], references: [id], onDelete: Cascade)
+  // Null for top-level stages; set for subsections (one level deep)
+  parentId    String?
+  parent      DailyPlanStage?  @relation("StageSubsections", fields: [parentId], references: [id], onDelete: Cascade)
+  subsections DailyPlanStage[] @relation("StageSubsections")
+  title       String
+  order       Int              @default(0)
+  completed   Boolean          @default(false)
+  completedAt DateTime?
 }
 
 model User {
@@ -173,7 +173,7 @@ model User {
   banExpires          DateTime?
   locale              String               @default("en")
   secureLoginVersion  Int                  @default(0)
-  DailyPlan           DailyPlan[]
+  dailyPlans          DailyPlan[]          @relation("DailyPlansByUser")
   resourcesAdded      DepartmentResource[] @relation("ResourcesAddedBy")
   discussionNote      DiscussionNote?
   ideas               Idea[]               @relation("IdeasByAuthor")
@@ -243,107 +243,81 @@ model Verification {
   @@map("verification")
 }
 
-model DailyPlan {
-  id             String           @id
-  userId         String
-  date           String
-  title          String
-  createdAt      DateTime         @default(now())
-  updatedAt      DateTime
-  user           User             @relation(fields: [userId], references: [id], onDelete: Cascade)
-  DailyPlanStage DailyPlanStage[]
-
-  @@unique([userId, date])
-}
-
-model DailyPlanStage {
-  id                   String           @id
-  planId               String
-  title                String
-  order                Int              @default(0)
-  completed            Boolean          @default(false)
-  completedAt          DateTime?
-  parentId             String?
-  DailyPlanStage       DailyPlanStage?  @relation("DailyPlanStageToDailyPlanStage", fields: [parentId], references: [id], onDelete: Cascade)
-  other_DailyPlanStage DailyPlanStage[] @relation("DailyPlanStageToDailyPlanStage")
-  DailyPlan            DailyPlan        @relation(fields: [planId], references: [id], onDelete: Cascade)
-}
-
 enum Role {
   OWNER
   INTERN
 }
 
 enum FriendshipStatus {
-    PENDING
-    ACCEPTED
+  PENDING
+  ACCEPTED
 }
 
 model DirectConversation {
-    id           String @id @default(cuid())
-    pairKey      String @unique
-    firstUserId  String
-    firstUser    User @relation("DirectChatFirstUser", fields: [firstUserId], references: [id], onDelete: Cascade)
-    secondUserId String
-    secondUser   User @relation("DirectChatSecondUser", fields: [secondUserId], references: [id], onDelete: Cascade)
-    nextSequence Int @default(0)
-    createdAt    DateTime @default(now())
-    updatedAt    DateTime @updatedAt
-    members      ChatMembership[]
-    messages     ChatMessage[]
+  id           String           @id @default(cuid())
+  pairKey      String           @unique
+  firstUserId  String
+  firstUser    User             @relation("DirectChatFirstUser", fields: [firstUserId], references: [id], onDelete: Cascade)
+  secondUserId String
+  secondUser   User             @relation("DirectChatSecondUser", fields: [secondUserId], references: [id], onDelete: Cascade)
+  nextSequence Int              @default(0)
+  createdAt    DateTime         @default(now())
+  updatedAt    DateTime         @updatedAt
+  members      ChatMembership[]
+  messages     ChatMessage[]
 }
 
 model ChatMembership {
-    conversationId   String
-    conversation     DirectConversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
-    userId           String
-    user             User @relation(fields: [userId], references: [id], onDelete: Cascade)
-    hiddenAt         DateTime?
-    lastReadSequence Int @default(0)
+  conversationId   String
+  conversation     DirectConversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+  userId           String
+  user             User               @relation(fields: [userId], references: [id], onDelete: Cascade)
+  hiddenAt         DateTime?
+  lastReadSequence Int                @default(0)
 
-    @@id([conversationId, userId])
-    @@index([userId, hiddenAt])
+  @@id([conversationId, userId])
+  @@index([userId, hiddenAt])
 }
 
 model ChatMessage {
-    id             String @id @default(cuid())
-    conversationId String
-    conversation   DirectConversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
-    senderId       String
-    sender         User @relation(fields: [senderId], references: [id], onDelete: Cascade)
-    clientId       String
-    sequence       Int
-    text           String?
-    encrypted      Json?
-    createdAt      DateTime @default(now())
-    editedAt       DateTime?
+  id             String             @id @default(cuid())
+  conversationId String
+  conversation   DirectConversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+  senderId       String
+  sender         User               @relation(fields: [senderId], references: [id], onDelete: Cascade)
+  clientId       String
+  sequence       Int
+  text           String?
+  encrypted      Json?
+  createdAt      DateTime           @default(now())
+  editedAt       DateTime?
 
-    @@unique([conversationId, sequence])
-    @@unique([senderId, clientId])
+  @@unique([conversationId, sequence])
+  @@unique([senderId, clientId])
 }
 
 model Friendship {
-    id          String           @id @default(cuid())
-    pairKey     String           @unique
-    requesterId String
-    requester   User             @relation("FriendshipRequester", fields: [requesterId], references: [id], onDelete: Cascade)
-    recipientId String
-    recipient   User             @relation("FriendshipRecipient", fields: [recipientId], references: [id], onDelete: Cascade)
-    status      FriendshipStatus @default(PENDING)
-    createdAt   DateTime         @default(now())
-    updatedAt   DateTime         @updatedAt
+  id          String           @id @default(cuid())
+  pairKey     String           @unique
+  requesterId String
+  requester   User             @relation("FriendshipRequester", fields: [requesterId], references: [id], onDelete: Cascade)
+  recipientId String
+  recipient   User             @relation("FriendshipRecipient", fields: [recipientId], references: [id], onDelete: Cascade)
+  status      FriendshipStatus @default(PENDING)
+  createdAt   DateTime         @default(now())
+  updatedAt   DateTime         @updatedAt
 
-    @@index([requesterId, status])
-    @@index([recipientId, status])
+  @@index([requesterId, status])
+  @@index([recipientId, status])
 }
 
 model ChatEncryptionKey {
-    userId     String @id
-    user       User @relation(fields: [userId], references: [id], onDelete: Cascade)
-    version    Int
-    publicKey  String
-    salt       String
-    nonce      String
-    ciphertext String
-    createdAt  DateTime @default(now())
+  userId     String   @id
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  version    Int
+  publicKey  String
+  salt       String
+  nonce      String
+  ciphertext String
+  createdAt  DateTime @default(now())
 }

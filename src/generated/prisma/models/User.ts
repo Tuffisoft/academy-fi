@@ -280,7 +280,7 @@ export type UserWhereInput = {
   banExpires?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null
   locale?: Prisma.StringFilter<"User"> | string
   secureLoginVersion?: Prisma.IntFilter<"User"> | number
-  DailyPlan?: Prisma.DailyPlanListRelationFilter
+  dailyPlans?: Prisma.DailyPlanListRelationFilter
   resourcesAdded?: Prisma.DepartmentResourceListRelationFilter
   discussionNote?: Prisma.XOR<Prisma.DiscussionNoteNullableScalarRelationFilter, Prisma.DiscussionNoteWhereInput> | null
   ideas?: Prisma.IdeaListRelationFilter
@@ -314,7 +314,7 @@ export type UserOrderByWithRelationInput = {
   banExpires?: Prisma.SortOrderInput | Prisma.SortOrder
   locale?: Prisma.SortOrder
   secureLoginVersion?: Prisma.SortOrder
-  DailyPlan?: Prisma.DailyPlanOrderByRelationAggregateInput
+  dailyPlans?: Prisma.DailyPlanOrderByRelationAggregateInput
   resourcesAdded?: Prisma.DepartmentResourceOrderByRelationAggregateInput
   discussionNote?: Prisma.DiscussionNoteOrderByWithRelationInput
   ideas?: Prisma.IdeaOrderByRelationAggregateInput
@@ -351,7 +351,7 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   banExpires?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null
   locale?: Prisma.StringFilter<"User"> | string
   secureLoginVersion?: Prisma.IntFilter<"User"> | number
-  DailyPlan?: Prisma.DailyPlanListRelationFilter
+  dailyPlans?: Prisma.DailyPlanListRelationFilter
   resourcesAdded?: Prisma.DepartmentResourceListRelationFilter
   discussionNote?: Prisma.XOR<Prisma.DiscussionNoteNullableScalarRelationFilter, Prisma.DiscussionNoteWhereInput> | null
   ideas?: Prisma.IdeaListRelationFilter
@@ -425,7 +425,7 @@ export type UserCreateInput = {
   banExpires?: Date | string | null
   locale?: string
   secureLoginVersion?: number
-  DailyPlan?: Prisma.DailyPlanCreateNestedManyWithoutUserInput
+  dailyPlans?: Prisma.DailyPlanCreateNestedManyWithoutUserInput
   resourcesAdded?: Prisma.DepartmentResourceCreateNestedManyWithoutCreatedByInput
   discussionNote?: Prisma.DiscussionNoteCreateNestedOneWithoutUserInput
   ideas?: Prisma.IdeaCreateNestedManyWithoutAuthorInput
@@ -459,7 +459,7 @@ export type UserUncheckedCreateInput = {
   banExpires?: Date | string | null
   locale?: string
   secureLoginVersion?: number
-  DailyPlan?: Prisma.DailyPlanUncheckedCreateNestedManyWithoutUserInput
+  dailyPlans?: Prisma.DailyPlanUncheckedCreateNestedManyWithoutUserInput
   resourcesAdded?: Prisma.DepartmentResourceUncheckedCreateNestedManyWithoutCreatedByInput
   discussionNote?: Prisma.DiscussionNoteUncheckedCreateNestedOneWithoutUserInput
   ideas?: Prisma.IdeaUncheckedCreateNestedManyWithoutAuthorInput
@@ -493,7 +493,7 @@ export type UserUpdateInput = {
   banExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   locale?: Prisma.StringFieldUpdateOperationsInput | string
   secureLoginVersion?: Prisma.IntFieldUpdateOperationsInput | number
-  DailyPlan?: Prisma.DailyPlanUpdateManyWithoutUserNestedInput
+  dailyPlans?: Prisma.DailyPlanUpdateManyWithoutUserNestedInput
   resourcesAdded?: Prisma.DepartmentResourceUpdateManyWithoutCreatedByNestedInput
   discussionNote?: Prisma.DiscussionNoteUpdateOneWithoutUserNestedInput
   ideas?: Prisma.IdeaUpdateManyWithoutAuthorNestedInput
@@ -527,7 +527,7 @@ export type UserUncheckedUpdateInput = {
   banExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   locale?: Prisma.StringFieldUpdateOperationsInput | string
   secureLoginVersion?: Prisma.IntFieldUpdateOperationsInput | number
-  DailyPlan?: Prisma.DailyPlanUncheckedUpdateManyWithoutUserNestedInput
+  dailyPlans?: Prisma.DailyPlanUncheckedUpdateManyWithoutUserNestedInput
   resourcesAdded?: Prisma.DepartmentResourceUncheckedUpdateManyWithoutCreatedByNestedInput
   discussionNote?: Prisma.DiscussionNoteUncheckedUpdateOneWithoutUserNestedInput
   ideas?: Prisma.IdeaUncheckedUpdateManyWithoutAuthorNestedInput
@@ -825,20 +825,6 @@ export type UserUpdateOneRequiredWithoutAccountsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutAccountsInput, Prisma.UserUpdateWithoutAccountsInput>, Prisma.UserUncheckedUpdateWithoutAccountsInput>
 }
 
-export type UserCreateNestedOneWithoutDailyPlanInput = {
-  create?: Prisma.XOR<Prisma.UserCreateWithoutDailyPlanInput, Prisma.UserUncheckedCreateWithoutDailyPlanInput>
-  connectOrCreate?: Prisma.UserCreateOrConnectWithoutDailyPlanInput
-  connect?: Prisma.UserWhereUniqueInput
-}
-
-export type UserUpdateOneRequiredWithoutDailyPlanNestedInput = {
-  create?: Prisma.XOR<Prisma.UserCreateWithoutDailyPlanInput, Prisma.UserUncheckedCreateWithoutDailyPlanInput>
-  connectOrCreate?: Prisma.UserCreateOrConnectWithoutDailyPlanInput
-  upsert?: Prisma.UserUpsertWithoutDailyPlanInput
-  connect?: Prisma.UserWhereUniqueInput
-  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutDailyPlanInput, Prisma.UserUpdateWithoutDailyPlanInput>, Prisma.UserUncheckedUpdateWithoutDailyPlanInput>
-}
-
 export type UserCreateNestedOneWithoutDirectChatsFirstInput = {
   create?: Prisma.XOR<Prisma.UserCreateWithoutDirectChatsFirstInput, Prisma.UserUncheckedCreateWithoutDirectChatsFirstInput>
   connectOrCreate?: Prisma.UserCreateOrConnectWithoutDirectChatsFirstInput
@@ -951,7 +937,7 @@ export type UserCreateWithoutAssignmentsCreatedInput = {
   banExpires?: Date | string | null
   locale?: string
   secureLoginVersion?: number
-  DailyPlan?: Prisma.DailyPlanCreateNestedManyWithoutUserInput
+  dailyPlans?: Prisma.DailyPlanCreateNestedManyWithoutUserInput
   resourcesAdded?: Prisma.DepartmentResourceCreateNestedManyWithoutCreatedByInput
   discussionNote?: Prisma.DiscussionNoteCreateNestedOneWithoutUserInput
   ideas?: Prisma.IdeaCreateNestedManyWithoutAuthorInput
@@ -984,7 +970,7 @@ export type UserUncheckedCreateWithoutAssignmentsCreatedInput = {
   banExpires?: Date | string | null
   locale?: string
   secureLoginVersion?: number
-  DailyPlan?: Prisma.DailyPlanUncheckedCreateNestedManyWithoutUserInput
+  dailyPlans?: Prisma.DailyPlanUncheckedCreateNestedManyWithoutUserInput
   resourcesAdded?: Prisma.DepartmentResourceUncheckedCreateNestedManyWithoutCreatedByInput
   discussionNote?: Prisma.DiscussionNoteUncheckedCreateNestedOneWithoutUserInput
   ideas?: Prisma.IdeaUncheckedCreateNestedManyWithoutAuthorInput
@@ -1022,7 +1008,7 @@ export type UserCreateWithoutAssignmentsAsInternInput = {
   banExpires?: Date | string | null
   locale?: string
   secureLoginVersion?: number
-  DailyPlan?: Prisma.DailyPlanCreateNestedManyWithoutUserInput
+  dailyPlans?: Prisma.DailyPlanCreateNestedManyWithoutUserInput
   resourcesAdded?: Prisma.DepartmentResourceCreateNestedManyWithoutCreatedByInput
   discussionNote?: Prisma.DiscussionNoteCreateNestedOneWithoutUserInput
   ideas?: Prisma.IdeaCreateNestedManyWithoutAuthorInput
@@ -1055,7 +1041,7 @@ export type UserUncheckedCreateWithoutAssignmentsAsInternInput = {
   banExpires?: Date | string | null
   locale?: string
   secureLoginVersion?: number
-  DailyPlan?: Prisma.DailyPlanUncheckedCreateNestedManyWithoutUserInput
+  dailyPlans?: Prisma.DailyPlanUncheckedCreateNestedManyWithoutUserInput
   resourcesAdded?: Prisma.DepartmentResourceUncheckedCreateNestedManyWithoutCreatedByInput
   discussionNote?: Prisma.DiscussionNoteUncheckedCreateNestedOneWithoutUserInput
   ideas?: Prisma.IdeaUncheckedCreateNestedManyWithoutAuthorInput
@@ -1104,7 +1090,7 @@ export type UserUpdateWithoutAssignmentsCreatedInput = {
   banExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   locale?: Prisma.StringFieldUpdateOperationsInput | string
   secureLoginVersion?: Prisma.IntFieldUpdateOperationsInput | number
-  DailyPlan?: Prisma.DailyPlanUpdateManyWithoutUserNestedInput
+  dailyPlans?: Prisma.DailyPlanUpdateManyWithoutUserNestedInput
   resourcesAdded?: Prisma.DepartmentResourceUpdateManyWithoutCreatedByNestedInput
   discussionNote?: Prisma.DiscussionNoteUpdateOneWithoutUserNestedInput
   ideas?: Prisma.IdeaUpdateManyWithoutAuthorNestedInput
@@ -1137,7 +1123,7 @@ export type UserUncheckedUpdateWithoutAssignmentsCreatedInput = {
   banExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   locale?: Prisma.StringFieldUpdateOperationsInput | string
   secureLoginVersion?: Prisma.IntFieldUpdateOperationsInput | number
-  DailyPlan?: Prisma.DailyPlanUncheckedUpdateManyWithoutUserNestedInput
+  dailyPlans?: Prisma.DailyPlanUncheckedUpdateManyWithoutUserNestedInput
   resourcesAdded?: Prisma.DepartmentResourceUncheckedUpdateManyWithoutCreatedByNestedInput
   discussionNote?: Prisma.DiscussionNoteUncheckedUpdateOneWithoutUserNestedInput
   ideas?: Prisma.IdeaUncheckedUpdateManyWithoutAuthorNestedInput
@@ -1181,7 +1167,7 @@ export type UserUpdateWithoutAssignmentsAsInternInput = {
   banExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   locale?: Prisma.StringFieldUpdateOperationsInput | string
   secureLoginVersion?: Prisma.IntFieldUpdateOperationsInput | number
-  DailyPlan?: Prisma.DailyPlanUpdateManyWithoutUserNestedInput
+  dailyPlans?: Prisma.DailyPlanUpdateManyWithoutUserNestedInput
   resourcesAdded?: Prisma.DepartmentResourceUpdateManyWithoutCreatedByNestedInput
   discussionNote?: Prisma.DiscussionNoteUpdateOneWithoutUserNestedInput
   ideas?: Prisma.IdeaUpdateManyWithoutAuthorNestedInput
@@ -1214,7 +1200,7 @@ export type UserUncheckedUpdateWithoutAssignmentsAsInternInput = {
   banExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   locale?: Prisma.StringFieldUpdateOperationsInput | string
   secureLoginVersion?: Prisma.IntFieldUpdateOperationsInput | number
-  DailyPlan?: Prisma.DailyPlanUncheckedUpdateManyWithoutUserNestedInput
+  dailyPlans?: Prisma.DailyPlanUncheckedUpdateManyWithoutUserNestedInput
   resourcesAdded?: Prisma.DepartmentResourceUncheckedUpdateManyWithoutCreatedByNestedInput
   discussionNote?: Prisma.DiscussionNoteUncheckedUpdateOneWithoutUserNestedInput
   ideas?: Prisma.IdeaUncheckedUpdateManyWithoutAuthorNestedInput
@@ -1247,7 +1233,7 @@ export type UserCreateWithoutReflectionsInput = {
   banExpires?: Date | string | null
   locale?: string
   secureLoginVersion?: number
-  DailyPlan?: Prisma.DailyPlanCreateNestedManyWithoutUserInput
+  dailyPlans?: Prisma.DailyPlanCreateNestedManyWithoutUserInput
   resourcesAdded?: Prisma.DepartmentResourceCreateNestedManyWithoutCreatedByInput
   discussionNote?: Prisma.DiscussionNoteCreateNestedOneWithoutUserInput
   ideas?: Prisma.IdeaCreateNestedManyWithoutAuthorInput
@@ -1280,7 +1266,7 @@ export type UserUncheckedCreateWithoutReflectionsInput = {
   banExpires?: Date | string | null
   locale?: string
   secureLoginVersion?: number
-  DailyPlan?: Prisma.DailyPlanUncheckedCreateNestedManyWithoutUserInput
+  dailyPlans?: Prisma.DailyPlanUncheckedCreateNestedManyWithoutUserInput
   resourcesAdded?: Prisma.DepartmentResourceUncheckedCreateNestedManyWithoutCreatedByInput
   discussionNote?: Prisma.DiscussionNoteUncheckedCreateNestedOneWithoutUserInput
   ideas?: Prisma.IdeaUncheckedCreateNestedManyWithoutAuthorInput
@@ -1329,7 +1315,7 @@ export type UserUpdateWithoutReflectionsInput = {
   banExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   locale?: Prisma.StringFieldUpdateOperationsInput | string
   secureLoginVersion?: Prisma.IntFieldUpdateOperationsInput | number
-  DailyPlan?: Prisma.DailyPlanUpdateManyWithoutUserNestedInput
+  dailyPlans?: Prisma.DailyPlanUpdateManyWithoutUserNestedInput
   resourcesAdded?: Prisma.DepartmentResourceUpdateManyWithoutCreatedByNestedInput
   discussionNote?: Prisma.DiscussionNoteUpdateOneWithoutUserNestedInput
   ideas?: Prisma.IdeaUpdateManyWithoutAuthorNestedInput
@@ -1362,7 +1348,7 @@ export type UserUncheckedUpdateWithoutReflectionsInput = {
   banExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   locale?: Prisma.StringFieldUpdateOperationsInput | string
   secureLoginVersion?: Prisma.IntFieldUpdateOperationsInput | number
-  DailyPlan?: Prisma.DailyPlanUncheckedUpdateManyWithoutUserNestedInput
+  dailyPlans?: Prisma.DailyPlanUncheckedUpdateManyWithoutUserNestedInput
   resourcesAdded?: Prisma.DepartmentResourceUncheckedUpdateManyWithoutCreatedByNestedInput
   discussionNote?: Prisma.DiscussionNoteUncheckedUpdateOneWithoutUserNestedInput
   ideas?: Prisma.IdeaUncheckedUpdateManyWithoutAuthorNestedInput
@@ -1395,7 +1381,7 @@ export type UserCreateWithoutFeedbackAuthoredInput = {
   banExpires?: Date | string | null
   locale?: string
   secureLoginVersion?: number
-  DailyPlan?: Prisma.DailyPlanCreateNestedManyWithoutUserInput
+  dailyPlans?: Prisma.DailyPlanCreateNestedManyWithoutUserInput
   resourcesAdded?: Prisma.DepartmentResourceCreateNestedManyWithoutCreatedByInput
   discussionNote?: Prisma.DiscussionNoteCreateNestedOneWithoutUserInput
   ideas?: Prisma.IdeaCreateNestedManyWithoutAuthorInput
@@ -1428,7 +1414,7 @@ export type UserUncheckedCreateWithoutFeedbackAuthoredInput = {
   banExpires?: Date | string | null
   locale?: string
   secureLoginVersion?: number
-  DailyPlan?: Prisma.DailyPlanUncheckedCreateNestedManyWithoutUserInput
+  dailyPlans?: Prisma.DailyPlanUncheckedCreateNestedManyWithoutUserInput
   resourcesAdded?: Prisma.DepartmentResourceUncheckedCreateNestedManyWithoutCreatedByInput
   discussionNote?: Prisma.DiscussionNoteUncheckedCreateNestedOneWithoutUserInput
   ideas?: Prisma.IdeaUncheckedCreateNestedManyWithoutAuthorInput
@@ -1477,7 +1463,7 @@ export type UserUpdateWithoutFeedbackAuthoredInput = {
   banExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   locale?: Prisma.StringFieldUpdateOperationsInput | string
   secureLoginVersion?: Prisma.IntFieldUpdateOperationsInput | number
-  DailyPlan?: Prisma.DailyPlanUpdateManyWithoutUserNestedInput
+  dailyPlans?: Prisma.DailyPlanUpdateManyWithoutUserNestedInput
   resourcesAdded?: Prisma.DepartmentResourceUpdateManyWithoutCreatedByNestedInput
   discussionNote?: Prisma.DiscussionNoteUpdateOneWithoutUserNestedInput
   ideas?: Prisma.IdeaUpdateManyWithoutAuthorNestedInput
@@ -1510,7 +1496,7 @@ export type UserUncheckedUpdateWithoutFeedbackAuthoredInput = {
   banExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   locale?: Prisma.StringFieldUpdateOperationsInput | string
   secureLoginVersion?: Prisma.IntFieldUpdateOperationsInput | number
-  DailyPlan?: Prisma.DailyPlanUncheckedUpdateManyWithoutUserNestedInput
+  dailyPlans?: Prisma.DailyPlanUncheckedUpdateManyWithoutUserNestedInput
   resourcesAdded?: Prisma.DepartmentResourceUncheckedUpdateManyWithoutCreatedByNestedInput
   discussionNote?: Prisma.DiscussionNoteUncheckedUpdateOneWithoutUserNestedInput
   ideas?: Prisma.IdeaUncheckedUpdateManyWithoutAuthorNestedInput
@@ -1543,7 +1529,7 @@ export type UserCreateWithoutDiscussionNoteInput = {
   banExpires?: Date | string | null
   locale?: string
   secureLoginVersion?: number
-  DailyPlan?: Prisma.DailyPlanCreateNestedManyWithoutUserInput
+  dailyPlans?: Prisma.DailyPlanCreateNestedManyWithoutUserInput
   resourcesAdded?: Prisma.DepartmentResourceCreateNestedManyWithoutCreatedByInput
   ideas?: Prisma.IdeaCreateNestedManyWithoutAuthorInput
   ideaNotes?: Prisma.IdeaNoteCreateNestedManyWithoutAuthorInput
@@ -1576,7 +1562,7 @@ export type UserUncheckedCreateWithoutDiscussionNoteInput = {
   banExpires?: Date | string | null
   locale?: string
   secureLoginVersion?: number
-  DailyPlan?: Prisma.DailyPlanUncheckedCreateNestedManyWithoutUserInput
+  dailyPlans?: Prisma.DailyPlanUncheckedCreateNestedManyWithoutUserInput
   resourcesAdded?: Prisma.DepartmentResourceUncheckedCreateNestedManyWithoutCreatedByInput
   ideas?: Prisma.IdeaUncheckedCreateNestedManyWithoutAuthorInput
   ideaNotes?: Prisma.IdeaNoteUncheckedCreateNestedManyWithoutAuthorInput
@@ -1625,7 +1611,7 @@ export type UserUpdateWithoutDiscussionNoteInput = {
   banExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   locale?: Prisma.StringFieldUpdateOperationsInput | string
   secureLoginVersion?: Prisma.IntFieldUpdateOperationsInput | number
-  DailyPlan?: Prisma.DailyPlanUpdateManyWithoutUserNestedInput
+  dailyPlans?: Prisma.DailyPlanUpdateManyWithoutUserNestedInput
   resourcesAdded?: Prisma.DepartmentResourceUpdateManyWithoutCreatedByNestedInput
   ideas?: Prisma.IdeaUpdateManyWithoutAuthorNestedInput
   ideaNotes?: Prisma.IdeaNoteUpdateManyWithoutAuthorNestedInput
@@ -1658,7 +1644,7 @@ export type UserUncheckedUpdateWithoutDiscussionNoteInput = {
   banExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   locale?: Prisma.StringFieldUpdateOperationsInput | string
   secureLoginVersion?: Prisma.IntFieldUpdateOperationsInput | number
-  DailyPlan?: Prisma.DailyPlanUncheckedUpdateManyWithoutUserNestedInput
+  dailyPlans?: Prisma.DailyPlanUncheckedUpdateManyWithoutUserNestedInput
   resourcesAdded?: Prisma.DepartmentResourceUncheckedUpdateManyWithoutCreatedByNestedInput
   ideas?: Prisma.IdeaUncheckedUpdateManyWithoutAuthorNestedInput
   ideaNotes?: Prisma.IdeaNoteUncheckedUpdateManyWithoutAuthorNestedInput
@@ -1691,7 +1677,7 @@ export type UserCreateWithoutResourcesAddedInput = {
   banExpires?: Date | string | null
   locale?: string
   secureLoginVersion?: number
-  DailyPlan?: Prisma.DailyPlanCreateNestedManyWithoutUserInput
+  dailyPlans?: Prisma.DailyPlanCreateNestedManyWithoutUserInput
   discussionNote?: Prisma.DiscussionNoteCreateNestedOneWithoutUserInput
   ideas?: Prisma.IdeaCreateNestedManyWithoutAuthorInput
   ideaNotes?: Prisma.IdeaNoteCreateNestedManyWithoutAuthorInput
@@ -1724,7 +1710,7 @@ export type UserUncheckedCreateWithoutResourcesAddedInput = {
   banExpires?: Date | string | null
   locale?: string
   secureLoginVersion?: number
-  DailyPlan?: Prisma.DailyPlanUncheckedCreateNestedManyWithoutUserInput
+  dailyPlans?: Prisma.DailyPlanUncheckedCreateNestedManyWithoutUserInput
   discussionNote?: Prisma.DiscussionNoteUncheckedCreateNestedOneWithoutUserInput
   ideas?: Prisma.IdeaUncheckedCreateNestedManyWithoutAuthorInput
   ideaNotes?: Prisma.IdeaNoteUncheckedCreateNestedManyWithoutAuthorInput
@@ -1773,7 +1759,7 @@ export type UserUpdateWithoutResourcesAddedInput = {
   banExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   locale?: Prisma.StringFieldUpdateOperationsInput | string
   secureLoginVersion?: Prisma.IntFieldUpdateOperationsInput | number
-  DailyPlan?: Prisma.DailyPlanUpdateManyWithoutUserNestedInput
+  dailyPlans?: Prisma.DailyPlanUpdateManyWithoutUserNestedInput
   discussionNote?: Prisma.DiscussionNoteUpdateOneWithoutUserNestedInput
   ideas?: Prisma.IdeaUpdateManyWithoutAuthorNestedInput
   ideaNotes?: Prisma.IdeaNoteUpdateManyWithoutAuthorNestedInput
@@ -1806,7 +1792,7 @@ export type UserUncheckedUpdateWithoutResourcesAddedInput = {
   banExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   locale?: Prisma.StringFieldUpdateOperationsInput | string
   secureLoginVersion?: Prisma.IntFieldUpdateOperationsInput | number
-  DailyPlan?: Prisma.DailyPlanUncheckedUpdateManyWithoutUserNestedInput
+  dailyPlans?: Prisma.DailyPlanUncheckedUpdateManyWithoutUserNestedInput
   discussionNote?: Prisma.DiscussionNoteUncheckedUpdateOneWithoutUserNestedInput
   ideas?: Prisma.IdeaUncheckedUpdateManyWithoutAuthorNestedInput
   ideaNotes?: Prisma.IdeaNoteUncheckedUpdateManyWithoutAuthorNestedInput
@@ -1839,7 +1825,7 @@ export type UserCreateWithoutIdeasInput = {
   banExpires?: Date | string | null
   locale?: string
   secureLoginVersion?: number
-  DailyPlan?: Prisma.DailyPlanCreateNestedManyWithoutUserInput
+  dailyPlans?: Prisma.DailyPlanCreateNestedManyWithoutUserInput
   resourcesAdded?: Prisma.DepartmentResourceCreateNestedManyWithoutCreatedByInput
   discussionNote?: Prisma.DiscussionNoteCreateNestedOneWithoutUserInput
   ideaNotes?: Prisma.IdeaNoteCreateNestedManyWithoutAuthorInput
@@ -1872,7 +1858,7 @@ export type UserUncheckedCreateWithoutIdeasInput = {
   banExpires?: Date | string | null
   locale?: string
   secureLoginVersion?: number
-  DailyPlan?: Prisma.DailyPlanUncheckedCreateNestedManyWithoutUserInput
+  dailyPlans?: Prisma.DailyPlanUncheckedCreateNestedManyWithoutUserInput
   resourcesAdded?: Prisma.DepartmentResourceUncheckedCreateNestedManyWithoutCreatedByInput
   discussionNote?: Prisma.DiscussionNoteUncheckedCreateNestedOneWithoutUserInput
   ideaNotes?: Prisma.IdeaNoteUncheckedCreateNestedManyWithoutAuthorInput
@@ -1921,7 +1907,7 @@ export type UserUpdateWithoutIdeasInput = {
   banExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   locale?: Prisma.StringFieldUpdateOperationsInput | string
   secureLoginVersion?: Prisma.IntFieldUpdateOperationsInput | number
-  DailyPlan?: Prisma.DailyPlanUpdateManyWithoutUserNestedInput
+  dailyPlans?: Prisma.DailyPlanUpdateManyWithoutUserNestedInput
   resourcesAdded?: Prisma.DepartmentResourceUpdateManyWithoutCreatedByNestedInput
   discussionNote?: Prisma.DiscussionNoteUpdateOneWithoutUserNestedInput
   ideaNotes?: Prisma.IdeaNoteUpdateManyWithoutAuthorNestedInput
@@ -1954,7 +1940,7 @@ export type UserUncheckedUpdateWithoutIdeasInput = {
   banExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   locale?: Prisma.StringFieldUpdateOperationsInput | string
   secureLoginVersion?: Prisma.IntFieldUpdateOperationsInput | number
-  DailyPlan?: Prisma.DailyPlanUncheckedUpdateManyWithoutUserNestedInput
+  dailyPlans?: Prisma.DailyPlanUncheckedUpdateManyWithoutUserNestedInput
   resourcesAdded?: Prisma.DepartmentResourceUncheckedUpdateManyWithoutCreatedByNestedInput
   discussionNote?: Prisma.DiscussionNoteUncheckedUpdateOneWithoutUserNestedInput
   ideaNotes?: Prisma.IdeaNoteUncheckedUpdateManyWithoutAuthorNestedInput
@@ -1987,7 +1973,7 @@ export type UserCreateWithoutIdeaNotesInput = {
   banExpires?: Date | string | null
   locale?: string
   secureLoginVersion?: number
-  DailyPlan?: Prisma.DailyPlanCreateNestedManyWithoutUserInput
+  dailyPlans?: Prisma.DailyPlanCreateNestedManyWithoutUserInput
   resourcesAdded?: Prisma.DepartmentResourceCreateNestedManyWithoutCreatedByInput
   discussionNote?: Prisma.DiscussionNoteCreateNestedOneWithoutUserInput
   ideas?: Prisma.IdeaCreateNestedManyWithoutAuthorInput
@@ -2020,7 +2006,7 @@ export type UserUncheckedCreateWithoutIdeaNotesInput = {
   banExpires?: Date | string | null
   locale?: string
   secureLoginVersion?: number
-  DailyPlan?: Prisma.DailyPlanUncheckedCreateNestedManyWithoutUserInput
+  dailyPlans?: Prisma.DailyPlanUncheckedCreateNestedManyWithoutUserInput
   resourcesAdded?: Prisma.DepartmentResourceUncheckedCreateNestedManyWithoutCreatedByInput
   discussionNote?: Prisma.DiscussionNoteUncheckedCreateNestedOneWithoutUserInput
   ideas?: Prisma.IdeaUncheckedCreateNestedManyWithoutAuthorInput
@@ -2069,7 +2055,7 @@ export type UserUpdateWithoutIdeaNotesInput = {
   banExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   locale?: Prisma.StringFieldUpdateOperationsInput | string
   secureLoginVersion?: Prisma.IntFieldUpdateOperationsInput | number
-  DailyPlan?: Prisma.DailyPlanUpdateManyWithoutUserNestedInput
+  dailyPlans?: Prisma.DailyPlanUpdateManyWithoutUserNestedInput
   resourcesAdded?: Prisma.DepartmentResourceUpdateManyWithoutCreatedByNestedInput
   discussionNote?: Prisma.DiscussionNoteUpdateOneWithoutUserNestedInput
   ideas?: Prisma.IdeaUpdateManyWithoutAuthorNestedInput
@@ -2102,10 +2088,158 @@ export type UserUncheckedUpdateWithoutIdeaNotesInput = {
   banExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   locale?: Prisma.StringFieldUpdateOperationsInput | string
   secureLoginVersion?: Prisma.IntFieldUpdateOperationsInput | number
-  DailyPlan?: Prisma.DailyPlanUncheckedUpdateManyWithoutUserNestedInput
+  dailyPlans?: Prisma.DailyPlanUncheckedUpdateManyWithoutUserNestedInput
   resourcesAdded?: Prisma.DepartmentResourceUncheckedUpdateManyWithoutCreatedByNestedInput
   discussionNote?: Prisma.DiscussionNoteUncheckedUpdateOneWithoutUserNestedInput
   ideas?: Prisma.IdeaUncheckedUpdateManyWithoutAuthorNestedInput
+  feedbackAuthored?: Prisma.MentorFeedbackUncheckedUpdateManyWithoutAuthorNestedInput
+  reflections?: Prisma.ReflectionUncheckedUpdateManyWithoutInternNestedInput
+  assignmentsCreated?: Prisma.WeeklyAssignmentUncheckedUpdateManyWithoutCreatedByNestedInput
+  assignmentsAsIntern?: Prisma.WeeklyAssignmentUncheckedUpdateManyWithoutInternNestedInput
+  friendshipsSent?: Prisma.FriendshipUncheckedUpdateManyWithoutRequesterNestedInput
+  friendshipsReceived?: Prisma.FriendshipUncheckedUpdateManyWithoutRecipientNestedInput
+  directChatsFirst?: Prisma.DirectConversationUncheckedUpdateManyWithoutFirstUserNestedInput
+  directChatsSecond?: Prisma.DirectConversationUncheckedUpdateManyWithoutSecondUserNestedInput
+  chatMemberships?: Prisma.ChatMembershipUncheckedUpdateManyWithoutUserNestedInput
+  chatMessages?: Prisma.ChatMessageUncheckedUpdateManyWithoutSenderNestedInput
+  chatEncryptionKey?: Prisma.ChatEncryptionKeyUncheckedUpdateOneWithoutUserNestedInput
+  accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
+}
+
+export type UserCreateWithoutDailyPlansInput = {
+  id: string
+  name: string
+  email: string
+  emailVerified?: boolean
+  image?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  role?: string
+  banned?: boolean | null
+  banReason?: string | null
+  banExpires?: Date | string | null
+  locale?: string
+  secureLoginVersion?: number
+  resourcesAdded?: Prisma.DepartmentResourceCreateNestedManyWithoutCreatedByInput
+  discussionNote?: Prisma.DiscussionNoteCreateNestedOneWithoutUserInput
+  ideas?: Prisma.IdeaCreateNestedManyWithoutAuthorInput
+  ideaNotes?: Prisma.IdeaNoteCreateNestedManyWithoutAuthorInput
+  feedbackAuthored?: Prisma.MentorFeedbackCreateNestedManyWithoutAuthorInput
+  reflections?: Prisma.ReflectionCreateNestedManyWithoutInternInput
+  assignmentsCreated?: Prisma.WeeklyAssignmentCreateNestedManyWithoutCreatedByInput
+  assignmentsAsIntern?: Prisma.WeeklyAssignmentCreateNestedManyWithoutInternInput
+  friendshipsSent?: Prisma.FriendshipCreateNestedManyWithoutRequesterInput
+  friendshipsReceived?: Prisma.FriendshipCreateNestedManyWithoutRecipientInput
+  directChatsFirst?: Prisma.DirectConversationCreateNestedManyWithoutFirstUserInput
+  directChatsSecond?: Prisma.DirectConversationCreateNestedManyWithoutSecondUserInput
+  chatMemberships?: Prisma.ChatMembershipCreateNestedManyWithoutUserInput
+  chatMessages?: Prisma.ChatMessageCreateNestedManyWithoutSenderInput
+  chatEncryptionKey?: Prisma.ChatEncryptionKeyCreateNestedOneWithoutUserInput
+  accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
+}
+
+export type UserUncheckedCreateWithoutDailyPlansInput = {
+  id: string
+  name: string
+  email: string
+  emailVerified?: boolean
+  image?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  role?: string
+  banned?: boolean | null
+  banReason?: string | null
+  banExpires?: Date | string | null
+  locale?: string
+  secureLoginVersion?: number
+  resourcesAdded?: Prisma.DepartmentResourceUncheckedCreateNestedManyWithoutCreatedByInput
+  discussionNote?: Prisma.DiscussionNoteUncheckedCreateNestedOneWithoutUserInput
+  ideas?: Prisma.IdeaUncheckedCreateNestedManyWithoutAuthorInput
+  ideaNotes?: Prisma.IdeaNoteUncheckedCreateNestedManyWithoutAuthorInput
+  feedbackAuthored?: Prisma.MentorFeedbackUncheckedCreateNestedManyWithoutAuthorInput
+  reflections?: Prisma.ReflectionUncheckedCreateNestedManyWithoutInternInput
+  assignmentsCreated?: Prisma.WeeklyAssignmentUncheckedCreateNestedManyWithoutCreatedByInput
+  assignmentsAsIntern?: Prisma.WeeklyAssignmentUncheckedCreateNestedManyWithoutInternInput
+  friendshipsSent?: Prisma.FriendshipUncheckedCreateNestedManyWithoutRequesterInput
+  friendshipsReceived?: Prisma.FriendshipUncheckedCreateNestedManyWithoutRecipientInput
+  directChatsFirst?: Prisma.DirectConversationUncheckedCreateNestedManyWithoutFirstUserInput
+  directChatsSecond?: Prisma.DirectConversationUncheckedCreateNestedManyWithoutSecondUserInput
+  chatMemberships?: Prisma.ChatMembershipUncheckedCreateNestedManyWithoutUserInput
+  chatMessages?: Prisma.ChatMessageUncheckedCreateNestedManyWithoutSenderInput
+  chatEncryptionKey?: Prisma.ChatEncryptionKeyUncheckedCreateNestedOneWithoutUserInput
+  accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
+}
+
+export type UserCreateOrConnectWithoutDailyPlansInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutDailyPlansInput, Prisma.UserUncheckedCreateWithoutDailyPlansInput>
+}
+
+export type UserUpsertWithoutDailyPlansInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutDailyPlansInput, Prisma.UserUncheckedUpdateWithoutDailyPlansInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutDailyPlansInput, Prisma.UserUncheckedCreateWithoutDailyPlansInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutDailyPlansInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutDailyPlansInput, Prisma.UserUncheckedUpdateWithoutDailyPlansInput>
+}
+
+export type UserUpdateWithoutDailyPlansInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  role?: Prisma.StringFieldUpdateOperationsInput | string
+  banned?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  banReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  banExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  locale?: Prisma.StringFieldUpdateOperationsInput | string
+  secureLoginVersion?: Prisma.IntFieldUpdateOperationsInput | number
+  resourcesAdded?: Prisma.DepartmentResourceUpdateManyWithoutCreatedByNestedInput
+  discussionNote?: Prisma.DiscussionNoteUpdateOneWithoutUserNestedInput
+  ideas?: Prisma.IdeaUpdateManyWithoutAuthorNestedInput
+  ideaNotes?: Prisma.IdeaNoteUpdateManyWithoutAuthorNestedInput
+  feedbackAuthored?: Prisma.MentorFeedbackUpdateManyWithoutAuthorNestedInput
+  reflections?: Prisma.ReflectionUpdateManyWithoutInternNestedInput
+  assignmentsCreated?: Prisma.WeeklyAssignmentUpdateManyWithoutCreatedByNestedInput
+  assignmentsAsIntern?: Prisma.WeeklyAssignmentUpdateManyWithoutInternNestedInput
+  friendshipsSent?: Prisma.FriendshipUpdateManyWithoutRequesterNestedInput
+  friendshipsReceived?: Prisma.FriendshipUpdateManyWithoutRecipientNestedInput
+  directChatsFirst?: Prisma.DirectConversationUpdateManyWithoutFirstUserNestedInput
+  directChatsSecond?: Prisma.DirectConversationUpdateManyWithoutSecondUserNestedInput
+  chatMemberships?: Prisma.ChatMembershipUpdateManyWithoutUserNestedInput
+  chatMessages?: Prisma.ChatMessageUpdateManyWithoutSenderNestedInput
+  chatEncryptionKey?: Prisma.ChatEncryptionKeyUpdateOneWithoutUserNestedInput
+  accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutDailyPlansInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  role?: Prisma.StringFieldUpdateOperationsInput | string
+  banned?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  banReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  banExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  locale?: Prisma.StringFieldUpdateOperationsInput | string
+  secureLoginVersion?: Prisma.IntFieldUpdateOperationsInput | number
+  resourcesAdded?: Prisma.DepartmentResourceUncheckedUpdateManyWithoutCreatedByNestedInput
+  discussionNote?: Prisma.DiscussionNoteUncheckedUpdateOneWithoutUserNestedInput
+  ideas?: Prisma.IdeaUncheckedUpdateManyWithoutAuthorNestedInput
+  ideaNotes?: Prisma.IdeaNoteUncheckedUpdateManyWithoutAuthorNestedInput
   feedbackAuthored?: Prisma.MentorFeedbackUncheckedUpdateManyWithoutAuthorNestedInput
   reflections?: Prisma.ReflectionUncheckedUpdateManyWithoutInternNestedInput
   assignmentsCreated?: Prisma.WeeklyAssignmentUncheckedUpdateManyWithoutCreatedByNestedInput
@@ -2135,7 +2269,7 @@ export type UserCreateWithoutSessionsInput = {
   banExpires?: Date | string | null
   locale?: string
   secureLoginVersion?: number
-  DailyPlan?: Prisma.DailyPlanCreateNestedManyWithoutUserInput
+  dailyPlans?: Prisma.DailyPlanCreateNestedManyWithoutUserInput
   resourcesAdded?: Prisma.DepartmentResourceCreateNestedManyWithoutCreatedByInput
   discussionNote?: Prisma.DiscussionNoteCreateNestedOneWithoutUserInput
   ideas?: Prisma.IdeaCreateNestedManyWithoutAuthorInput
@@ -2168,7 +2302,7 @@ export type UserUncheckedCreateWithoutSessionsInput = {
   banExpires?: Date | string | null
   locale?: string
   secureLoginVersion?: number
-  DailyPlan?: Prisma.DailyPlanUncheckedCreateNestedManyWithoutUserInput
+  dailyPlans?: Prisma.DailyPlanUncheckedCreateNestedManyWithoutUserInput
   resourcesAdded?: Prisma.DepartmentResourceUncheckedCreateNestedManyWithoutCreatedByInput
   discussionNote?: Prisma.DiscussionNoteUncheckedCreateNestedOneWithoutUserInput
   ideas?: Prisma.IdeaUncheckedCreateNestedManyWithoutAuthorInput
@@ -2217,7 +2351,7 @@ export type UserUpdateWithoutSessionsInput = {
   banExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   locale?: Prisma.StringFieldUpdateOperationsInput | string
   secureLoginVersion?: Prisma.IntFieldUpdateOperationsInput | number
-  DailyPlan?: Prisma.DailyPlanUpdateManyWithoutUserNestedInput
+  dailyPlans?: Prisma.DailyPlanUpdateManyWithoutUserNestedInput
   resourcesAdded?: Prisma.DepartmentResourceUpdateManyWithoutCreatedByNestedInput
   discussionNote?: Prisma.DiscussionNoteUpdateOneWithoutUserNestedInput
   ideas?: Prisma.IdeaUpdateManyWithoutAuthorNestedInput
@@ -2250,7 +2384,7 @@ export type UserUncheckedUpdateWithoutSessionsInput = {
   banExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   locale?: Prisma.StringFieldUpdateOperationsInput | string
   secureLoginVersion?: Prisma.IntFieldUpdateOperationsInput | number
-  DailyPlan?: Prisma.DailyPlanUncheckedUpdateManyWithoutUserNestedInput
+  dailyPlans?: Prisma.DailyPlanUncheckedUpdateManyWithoutUserNestedInput
   resourcesAdded?: Prisma.DepartmentResourceUncheckedUpdateManyWithoutCreatedByNestedInput
   discussionNote?: Prisma.DiscussionNoteUncheckedUpdateOneWithoutUserNestedInput
   ideas?: Prisma.IdeaUncheckedUpdateManyWithoutAuthorNestedInput
@@ -2283,7 +2417,7 @@ export type UserCreateWithoutAccountsInput = {
   banExpires?: Date | string | null
   locale?: string
   secureLoginVersion?: number
-  DailyPlan?: Prisma.DailyPlanCreateNestedManyWithoutUserInput
+  dailyPlans?: Prisma.DailyPlanCreateNestedManyWithoutUserInput
   resourcesAdded?: Prisma.DepartmentResourceCreateNestedManyWithoutCreatedByInput
   discussionNote?: Prisma.DiscussionNoteCreateNestedOneWithoutUserInput
   ideas?: Prisma.IdeaCreateNestedManyWithoutAuthorInput
@@ -2316,7 +2450,7 @@ export type UserUncheckedCreateWithoutAccountsInput = {
   banExpires?: Date | string | null
   locale?: string
   secureLoginVersion?: number
-  DailyPlan?: Prisma.DailyPlanUncheckedCreateNestedManyWithoutUserInput
+  dailyPlans?: Prisma.DailyPlanUncheckedCreateNestedManyWithoutUserInput
   resourcesAdded?: Prisma.DepartmentResourceUncheckedCreateNestedManyWithoutCreatedByInput
   discussionNote?: Prisma.DiscussionNoteUncheckedCreateNestedOneWithoutUserInput
   ideas?: Prisma.IdeaUncheckedCreateNestedManyWithoutAuthorInput
@@ -2365,7 +2499,7 @@ export type UserUpdateWithoutAccountsInput = {
   banExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   locale?: Prisma.StringFieldUpdateOperationsInput | string
   secureLoginVersion?: Prisma.IntFieldUpdateOperationsInput | number
-  DailyPlan?: Prisma.DailyPlanUpdateManyWithoutUserNestedInput
+  dailyPlans?: Prisma.DailyPlanUpdateManyWithoutUserNestedInput
   resourcesAdded?: Prisma.DepartmentResourceUpdateManyWithoutCreatedByNestedInput
   discussionNote?: Prisma.DiscussionNoteUpdateOneWithoutUserNestedInput
   ideas?: Prisma.IdeaUpdateManyWithoutAuthorNestedInput
@@ -2398,7 +2532,7 @@ export type UserUncheckedUpdateWithoutAccountsInput = {
   banExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   locale?: Prisma.StringFieldUpdateOperationsInput | string
   secureLoginVersion?: Prisma.IntFieldUpdateOperationsInput | number
-  DailyPlan?: Prisma.DailyPlanUncheckedUpdateManyWithoutUserNestedInput
+  dailyPlans?: Prisma.DailyPlanUncheckedUpdateManyWithoutUserNestedInput
   resourcesAdded?: Prisma.DepartmentResourceUncheckedUpdateManyWithoutCreatedByNestedInput
   discussionNote?: Prisma.DiscussionNoteUncheckedUpdateOneWithoutUserNestedInput
   ideas?: Prisma.IdeaUncheckedUpdateManyWithoutAuthorNestedInput
@@ -2414,154 +2548,6 @@ export type UserUncheckedUpdateWithoutAccountsInput = {
   chatMemberships?: Prisma.ChatMembershipUncheckedUpdateManyWithoutUserNestedInput
   chatMessages?: Prisma.ChatMessageUncheckedUpdateManyWithoutSenderNestedInput
   chatEncryptionKey?: Prisma.ChatEncryptionKeyUncheckedUpdateOneWithoutUserNestedInput
-  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
-}
-
-export type UserCreateWithoutDailyPlanInput = {
-  id: string
-  name: string
-  email: string
-  emailVerified?: boolean
-  image?: string | null
-  createdAt?: Date | string
-  updatedAt?: Date | string
-  role?: string
-  banned?: boolean | null
-  banReason?: string | null
-  banExpires?: Date | string | null
-  locale?: string
-  secureLoginVersion?: number
-  resourcesAdded?: Prisma.DepartmentResourceCreateNestedManyWithoutCreatedByInput
-  discussionNote?: Prisma.DiscussionNoteCreateNestedOneWithoutUserInput
-  ideas?: Prisma.IdeaCreateNestedManyWithoutAuthorInput
-  ideaNotes?: Prisma.IdeaNoteCreateNestedManyWithoutAuthorInput
-  feedbackAuthored?: Prisma.MentorFeedbackCreateNestedManyWithoutAuthorInput
-  reflections?: Prisma.ReflectionCreateNestedManyWithoutInternInput
-  assignmentsCreated?: Prisma.WeeklyAssignmentCreateNestedManyWithoutCreatedByInput
-  assignmentsAsIntern?: Prisma.WeeklyAssignmentCreateNestedManyWithoutInternInput
-  friendshipsSent?: Prisma.FriendshipCreateNestedManyWithoutRequesterInput
-  friendshipsReceived?: Prisma.FriendshipCreateNestedManyWithoutRecipientInput
-  directChatsFirst?: Prisma.DirectConversationCreateNestedManyWithoutFirstUserInput
-  directChatsSecond?: Prisma.DirectConversationCreateNestedManyWithoutSecondUserInput
-  chatMemberships?: Prisma.ChatMembershipCreateNestedManyWithoutUserInput
-  chatMessages?: Prisma.ChatMessageCreateNestedManyWithoutSenderInput
-  chatEncryptionKey?: Prisma.ChatEncryptionKeyCreateNestedOneWithoutUserInput
-  accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
-  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
-}
-
-export type UserUncheckedCreateWithoutDailyPlanInput = {
-  id: string
-  name: string
-  email: string
-  emailVerified?: boolean
-  image?: string | null
-  createdAt?: Date | string
-  updatedAt?: Date | string
-  role?: string
-  banned?: boolean | null
-  banReason?: string | null
-  banExpires?: Date | string | null
-  locale?: string
-  secureLoginVersion?: number
-  resourcesAdded?: Prisma.DepartmentResourceUncheckedCreateNestedManyWithoutCreatedByInput
-  discussionNote?: Prisma.DiscussionNoteUncheckedCreateNestedOneWithoutUserInput
-  ideas?: Prisma.IdeaUncheckedCreateNestedManyWithoutAuthorInput
-  ideaNotes?: Prisma.IdeaNoteUncheckedCreateNestedManyWithoutAuthorInput
-  feedbackAuthored?: Prisma.MentorFeedbackUncheckedCreateNestedManyWithoutAuthorInput
-  reflections?: Prisma.ReflectionUncheckedCreateNestedManyWithoutInternInput
-  assignmentsCreated?: Prisma.WeeklyAssignmentUncheckedCreateNestedManyWithoutCreatedByInput
-  assignmentsAsIntern?: Prisma.WeeklyAssignmentUncheckedCreateNestedManyWithoutInternInput
-  friendshipsSent?: Prisma.FriendshipUncheckedCreateNestedManyWithoutRequesterInput
-  friendshipsReceived?: Prisma.FriendshipUncheckedCreateNestedManyWithoutRecipientInput
-  directChatsFirst?: Prisma.DirectConversationUncheckedCreateNestedManyWithoutFirstUserInput
-  directChatsSecond?: Prisma.DirectConversationUncheckedCreateNestedManyWithoutSecondUserInput
-  chatMemberships?: Prisma.ChatMembershipUncheckedCreateNestedManyWithoutUserInput
-  chatMessages?: Prisma.ChatMessageUncheckedCreateNestedManyWithoutSenderInput
-  chatEncryptionKey?: Prisma.ChatEncryptionKeyUncheckedCreateNestedOneWithoutUserInput
-  accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
-  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
-}
-
-export type UserCreateOrConnectWithoutDailyPlanInput = {
-  where: Prisma.UserWhereUniqueInput
-  create: Prisma.XOR<Prisma.UserCreateWithoutDailyPlanInput, Prisma.UserUncheckedCreateWithoutDailyPlanInput>
-}
-
-export type UserUpsertWithoutDailyPlanInput = {
-  update: Prisma.XOR<Prisma.UserUpdateWithoutDailyPlanInput, Prisma.UserUncheckedUpdateWithoutDailyPlanInput>
-  create: Prisma.XOR<Prisma.UserCreateWithoutDailyPlanInput, Prisma.UserUncheckedCreateWithoutDailyPlanInput>
-  where?: Prisma.UserWhereInput
-}
-
-export type UserUpdateToOneWithWhereWithoutDailyPlanInput = {
-  where?: Prisma.UserWhereInput
-  data: Prisma.XOR<Prisma.UserUpdateWithoutDailyPlanInput, Prisma.UserUncheckedUpdateWithoutDailyPlanInput>
-}
-
-export type UserUpdateWithoutDailyPlanInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.StringFieldUpdateOperationsInput | string
-  email?: Prisma.StringFieldUpdateOperationsInput | string
-  emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  role?: Prisma.StringFieldUpdateOperationsInput | string
-  banned?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
-  banReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  banExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  locale?: Prisma.StringFieldUpdateOperationsInput | string
-  secureLoginVersion?: Prisma.IntFieldUpdateOperationsInput | number
-  resourcesAdded?: Prisma.DepartmentResourceUpdateManyWithoutCreatedByNestedInput
-  discussionNote?: Prisma.DiscussionNoteUpdateOneWithoutUserNestedInput
-  ideas?: Prisma.IdeaUpdateManyWithoutAuthorNestedInput
-  ideaNotes?: Prisma.IdeaNoteUpdateManyWithoutAuthorNestedInput
-  feedbackAuthored?: Prisma.MentorFeedbackUpdateManyWithoutAuthorNestedInput
-  reflections?: Prisma.ReflectionUpdateManyWithoutInternNestedInput
-  assignmentsCreated?: Prisma.WeeklyAssignmentUpdateManyWithoutCreatedByNestedInput
-  assignmentsAsIntern?: Prisma.WeeklyAssignmentUpdateManyWithoutInternNestedInput
-  friendshipsSent?: Prisma.FriendshipUpdateManyWithoutRequesterNestedInput
-  friendshipsReceived?: Prisma.FriendshipUpdateManyWithoutRecipientNestedInput
-  directChatsFirst?: Prisma.DirectConversationUpdateManyWithoutFirstUserNestedInput
-  directChatsSecond?: Prisma.DirectConversationUpdateManyWithoutSecondUserNestedInput
-  chatMemberships?: Prisma.ChatMembershipUpdateManyWithoutUserNestedInput
-  chatMessages?: Prisma.ChatMessageUpdateManyWithoutSenderNestedInput
-  chatEncryptionKey?: Prisma.ChatEncryptionKeyUpdateOneWithoutUserNestedInput
-  accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
-  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
-}
-
-export type UserUncheckedUpdateWithoutDailyPlanInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.StringFieldUpdateOperationsInput | string
-  email?: Prisma.StringFieldUpdateOperationsInput | string
-  emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  role?: Prisma.StringFieldUpdateOperationsInput | string
-  banned?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
-  banReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  banExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  locale?: Prisma.StringFieldUpdateOperationsInput | string
-  secureLoginVersion?: Prisma.IntFieldUpdateOperationsInput | number
-  resourcesAdded?: Prisma.DepartmentResourceUncheckedUpdateManyWithoutCreatedByNestedInput
-  discussionNote?: Prisma.DiscussionNoteUncheckedUpdateOneWithoutUserNestedInput
-  ideas?: Prisma.IdeaUncheckedUpdateManyWithoutAuthorNestedInput
-  ideaNotes?: Prisma.IdeaNoteUncheckedUpdateManyWithoutAuthorNestedInput
-  feedbackAuthored?: Prisma.MentorFeedbackUncheckedUpdateManyWithoutAuthorNestedInput
-  reflections?: Prisma.ReflectionUncheckedUpdateManyWithoutInternNestedInput
-  assignmentsCreated?: Prisma.WeeklyAssignmentUncheckedUpdateManyWithoutCreatedByNestedInput
-  assignmentsAsIntern?: Prisma.WeeklyAssignmentUncheckedUpdateManyWithoutInternNestedInput
-  friendshipsSent?: Prisma.FriendshipUncheckedUpdateManyWithoutRequesterNestedInput
-  friendshipsReceived?: Prisma.FriendshipUncheckedUpdateManyWithoutRecipientNestedInput
-  directChatsFirst?: Prisma.DirectConversationUncheckedUpdateManyWithoutFirstUserNestedInput
-  directChatsSecond?: Prisma.DirectConversationUncheckedUpdateManyWithoutSecondUserNestedInput
-  chatMemberships?: Prisma.ChatMembershipUncheckedUpdateManyWithoutUserNestedInput
-  chatMessages?: Prisma.ChatMessageUncheckedUpdateManyWithoutSenderNestedInput
-  chatEncryptionKey?: Prisma.ChatEncryptionKeyUncheckedUpdateOneWithoutUserNestedInput
-  accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
 }
 
@@ -2579,7 +2565,7 @@ export type UserCreateWithoutDirectChatsFirstInput = {
   banExpires?: Date | string | null
   locale?: string
   secureLoginVersion?: number
-  DailyPlan?: Prisma.DailyPlanCreateNestedManyWithoutUserInput
+  dailyPlans?: Prisma.DailyPlanCreateNestedManyWithoutUserInput
   resourcesAdded?: Prisma.DepartmentResourceCreateNestedManyWithoutCreatedByInput
   discussionNote?: Prisma.DiscussionNoteCreateNestedOneWithoutUserInput
   ideas?: Prisma.IdeaCreateNestedManyWithoutAuthorInput
@@ -2612,7 +2598,7 @@ export type UserUncheckedCreateWithoutDirectChatsFirstInput = {
   banExpires?: Date | string | null
   locale?: string
   secureLoginVersion?: number
-  DailyPlan?: Prisma.DailyPlanUncheckedCreateNestedManyWithoutUserInput
+  dailyPlans?: Prisma.DailyPlanUncheckedCreateNestedManyWithoutUserInput
   resourcesAdded?: Prisma.DepartmentResourceUncheckedCreateNestedManyWithoutCreatedByInput
   discussionNote?: Prisma.DiscussionNoteUncheckedCreateNestedOneWithoutUserInput
   ideas?: Prisma.IdeaUncheckedCreateNestedManyWithoutAuthorInput
@@ -2650,7 +2636,7 @@ export type UserCreateWithoutDirectChatsSecondInput = {
   banExpires?: Date | string | null
   locale?: string
   secureLoginVersion?: number
-  DailyPlan?: Prisma.DailyPlanCreateNestedManyWithoutUserInput
+  dailyPlans?: Prisma.DailyPlanCreateNestedManyWithoutUserInput
   resourcesAdded?: Prisma.DepartmentResourceCreateNestedManyWithoutCreatedByInput
   discussionNote?: Prisma.DiscussionNoteCreateNestedOneWithoutUserInput
   ideas?: Prisma.IdeaCreateNestedManyWithoutAuthorInput
@@ -2683,7 +2669,7 @@ export type UserUncheckedCreateWithoutDirectChatsSecondInput = {
   banExpires?: Date | string | null
   locale?: string
   secureLoginVersion?: number
-  DailyPlan?: Prisma.DailyPlanUncheckedCreateNestedManyWithoutUserInput
+  dailyPlans?: Prisma.DailyPlanUncheckedCreateNestedManyWithoutUserInput
   resourcesAdded?: Prisma.DepartmentResourceUncheckedCreateNestedManyWithoutCreatedByInput
   discussionNote?: Prisma.DiscussionNoteUncheckedCreateNestedOneWithoutUserInput
   ideas?: Prisma.IdeaUncheckedCreateNestedManyWithoutAuthorInput
@@ -2732,7 +2718,7 @@ export type UserUpdateWithoutDirectChatsFirstInput = {
   banExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   locale?: Prisma.StringFieldUpdateOperationsInput | string
   secureLoginVersion?: Prisma.IntFieldUpdateOperationsInput | number
-  DailyPlan?: Prisma.DailyPlanUpdateManyWithoutUserNestedInput
+  dailyPlans?: Prisma.DailyPlanUpdateManyWithoutUserNestedInput
   resourcesAdded?: Prisma.DepartmentResourceUpdateManyWithoutCreatedByNestedInput
   discussionNote?: Prisma.DiscussionNoteUpdateOneWithoutUserNestedInput
   ideas?: Prisma.IdeaUpdateManyWithoutAuthorNestedInput
@@ -2765,7 +2751,7 @@ export type UserUncheckedUpdateWithoutDirectChatsFirstInput = {
   banExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   locale?: Prisma.StringFieldUpdateOperationsInput | string
   secureLoginVersion?: Prisma.IntFieldUpdateOperationsInput | number
-  DailyPlan?: Prisma.DailyPlanUncheckedUpdateManyWithoutUserNestedInput
+  dailyPlans?: Prisma.DailyPlanUncheckedUpdateManyWithoutUserNestedInput
   resourcesAdded?: Prisma.DepartmentResourceUncheckedUpdateManyWithoutCreatedByNestedInput
   discussionNote?: Prisma.DiscussionNoteUncheckedUpdateOneWithoutUserNestedInput
   ideas?: Prisma.IdeaUncheckedUpdateManyWithoutAuthorNestedInput
@@ -2809,7 +2795,7 @@ export type UserUpdateWithoutDirectChatsSecondInput = {
   banExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   locale?: Prisma.StringFieldUpdateOperationsInput | string
   secureLoginVersion?: Prisma.IntFieldUpdateOperationsInput | number
-  DailyPlan?: Prisma.DailyPlanUpdateManyWithoutUserNestedInput
+  dailyPlans?: Prisma.DailyPlanUpdateManyWithoutUserNestedInput
   resourcesAdded?: Prisma.DepartmentResourceUpdateManyWithoutCreatedByNestedInput
   discussionNote?: Prisma.DiscussionNoteUpdateOneWithoutUserNestedInput
   ideas?: Prisma.IdeaUpdateManyWithoutAuthorNestedInput
@@ -2842,7 +2828,7 @@ export type UserUncheckedUpdateWithoutDirectChatsSecondInput = {
   banExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   locale?: Prisma.StringFieldUpdateOperationsInput | string
   secureLoginVersion?: Prisma.IntFieldUpdateOperationsInput | number
-  DailyPlan?: Prisma.DailyPlanUncheckedUpdateManyWithoutUserNestedInput
+  dailyPlans?: Prisma.DailyPlanUncheckedUpdateManyWithoutUserNestedInput
   resourcesAdded?: Prisma.DepartmentResourceUncheckedUpdateManyWithoutCreatedByNestedInput
   discussionNote?: Prisma.DiscussionNoteUncheckedUpdateOneWithoutUserNestedInput
   ideas?: Prisma.IdeaUncheckedUpdateManyWithoutAuthorNestedInput
@@ -2875,7 +2861,7 @@ export type UserCreateWithoutChatMembershipsInput = {
   banExpires?: Date | string | null
   locale?: string
   secureLoginVersion?: number
-  DailyPlan?: Prisma.DailyPlanCreateNestedManyWithoutUserInput
+  dailyPlans?: Prisma.DailyPlanCreateNestedManyWithoutUserInput
   resourcesAdded?: Prisma.DepartmentResourceCreateNestedManyWithoutCreatedByInput
   discussionNote?: Prisma.DiscussionNoteCreateNestedOneWithoutUserInput
   ideas?: Prisma.IdeaCreateNestedManyWithoutAuthorInput
@@ -2908,7 +2894,7 @@ export type UserUncheckedCreateWithoutChatMembershipsInput = {
   banExpires?: Date | string | null
   locale?: string
   secureLoginVersion?: number
-  DailyPlan?: Prisma.DailyPlanUncheckedCreateNestedManyWithoutUserInput
+  dailyPlans?: Prisma.DailyPlanUncheckedCreateNestedManyWithoutUserInput
   resourcesAdded?: Prisma.DepartmentResourceUncheckedCreateNestedManyWithoutCreatedByInput
   discussionNote?: Prisma.DiscussionNoteUncheckedCreateNestedOneWithoutUserInput
   ideas?: Prisma.IdeaUncheckedCreateNestedManyWithoutAuthorInput
@@ -2957,7 +2943,7 @@ export type UserUpdateWithoutChatMembershipsInput = {
   banExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   locale?: Prisma.StringFieldUpdateOperationsInput | string
   secureLoginVersion?: Prisma.IntFieldUpdateOperationsInput | number
-  DailyPlan?: Prisma.DailyPlanUpdateManyWithoutUserNestedInput
+  dailyPlans?: Prisma.DailyPlanUpdateManyWithoutUserNestedInput
   resourcesAdded?: Prisma.DepartmentResourceUpdateManyWithoutCreatedByNestedInput
   discussionNote?: Prisma.DiscussionNoteUpdateOneWithoutUserNestedInput
   ideas?: Prisma.IdeaUpdateManyWithoutAuthorNestedInput
@@ -2990,7 +2976,7 @@ export type UserUncheckedUpdateWithoutChatMembershipsInput = {
   banExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   locale?: Prisma.StringFieldUpdateOperationsInput | string
   secureLoginVersion?: Prisma.IntFieldUpdateOperationsInput | number
-  DailyPlan?: Prisma.DailyPlanUncheckedUpdateManyWithoutUserNestedInput
+  dailyPlans?: Prisma.DailyPlanUncheckedUpdateManyWithoutUserNestedInput
   resourcesAdded?: Prisma.DepartmentResourceUncheckedUpdateManyWithoutCreatedByNestedInput
   discussionNote?: Prisma.DiscussionNoteUncheckedUpdateOneWithoutUserNestedInput
   ideas?: Prisma.IdeaUncheckedUpdateManyWithoutAuthorNestedInput
@@ -3023,7 +3009,7 @@ export type UserCreateWithoutChatMessagesInput = {
   banExpires?: Date | string | null
   locale?: string
   secureLoginVersion?: number
-  DailyPlan?: Prisma.DailyPlanCreateNestedManyWithoutUserInput
+  dailyPlans?: Prisma.DailyPlanCreateNestedManyWithoutUserInput
   resourcesAdded?: Prisma.DepartmentResourceCreateNestedManyWithoutCreatedByInput
   discussionNote?: Prisma.DiscussionNoteCreateNestedOneWithoutUserInput
   ideas?: Prisma.IdeaCreateNestedManyWithoutAuthorInput
@@ -3056,7 +3042,7 @@ export type UserUncheckedCreateWithoutChatMessagesInput = {
   banExpires?: Date | string | null
   locale?: string
   secureLoginVersion?: number
-  DailyPlan?: Prisma.DailyPlanUncheckedCreateNestedManyWithoutUserInput
+  dailyPlans?: Prisma.DailyPlanUncheckedCreateNestedManyWithoutUserInput
   resourcesAdded?: Prisma.DepartmentResourceUncheckedCreateNestedManyWithoutCreatedByInput
   discussionNote?: Prisma.DiscussionNoteUncheckedCreateNestedOneWithoutUserInput
   ideas?: Prisma.IdeaUncheckedCreateNestedManyWithoutAuthorInput
@@ -3105,7 +3091,7 @@ export type UserUpdateWithoutChatMessagesInput = {
   banExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   locale?: Prisma.StringFieldUpdateOperationsInput | string
   secureLoginVersion?: Prisma.IntFieldUpdateOperationsInput | number
-  DailyPlan?: Prisma.DailyPlanUpdateManyWithoutUserNestedInput
+  dailyPlans?: Prisma.DailyPlanUpdateManyWithoutUserNestedInput
   resourcesAdded?: Prisma.DepartmentResourceUpdateManyWithoutCreatedByNestedInput
   discussionNote?: Prisma.DiscussionNoteUpdateOneWithoutUserNestedInput
   ideas?: Prisma.IdeaUpdateManyWithoutAuthorNestedInput
@@ -3138,7 +3124,7 @@ export type UserUncheckedUpdateWithoutChatMessagesInput = {
   banExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   locale?: Prisma.StringFieldUpdateOperationsInput | string
   secureLoginVersion?: Prisma.IntFieldUpdateOperationsInput | number
-  DailyPlan?: Prisma.DailyPlanUncheckedUpdateManyWithoutUserNestedInput
+  dailyPlans?: Prisma.DailyPlanUncheckedUpdateManyWithoutUserNestedInput
   resourcesAdded?: Prisma.DepartmentResourceUncheckedUpdateManyWithoutCreatedByNestedInput
   discussionNote?: Prisma.DiscussionNoteUncheckedUpdateOneWithoutUserNestedInput
   ideas?: Prisma.IdeaUncheckedUpdateManyWithoutAuthorNestedInput
@@ -3171,7 +3157,7 @@ export type UserCreateWithoutFriendshipsSentInput = {
   banExpires?: Date | string | null
   locale?: string
   secureLoginVersion?: number
-  DailyPlan?: Prisma.DailyPlanCreateNestedManyWithoutUserInput
+  dailyPlans?: Prisma.DailyPlanCreateNestedManyWithoutUserInput
   resourcesAdded?: Prisma.DepartmentResourceCreateNestedManyWithoutCreatedByInput
   discussionNote?: Prisma.DiscussionNoteCreateNestedOneWithoutUserInput
   ideas?: Prisma.IdeaCreateNestedManyWithoutAuthorInput
@@ -3204,7 +3190,7 @@ export type UserUncheckedCreateWithoutFriendshipsSentInput = {
   banExpires?: Date | string | null
   locale?: string
   secureLoginVersion?: number
-  DailyPlan?: Prisma.DailyPlanUncheckedCreateNestedManyWithoutUserInput
+  dailyPlans?: Prisma.DailyPlanUncheckedCreateNestedManyWithoutUserInput
   resourcesAdded?: Prisma.DepartmentResourceUncheckedCreateNestedManyWithoutCreatedByInput
   discussionNote?: Prisma.DiscussionNoteUncheckedCreateNestedOneWithoutUserInput
   ideas?: Prisma.IdeaUncheckedCreateNestedManyWithoutAuthorInput
@@ -3242,7 +3228,7 @@ export type UserCreateWithoutFriendshipsReceivedInput = {
   banExpires?: Date | string | null
   locale?: string
   secureLoginVersion?: number
-  DailyPlan?: Prisma.DailyPlanCreateNestedManyWithoutUserInput
+  dailyPlans?: Prisma.DailyPlanCreateNestedManyWithoutUserInput
   resourcesAdded?: Prisma.DepartmentResourceCreateNestedManyWithoutCreatedByInput
   discussionNote?: Prisma.DiscussionNoteCreateNestedOneWithoutUserInput
   ideas?: Prisma.IdeaCreateNestedManyWithoutAuthorInput
@@ -3275,7 +3261,7 @@ export type UserUncheckedCreateWithoutFriendshipsReceivedInput = {
   banExpires?: Date | string | null
   locale?: string
   secureLoginVersion?: number
-  DailyPlan?: Prisma.DailyPlanUncheckedCreateNestedManyWithoutUserInput
+  dailyPlans?: Prisma.DailyPlanUncheckedCreateNestedManyWithoutUserInput
   resourcesAdded?: Prisma.DepartmentResourceUncheckedCreateNestedManyWithoutCreatedByInput
   discussionNote?: Prisma.DiscussionNoteUncheckedCreateNestedOneWithoutUserInput
   ideas?: Prisma.IdeaUncheckedCreateNestedManyWithoutAuthorInput
@@ -3324,7 +3310,7 @@ export type UserUpdateWithoutFriendshipsSentInput = {
   banExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   locale?: Prisma.StringFieldUpdateOperationsInput | string
   secureLoginVersion?: Prisma.IntFieldUpdateOperationsInput | number
-  DailyPlan?: Prisma.DailyPlanUpdateManyWithoutUserNestedInput
+  dailyPlans?: Prisma.DailyPlanUpdateManyWithoutUserNestedInput
   resourcesAdded?: Prisma.DepartmentResourceUpdateManyWithoutCreatedByNestedInput
   discussionNote?: Prisma.DiscussionNoteUpdateOneWithoutUserNestedInput
   ideas?: Prisma.IdeaUpdateManyWithoutAuthorNestedInput
@@ -3357,7 +3343,7 @@ export type UserUncheckedUpdateWithoutFriendshipsSentInput = {
   banExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   locale?: Prisma.StringFieldUpdateOperationsInput | string
   secureLoginVersion?: Prisma.IntFieldUpdateOperationsInput | number
-  DailyPlan?: Prisma.DailyPlanUncheckedUpdateManyWithoutUserNestedInput
+  dailyPlans?: Prisma.DailyPlanUncheckedUpdateManyWithoutUserNestedInput
   resourcesAdded?: Prisma.DepartmentResourceUncheckedUpdateManyWithoutCreatedByNestedInput
   discussionNote?: Prisma.DiscussionNoteUncheckedUpdateOneWithoutUserNestedInput
   ideas?: Prisma.IdeaUncheckedUpdateManyWithoutAuthorNestedInput
@@ -3401,7 +3387,7 @@ export type UserUpdateWithoutFriendshipsReceivedInput = {
   banExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   locale?: Prisma.StringFieldUpdateOperationsInput | string
   secureLoginVersion?: Prisma.IntFieldUpdateOperationsInput | number
-  DailyPlan?: Prisma.DailyPlanUpdateManyWithoutUserNestedInput
+  dailyPlans?: Prisma.DailyPlanUpdateManyWithoutUserNestedInput
   resourcesAdded?: Prisma.DepartmentResourceUpdateManyWithoutCreatedByNestedInput
   discussionNote?: Prisma.DiscussionNoteUpdateOneWithoutUserNestedInput
   ideas?: Prisma.IdeaUpdateManyWithoutAuthorNestedInput
@@ -3434,7 +3420,7 @@ export type UserUncheckedUpdateWithoutFriendshipsReceivedInput = {
   banExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   locale?: Prisma.StringFieldUpdateOperationsInput | string
   secureLoginVersion?: Prisma.IntFieldUpdateOperationsInput | number
-  DailyPlan?: Prisma.DailyPlanUncheckedUpdateManyWithoutUserNestedInput
+  dailyPlans?: Prisma.DailyPlanUncheckedUpdateManyWithoutUserNestedInput
   resourcesAdded?: Prisma.DepartmentResourceUncheckedUpdateManyWithoutCreatedByNestedInput
   discussionNote?: Prisma.DiscussionNoteUncheckedUpdateOneWithoutUserNestedInput
   ideas?: Prisma.IdeaUncheckedUpdateManyWithoutAuthorNestedInput
@@ -3467,7 +3453,7 @@ export type UserCreateWithoutChatEncryptionKeyInput = {
   banExpires?: Date | string | null
   locale?: string
   secureLoginVersion?: number
-  DailyPlan?: Prisma.DailyPlanCreateNestedManyWithoutUserInput
+  dailyPlans?: Prisma.DailyPlanCreateNestedManyWithoutUserInput
   resourcesAdded?: Prisma.DepartmentResourceCreateNestedManyWithoutCreatedByInput
   discussionNote?: Prisma.DiscussionNoteCreateNestedOneWithoutUserInput
   ideas?: Prisma.IdeaCreateNestedManyWithoutAuthorInput
@@ -3500,7 +3486,7 @@ export type UserUncheckedCreateWithoutChatEncryptionKeyInput = {
   banExpires?: Date | string | null
   locale?: string
   secureLoginVersion?: number
-  DailyPlan?: Prisma.DailyPlanUncheckedCreateNestedManyWithoutUserInput
+  dailyPlans?: Prisma.DailyPlanUncheckedCreateNestedManyWithoutUserInput
   resourcesAdded?: Prisma.DepartmentResourceUncheckedCreateNestedManyWithoutCreatedByInput
   discussionNote?: Prisma.DiscussionNoteUncheckedCreateNestedOneWithoutUserInput
   ideas?: Prisma.IdeaUncheckedCreateNestedManyWithoutAuthorInput
@@ -3549,7 +3535,7 @@ export type UserUpdateWithoutChatEncryptionKeyInput = {
   banExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   locale?: Prisma.StringFieldUpdateOperationsInput | string
   secureLoginVersion?: Prisma.IntFieldUpdateOperationsInput | number
-  DailyPlan?: Prisma.DailyPlanUpdateManyWithoutUserNestedInput
+  dailyPlans?: Prisma.DailyPlanUpdateManyWithoutUserNestedInput
   resourcesAdded?: Prisma.DepartmentResourceUpdateManyWithoutCreatedByNestedInput
   discussionNote?: Prisma.DiscussionNoteUpdateOneWithoutUserNestedInput
   ideas?: Prisma.IdeaUpdateManyWithoutAuthorNestedInput
@@ -3582,7 +3568,7 @@ export type UserUncheckedUpdateWithoutChatEncryptionKeyInput = {
   banExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   locale?: Prisma.StringFieldUpdateOperationsInput | string
   secureLoginVersion?: Prisma.IntFieldUpdateOperationsInput | number
-  DailyPlan?: Prisma.DailyPlanUncheckedUpdateManyWithoutUserNestedInput
+  dailyPlans?: Prisma.DailyPlanUncheckedUpdateManyWithoutUserNestedInput
   resourcesAdded?: Prisma.DepartmentResourceUncheckedUpdateManyWithoutCreatedByNestedInput
   discussionNote?: Prisma.DiscussionNoteUncheckedUpdateOneWithoutUserNestedInput
   ideas?: Prisma.IdeaUncheckedUpdateManyWithoutAuthorNestedInput
@@ -3607,7 +3593,7 @@ export type UserUncheckedUpdateWithoutChatEncryptionKeyInput = {
  */
 
 export type UserCountOutputType = {
-  DailyPlan: number
+  dailyPlans: number
   resourcesAdded: number
   ideas: number
   ideaNotes: number
@@ -3626,7 +3612,7 @@ export type UserCountOutputType = {
 }
 
 export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  DailyPlan?: boolean | UserCountOutputTypeCountDailyPlanArgs
+  dailyPlans?: boolean | UserCountOutputTypeCountDailyPlansArgs
   resourcesAdded?: boolean | UserCountOutputTypeCountResourcesAddedArgs
   ideas?: boolean | UserCountOutputTypeCountIdeasArgs
   ideaNotes?: boolean | UserCountOutputTypeCountIdeaNotesArgs
@@ -3657,7 +3643,7 @@ export type UserCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Extensi
 /**
  * UserCountOutputType without action
  */
-export type UserCountOutputTypeCountDailyPlanArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type UserCountOutputTypeCountDailyPlansArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   where?: Prisma.DailyPlanWhereInput
 }
 
@@ -3766,13 +3752,6 @@ export type UserCountOutputTypeCountSessionsArgs<ExtArgs extends runtime.Types.E
   where?: Prisma.SessionWhereInput
 }
 
-/**
- * UserCountOutputType without action
- */
-export type UserCountOutputTypeCountDailyPlansArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  where?: Prisma.DailyPlanWhereInput
-}
-
 
 export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -3788,7 +3767,7 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   banExpires?: boolean
   locale?: boolean
   secureLoginVersion?: boolean
-  DailyPlan?: boolean | Prisma.User$DailyPlanArgs<ExtArgs>
+  dailyPlans?: boolean | Prisma.User$dailyPlansArgs<ExtArgs>
   resourcesAdded?: boolean | Prisma.User$resourcesAddedArgs<ExtArgs>
   discussionNote?: boolean | Prisma.User$discussionNoteArgs<ExtArgs>
   ideas?: boolean | Prisma.User$ideasArgs<ExtArgs>
@@ -3859,7 +3838,7 @@ export type UserSelectScalar = {
 
 export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "email" | "emailVerified" | "image" | "createdAt" | "updatedAt" | "role" | "banned" | "banReason" | "banExpires" | "locale" | "secureLoginVersion", ExtArgs["result"]["user"]>
 export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  DailyPlan?: boolean | Prisma.User$DailyPlanArgs<ExtArgs>
+  dailyPlans?: boolean | Prisma.User$dailyPlansArgs<ExtArgs>
   resourcesAdded?: boolean | Prisma.User$resourcesAddedArgs<ExtArgs>
   discussionNote?: boolean | Prisma.User$discussionNoteArgs<ExtArgs>
   ideas?: boolean | Prisma.User$ideasArgs<ExtArgs>
@@ -3885,7 +3864,7 @@ export type UserIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensi
 export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "User"
   objects: {
-    DailyPlan: Prisma.$DailyPlanPayload<ExtArgs>[]
+    dailyPlans: Prisma.$DailyPlanPayload<ExtArgs>[]
     resourcesAdded: Prisma.$DepartmentResourcePayload<ExtArgs>[]
     discussionNote: Prisma.$DiscussionNotePayload<ExtArgs> | null
     ideas: Prisma.$IdeaPayload<ExtArgs>[]
@@ -4312,7 +4291,7 @@ readonly fields: UserFieldRefs;
  */
 export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
-  DailyPlan<T extends Prisma.User$DailyPlanArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$DailyPlanArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$DailyPlanPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  dailyPlans<T extends Prisma.User$dailyPlansArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$dailyPlansArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$DailyPlanPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   resourcesAdded<T extends Prisma.User$resourcesAddedArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$resourcesAddedArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$DepartmentResourcePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   discussionNote<T extends Prisma.User$discussionNoteArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$discussionNoteArgs<ExtArgs>>): Prisma.Prisma__DiscussionNoteClient<runtime.Types.Result.GetResult<Prisma.$DiscussionNotePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   ideas<T extends Prisma.User$ideasArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$ideasArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$IdeaPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
@@ -4765,9 +4744,9 @@ export type UserDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.Internal
 }
 
 /**
- * User.DailyPlan
+ * User.dailyPlans
  */
-export type User$DailyPlanArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type User$dailyPlansArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
    * Select specific fields to fetch from the DailyPlan
    */
@@ -5184,30 +5163,6 @@ export type User$sessionsArgs<ExtArgs extends runtime.Types.Extensions.InternalA
   take?: number
   skip?: number
   distinct?: Prisma.SessionScalarFieldEnum | Prisma.SessionScalarFieldEnum[]
-}
-
-/**
- * User.dailyPlans
- */
-export type User$dailyPlansArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  /**
-   * Select specific fields to fetch from the DailyPlan
-   */
-  select?: Prisma.DailyPlanSelect<ExtArgs> | null
-  /**
-   * Omit specific fields from the DailyPlan
-   */
-  omit?: Prisma.DailyPlanOmit<ExtArgs> | null
-  /**
-   * Choose, which related nodes to fetch as well
-   */
-  include?: Prisma.DailyPlanInclude<ExtArgs> | null
-  where?: Prisma.DailyPlanWhereInput
-  orderBy?: Prisma.DailyPlanOrderByWithRelationInput | Prisma.DailyPlanOrderByWithRelationInput[]
-  cursor?: Prisma.DailyPlanWhereUniqueInput
-  take?: number
-  skip?: number
-  distinct?: Prisma.DailyPlanScalarFieldEnum | Prisma.DailyPlanScalarFieldEnum[]
 }
 
 /**

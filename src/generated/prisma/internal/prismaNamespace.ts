@@ -413,8 +413,6 @@ export const ModelName = {
   Session: 'Session',
   Account: 'Account',
   Verification: 'Verification',
-  DailyPlan: 'DailyPlan',
-  DailyPlanStage: 'DailyPlanStage',
   DirectConversation: 'DirectConversation',
   ChatMembership: 'ChatMembership',
   ChatMessage: 'ChatMessage',
@@ -435,7 +433,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "weeklyAssignment" | "assignmentChecklistItem" | "taskStage" | "reflection" | "mentorFeedback" | "discussionNote" | "department" | "departmentResource" | "idea" | "ideaNote" | "user" | "session" | "account" | "verification" | "dailyPlan" | "dailyPlanStage" | "directConversation" | "chatMembership" | "chatMessage" | "friendship" | "chatEncryptionKey"
+    modelProps: "weeklyAssignment" | "assignmentChecklistItem" | "taskStage" | "reflection" | "mentorFeedback" | "discussionNote" | "department" | "departmentResource" | "idea" | "ideaNote" | "dailyPlan" | "dailyPlanStage" | "user" | "session" | "account" | "verification" | "directConversation" | "chatMembership" | "chatMessage" | "friendship" | "chatEncryptionKey"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -1623,154 +1621,6 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
-    DailyPlan: {
-      payload: Prisma.$DailyPlanPayload<ExtArgs>
-      fields: Prisma.DailyPlanFieldRefs
-      operations: {
-        findUnique: {
-          args: Prisma.DailyPlanFindUniqueArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$DailyPlanPayload> | null
-        }
-        findUniqueOrThrow: {
-          args: Prisma.DailyPlanFindUniqueOrThrowArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$DailyPlanPayload>
-        }
-        findFirst: {
-          args: Prisma.DailyPlanFindFirstArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$DailyPlanPayload> | null
-        }
-        findFirstOrThrow: {
-          args: Prisma.DailyPlanFindFirstOrThrowArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$DailyPlanPayload>
-        }
-        findMany: {
-          args: Prisma.DailyPlanFindManyArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$DailyPlanPayload>[]
-        }
-        create: {
-          args: Prisma.DailyPlanCreateArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$DailyPlanPayload>
-        }
-        createMany: {
-          args: Prisma.DailyPlanCreateManyArgs<ExtArgs>
-          result: BatchPayload
-        }
-        createManyAndReturn: {
-          args: Prisma.DailyPlanCreateManyAndReturnArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$DailyPlanPayload>[]
-        }
-        delete: {
-          args: Prisma.DailyPlanDeleteArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$DailyPlanPayload>
-        }
-        update: {
-          args: Prisma.DailyPlanUpdateArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$DailyPlanPayload>
-        }
-        deleteMany: {
-          args: Prisma.DailyPlanDeleteManyArgs<ExtArgs>
-          result: BatchPayload
-        }
-        updateMany: {
-          args: Prisma.DailyPlanUpdateManyArgs<ExtArgs>
-          result: BatchPayload
-        }
-        updateManyAndReturn: {
-          args: Prisma.DailyPlanUpdateManyAndReturnArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$DailyPlanPayload>[]
-        }
-        upsert: {
-          args: Prisma.DailyPlanUpsertArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$DailyPlanPayload>
-        }
-        aggregate: {
-          args: Prisma.DailyPlanAggregateArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.AggregateDailyPlan>
-        }
-        groupBy: {
-          args: Prisma.DailyPlanGroupByArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.DailyPlanGroupByOutputType>[]
-        }
-        count: {
-          args: Prisma.DailyPlanCountArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.DailyPlanCountAggregateOutputType> | number
-        }
-      }
-    }
-    DailyPlanStage: {
-      payload: Prisma.$DailyPlanStagePayload<ExtArgs>
-      fields: Prisma.DailyPlanStageFieldRefs
-      operations: {
-        findUnique: {
-          args: Prisma.DailyPlanStageFindUniqueArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$DailyPlanStagePayload> | null
-        }
-        findUniqueOrThrow: {
-          args: Prisma.DailyPlanStageFindUniqueOrThrowArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$DailyPlanStagePayload>
-        }
-        findFirst: {
-          args: Prisma.DailyPlanStageFindFirstArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$DailyPlanStagePayload> | null
-        }
-        findFirstOrThrow: {
-          args: Prisma.DailyPlanStageFindFirstOrThrowArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$DailyPlanStagePayload>
-        }
-        findMany: {
-          args: Prisma.DailyPlanStageFindManyArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$DailyPlanStagePayload>[]
-        }
-        create: {
-          args: Prisma.DailyPlanStageCreateArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$DailyPlanStagePayload>
-        }
-        createMany: {
-          args: Prisma.DailyPlanStageCreateManyArgs<ExtArgs>
-          result: BatchPayload
-        }
-        createManyAndReturn: {
-          args: Prisma.DailyPlanStageCreateManyAndReturnArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$DailyPlanStagePayload>[]
-        }
-        delete: {
-          args: Prisma.DailyPlanStageDeleteArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$DailyPlanStagePayload>
-        }
-        update: {
-          args: Prisma.DailyPlanStageUpdateArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$DailyPlanStagePayload>
-        }
-        deleteMany: {
-          args: Prisma.DailyPlanStageDeleteManyArgs<ExtArgs>
-          result: BatchPayload
-        }
-        updateMany: {
-          args: Prisma.DailyPlanStageUpdateManyArgs<ExtArgs>
-          result: BatchPayload
-        }
-        updateManyAndReturn: {
-          args: Prisma.DailyPlanStageUpdateManyAndReturnArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$DailyPlanStagePayload>[]
-        }
-        upsert: {
-          args: Prisma.DailyPlanStageUpsertArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$DailyPlanStagePayload>
-        }
-        aggregate: {
-          args: Prisma.DailyPlanStageAggregateArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.AggregateDailyPlanStage>
-        }
-        groupBy: {
-          args: Prisma.DailyPlanStageGroupByArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.DailyPlanStageGroupByOutputType>[]
-        }
-        count: {
-          args: Prisma.DailyPlanStageCountArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.DailyPlanStageCountAggregateOutputType> | number
-        }
-      }
-    }
     DirectConversation: {
       payload: Prisma.$DirectConversationPayload<ExtArgs>
       fields: Prisma.DirectConversationFieldRefs
@@ -2404,31 +2254,6 @@ export const VerificationScalarFieldEnum = {
 export type VerificationScalarFieldEnum = (typeof VerificationScalarFieldEnum)[keyof typeof VerificationScalarFieldEnum]
 
 
-export const DailyPlanScalarFieldEnum = {
-  id: 'id',
-  userId: 'userId',
-  date: 'date',
-  title: 'title',
-  createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
-} as const
-
-export type DailyPlanScalarFieldEnum = (typeof DailyPlanScalarFieldEnum)[keyof typeof DailyPlanScalarFieldEnum]
-
-
-export const DailyPlanStageScalarFieldEnum = {
-  id: 'id',
-  planId: 'planId',
-  title: 'title',
-  order: 'order',
-  completed: 'completed',
-  completedAt: 'completedAt',
-  parentId: 'parentId'
-} as const
-
-export type DailyPlanStageScalarFieldEnum = (typeof DailyPlanStageScalarFieldEnum)[keyof typeof DailyPlanStageScalarFieldEnum]
-
-
 export const DirectConversationScalarFieldEnum = {
   id: 'id',
   pairKey: 'pairKey',
@@ -2797,8 +2622,6 @@ export type GlobalOmitConfig = {
   session?: Prisma.SessionOmit
   account?: Prisma.AccountOmit
   verification?: Prisma.VerificationOmit
-  dailyPlan?: Prisma.DailyPlanOmit
-  dailyPlanStage?: Prisma.DailyPlanStageOmit
   directConversation?: Prisma.DirectConversationOmit
   chatMembership?: Prisma.ChatMembershipOmit
   chatMessage?: Prisma.ChatMessageOmit
