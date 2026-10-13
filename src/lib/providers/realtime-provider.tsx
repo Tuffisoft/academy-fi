@@ -176,3 +176,8 @@ export function useRealtime() {
   if (!context) throw new Error("RealtimeProvider fehlt.");
   return context;
 }
+
+// The shared header is also rendered on pages without a realtime provider.
+export function useUnreadCount() {
+  return useContext(RealtimeContext)?.unreadCount ?? 0;
+}

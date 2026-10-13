@@ -33,10 +33,10 @@ async function ChatLayoutContent({ children }: { children: React.ReactNode }) {
       enabled={isRealtimeConfigured()}
       initialConversations={conversations}
     >
-      <div className="academy-dashboard flex min-h-svh w-full flex-1 flex-col bg-background text-foreground">
+      <div className="academy-dashboard flex h-dvh min-h-0 w-full flex-none flex-col overflow-hidden bg-background text-foreground">
         <DashboardHeader name={user.name} role={user.role ?? "INTERN"} />
         {!isMasterKeyConfigured() && (
-          <p role="alert" className="border-b bg-destructive/10 px-6 py-3 text-sm text-destructive">
+          <p role="alert" className="shrink-0 border-b bg-destructive/10 px-6 py-3 text-sm text-destructive">
             Der Nachrichtenversand ist derzeit nicht verfügbar.
           </p>
         )}

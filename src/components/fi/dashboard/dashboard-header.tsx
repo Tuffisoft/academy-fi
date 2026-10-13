@@ -5,6 +5,7 @@ import { Link, useRouter } from "@/i18n/navigation";
 import { MessageSquare } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { authClient } from "@/lib/auth-client";
+import { useUnreadCount } from "@/lib/providers/realtime-provider";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import {
@@ -36,6 +37,10 @@ export function DashboardHeader({
   const t = useTranslations("auth");
   const router = useRouter();
   const tNav = useTranslations("nav");
+  const unreadCount = useUnreadCount();
+  const chatLabel = unreadCount > 0
+    ? tNav("chatUnread", { count: unreadCount })
+    : tNav("chat");
 
   async function handleSignOut() {
     await authClient.signOut();
@@ -55,10 +60,19 @@ export function DashboardHeader({
           size="icon"
           nativeButton={false}
           render={<Link href="/chat" />}
-          aria-label={tNav("chat")}
-          title={tNav("chat")}
+          className="relative"
+          aria-label={chatLabel}
+          title={chatLabel}
         >
           <MessageSquare aria-hidden="true" />
+          {unreadCount > 0 && (
+            <span
+              aria-hidden="true"
+              className="absolute -right-1 -top-1 flex h-4 min-w-4 items-center justify-center rounded-full bg-primary px-1 text-[10px] font-semibold leading-none text-primary-foreground"
+            >
+              {unreadCount > 99 ? "99+" : unreadCount}
+            </span>
+          )}
         </Button>
         <DropdownMenu>
           <DropdownMenuTrigger className="rounded-full">

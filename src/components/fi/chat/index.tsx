@@ -108,9 +108,9 @@ export default function Chat({
   return (
     <main
       ref={mainRef}
-      className="messenger mx-auto flex min-h-0 w-full min-w-0 max-w-[1440px] flex-1 flex-col bg-background px-0 py-2 md:px-5 md:py-4"
+      className="messenger mx-auto flex min-h-0 w-full min-w-0 max-w-[1440px] flex-1 flex-col overflow-hidden bg-background px-0 py-2 md:px-5 md:py-4"
     >
-      <div className="mb-2 flex flex-wrap items-center justify-between gap-2 px-3 md:px-1">
+      <div className="mb-2 flex shrink-0 flex-wrap items-center justify-between gap-2 px-3 md:px-1">
         <Link
           href="/dashboard"
           className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground"
@@ -129,12 +129,12 @@ export default function Chat({
         </p>
       </div>
       {chat.error && (
-        <p role="alert" className="mb-3 text-sm text-destructive">
+        <p role="alert" className="mb-3 shrink-0 text-sm text-destructive">
           {chat.error}
         </p>
       )}
       {chat.notice && (
-        <p role="status" className="mb-3 text-sm text-muted-foreground">
+        <p role="status" className="mb-3 shrink-0 text-sm text-muted-foreground">
           {chat.notice}
         </p>
       )}
@@ -143,7 +143,6 @@ export default function Chat({
         <ChatNavigation
           active={active}
           incomingRequests={friends.snapshot.incoming.length}
-          unreadCount={chat.unreadCount}
           section={section}
           setSection={selectSection}
           setSearch={setSearch}
@@ -185,14 +184,11 @@ export default function Chat({
               loading={chat.loading}
               pending={chat.pending}
               loadingOlder={chat.loadingOlder}
-              conversations={chat.conversations}
-              unreadCount={chat.unreadCount}
               onBack={chat.close}
               onSend={chat.send}
               onEdit={chat.edit}
               onDelete={chat.remove}
               onLoadOlder={chat.loadOlder}
-              onOpen={(id) => void chat.open(id)}
               onRefresh={chat.refresh}
             />
           </>

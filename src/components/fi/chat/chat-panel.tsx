@@ -24,14 +24,11 @@ type ChatPanelProps = {
   loading: boolean;
   pending: boolean;
   loadingOlder: boolean;
-  conversations: Conversation[];
-  unreadCount: number;
   onBack: () => void;
   onSend: (text: string, clientId: string) => Promise<Message | null>;
   onEdit: (id: string, text: string) => Promise<boolean>;
   onDelete: (id: string) => Promise<boolean>;
   onLoadOlder: () => Promise<void>;
-  onOpen: (id: string) => void;
   onRefresh: () => Promise<void>;
 };
 
@@ -42,20 +39,16 @@ export function ChatPanel({
   loading,
   pending,
   loadingOlder,
-  conversations,
-  unreadCount,
   onBack,
   onSend,
   onEdit,
   onDelete,
   onLoadOlder,
-  onOpen,
   onRefresh,
 }: ChatPanelProps) {
   const [draft, setDraft] = useState("");
   const [editingId, setEditingId] = useState<string | null>(null);
   const [editText, setEditText] = useState("");
-  const [notifications, setNotifications] = useState(false);
   const [outgoing, setOutgoing] = useState<Message[]>([]);
   const inFlight = useRef(new Set<string>());
   const logRef = useRef<HTMLDivElement>(null);
@@ -66,9 +59,6 @@ export function ChatPanel({
   const messages = visibleMessages(page?.messages ?? [], outgoing);
   const lastId = messages.at(-1)?.id;
   const lastText = messages.at(-1)?.text;
-  const unreadConversations = conversations.filter(
-    (item) => item.unreadCount > 0,
-  );
 
   useEffect(() => {
     const log = logRef.current;
@@ -172,46 +162,17 @@ export function ChatPanel({
     <section
       aria-label="Chatbereich"
       className={cn(
-        "flex min-h-0 min-w-0 flex-1 flex-col",
+        "flex min-h-0 min-w-0 flex-1 flex-col overflow-hidden",
         !active && "hidden md:flex",
       )}
     >
-      <ChatHeader
-        conversation={active}
-        unreadCount={unreadCount}
-        notificationsOpen={notifications}
-        onBack={onBack}
-        onToggleNotifications={() => setNotifications((open) => !open)}
-      />
-      {notifications && (
-        <div className="space-y-2 border-b bg-muted/30 px-4 py-3 text-sm text-muted-foreground">
-          {unreadConversations.length === 0 ? (
-            <p>Keine ungelesenen Nachrichten.</p>
-          ) : (
-            unreadConversations.map((conversation) => (
-              <Button
-                key={conversation.id}
-                type="button"
-                variant="ghost"
-                className="w-full justify-between"
-                onClick={() => {
-                  setNotifications(false);
-                  onOpen(conversation.id);
-                }}
-              >
-                <span className="truncate">{conversation.name}</span>
-                <span>{conversation.unreadCount} ungelesen</span>
-              </Button>
-            ))
-          )}
-        </div>
-      )}
+      <ChatHeader conversation={active} onBack={onBack} />
       <div
         ref={logRef}
         role="log"
         aria-label="Nachrichten"
         aria-busy={loading}
-        className="fi-chat-wallpaper min-h-0 flex-1 space-y-2 overflow-y-auto overscroll-contain px-3 py-4 sm:px-8 sm:py-6"
+        className="fi-chat-wallpaper relative min-h-0 flex-1 space-y-2 overflow-y-auto overscroll-contain [scrollbar-gutter:stable] px-3 py-4 sm:px-8 sm:py-6"
         onScroll={() => {
           const log = logRef.current;
           if (log)
@@ -281,7 +242,7 @@ export function ChatPanel({
         ))}
       </div>
       {active && page && !page.canSend && (
-        <p className="border-t px-4 py-5 text-sm text-muted-foreground">
+        <p className="shrink-0 border-t px-4 py-5 text-sm text-muted-foreground">
           Du kannst wieder schreiben, sobald ihr bestätigte Kontakte seid und
           beide Konten verfügbar sind.
         </p>

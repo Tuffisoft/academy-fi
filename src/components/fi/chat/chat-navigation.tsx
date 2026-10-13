@@ -10,7 +10,6 @@ import type { ChatSection, Conversation } from "@/lib/types/chat.types";
 type ChatNavigationProps = {
   active?: Conversation;
   incomingRequests?: number;
-  unreadCount?: number;
   section: ChatSection;
   setSection: (section: ChatSection) => void;
   setSearch: Dispatch<SetStateAction<string>>;
@@ -25,7 +24,6 @@ const navigationItems = [
 export function ChatNavigation({
   active,
   incomingRequests = 0,
-  unreadCount = 0,
   section,
   setSection,
   setSearch,
@@ -64,14 +62,6 @@ export function ChatNavigation({
           onClick={() => selectSection(id)}
         >
           <Icon aria-hidden="true" />
-          {id === "chats" && unreadCount > 0 && (
-            <span
-              className="absolute -right-1 -top-1 rounded-full bg-primary px-1.5 text-[10px] text-primary-foreground"
-              aria-label={`${unreadCount} ungelesene Nachrichten`}
-            >
-              {unreadCount > 99 ? "99+" : unreadCount}
-            </span>
-          )}
           {id === "contacts" && incomingRequests > 0 && (
             <span
               className="absolute -right-1 -top-1 rounded-full bg-primary px-1.5 text-[10px] text-primary-foreground"
