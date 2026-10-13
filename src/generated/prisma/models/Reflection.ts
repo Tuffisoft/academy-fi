@@ -222,9 +222,9 @@ export type ReflectionWhereInput = {
   nextStep?: Prisma.StringFilter<"Reflection"> | string
   createdAt?: Prisma.DateTimeFilter<"Reflection"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Reflection"> | Date | string
+  feedback?: Prisma.MentorFeedbackListRelationFilter
   assignment?: Prisma.XOR<Prisma.WeeklyAssignmentScalarRelationFilter, Prisma.WeeklyAssignmentWhereInput>
   intern?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
-  feedback?: Prisma.MentorFeedbackListRelationFilter
 }
 
 export type ReflectionOrderByWithRelationInput = {
@@ -238,9 +238,9 @@ export type ReflectionOrderByWithRelationInput = {
   nextStep?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  feedback?: Prisma.MentorFeedbackOrderByRelationAggregateInput
   assignment?: Prisma.WeeklyAssignmentOrderByWithRelationInput
   intern?: Prisma.UserOrderByWithRelationInput
-  feedback?: Prisma.MentorFeedbackOrderByRelationAggregateInput
 }
 
 export type ReflectionWhereUniqueInput = Prisma.AtLeast<{
@@ -257,9 +257,9 @@ export type ReflectionWhereUniqueInput = Prisma.AtLeast<{
   nextStep?: Prisma.StringFilter<"Reflection"> | string
   createdAt?: Prisma.DateTimeFilter<"Reflection"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Reflection"> | Date | string
+  feedback?: Prisma.MentorFeedbackListRelationFilter
   assignment?: Prisma.XOR<Prisma.WeeklyAssignmentScalarRelationFilter, Prisma.WeeklyAssignmentWhereInput>
   intern?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
-  feedback?: Prisma.MentorFeedbackListRelationFilter
 }, "id">
 
 export type ReflectionOrderByWithAggregationInput = {
@@ -303,9 +303,9 @@ export type ReflectionCreateInput = {
   nextStep: string
   createdAt?: Date | string
   updatedAt?: Date | string
+  feedback?: Prisma.MentorFeedbackCreateNestedManyWithoutReflectionInput
   assignment: Prisma.WeeklyAssignmentCreateNestedOneWithoutReflectionsInput
   intern: Prisma.UserCreateNestedOneWithoutReflectionsInput
-  feedback?: Prisma.MentorFeedbackCreateNestedManyWithoutReflectionInput
 }
 
 export type ReflectionUncheckedCreateInput = {
@@ -331,9 +331,9 @@ export type ReflectionUpdateInput = {
   nextStep?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  feedback?: Prisma.MentorFeedbackUpdateManyWithoutReflectionNestedInput
   assignment?: Prisma.WeeklyAssignmentUpdateOneRequiredWithoutReflectionsNestedInput
   intern?: Prisma.UserUpdateOneRequiredWithoutReflectionsNestedInput
-  feedback?: Prisma.MentorFeedbackUpdateManyWithoutReflectionNestedInput
 }
 
 export type ReflectionUncheckedUpdateInput = {
@@ -548,8 +548,8 @@ export type ReflectionCreateWithoutAssignmentInput = {
   nextStep: string
   createdAt?: Date | string
   updatedAt?: Date | string
-  intern: Prisma.UserCreateNestedOneWithoutReflectionsInput
   feedback?: Prisma.MentorFeedbackCreateNestedManyWithoutReflectionInput
+  intern: Prisma.UserCreateNestedOneWithoutReflectionsInput
 }
 
 export type ReflectionUncheckedCreateWithoutAssignmentInput = {
@@ -684,8 +684,8 @@ export type ReflectionCreateWithoutInternInput = {
   nextStep: string
   createdAt?: Date | string
   updatedAt?: Date | string
-  assignment: Prisma.WeeklyAssignmentCreateNestedOneWithoutReflectionsInput
   feedback?: Prisma.MentorFeedbackCreateNestedManyWithoutReflectionInput
+  assignment: Prisma.WeeklyAssignmentCreateNestedOneWithoutReflectionsInput
 }
 
 export type ReflectionUncheckedCreateWithoutInternInput = {
@@ -748,8 +748,8 @@ export type ReflectionUpdateWithoutAssignmentInput = {
   nextStep?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  intern?: Prisma.UserUpdateOneRequiredWithoutReflectionsNestedInput
   feedback?: Prisma.MentorFeedbackUpdateManyWithoutReflectionNestedInput
+  intern?: Prisma.UserUpdateOneRequiredWithoutReflectionsNestedInput
 }
 
 export type ReflectionUncheckedUpdateWithoutAssignmentInput = {
@@ -798,8 +798,8 @@ export type ReflectionUpdateWithoutInternInput = {
   nextStep?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  assignment?: Prisma.WeeklyAssignmentUpdateOneRequiredWithoutReflectionsNestedInput
   feedback?: Prisma.MentorFeedbackUpdateManyWithoutReflectionNestedInput
+  assignment?: Prisma.WeeklyAssignmentUpdateOneRequiredWithoutReflectionsNestedInput
 }
 
 export type ReflectionUncheckedUpdateWithoutInternInput = {
@@ -869,9 +869,9 @@ export type ReflectionSelect<ExtArgs extends runtime.Types.Extensions.InternalAr
   nextStep?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  feedback?: boolean | Prisma.Reflection$feedbackArgs<ExtArgs>
   assignment?: boolean | Prisma.WeeklyAssignmentDefaultArgs<ExtArgs>
   intern?: boolean | Prisma.UserDefaultArgs<ExtArgs>
-  feedback?: boolean | Prisma.Reflection$feedbackArgs<ExtArgs>
   _count?: boolean | Prisma.ReflectionCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["reflection"]>
 
@@ -920,9 +920,9 @@ export type ReflectionSelectScalar = {
 
 export type ReflectionOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "assignmentId" | "internId" | "workDone" | "learning" | "blocker" | "workLink" | "nextStep" | "createdAt" | "updatedAt", ExtArgs["result"]["reflection"]>
 export type ReflectionInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  feedback?: boolean | Prisma.Reflection$feedbackArgs<ExtArgs>
   assignment?: boolean | Prisma.WeeklyAssignmentDefaultArgs<ExtArgs>
   intern?: boolean | Prisma.UserDefaultArgs<ExtArgs>
-  feedback?: boolean | Prisma.Reflection$feedbackArgs<ExtArgs>
   _count?: boolean | Prisma.ReflectionCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type ReflectionIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -937,9 +937,9 @@ export type ReflectionIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.E
 export type $ReflectionPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "Reflection"
   objects: {
+    feedback: Prisma.$MentorFeedbackPayload<ExtArgs>[]
     assignment: Prisma.$WeeklyAssignmentPayload<ExtArgs>
     intern: Prisma.$UserPayload<ExtArgs>
-    feedback: Prisma.$MentorFeedbackPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1346,9 +1346,9 @@ readonly fields: ReflectionFieldRefs;
  */
 export interface Prisma__ReflectionClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
+  feedback<T extends Prisma.Reflection$feedbackArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Reflection$feedbackArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$MentorFeedbackPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   assignment<T extends Prisma.WeeklyAssignmentDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.WeeklyAssignmentDefaultArgs<ExtArgs>>): Prisma.Prisma__WeeklyAssignmentClient<runtime.Types.Result.GetResult<Prisma.$WeeklyAssignmentPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   intern<T extends Prisma.UserDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UserDefaultArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
-  feedback<T extends Prisma.Reflection$feedbackArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Reflection$feedbackArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$MentorFeedbackPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.

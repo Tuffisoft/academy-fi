@@ -97,3 +97,38 @@ export type Account = Prisma.AccountModel
  * 
  */
 export type Verification = Prisma.VerificationModel
+/**
+ * Model DailyPlan
+ * 
+ */
+export type DailyPlan = Prisma.DailyPlanModel
+/**
+ * Model DailyPlanStage
+ * 
+ */
+export type DailyPlanStage = Prisma.DailyPlanStageModel
+/**
+ * Model DirectConversation
+ * 
+ */
+export type DirectConversation = Prisma.DirectConversationModel
+/**
+ * Model ChatMembership
+ * 
+ */
+export type ChatMembership = Prisma.ChatMembershipModel
+/**
+ * Model ChatMessage
+ * 
+ */
+export type ChatMessage = Prisma.ChatMessageModel
+/**
+ * Model Friendship
+ * 
+ */
+export type Friendship = Prisma.FriendshipModel
+/**
+ * Model ChatEncryptionKey
+ * 
+ */
+export type ChatEncryptionKey = Prisma.ChatEncryptionKeyModel

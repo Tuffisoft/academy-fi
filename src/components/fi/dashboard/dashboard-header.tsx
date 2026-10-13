@@ -1,7 +1,9 @@
 "use client";
 
 import { useTranslations } from "next-intl";
-import { useRouter } from "@/i18n/navigation";
+import { Link, useRouter } from "@/i18n/navigation";
+import { MessageSquare } from "lucide-react";
+import { Button } from "@/components/ui/button";
 import { authClient } from "@/lib/auth-client";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
@@ -33,6 +35,7 @@ export function DashboardHeader({
 }) {
   const t = useTranslations("auth");
   const router = useRouter();
+  const tNav = useTranslations("nav");
 
   async function handleSignOut() {
     await authClient.signOut();
@@ -46,22 +49,34 @@ export function DashboardHeader({
         <span className="font-semibold">Academy Fi</span>
         <Badge variant="secondary">{role}</Badge>
       </div>
-      <DropdownMenu>
-        <DropdownMenuTrigger className="rounded-full">
-          <Avatar>
-            <AvatarFallback>{initials(name)}</AvatarFallback>
-          </Avatar>
-        </DropdownMenuTrigger>
-        <DropdownMenuContent align="end">
-          <DropdownMenuGroup>
-            <DropdownMenuLabel>{name}</DropdownMenuLabel>
-          </DropdownMenuGroup>
-          <DropdownMenuSeparator />
-          <DropdownMenuItem onClick={handleSignOut}>
-            {t("signOut")}
-          </DropdownMenuItem>
-        </DropdownMenuContent>
-      </DropdownMenu>
+      <div className="flex items-center gap-2">
+        <Button
+          variant="ghost"
+          size="icon"
+          nativeButton={false}
+          render={<Link href="/chat" />}
+          aria-label={tNav("chat")}
+          title={tNav("chat")}
+        >
+          <MessageSquare aria-hidden="true" />
+        </Button>
+        <DropdownMenu>
+          <DropdownMenuTrigger className="rounded-full">
+            <Avatar>
+              <AvatarFallback>{initials(name)}</AvatarFallback>
+            </Avatar>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end">
+            <DropdownMenuGroup>
+              <DropdownMenuLabel>{name}</DropdownMenuLabel>
+            </DropdownMenuGroup>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem onClick={handleSignOut}>
+              {t("signOut")}
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+      </div>
     </header>
   );
 }

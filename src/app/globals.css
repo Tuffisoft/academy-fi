@@ -196,3 +196,80 @@
     @apply font-sans;
   }
 }
+
+/* Messenger shares the Academy Fi theme in both light and dark mode. */
+.fi-chat-wallpaper {
+  background: var(--background);
+}
+.fi-avatar {
+  background: var(--secondary);
+  color: var(--secondary-foreground);
+}
+.fi-composer,
+.fi-chat-header {
+  background: var(--card);
+}
+.academy-dashboard[data-messenger-active="true"] {
+  height: var(--messenger-height, 100dvh);
+  min-height: 0;
+  overflow: hidden;
+}
+.academy-dashboard[data-messenger-active="true"] > header {
+  flex-shrink: 0;
+}
+.academy-dashboard[data-messenger-active="true"] > footer {
+  display: none;
+}
+
+/* The Academy footer is outside the chat shell in the locale layout. */
+html[data-messenger-active="true"] body > footer {
+  display: none;
+}
+
+/* Lists scroll independently; the composer stays inside the visual viewport. */
+@media (width < 48rem) {
+  html[data-messenger-active="true"],
+  html[data-messenger-active="true"] body {
+    height: 100%;
+    overflow: hidden;
+    overscroll-behavior: none;
+  }
+
+  html[data-messenger-active="true"] body {
+    position: fixed;
+    inset: 0;
+    width: 100%;
+  }
+
+  .academy-dashboard[data-messenger-active="true"] {
+    position: fixed;
+    top: var(--messenger-top, 0px);
+    inset-inline: 0;
+    height: var(--messenger-height, 100dvh);
+    min-height: 0;
+    overflow: hidden;
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+
+  .academy-dashboard[data-messenger-active="true"][data-keyboard-open="true"] {
+    padding-bottom: 0;
+  }
+
+  .fi-composer textarea {
+    max-height: min(7rem, calc(var(--fi-visible-height, 100dvh) * 0.25));
+    overflow-y: auto;
+  }
+
+  .academy-dashboard[data-messenger-active="true"] > header {
+    flex-shrink: 0;
+  }
+
+  .academy-dashboard[data-messenger-active="true"] > footer {
+    display: none;
+  }
+
+  .messenger button {
+    min-width: 2.75rem;
+    min-height: 2.75rem;
+  }
+}

@@ -182,8 +182,8 @@ export type MentorFeedbackWhereInput = {
   authorId?: Prisma.StringFilter<"MentorFeedback"> | string
   message?: Prisma.StringFilter<"MentorFeedback"> | string
   createdAt?: Prisma.DateTimeFilter<"MentorFeedback"> | Date | string
-  reflection?: Prisma.XOR<Prisma.ReflectionScalarRelationFilter, Prisma.ReflectionWhereInput>
   author?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
+  reflection?: Prisma.XOR<Prisma.ReflectionScalarRelationFilter, Prisma.ReflectionWhereInput>
 }
 
 export type MentorFeedbackOrderByWithRelationInput = {
@@ -192,8 +192,8 @@ export type MentorFeedbackOrderByWithRelationInput = {
   authorId?: Prisma.SortOrder
   message?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
-  reflection?: Prisma.ReflectionOrderByWithRelationInput
   author?: Prisma.UserOrderByWithRelationInput
+  reflection?: Prisma.ReflectionOrderByWithRelationInput
 }
 
 export type MentorFeedbackWhereUniqueInput = Prisma.AtLeast<{
@@ -205,8 +205,8 @@ export type MentorFeedbackWhereUniqueInput = Prisma.AtLeast<{
   authorId?: Prisma.StringFilter<"MentorFeedback"> | string
   message?: Prisma.StringFilter<"MentorFeedback"> | string
   createdAt?: Prisma.DateTimeFilter<"MentorFeedback"> | Date | string
-  reflection?: Prisma.XOR<Prisma.ReflectionScalarRelationFilter, Prisma.ReflectionWhereInput>
   author?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
+  reflection?: Prisma.XOR<Prisma.ReflectionScalarRelationFilter, Prisma.ReflectionWhereInput>
 }, "id">
 
 export type MentorFeedbackOrderByWithAggregationInput = {
@@ -235,8 +235,8 @@ export type MentorFeedbackCreateInput = {
   id?: string
   message: string
   createdAt?: Date | string
-  reflection: Prisma.ReflectionCreateNestedOneWithoutFeedbackInput
   author: Prisma.UserCreateNestedOneWithoutFeedbackAuthoredInput
+  reflection: Prisma.ReflectionCreateNestedOneWithoutFeedbackInput
 }
 
 export type MentorFeedbackUncheckedCreateInput = {
@@ -251,8 +251,8 @@ export type MentorFeedbackUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   message?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  reflection?: Prisma.ReflectionUpdateOneRequiredWithoutFeedbackNestedInput
   author?: Prisma.UserUpdateOneRequiredWithoutFeedbackAuthoredNestedInput
+  reflection?: Prisma.ReflectionUpdateOneRequiredWithoutFeedbackNestedInput
 }
 
 export type MentorFeedbackUncheckedUpdateInput = {
@@ -558,8 +558,8 @@ export type MentorFeedbackSelect<ExtArgs extends runtime.Types.Extensions.Intern
   authorId?: boolean
   message?: boolean
   createdAt?: boolean
-  reflection?: boolean | Prisma.ReflectionDefaultArgs<ExtArgs>
   author?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  reflection?: boolean | Prisma.ReflectionDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["mentorFeedback"]>
 
 export type MentorFeedbackSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -568,8 +568,8 @@ export type MentorFeedbackSelectCreateManyAndReturn<ExtArgs extends runtime.Type
   authorId?: boolean
   message?: boolean
   createdAt?: boolean
-  reflection?: boolean | Prisma.ReflectionDefaultArgs<ExtArgs>
   author?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  reflection?: boolean | Prisma.ReflectionDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["mentorFeedback"]>
 
 export type MentorFeedbackSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -578,8 +578,8 @@ export type MentorFeedbackSelectUpdateManyAndReturn<ExtArgs extends runtime.Type
   authorId?: boolean
   message?: boolean
   createdAt?: boolean
-  reflection?: boolean | Prisma.ReflectionDefaultArgs<ExtArgs>
   author?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  reflection?: boolean | Prisma.ReflectionDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["mentorFeedback"]>
 
 export type MentorFeedbackSelectScalar = {
@@ -592,23 +592,23 @@ export type MentorFeedbackSelectScalar = {
 
 export type MentorFeedbackOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "reflectionId" | "authorId" | "message" | "createdAt", ExtArgs["result"]["mentorFeedback"]>
 export type MentorFeedbackInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  reflection?: boolean | Prisma.ReflectionDefaultArgs<ExtArgs>
   author?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  reflection?: boolean | Prisma.ReflectionDefaultArgs<ExtArgs>
 }
 export type MentorFeedbackIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  reflection?: boolean | Prisma.ReflectionDefaultArgs<ExtArgs>
   author?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  reflection?: boolean | Prisma.ReflectionDefaultArgs<ExtArgs>
 }
 export type MentorFeedbackIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  reflection?: boolean | Prisma.ReflectionDefaultArgs<ExtArgs>
   author?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  reflection?: boolean | Prisma.ReflectionDefaultArgs<ExtArgs>
 }
 
 export type $MentorFeedbackPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "MentorFeedback"
   objects: {
-    reflection: Prisma.$ReflectionPayload<ExtArgs>
     author: Prisma.$UserPayload<ExtArgs>
+    reflection: Prisma.$ReflectionPayload<ExtArgs>
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1010,8 +1010,8 @@ readonly fields: MentorFeedbackFieldRefs;
  */
 export interface Prisma__MentorFeedbackClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
-  reflection<T extends Prisma.ReflectionDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.ReflectionDefaultArgs<ExtArgs>>): Prisma.Prisma__ReflectionClient<runtime.Types.Result.GetResult<Prisma.$ReflectionPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   author<T extends Prisma.UserDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UserDefaultArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  reflection<T extends Prisma.ReflectionDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.ReflectionDefaultArgs<ExtArgs>>): Prisma.Prisma__ReflectionClient<runtime.Types.Result.GetResult<Prisma.$ReflectionPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.

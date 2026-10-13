@@ -20,8 +20,18 @@ export type UserModel = runtime.Types.Result.DefaultSelection<Prisma.$UserPayloa
 
 export type AggregateUser = {
   _count: UserCountAggregateOutputType | null
+  _avg: UserAvgAggregateOutputType | null
+  _sum: UserSumAggregateOutputType | null
   _min: UserMinAggregateOutputType | null
   _max: UserMaxAggregateOutputType | null
+}
+
+export type UserAvgAggregateOutputType = {
+  secureLoginVersion: number | null
+}
+
+export type UserSumAggregateOutputType = {
+  secureLoginVersion: number | null
 }
 
 export type UserMinAggregateOutputType = {
@@ -33,10 +43,11 @@ export type UserMinAggregateOutputType = {
   createdAt: Date | null
   updatedAt: Date | null
   role: string | null
-  locale: string | null
   banned: boolean | null
   banReason: string | null
   banExpires: Date | null
+  locale: string | null
+  secureLoginVersion: number | null
 }
 
 export type UserMaxAggregateOutputType = {
@@ -48,10 +59,11 @@ export type UserMaxAggregateOutputType = {
   createdAt: Date | null
   updatedAt: Date | null
   role: string | null
-  locale: string | null
   banned: boolean | null
   banReason: string | null
   banExpires: Date | null
+  locale: string | null
+  secureLoginVersion: number | null
 }
 
 export type UserCountAggregateOutputType = {
@@ -63,13 +75,22 @@ export type UserCountAggregateOutputType = {
   createdAt: number
   updatedAt: number
   role: number
-  locale: number
   banned: number
   banReason: number
   banExpires: number
+  locale: number
+  secureLoginVersion: number
   _all: number
 }
 
+
+export type UserAvgAggregateInputType = {
+  secureLoginVersion?: true
+}
+
+export type UserSumAggregateInputType = {
+  secureLoginVersion?: true
+}
 
 export type UserMinAggregateInputType = {
   id?: true
@@ -80,10 +101,11 @@ export type UserMinAggregateInputType = {
   createdAt?: true
   updatedAt?: true
   role?: true
-  locale?: true
   banned?: true
   banReason?: true
   banExpires?: true
+  locale?: true
+  secureLoginVersion?: true
 }
 
 export type UserMaxAggregateInputType = {
@@ -95,10 +117,11 @@ export type UserMaxAggregateInputType = {
   createdAt?: true
   updatedAt?: true
   role?: true
-  locale?: true
   banned?: true
   banReason?: true
   banExpires?: true
+  locale?: true
+  secureLoginVersion?: true
 }
 
 export type UserCountAggregateInputType = {
@@ -110,10 +133,11 @@ export type UserCountAggregateInputType = {
   createdAt?: true
   updatedAt?: true
   role?: true
-  locale?: true
   banned?: true
   banReason?: true
   banExpires?: true
+  locale?: true
+  secureLoginVersion?: true
   _all?: true
 }
 
@@ -155,6 +179,18 @@ export type UserAggregateArgs<ExtArgs extends runtime.Types.Extensions.InternalA
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
    * 
+   * Select which fields to average
+  **/
+  _avg?: UserAvgAggregateInputType
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+   * 
+   * Select which fields to sum
+  **/
+  _sum?: UserSumAggregateInputType
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+   * 
    * Select which fields to find the minimum value
   **/
   _min?: UserMinAggregateInputType
@@ -185,6 +221,8 @@ export type UserGroupByArgs<ExtArgs extends runtime.Types.Extensions.InternalArg
   take?: number
   skip?: number
   _count?: UserCountAggregateInputType | true
+  _avg?: UserAvgAggregateInputType
+  _sum?: UserSumAggregateInputType
   _min?: UserMinAggregateInputType
   _max?: UserMaxAggregateInputType
 }
@@ -198,11 +236,14 @@ export type UserGroupByOutputType = {
   createdAt: Date
   updatedAt: Date
   role: string
-  locale: string
   banned: boolean | null
   banReason: string | null
   banExpires: Date | null
+  locale: string
+  secureLoginVersion: number
   _count: UserCountAggregateOutputType | null
+  _avg: UserAvgAggregateOutputType | null
+  _sum: UserSumAggregateOutputType | null
   _min: UserMinAggregateOutputType | null
   _max: UserMaxAggregateOutputType | null
 }
@@ -234,21 +275,29 @@ export type UserWhereInput = {
   createdAt?: Prisma.DateTimeFilter<"User"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"User"> | Date | string
   role?: Prisma.StringFilter<"User"> | string
-  locale?: Prisma.StringFilter<"User"> | string
   banned?: Prisma.BoolNullableFilter<"User"> | boolean | null
   banReason?: Prisma.StringNullableFilter<"User"> | string | null
   banExpires?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null
-  sessions?: Prisma.SessionListRelationFilter
-  accounts?: Prisma.AccountListRelationFilter
-  assignmentsAsIntern?: Prisma.WeeklyAssignmentListRelationFilter
-  assignmentsCreated?: Prisma.WeeklyAssignmentListRelationFilter
-  reflections?: Prisma.ReflectionListRelationFilter
-  feedbackAuthored?: Prisma.MentorFeedbackListRelationFilter
-  discussionNote?: Prisma.XOR<Prisma.DiscussionNoteNullableScalarRelationFilter, Prisma.DiscussionNoteWhereInput> | null
+  locale?: Prisma.StringFilter<"User"> | string
+  secureLoginVersion?: Prisma.IntFilter<"User"> | number
+  DailyPlan?: Prisma.DailyPlanListRelationFilter
   resourcesAdded?: Prisma.DepartmentResourceListRelationFilter
+  discussionNote?: Prisma.XOR<Prisma.DiscussionNoteNullableScalarRelationFilter, Prisma.DiscussionNoteWhereInput> | null
   ideas?: Prisma.IdeaListRelationFilter
   ideaNotes?: Prisma.IdeaNoteListRelationFilter
-  dailyPlans?: Prisma.DailyPlanListRelationFilter
+  feedbackAuthored?: Prisma.MentorFeedbackListRelationFilter
+  reflections?: Prisma.ReflectionListRelationFilter
+  assignmentsCreated?: Prisma.WeeklyAssignmentListRelationFilter
+  assignmentsAsIntern?: Prisma.WeeklyAssignmentListRelationFilter
+  friendshipsSent?: Prisma.FriendshipListRelationFilter
+  friendshipsReceived?: Prisma.FriendshipListRelationFilter
+  directChatsFirst?: Prisma.DirectConversationListRelationFilter
+  directChatsSecond?: Prisma.DirectConversationListRelationFilter
+  chatMemberships?: Prisma.ChatMembershipListRelationFilter
+  chatMessages?: Prisma.ChatMessageListRelationFilter
+  chatEncryptionKey?: Prisma.XOR<Prisma.ChatEncryptionKeyNullableScalarRelationFilter, Prisma.ChatEncryptionKeyWhereInput> | null
+  accounts?: Prisma.AccountListRelationFilter
+  sessions?: Prisma.SessionListRelationFilter
 }
 
 export type UserOrderByWithRelationInput = {
@@ -260,21 +309,29 @@ export type UserOrderByWithRelationInput = {
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   role?: Prisma.SortOrder
-  locale?: Prisma.SortOrder
   banned?: Prisma.SortOrderInput | Prisma.SortOrder
   banReason?: Prisma.SortOrderInput | Prisma.SortOrder
   banExpires?: Prisma.SortOrderInput | Prisma.SortOrder
-  sessions?: Prisma.SessionOrderByRelationAggregateInput
-  accounts?: Prisma.AccountOrderByRelationAggregateInput
-  assignmentsAsIntern?: Prisma.WeeklyAssignmentOrderByRelationAggregateInput
-  assignmentsCreated?: Prisma.WeeklyAssignmentOrderByRelationAggregateInput
-  reflections?: Prisma.ReflectionOrderByRelationAggregateInput
-  feedbackAuthored?: Prisma.MentorFeedbackOrderByRelationAggregateInput
-  discussionNote?: Prisma.DiscussionNoteOrderByWithRelationInput
+  locale?: Prisma.SortOrder
+  secureLoginVersion?: Prisma.SortOrder
+  DailyPlan?: Prisma.DailyPlanOrderByRelationAggregateInput
   resourcesAdded?: Prisma.DepartmentResourceOrderByRelationAggregateInput
+  discussionNote?: Prisma.DiscussionNoteOrderByWithRelationInput
   ideas?: Prisma.IdeaOrderByRelationAggregateInput
   ideaNotes?: Prisma.IdeaNoteOrderByRelationAggregateInput
-  dailyPlans?: Prisma.DailyPlanOrderByRelationAggregateInput
+  feedbackAuthored?: Prisma.MentorFeedbackOrderByRelationAggregateInput
+  reflections?: Prisma.ReflectionOrderByRelationAggregateInput
+  assignmentsCreated?: Prisma.WeeklyAssignmentOrderByRelationAggregateInput
+  assignmentsAsIntern?: Prisma.WeeklyAssignmentOrderByRelationAggregateInput
+  friendshipsSent?: Prisma.FriendshipOrderByRelationAggregateInput
+  friendshipsReceived?: Prisma.FriendshipOrderByRelationAggregateInput
+  directChatsFirst?: Prisma.DirectConversationOrderByRelationAggregateInput
+  directChatsSecond?: Prisma.DirectConversationOrderByRelationAggregateInput
+  chatMemberships?: Prisma.ChatMembershipOrderByRelationAggregateInput
+  chatMessages?: Prisma.ChatMessageOrderByRelationAggregateInput
+  chatEncryptionKey?: Prisma.ChatEncryptionKeyOrderByWithRelationInput
+  accounts?: Prisma.AccountOrderByRelationAggregateInput
+  sessions?: Prisma.SessionOrderByRelationAggregateInput
 }
 
 export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -289,21 +346,29 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   createdAt?: Prisma.DateTimeFilter<"User"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"User"> | Date | string
   role?: Prisma.StringFilter<"User"> | string
-  locale?: Prisma.StringFilter<"User"> | string
   banned?: Prisma.BoolNullableFilter<"User"> | boolean | null
   banReason?: Prisma.StringNullableFilter<"User"> | string | null
   banExpires?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null
-  sessions?: Prisma.SessionListRelationFilter
-  accounts?: Prisma.AccountListRelationFilter
-  assignmentsAsIntern?: Prisma.WeeklyAssignmentListRelationFilter
-  assignmentsCreated?: Prisma.WeeklyAssignmentListRelationFilter
-  reflections?: Prisma.ReflectionListRelationFilter
-  feedbackAuthored?: Prisma.MentorFeedbackListRelationFilter
-  discussionNote?: Prisma.XOR<Prisma.DiscussionNoteNullableScalarRelationFilter, Prisma.DiscussionNoteWhereInput> | null
+  locale?: Prisma.StringFilter<"User"> | string
+  secureLoginVersion?: Prisma.IntFilter<"User"> | number
+  DailyPlan?: Prisma.DailyPlanListRelationFilter
   resourcesAdded?: Prisma.DepartmentResourceListRelationFilter
+  discussionNote?: Prisma.XOR<Prisma.DiscussionNoteNullableScalarRelationFilter, Prisma.DiscussionNoteWhereInput> | null
   ideas?: Prisma.IdeaListRelationFilter
   ideaNotes?: Prisma.IdeaNoteListRelationFilter
-  dailyPlans?: Prisma.DailyPlanListRelationFilter
+  feedbackAuthored?: Prisma.MentorFeedbackListRelationFilter
+  reflections?: Prisma.ReflectionListRelationFilter
+  assignmentsCreated?: Prisma.WeeklyAssignmentListRelationFilter
+  assignmentsAsIntern?: Prisma.WeeklyAssignmentListRelationFilter
+  friendshipsSent?: Prisma.FriendshipListRelationFilter
+  friendshipsReceived?: Prisma.FriendshipListRelationFilter
+  directChatsFirst?: Prisma.DirectConversationListRelationFilter
+  directChatsSecond?: Prisma.DirectConversationListRelationFilter
+  chatMemberships?: Prisma.ChatMembershipListRelationFilter
+  chatMessages?: Prisma.ChatMessageListRelationFilter
+  chatEncryptionKey?: Prisma.XOR<Prisma.ChatEncryptionKeyNullableScalarRelationFilter, Prisma.ChatEncryptionKeyWhereInput> | null
+  accounts?: Prisma.AccountListRelationFilter
+  sessions?: Prisma.SessionListRelationFilter
 }, "id" | "email">
 
 export type UserOrderByWithAggregationInput = {
@@ -315,13 +380,16 @@ export type UserOrderByWithAggregationInput = {
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   role?: Prisma.SortOrder
-  locale?: Prisma.SortOrder
   banned?: Prisma.SortOrderInput | Prisma.SortOrder
   banReason?: Prisma.SortOrderInput | Prisma.SortOrder
   banExpires?: Prisma.SortOrderInput | Prisma.SortOrder
+  locale?: Prisma.SortOrder
+  secureLoginVersion?: Prisma.SortOrder
   _count?: Prisma.UserCountOrderByAggregateInput
+  _avg?: Prisma.UserAvgOrderByAggregateInput
   _max?: Prisma.UserMaxOrderByAggregateInput
   _min?: Prisma.UserMinOrderByAggregateInput
+  _sum?: Prisma.UserSumOrderByAggregateInput
 }
 
 export type UserScalarWhereWithAggregatesInput = {
@@ -336,10 +404,11 @@ export type UserScalarWhereWithAggregatesInput = {
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"User"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"User"> | Date | string
   role?: Prisma.StringWithAggregatesFilter<"User"> | string
-  locale?: Prisma.StringWithAggregatesFilter<"User"> | string
   banned?: Prisma.BoolNullableWithAggregatesFilter<"User"> | boolean | null
   banReason?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
   banExpires?: Prisma.DateTimeNullableWithAggregatesFilter<"User"> | Date | string | null
+  locale?: Prisma.StringWithAggregatesFilter<"User"> | string
+  secureLoginVersion?: Prisma.IntWithAggregatesFilter<"User"> | number
 }
 
 export type UserCreateInput = {
@@ -351,21 +420,29 @@ export type UserCreateInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   role?: string
-  locale?: string
   banned?: boolean | null
   banReason?: string | null
   banExpires?: Date | string | null
-  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
-  accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
-  assignmentsAsIntern?: Prisma.WeeklyAssignmentCreateNestedManyWithoutInternInput
-  assignmentsCreated?: Prisma.WeeklyAssignmentCreateNestedManyWithoutCreatedByInput
-  reflections?: Prisma.ReflectionCreateNestedManyWithoutInternInput
-  feedbackAuthored?: Prisma.MentorFeedbackCreateNestedManyWithoutAuthorInput
-  discussionNote?: Prisma.DiscussionNoteCreateNestedOneWithoutUserInput
+  locale?: string
+  secureLoginVersion?: number
+  DailyPlan?: Prisma.DailyPlanCreateNestedManyWithoutUserInput
   resourcesAdded?: Prisma.DepartmentResourceCreateNestedManyWithoutCreatedByInput
+  discussionNote?: Prisma.DiscussionNoteCreateNestedOneWithoutUserInput
   ideas?: Prisma.IdeaCreateNestedManyWithoutAuthorInput
   ideaNotes?: Prisma.IdeaNoteCreateNestedManyWithoutAuthorInput
-  dailyPlans?: Prisma.DailyPlanCreateNestedManyWithoutUserInput
+  feedbackAuthored?: Prisma.MentorFeedbackCreateNestedManyWithoutAuthorInput
+  reflections?: Prisma.ReflectionCreateNestedManyWithoutInternInput
+  assignmentsCreated?: Prisma.WeeklyAssignmentCreateNestedManyWithoutCreatedByInput
+  assignmentsAsIntern?: Prisma.WeeklyAssignmentCreateNestedManyWithoutInternInput
+  friendshipsSent?: Prisma.FriendshipCreateNestedManyWithoutRequesterInput
+  friendshipsReceived?: Prisma.FriendshipCreateNestedManyWithoutRecipientInput
+  directChatsFirst?: Prisma.DirectConversationCreateNestedManyWithoutFirstUserInput
+  directChatsSecond?: Prisma.DirectConversationCreateNestedManyWithoutSecondUserInput
+  chatMemberships?: Prisma.ChatMembershipCreateNestedManyWithoutUserInput
+  chatMessages?: Prisma.ChatMessageCreateNestedManyWithoutSenderInput
+  chatEncryptionKey?: Prisma.ChatEncryptionKeyCreateNestedOneWithoutUserInput
+  accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateInput = {
@@ -377,21 +454,29 @@ export type UserUncheckedCreateInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   role?: string
-  locale?: string
   banned?: boolean | null
   banReason?: string | null
   banExpires?: Date | string | null
-  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
-  accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
-  assignmentsAsIntern?: Prisma.WeeklyAssignmentUncheckedCreateNestedManyWithoutInternInput
-  assignmentsCreated?: Prisma.WeeklyAssignmentUncheckedCreateNestedManyWithoutCreatedByInput
-  reflections?: Prisma.ReflectionUncheckedCreateNestedManyWithoutInternInput
-  feedbackAuthored?: Prisma.MentorFeedbackUncheckedCreateNestedManyWithoutAuthorInput
-  discussionNote?: Prisma.DiscussionNoteUncheckedCreateNestedOneWithoutUserInput
+  locale?: string
+  secureLoginVersion?: number
+  DailyPlan?: Prisma.DailyPlanUncheckedCreateNestedManyWithoutUserInput
   resourcesAdded?: Prisma.DepartmentResourceUncheckedCreateNestedManyWithoutCreatedByInput
+  discussionNote?: Prisma.DiscussionNoteUncheckedCreateNestedOneWithoutUserInput
   ideas?: Prisma.IdeaUncheckedCreateNestedManyWithoutAuthorInput
   ideaNotes?: Prisma.IdeaNoteUncheckedCreateNestedManyWithoutAuthorInput
-  dailyPlans?: Prisma.DailyPlanUncheckedCreateNestedManyWithoutUserInput
+  feedbackAuthored?: Prisma.MentorFeedbackUncheckedCreateNestedManyWithoutAuthorInput
+  reflections?: Prisma.ReflectionUncheckedCreateNestedManyWithoutInternInput
+  assignmentsCreated?: Prisma.WeeklyAssignmentUncheckedCreateNestedManyWithoutCreatedByInput
+  assignmentsAsIntern?: Prisma.WeeklyAssignmentUncheckedCreateNestedManyWithoutInternInput
+  friendshipsSent?: Prisma.FriendshipUncheckedCreateNestedManyWithoutRequesterInput
+  friendshipsReceived?: Prisma.FriendshipUncheckedCreateNestedManyWithoutRecipientInput
+  directChatsFirst?: Prisma.DirectConversationUncheckedCreateNestedManyWithoutFirstUserInput
+  directChatsSecond?: Prisma.DirectConversationUncheckedCreateNestedManyWithoutSecondUserInput
+  chatMemberships?: Prisma.ChatMembershipUncheckedCreateNestedManyWithoutUserInput
+  chatMessages?: Prisma.ChatMessageUncheckedCreateNestedManyWithoutSenderInput
+  chatEncryptionKey?: Prisma.ChatEncryptionKeyUncheckedCreateNestedOneWithoutUserInput
+  accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserUpdateInput = {
@@ -403,21 +488,29 @@ export type UserUpdateInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   role?: Prisma.StringFieldUpdateOperationsInput | string
-  locale?: Prisma.StringFieldUpdateOperationsInput | string
   banned?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   banReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   banExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
-  accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
-  assignmentsAsIntern?: Prisma.WeeklyAssignmentUpdateManyWithoutInternNestedInput
-  assignmentsCreated?: Prisma.WeeklyAssignmentUpdateManyWithoutCreatedByNestedInput
-  reflections?: Prisma.ReflectionUpdateManyWithoutInternNestedInput
-  feedbackAuthored?: Prisma.MentorFeedbackUpdateManyWithoutAuthorNestedInput
-  discussionNote?: Prisma.DiscussionNoteUpdateOneWithoutUserNestedInput
+  locale?: Prisma.StringFieldUpdateOperationsInput | string
+  secureLoginVersion?: Prisma.IntFieldUpdateOperationsInput | number
+  DailyPlan?: Prisma.DailyPlanUpdateManyWithoutUserNestedInput
   resourcesAdded?: Prisma.DepartmentResourceUpdateManyWithoutCreatedByNestedInput
+  discussionNote?: Prisma.DiscussionNoteUpdateOneWithoutUserNestedInput
   ideas?: Prisma.IdeaUpdateManyWithoutAuthorNestedInput
   ideaNotes?: Prisma.IdeaNoteUpdateManyWithoutAuthorNestedInput
-  dailyPlans?: Prisma.DailyPlanUpdateManyWithoutUserNestedInput
+  feedbackAuthored?: Prisma.MentorFeedbackUpdateManyWithoutAuthorNestedInput
+  reflections?: Prisma.ReflectionUpdateManyWithoutInternNestedInput
+  assignmentsCreated?: Prisma.WeeklyAssignmentUpdateManyWithoutCreatedByNestedInput
+  assignmentsAsIntern?: Prisma.WeeklyAssignmentUpdateManyWithoutInternNestedInput
+  friendshipsSent?: Prisma.FriendshipUpdateManyWithoutRequesterNestedInput
+  friendshipsReceived?: Prisma.FriendshipUpdateManyWithoutRecipientNestedInput
+  directChatsFirst?: Prisma.DirectConversationUpdateManyWithoutFirstUserNestedInput
+  directChatsSecond?: Prisma.DirectConversationUpdateManyWithoutSecondUserNestedInput
+  chatMemberships?: Prisma.ChatMembershipUpdateManyWithoutUserNestedInput
+  chatMessages?: Prisma.ChatMessageUpdateManyWithoutSenderNestedInput
+  chatEncryptionKey?: Prisma.ChatEncryptionKeyUpdateOneWithoutUserNestedInput
+  accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateInput = {
@@ -429,21 +522,29 @@ export type UserUncheckedUpdateInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   role?: Prisma.StringFieldUpdateOperationsInput | string
-  locale?: Prisma.StringFieldUpdateOperationsInput | string
   banned?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   banReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   banExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
-  accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
-  assignmentsAsIntern?: Prisma.WeeklyAssignmentUncheckedUpdateManyWithoutInternNestedInput
-  assignmentsCreated?: Prisma.WeeklyAssignmentUncheckedUpdateManyWithoutCreatedByNestedInput
-  reflections?: Prisma.ReflectionUncheckedUpdateManyWithoutInternNestedInput
-  feedbackAuthored?: Prisma.MentorFeedbackUncheckedUpdateManyWithoutAuthorNestedInput
-  discussionNote?: Prisma.DiscussionNoteUncheckedUpdateOneWithoutUserNestedInput
+  locale?: Prisma.StringFieldUpdateOperationsInput | string
+  secureLoginVersion?: Prisma.IntFieldUpdateOperationsInput | number
+  DailyPlan?: Prisma.DailyPlanUncheckedUpdateManyWithoutUserNestedInput
   resourcesAdded?: Prisma.DepartmentResourceUncheckedUpdateManyWithoutCreatedByNestedInput
+  discussionNote?: Prisma.DiscussionNoteUncheckedUpdateOneWithoutUserNestedInput
   ideas?: Prisma.IdeaUncheckedUpdateManyWithoutAuthorNestedInput
   ideaNotes?: Prisma.IdeaNoteUncheckedUpdateManyWithoutAuthorNestedInput
-  dailyPlans?: Prisma.DailyPlanUncheckedUpdateManyWithoutUserNestedInput
+  feedbackAuthored?: Prisma.MentorFeedbackUncheckedUpdateManyWithoutAuthorNestedInput
+  reflections?: Prisma.ReflectionUncheckedUpdateManyWithoutInternNestedInput
+  assignmentsCreated?: Prisma.WeeklyAssignmentUncheckedUpdateManyWithoutCreatedByNestedInput
+  assignmentsAsIntern?: Prisma.WeeklyAssignmentUncheckedUpdateManyWithoutInternNestedInput
+  friendshipsSent?: Prisma.FriendshipUncheckedUpdateManyWithoutRequesterNestedInput
+  friendshipsReceived?: Prisma.FriendshipUncheckedUpdateManyWithoutRecipientNestedInput
+  directChatsFirst?: Prisma.DirectConversationUncheckedUpdateManyWithoutFirstUserNestedInput
+  directChatsSecond?: Prisma.DirectConversationUncheckedUpdateManyWithoutSecondUserNestedInput
+  chatMemberships?: Prisma.ChatMembershipUncheckedUpdateManyWithoutUserNestedInput
+  chatMessages?: Prisma.ChatMessageUncheckedUpdateManyWithoutSenderNestedInput
+  chatEncryptionKey?: Prisma.ChatEncryptionKeyUncheckedUpdateOneWithoutUserNestedInput
+  accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateManyInput = {
@@ -455,10 +556,11 @@ export type UserCreateManyInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   role?: string
-  locale?: string
   banned?: boolean | null
   banReason?: string | null
   banExpires?: Date | string | null
+  locale?: string
+  secureLoginVersion?: number
 }
 
 export type UserUpdateManyMutationInput = {
@@ -470,10 +572,11 @@ export type UserUpdateManyMutationInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   role?: Prisma.StringFieldUpdateOperationsInput | string
-  locale?: Prisma.StringFieldUpdateOperationsInput | string
   banned?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   banReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   banExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  locale?: Prisma.StringFieldUpdateOperationsInput | string
+  secureLoginVersion?: Prisma.IntFieldUpdateOperationsInput | number
 }
 
 export type UserUncheckedUpdateManyInput = {
@@ -485,10 +588,11 @@ export type UserUncheckedUpdateManyInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   role?: Prisma.StringFieldUpdateOperationsInput | string
-  locale?: Prisma.StringFieldUpdateOperationsInput | string
   banned?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   banReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   banExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  locale?: Prisma.StringFieldUpdateOperationsInput | string
+  secureLoginVersion?: Prisma.IntFieldUpdateOperationsInput | number
 }
 
 export type UserScalarRelationFilter = {
@@ -510,10 +614,15 @@ export type UserCountOrderByAggregateInput = {
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   role?: Prisma.SortOrder
-  locale?: Prisma.SortOrder
   banned?: Prisma.SortOrder
   banReason?: Prisma.SortOrder
   banExpires?: Prisma.SortOrder
+  locale?: Prisma.SortOrder
+  secureLoginVersion?: Prisma.SortOrder
+}
+
+export type UserAvgOrderByAggregateInput = {
+  secureLoginVersion?: Prisma.SortOrder
 }
 
 export type UserMaxOrderByAggregateInput = {
@@ -525,10 +634,11 @@ export type UserMaxOrderByAggregateInput = {
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   role?: Prisma.SortOrder
-  locale?: Prisma.SortOrder
   banned?: Prisma.SortOrder
   banReason?: Prisma.SortOrder
   banExpires?: Prisma.SortOrder
+  locale?: Prisma.SortOrder
+  secureLoginVersion?: Prisma.SortOrder
 }
 
 export type UserMinOrderByAggregateInput = {
@@ -540,16 +650,15 @@ export type UserMinOrderByAggregateInput = {
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   role?: Prisma.SortOrder
-  locale?: Prisma.SortOrder
   banned?: Prisma.SortOrder
   banReason?: Prisma.SortOrder
   banExpires?: Prisma.SortOrder
+  locale?: Prisma.SortOrder
+  secureLoginVersion?: Prisma.SortOrder
 }
 
-export type UserCreateNestedOneWithoutAssignmentsAsInternInput = {
-  create?: Prisma.XOR<Prisma.UserCreateWithoutAssignmentsAsInternInput, Prisma.UserUncheckedCreateWithoutAssignmentsAsInternInput>
-  connectOrCreate?: Prisma.UserCreateOrConnectWithoutAssignmentsAsInternInput
-  connect?: Prisma.UserWhereUniqueInput
+export type UserSumOrderByAggregateInput = {
+  secureLoginVersion?: Prisma.SortOrder
 }
 
 export type UserCreateNestedOneWithoutAssignmentsCreatedInput = {
@@ -558,12 +667,10 @@ export type UserCreateNestedOneWithoutAssignmentsCreatedInput = {
   connect?: Prisma.UserWhereUniqueInput
 }
 
-export type UserUpdateOneRequiredWithoutAssignmentsAsInternNestedInput = {
+export type UserCreateNestedOneWithoutAssignmentsAsInternInput = {
   create?: Prisma.XOR<Prisma.UserCreateWithoutAssignmentsAsInternInput, Prisma.UserUncheckedCreateWithoutAssignmentsAsInternInput>
   connectOrCreate?: Prisma.UserCreateOrConnectWithoutAssignmentsAsInternInput
-  upsert?: Prisma.UserUpsertWithoutAssignmentsAsInternInput
   connect?: Prisma.UserWhereUniqueInput
-  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutAssignmentsAsInternInput, Prisma.UserUpdateWithoutAssignmentsAsInternInput>, Prisma.UserUncheckedUpdateWithoutAssignmentsAsInternInput>
 }
 
 export type UserUpdateOneRequiredWithoutAssignmentsCreatedNestedInput = {
@@ -572,6 +679,14 @@ export type UserUpdateOneRequiredWithoutAssignmentsCreatedNestedInput = {
   upsert?: Prisma.UserUpsertWithoutAssignmentsCreatedInput
   connect?: Prisma.UserWhereUniqueInput
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutAssignmentsCreatedInput, Prisma.UserUpdateWithoutAssignmentsCreatedInput>, Prisma.UserUncheckedUpdateWithoutAssignmentsCreatedInput>
+}
+
+export type UserUpdateOneRequiredWithoutAssignmentsAsInternNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutAssignmentsAsInternInput, Prisma.UserUncheckedCreateWithoutAssignmentsAsInternInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutAssignmentsAsInternInput
+  upsert?: Prisma.UserUpsertWithoutAssignmentsAsInternInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutAssignmentsAsInternInput, Prisma.UserUpdateWithoutAssignmentsAsInternInput>, Prisma.UserUncheckedUpdateWithoutAssignmentsAsInternInput>
 }
 
 export type UserCreateNestedOneWithoutReflectionsInput = {
@@ -710,59 +825,116 @@ export type UserUpdateOneRequiredWithoutAccountsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutAccountsInput, Prisma.UserUpdateWithoutAccountsInput>, Prisma.UserUncheckedUpdateWithoutAccountsInput>
 }
 
-export type UserCreateWithoutAssignmentsAsInternInput = {
-  id: string
-  name: string
-  email: string
-  emailVerified?: boolean
-  image?: string | null
-  createdAt?: Date | string
-  updatedAt?: Date | string
-  role?: string
-  locale?: string
-  banned?: boolean | null
-  banReason?: string | null
-  banExpires?: Date | string | null
-  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
-  accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
-  assignmentsCreated?: Prisma.WeeklyAssignmentCreateNestedManyWithoutCreatedByInput
-  reflections?: Prisma.ReflectionCreateNestedManyWithoutInternInput
-  feedbackAuthored?: Prisma.MentorFeedbackCreateNestedManyWithoutAuthorInput
-  discussionNote?: Prisma.DiscussionNoteCreateNestedOneWithoutUserInput
-  resourcesAdded?: Prisma.DepartmentResourceCreateNestedManyWithoutCreatedByInput
-  ideas?: Prisma.IdeaCreateNestedManyWithoutAuthorInput
-  ideaNotes?: Prisma.IdeaNoteCreateNestedManyWithoutAuthorInput
-  dailyPlans?: Prisma.DailyPlanCreateNestedManyWithoutUserInput
+export type UserCreateNestedOneWithoutDailyPlanInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutDailyPlanInput, Prisma.UserUncheckedCreateWithoutDailyPlanInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutDailyPlanInput
+  connect?: Prisma.UserWhereUniqueInput
 }
 
-export type UserUncheckedCreateWithoutAssignmentsAsInternInput = {
-  id: string
-  name: string
-  email: string
-  emailVerified?: boolean
-  image?: string | null
-  createdAt?: Date | string
-  updatedAt?: Date | string
-  role?: string
-  locale?: string
-  banned?: boolean | null
-  banReason?: string | null
-  banExpires?: Date | string | null
-  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
-  accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
-  assignmentsCreated?: Prisma.WeeklyAssignmentUncheckedCreateNestedManyWithoutCreatedByInput
-  reflections?: Prisma.ReflectionUncheckedCreateNestedManyWithoutInternInput
-  feedbackAuthored?: Prisma.MentorFeedbackUncheckedCreateNestedManyWithoutAuthorInput
-  discussionNote?: Prisma.DiscussionNoteUncheckedCreateNestedOneWithoutUserInput
-  resourcesAdded?: Prisma.DepartmentResourceUncheckedCreateNestedManyWithoutCreatedByInput
-  ideas?: Prisma.IdeaUncheckedCreateNestedManyWithoutAuthorInput
-  ideaNotes?: Prisma.IdeaNoteUncheckedCreateNestedManyWithoutAuthorInput
-  dailyPlans?: Prisma.DailyPlanUncheckedCreateNestedManyWithoutUserInput
+export type UserUpdateOneRequiredWithoutDailyPlanNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutDailyPlanInput, Prisma.UserUncheckedCreateWithoutDailyPlanInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutDailyPlanInput
+  upsert?: Prisma.UserUpsertWithoutDailyPlanInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutDailyPlanInput, Prisma.UserUpdateWithoutDailyPlanInput>, Prisma.UserUncheckedUpdateWithoutDailyPlanInput>
 }
 
-export type UserCreateOrConnectWithoutAssignmentsAsInternInput = {
-  where: Prisma.UserWhereUniqueInput
-  create: Prisma.XOR<Prisma.UserCreateWithoutAssignmentsAsInternInput, Prisma.UserUncheckedCreateWithoutAssignmentsAsInternInput>
+export type UserCreateNestedOneWithoutDirectChatsFirstInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutDirectChatsFirstInput, Prisma.UserUncheckedCreateWithoutDirectChatsFirstInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutDirectChatsFirstInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserCreateNestedOneWithoutDirectChatsSecondInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutDirectChatsSecondInput, Prisma.UserUncheckedCreateWithoutDirectChatsSecondInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutDirectChatsSecondInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutDirectChatsFirstNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutDirectChatsFirstInput, Prisma.UserUncheckedCreateWithoutDirectChatsFirstInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutDirectChatsFirstInput
+  upsert?: Prisma.UserUpsertWithoutDirectChatsFirstInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutDirectChatsFirstInput, Prisma.UserUpdateWithoutDirectChatsFirstInput>, Prisma.UserUncheckedUpdateWithoutDirectChatsFirstInput>
+}
+
+export type UserUpdateOneRequiredWithoutDirectChatsSecondNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutDirectChatsSecondInput, Prisma.UserUncheckedCreateWithoutDirectChatsSecondInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutDirectChatsSecondInput
+  upsert?: Prisma.UserUpsertWithoutDirectChatsSecondInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutDirectChatsSecondInput, Prisma.UserUpdateWithoutDirectChatsSecondInput>, Prisma.UserUncheckedUpdateWithoutDirectChatsSecondInput>
+}
+
+export type UserCreateNestedOneWithoutChatMembershipsInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutChatMembershipsInput, Prisma.UserUncheckedCreateWithoutChatMembershipsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutChatMembershipsInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutChatMembershipsNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutChatMembershipsInput, Prisma.UserUncheckedCreateWithoutChatMembershipsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutChatMembershipsInput
+  upsert?: Prisma.UserUpsertWithoutChatMembershipsInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutChatMembershipsInput, Prisma.UserUpdateWithoutChatMembershipsInput>, Prisma.UserUncheckedUpdateWithoutChatMembershipsInput>
+}
+
+export type UserCreateNestedOneWithoutChatMessagesInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutChatMessagesInput, Prisma.UserUncheckedCreateWithoutChatMessagesInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutChatMessagesInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutChatMessagesNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutChatMessagesInput, Prisma.UserUncheckedCreateWithoutChatMessagesInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutChatMessagesInput
+  upsert?: Prisma.UserUpsertWithoutChatMessagesInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutChatMessagesInput, Prisma.UserUpdateWithoutChatMessagesInput>, Prisma.UserUncheckedUpdateWithoutChatMessagesInput>
+}
+
+export type UserCreateNestedOneWithoutFriendshipsSentInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutFriendshipsSentInput, Prisma.UserUncheckedCreateWithoutFriendshipsSentInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutFriendshipsSentInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserCreateNestedOneWithoutFriendshipsReceivedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutFriendshipsReceivedInput, Prisma.UserUncheckedCreateWithoutFriendshipsReceivedInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutFriendshipsReceivedInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutFriendshipsSentNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutFriendshipsSentInput, Prisma.UserUncheckedCreateWithoutFriendshipsSentInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutFriendshipsSentInput
+  upsert?: Prisma.UserUpsertWithoutFriendshipsSentInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutFriendshipsSentInput, Prisma.UserUpdateWithoutFriendshipsSentInput>, Prisma.UserUncheckedUpdateWithoutFriendshipsSentInput>
+}
+
+export type UserUpdateOneRequiredWithoutFriendshipsReceivedNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutFriendshipsReceivedInput, Prisma.UserUncheckedCreateWithoutFriendshipsReceivedInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutFriendshipsReceivedInput
+  upsert?: Prisma.UserUpsertWithoutFriendshipsReceivedInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutFriendshipsReceivedInput, Prisma.UserUpdateWithoutFriendshipsReceivedInput>, Prisma.UserUncheckedUpdateWithoutFriendshipsReceivedInput>
+}
+
+export type UserCreateNestedOneWithoutChatEncryptionKeyInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutChatEncryptionKeyInput, Prisma.UserUncheckedCreateWithoutChatEncryptionKeyInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutChatEncryptionKeyInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutChatEncryptionKeyNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutChatEncryptionKeyInput, Prisma.UserUncheckedCreateWithoutChatEncryptionKeyInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutChatEncryptionKeyInput
+  upsert?: Prisma.UserUpsertWithoutChatEncryptionKeyInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutChatEncryptionKeyInput, Prisma.UserUpdateWithoutChatEncryptionKeyInput>, Prisma.UserUncheckedUpdateWithoutChatEncryptionKeyInput>
 }
 
 export type UserCreateWithoutAssignmentsCreatedInput = {
@@ -774,20 +946,28 @@ export type UserCreateWithoutAssignmentsCreatedInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   role?: string
-  locale?: string
   banned?: boolean | null
   banReason?: string | null
   banExpires?: Date | string | null
-  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
-  accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
-  assignmentsAsIntern?: Prisma.WeeklyAssignmentCreateNestedManyWithoutInternInput
-  reflections?: Prisma.ReflectionCreateNestedManyWithoutInternInput
-  feedbackAuthored?: Prisma.MentorFeedbackCreateNestedManyWithoutAuthorInput
-  discussionNote?: Prisma.DiscussionNoteCreateNestedOneWithoutUserInput
+  locale?: string
+  secureLoginVersion?: number
+  DailyPlan?: Prisma.DailyPlanCreateNestedManyWithoutUserInput
   resourcesAdded?: Prisma.DepartmentResourceCreateNestedManyWithoutCreatedByInput
+  discussionNote?: Prisma.DiscussionNoteCreateNestedOneWithoutUserInput
   ideas?: Prisma.IdeaCreateNestedManyWithoutAuthorInput
   ideaNotes?: Prisma.IdeaNoteCreateNestedManyWithoutAuthorInput
-  dailyPlans?: Prisma.DailyPlanCreateNestedManyWithoutUserInput
+  feedbackAuthored?: Prisma.MentorFeedbackCreateNestedManyWithoutAuthorInput
+  reflections?: Prisma.ReflectionCreateNestedManyWithoutInternInput
+  assignmentsAsIntern?: Prisma.WeeklyAssignmentCreateNestedManyWithoutInternInput
+  friendshipsSent?: Prisma.FriendshipCreateNestedManyWithoutRequesterInput
+  friendshipsReceived?: Prisma.FriendshipCreateNestedManyWithoutRecipientInput
+  directChatsFirst?: Prisma.DirectConversationCreateNestedManyWithoutFirstUserInput
+  directChatsSecond?: Prisma.DirectConversationCreateNestedManyWithoutSecondUserInput
+  chatMemberships?: Prisma.ChatMembershipCreateNestedManyWithoutUserInput
+  chatMessages?: Prisma.ChatMessageCreateNestedManyWithoutSenderInput
+  chatEncryptionKey?: Prisma.ChatEncryptionKeyCreateNestedOneWithoutUserInput
+  accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutAssignmentsCreatedInput = {
@@ -799,20 +979,28 @@ export type UserUncheckedCreateWithoutAssignmentsCreatedInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   role?: string
-  locale?: string
   banned?: boolean | null
   banReason?: string | null
   banExpires?: Date | string | null
-  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
-  accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
-  assignmentsAsIntern?: Prisma.WeeklyAssignmentUncheckedCreateNestedManyWithoutInternInput
-  reflections?: Prisma.ReflectionUncheckedCreateNestedManyWithoutInternInput
-  feedbackAuthored?: Prisma.MentorFeedbackUncheckedCreateNestedManyWithoutAuthorInput
-  discussionNote?: Prisma.DiscussionNoteUncheckedCreateNestedOneWithoutUserInput
+  locale?: string
+  secureLoginVersion?: number
+  DailyPlan?: Prisma.DailyPlanUncheckedCreateNestedManyWithoutUserInput
   resourcesAdded?: Prisma.DepartmentResourceUncheckedCreateNestedManyWithoutCreatedByInput
+  discussionNote?: Prisma.DiscussionNoteUncheckedCreateNestedOneWithoutUserInput
   ideas?: Prisma.IdeaUncheckedCreateNestedManyWithoutAuthorInput
   ideaNotes?: Prisma.IdeaNoteUncheckedCreateNestedManyWithoutAuthorInput
-  dailyPlans?: Prisma.DailyPlanUncheckedCreateNestedManyWithoutUserInput
+  feedbackAuthored?: Prisma.MentorFeedbackUncheckedCreateNestedManyWithoutAuthorInput
+  reflections?: Prisma.ReflectionUncheckedCreateNestedManyWithoutInternInput
+  assignmentsAsIntern?: Prisma.WeeklyAssignmentUncheckedCreateNestedManyWithoutInternInput
+  friendshipsSent?: Prisma.FriendshipUncheckedCreateNestedManyWithoutRequesterInput
+  friendshipsReceived?: Prisma.FriendshipUncheckedCreateNestedManyWithoutRecipientInput
+  directChatsFirst?: Prisma.DirectConversationUncheckedCreateNestedManyWithoutFirstUserInput
+  directChatsSecond?: Prisma.DirectConversationUncheckedCreateNestedManyWithoutSecondUserInput
+  chatMemberships?: Prisma.ChatMembershipUncheckedCreateNestedManyWithoutUserInput
+  chatMessages?: Prisma.ChatMessageUncheckedCreateNestedManyWithoutSenderInput
+  chatEncryptionKey?: Prisma.ChatEncryptionKeyUncheckedCreateNestedOneWithoutUserInput
+  accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutAssignmentsCreatedInput = {
@@ -820,65 +1008,75 @@ export type UserCreateOrConnectWithoutAssignmentsCreatedInput = {
   create: Prisma.XOR<Prisma.UserCreateWithoutAssignmentsCreatedInput, Prisma.UserUncheckedCreateWithoutAssignmentsCreatedInput>
 }
 
-export type UserUpsertWithoutAssignmentsAsInternInput = {
-  update: Prisma.XOR<Prisma.UserUpdateWithoutAssignmentsAsInternInput, Prisma.UserUncheckedUpdateWithoutAssignmentsAsInternInput>
+export type UserCreateWithoutAssignmentsAsInternInput = {
+  id: string
+  name: string
+  email: string
+  emailVerified?: boolean
+  image?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  role?: string
+  banned?: boolean | null
+  banReason?: string | null
+  banExpires?: Date | string | null
+  locale?: string
+  secureLoginVersion?: number
+  DailyPlan?: Prisma.DailyPlanCreateNestedManyWithoutUserInput
+  resourcesAdded?: Prisma.DepartmentResourceCreateNestedManyWithoutCreatedByInput
+  discussionNote?: Prisma.DiscussionNoteCreateNestedOneWithoutUserInput
+  ideas?: Prisma.IdeaCreateNestedManyWithoutAuthorInput
+  ideaNotes?: Prisma.IdeaNoteCreateNestedManyWithoutAuthorInput
+  feedbackAuthored?: Prisma.MentorFeedbackCreateNestedManyWithoutAuthorInput
+  reflections?: Prisma.ReflectionCreateNestedManyWithoutInternInput
+  assignmentsCreated?: Prisma.WeeklyAssignmentCreateNestedManyWithoutCreatedByInput
+  friendshipsSent?: Prisma.FriendshipCreateNestedManyWithoutRequesterInput
+  friendshipsReceived?: Prisma.FriendshipCreateNestedManyWithoutRecipientInput
+  directChatsFirst?: Prisma.DirectConversationCreateNestedManyWithoutFirstUserInput
+  directChatsSecond?: Prisma.DirectConversationCreateNestedManyWithoutSecondUserInput
+  chatMemberships?: Prisma.ChatMembershipCreateNestedManyWithoutUserInput
+  chatMessages?: Prisma.ChatMessageCreateNestedManyWithoutSenderInput
+  chatEncryptionKey?: Prisma.ChatEncryptionKeyCreateNestedOneWithoutUserInput
+  accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
+}
+
+export type UserUncheckedCreateWithoutAssignmentsAsInternInput = {
+  id: string
+  name: string
+  email: string
+  emailVerified?: boolean
+  image?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  role?: string
+  banned?: boolean | null
+  banReason?: string | null
+  banExpires?: Date | string | null
+  locale?: string
+  secureLoginVersion?: number
+  DailyPlan?: Prisma.DailyPlanUncheckedCreateNestedManyWithoutUserInput
+  resourcesAdded?: Prisma.DepartmentResourceUncheckedCreateNestedManyWithoutCreatedByInput
+  discussionNote?: Prisma.DiscussionNoteUncheckedCreateNestedOneWithoutUserInput
+  ideas?: Prisma.IdeaUncheckedCreateNestedManyWithoutAuthorInput
+  ideaNotes?: Prisma.IdeaNoteUncheckedCreateNestedManyWithoutAuthorInput
+  feedbackAuthored?: Prisma.MentorFeedbackUncheckedCreateNestedManyWithoutAuthorInput
+  reflections?: Prisma.ReflectionUncheckedCreateNestedManyWithoutInternInput
+  assignmentsCreated?: Prisma.WeeklyAssignmentUncheckedCreateNestedManyWithoutCreatedByInput
+  friendshipsSent?: Prisma.FriendshipUncheckedCreateNestedManyWithoutRequesterInput
+  friendshipsReceived?: Prisma.FriendshipUncheckedCreateNestedManyWithoutRecipientInput
+  directChatsFirst?: Prisma.DirectConversationUncheckedCreateNestedManyWithoutFirstUserInput
+  directChatsSecond?: Prisma.DirectConversationUncheckedCreateNestedManyWithoutSecondUserInput
+  chatMemberships?: Prisma.ChatMembershipUncheckedCreateNestedManyWithoutUserInput
+  chatMessages?: Prisma.ChatMessageUncheckedCreateNestedManyWithoutSenderInput
+  chatEncryptionKey?: Prisma.ChatEncryptionKeyUncheckedCreateNestedOneWithoutUserInput
+  accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
+}
+
+export type UserCreateOrConnectWithoutAssignmentsAsInternInput = {
+  where: Prisma.UserWhereUniqueInput
   create: Prisma.XOR<Prisma.UserCreateWithoutAssignmentsAsInternInput, Prisma.UserUncheckedCreateWithoutAssignmentsAsInternInput>
-  where?: Prisma.UserWhereInput
-}
-
-export type UserUpdateToOneWithWhereWithoutAssignmentsAsInternInput = {
-  where?: Prisma.UserWhereInput
-  data: Prisma.XOR<Prisma.UserUpdateWithoutAssignmentsAsInternInput, Prisma.UserUncheckedUpdateWithoutAssignmentsAsInternInput>
-}
-
-export type UserUpdateWithoutAssignmentsAsInternInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.StringFieldUpdateOperationsInput | string
-  email?: Prisma.StringFieldUpdateOperationsInput | string
-  emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  role?: Prisma.StringFieldUpdateOperationsInput | string
-  locale?: Prisma.StringFieldUpdateOperationsInput | string
-  banned?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
-  banReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  banExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
-  accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
-  assignmentsCreated?: Prisma.WeeklyAssignmentUpdateManyWithoutCreatedByNestedInput
-  reflections?: Prisma.ReflectionUpdateManyWithoutInternNestedInput
-  feedbackAuthored?: Prisma.MentorFeedbackUpdateManyWithoutAuthorNestedInput
-  discussionNote?: Prisma.DiscussionNoteUpdateOneWithoutUserNestedInput
-  resourcesAdded?: Prisma.DepartmentResourceUpdateManyWithoutCreatedByNestedInput
-  ideas?: Prisma.IdeaUpdateManyWithoutAuthorNestedInput
-  ideaNotes?: Prisma.IdeaNoteUpdateManyWithoutAuthorNestedInput
-  dailyPlans?: Prisma.DailyPlanUpdateManyWithoutUserNestedInput
-}
-
-export type UserUncheckedUpdateWithoutAssignmentsAsInternInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.StringFieldUpdateOperationsInput | string
-  email?: Prisma.StringFieldUpdateOperationsInput | string
-  emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  role?: Prisma.StringFieldUpdateOperationsInput | string
-  locale?: Prisma.StringFieldUpdateOperationsInput | string
-  banned?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
-  banReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  banExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
-  accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
-  assignmentsCreated?: Prisma.WeeklyAssignmentUncheckedUpdateManyWithoutCreatedByNestedInput
-  reflections?: Prisma.ReflectionUncheckedUpdateManyWithoutInternNestedInput
-  feedbackAuthored?: Prisma.MentorFeedbackUncheckedUpdateManyWithoutAuthorNestedInput
-  discussionNote?: Prisma.DiscussionNoteUncheckedUpdateOneWithoutUserNestedInput
-  resourcesAdded?: Prisma.DepartmentResourceUncheckedUpdateManyWithoutCreatedByNestedInput
-  ideas?: Prisma.IdeaUncheckedUpdateManyWithoutAuthorNestedInput
-  ideaNotes?: Prisma.IdeaNoteUncheckedUpdateManyWithoutAuthorNestedInput
-  dailyPlans?: Prisma.DailyPlanUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserUpsertWithoutAssignmentsCreatedInput = {
@@ -901,20 +1099,28 @@ export type UserUpdateWithoutAssignmentsCreatedInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   role?: Prisma.StringFieldUpdateOperationsInput | string
-  locale?: Prisma.StringFieldUpdateOperationsInput | string
   banned?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   banReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   banExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
-  accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
-  assignmentsAsIntern?: Prisma.WeeklyAssignmentUpdateManyWithoutInternNestedInput
-  reflections?: Prisma.ReflectionUpdateManyWithoutInternNestedInput
-  feedbackAuthored?: Prisma.MentorFeedbackUpdateManyWithoutAuthorNestedInput
-  discussionNote?: Prisma.DiscussionNoteUpdateOneWithoutUserNestedInput
+  locale?: Prisma.StringFieldUpdateOperationsInput | string
+  secureLoginVersion?: Prisma.IntFieldUpdateOperationsInput | number
+  DailyPlan?: Prisma.DailyPlanUpdateManyWithoutUserNestedInput
   resourcesAdded?: Prisma.DepartmentResourceUpdateManyWithoutCreatedByNestedInput
+  discussionNote?: Prisma.DiscussionNoteUpdateOneWithoutUserNestedInput
   ideas?: Prisma.IdeaUpdateManyWithoutAuthorNestedInput
   ideaNotes?: Prisma.IdeaNoteUpdateManyWithoutAuthorNestedInput
-  dailyPlans?: Prisma.DailyPlanUpdateManyWithoutUserNestedInput
+  feedbackAuthored?: Prisma.MentorFeedbackUpdateManyWithoutAuthorNestedInput
+  reflections?: Prisma.ReflectionUpdateManyWithoutInternNestedInput
+  assignmentsAsIntern?: Prisma.WeeklyAssignmentUpdateManyWithoutInternNestedInput
+  friendshipsSent?: Prisma.FriendshipUpdateManyWithoutRequesterNestedInput
+  friendshipsReceived?: Prisma.FriendshipUpdateManyWithoutRecipientNestedInput
+  directChatsFirst?: Prisma.DirectConversationUpdateManyWithoutFirstUserNestedInput
+  directChatsSecond?: Prisma.DirectConversationUpdateManyWithoutSecondUserNestedInput
+  chatMemberships?: Prisma.ChatMembershipUpdateManyWithoutUserNestedInput
+  chatMessages?: Prisma.ChatMessageUpdateManyWithoutSenderNestedInput
+  chatEncryptionKey?: Prisma.ChatEncryptionKeyUpdateOneWithoutUserNestedInput
+  accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutAssignmentsCreatedInput = {
@@ -926,20 +1132,105 @@ export type UserUncheckedUpdateWithoutAssignmentsCreatedInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   role?: Prisma.StringFieldUpdateOperationsInput | string
-  locale?: Prisma.StringFieldUpdateOperationsInput | string
   banned?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   banReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   banExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
-  accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
-  assignmentsAsIntern?: Prisma.WeeklyAssignmentUncheckedUpdateManyWithoutInternNestedInput
-  reflections?: Prisma.ReflectionUncheckedUpdateManyWithoutInternNestedInput
-  feedbackAuthored?: Prisma.MentorFeedbackUncheckedUpdateManyWithoutAuthorNestedInput
-  discussionNote?: Prisma.DiscussionNoteUncheckedUpdateOneWithoutUserNestedInput
+  locale?: Prisma.StringFieldUpdateOperationsInput | string
+  secureLoginVersion?: Prisma.IntFieldUpdateOperationsInput | number
+  DailyPlan?: Prisma.DailyPlanUncheckedUpdateManyWithoutUserNestedInput
   resourcesAdded?: Prisma.DepartmentResourceUncheckedUpdateManyWithoutCreatedByNestedInput
+  discussionNote?: Prisma.DiscussionNoteUncheckedUpdateOneWithoutUserNestedInput
   ideas?: Prisma.IdeaUncheckedUpdateManyWithoutAuthorNestedInput
   ideaNotes?: Prisma.IdeaNoteUncheckedUpdateManyWithoutAuthorNestedInput
-  dailyPlans?: Prisma.DailyPlanUncheckedUpdateManyWithoutUserNestedInput
+  feedbackAuthored?: Prisma.MentorFeedbackUncheckedUpdateManyWithoutAuthorNestedInput
+  reflections?: Prisma.ReflectionUncheckedUpdateManyWithoutInternNestedInput
+  assignmentsAsIntern?: Prisma.WeeklyAssignmentUncheckedUpdateManyWithoutInternNestedInput
+  friendshipsSent?: Prisma.FriendshipUncheckedUpdateManyWithoutRequesterNestedInput
+  friendshipsReceived?: Prisma.FriendshipUncheckedUpdateManyWithoutRecipientNestedInput
+  directChatsFirst?: Prisma.DirectConversationUncheckedUpdateManyWithoutFirstUserNestedInput
+  directChatsSecond?: Prisma.DirectConversationUncheckedUpdateManyWithoutSecondUserNestedInput
+  chatMemberships?: Prisma.ChatMembershipUncheckedUpdateManyWithoutUserNestedInput
+  chatMessages?: Prisma.ChatMessageUncheckedUpdateManyWithoutSenderNestedInput
+  chatEncryptionKey?: Prisma.ChatEncryptionKeyUncheckedUpdateOneWithoutUserNestedInput
+  accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
+}
+
+export type UserUpsertWithoutAssignmentsAsInternInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutAssignmentsAsInternInput, Prisma.UserUncheckedUpdateWithoutAssignmentsAsInternInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutAssignmentsAsInternInput, Prisma.UserUncheckedCreateWithoutAssignmentsAsInternInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutAssignmentsAsInternInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutAssignmentsAsInternInput, Prisma.UserUncheckedUpdateWithoutAssignmentsAsInternInput>
+}
+
+export type UserUpdateWithoutAssignmentsAsInternInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  role?: Prisma.StringFieldUpdateOperationsInput | string
+  banned?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  banReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  banExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  locale?: Prisma.StringFieldUpdateOperationsInput | string
+  secureLoginVersion?: Prisma.IntFieldUpdateOperationsInput | number
+  DailyPlan?: Prisma.DailyPlanUpdateManyWithoutUserNestedInput
+  resourcesAdded?: Prisma.DepartmentResourceUpdateManyWithoutCreatedByNestedInput
+  discussionNote?: Prisma.DiscussionNoteUpdateOneWithoutUserNestedInput
+  ideas?: Prisma.IdeaUpdateManyWithoutAuthorNestedInput
+  ideaNotes?: Prisma.IdeaNoteUpdateManyWithoutAuthorNestedInput
+  feedbackAuthored?: Prisma.MentorFeedbackUpdateManyWithoutAuthorNestedInput
+  reflections?: Prisma.ReflectionUpdateManyWithoutInternNestedInput
+  assignmentsCreated?: Prisma.WeeklyAssignmentUpdateManyWithoutCreatedByNestedInput
+  friendshipsSent?: Prisma.FriendshipUpdateManyWithoutRequesterNestedInput
+  friendshipsReceived?: Prisma.FriendshipUpdateManyWithoutRecipientNestedInput
+  directChatsFirst?: Prisma.DirectConversationUpdateManyWithoutFirstUserNestedInput
+  directChatsSecond?: Prisma.DirectConversationUpdateManyWithoutSecondUserNestedInput
+  chatMemberships?: Prisma.ChatMembershipUpdateManyWithoutUserNestedInput
+  chatMessages?: Prisma.ChatMessageUpdateManyWithoutSenderNestedInput
+  chatEncryptionKey?: Prisma.ChatEncryptionKeyUpdateOneWithoutUserNestedInput
+  accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutAssignmentsAsInternInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  role?: Prisma.StringFieldUpdateOperationsInput | string
+  banned?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  banReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  banExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  locale?: Prisma.StringFieldUpdateOperationsInput | string
+  secureLoginVersion?: Prisma.IntFieldUpdateOperationsInput | number
+  DailyPlan?: Prisma.DailyPlanUncheckedUpdateManyWithoutUserNestedInput
+  resourcesAdded?: Prisma.DepartmentResourceUncheckedUpdateManyWithoutCreatedByNestedInput
+  discussionNote?: Prisma.DiscussionNoteUncheckedUpdateOneWithoutUserNestedInput
+  ideas?: Prisma.IdeaUncheckedUpdateManyWithoutAuthorNestedInput
+  ideaNotes?: Prisma.IdeaNoteUncheckedUpdateManyWithoutAuthorNestedInput
+  feedbackAuthored?: Prisma.MentorFeedbackUncheckedUpdateManyWithoutAuthorNestedInput
+  reflections?: Prisma.ReflectionUncheckedUpdateManyWithoutInternNestedInput
+  assignmentsCreated?: Prisma.WeeklyAssignmentUncheckedUpdateManyWithoutCreatedByNestedInput
+  friendshipsSent?: Prisma.FriendshipUncheckedUpdateManyWithoutRequesterNestedInput
+  friendshipsReceived?: Prisma.FriendshipUncheckedUpdateManyWithoutRecipientNestedInput
+  directChatsFirst?: Prisma.DirectConversationUncheckedUpdateManyWithoutFirstUserNestedInput
+  directChatsSecond?: Prisma.DirectConversationUncheckedUpdateManyWithoutSecondUserNestedInput
+  chatMemberships?: Prisma.ChatMembershipUncheckedUpdateManyWithoutUserNestedInput
+  chatMessages?: Prisma.ChatMessageUncheckedUpdateManyWithoutSenderNestedInput
+  chatEncryptionKey?: Prisma.ChatEncryptionKeyUncheckedUpdateOneWithoutUserNestedInput
+  accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutReflectionsInput = {
@@ -951,20 +1242,28 @@ export type UserCreateWithoutReflectionsInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   role?: string
-  locale?: string
   banned?: boolean | null
   banReason?: string | null
   banExpires?: Date | string | null
-  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
-  accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
-  assignmentsAsIntern?: Prisma.WeeklyAssignmentCreateNestedManyWithoutInternInput
-  assignmentsCreated?: Prisma.WeeklyAssignmentCreateNestedManyWithoutCreatedByInput
-  feedbackAuthored?: Prisma.MentorFeedbackCreateNestedManyWithoutAuthorInput
-  discussionNote?: Prisma.DiscussionNoteCreateNestedOneWithoutUserInput
+  locale?: string
+  secureLoginVersion?: number
+  DailyPlan?: Prisma.DailyPlanCreateNestedManyWithoutUserInput
   resourcesAdded?: Prisma.DepartmentResourceCreateNestedManyWithoutCreatedByInput
+  discussionNote?: Prisma.DiscussionNoteCreateNestedOneWithoutUserInput
   ideas?: Prisma.IdeaCreateNestedManyWithoutAuthorInput
   ideaNotes?: Prisma.IdeaNoteCreateNestedManyWithoutAuthorInput
-  dailyPlans?: Prisma.DailyPlanCreateNestedManyWithoutUserInput
+  feedbackAuthored?: Prisma.MentorFeedbackCreateNestedManyWithoutAuthorInput
+  assignmentsCreated?: Prisma.WeeklyAssignmentCreateNestedManyWithoutCreatedByInput
+  assignmentsAsIntern?: Prisma.WeeklyAssignmentCreateNestedManyWithoutInternInput
+  friendshipsSent?: Prisma.FriendshipCreateNestedManyWithoutRequesterInput
+  friendshipsReceived?: Prisma.FriendshipCreateNestedManyWithoutRecipientInput
+  directChatsFirst?: Prisma.DirectConversationCreateNestedManyWithoutFirstUserInput
+  directChatsSecond?: Prisma.DirectConversationCreateNestedManyWithoutSecondUserInput
+  chatMemberships?: Prisma.ChatMembershipCreateNestedManyWithoutUserInput
+  chatMessages?: Prisma.ChatMessageCreateNestedManyWithoutSenderInput
+  chatEncryptionKey?: Prisma.ChatEncryptionKeyCreateNestedOneWithoutUserInput
+  accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutReflectionsInput = {
@@ -976,20 +1275,28 @@ export type UserUncheckedCreateWithoutReflectionsInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   role?: string
-  locale?: string
   banned?: boolean | null
   banReason?: string | null
   banExpires?: Date | string | null
-  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
-  accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
-  assignmentsAsIntern?: Prisma.WeeklyAssignmentUncheckedCreateNestedManyWithoutInternInput
-  assignmentsCreated?: Prisma.WeeklyAssignmentUncheckedCreateNestedManyWithoutCreatedByInput
-  feedbackAuthored?: Prisma.MentorFeedbackUncheckedCreateNestedManyWithoutAuthorInput
-  discussionNote?: Prisma.DiscussionNoteUncheckedCreateNestedOneWithoutUserInput
+  locale?: string
+  secureLoginVersion?: number
+  DailyPlan?: Prisma.DailyPlanUncheckedCreateNestedManyWithoutUserInput
   resourcesAdded?: Prisma.DepartmentResourceUncheckedCreateNestedManyWithoutCreatedByInput
+  discussionNote?: Prisma.DiscussionNoteUncheckedCreateNestedOneWithoutUserInput
   ideas?: Prisma.IdeaUncheckedCreateNestedManyWithoutAuthorInput
   ideaNotes?: Prisma.IdeaNoteUncheckedCreateNestedManyWithoutAuthorInput
-  dailyPlans?: Prisma.DailyPlanUncheckedCreateNestedManyWithoutUserInput
+  feedbackAuthored?: Prisma.MentorFeedbackUncheckedCreateNestedManyWithoutAuthorInput
+  assignmentsCreated?: Prisma.WeeklyAssignmentUncheckedCreateNestedManyWithoutCreatedByInput
+  assignmentsAsIntern?: Prisma.WeeklyAssignmentUncheckedCreateNestedManyWithoutInternInput
+  friendshipsSent?: Prisma.FriendshipUncheckedCreateNestedManyWithoutRequesterInput
+  friendshipsReceived?: Prisma.FriendshipUncheckedCreateNestedManyWithoutRecipientInput
+  directChatsFirst?: Prisma.DirectConversationUncheckedCreateNestedManyWithoutFirstUserInput
+  directChatsSecond?: Prisma.DirectConversationUncheckedCreateNestedManyWithoutSecondUserInput
+  chatMemberships?: Prisma.ChatMembershipUncheckedCreateNestedManyWithoutUserInput
+  chatMessages?: Prisma.ChatMessageUncheckedCreateNestedManyWithoutSenderInput
+  chatEncryptionKey?: Prisma.ChatEncryptionKeyUncheckedCreateNestedOneWithoutUserInput
+  accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutReflectionsInput = {
@@ -1017,20 +1324,28 @@ export type UserUpdateWithoutReflectionsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   role?: Prisma.StringFieldUpdateOperationsInput | string
-  locale?: Prisma.StringFieldUpdateOperationsInput | string
   banned?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   banReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   banExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
-  accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
-  assignmentsAsIntern?: Prisma.WeeklyAssignmentUpdateManyWithoutInternNestedInput
-  assignmentsCreated?: Prisma.WeeklyAssignmentUpdateManyWithoutCreatedByNestedInput
-  feedbackAuthored?: Prisma.MentorFeedbackUpdateManyWithoutAuthorNestedInput
-  discussionNote?: Prisma.DiscussionNoteUpdateOneWithoutUserNestedInput
+  locale?: Prisma.StringFieldUpdateOperationsInput | string
+  secureLoginVersion?: Prisma.IntFieldUpdateOperationsInput | number
+  DailyPlan?: Prisma.DailyPlanUpdateManyWithoutUserNestedInput
   resourcesAdded?: Prisma.DepartmentResourceUpdateManyWithoutCreatedByNestedInput
+  discussionNote?: Prisma.DiscussionNoteUpdateOneWithoutUserNestedInput
   ideas?: Prisma.IdeaUpdateManyWithoutAuthorNestedInput
   ideaNotes?: Prisma.IdeaNoteUpdateManyWithoutAuthorNestedInput
-  dailyPlans?: Prisma.DailyPlanUpdateManyWithoutUserNestedInput
+  feedbackAuthored?: Prisma.MentorFeedbackUpdateManyWithoutAuthorNestedInput
+  assignmentsCreated?: Prisma.WeeklyAssignmentUpdateManyWithoutCreatedByNestedInput
+  assignmentsAsIntern?: Prisma.WeeklyAssignmentUpdateManyWithoutInternNestedInput
+  friendshipsSent?: Prisma.FriendshipUpdateManyWithoutRequesterNestedInput
+  friendshipsReceived?: Prisma.FriendshipUpdateManyWithoutRecipientNestedInput
+  directChatsFirst?: Prisma.DirectConversationUpdateManyWithoutFirstUserNestedInput
+  directChatsSecond?: Prisma.DirectConversationUpdateManyWithoutSecondUserNestedInput
+  chatMemberships?: Prisma.ChatMembershipUpdateManyWithoutUserNestedInput
+  chatMessages?: Prisma.ChatMessageUpdateManyWithoutSenderNestedInput
+  chatEncryptionKey?: Prisma.ChatEncryptionKeyUpdateOneWithoutUserNestedInput
+  accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutReflectionsInput = {
@@ -1042,20 +1357,28 @@ export type UserUncheckedUpdateWithoutReflectionsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   role?: Prisma.StringFieldUpdateOperationsInput | string
-  locale?: Prisma.StringFieldUpdateOperationsInput | string
   banned?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   banReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   banExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
-  accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
-  assignmentsAsIntern?: Prisma.WeeklyAssignmentUncheckedUpdateManyWithoutInternNestedInput
-  assignmentsCreated?: Prisma.WeeklyAssignmentUncheckedUpdateManyWithoutCreatedByNestedInput
-  feedbackAuthored?: Prisma.MentorFeedbackUncheckedUpdateManyWithoutAuthorNestedInput
-  discussionNote?: Prisma.DiscussionNoteUncheckedUpdateOneWithoutUserNestedInput
+  locale?: Prisma.StringFieldUpdateOperationsInput | string
+  secureLoginVersion?: Prisma.IntFieldUpdateOperationsInput | number
+  DailyPlan?: Prisma.DailyPlanUncheckedUpdateManyWithoutUserNestedInput
   resourcesAdded?: Prisma.DepartmentResourceUncheckedUpdateManyWithoutCreatedByNestedInput
+  discussionNote?: Prisma.DiscussionNoteUncheckedUpdateOneWithoutUserNestedInput
   ideas?: Prisma.IdeaUncheckedUpdateManyWithoutAuthorNestedInput
   ideaNotes?: Prisma.IdeaNoteUncheckedUpdateManyWithoutAuthorNestedInput
-  dailyPlans?: Prisma.DailyPlanUncheckedUpdateManyWithoutUserNestedInput
+  feedbackAuthored?: Prisma.MentorFeedbackUncheckedUpdateManyWithoutAuthorNestedInput
+  assignmentsCreated?: Prisma.WeeklyAssignmentUncheckedUpdateManyWithoutCreatedByNestedInput
+  assignmentsAsIntern?: Prisma.WeeklyAssignmentUncheckedUpdateManyWithoutInternNestedInput
+  friendshipsSent?: Prisma.FriendshipUncheckedUpdateManyWithoutRequesterNestedInput
+  friendshipsReceived?: Prisma.FriendshipUncheckedUpdateManyWithoutRecipientNestedInput
+  directChatsFirst?: Prisma.DirectConversationUncheckedUpdateManyWithoutFirstUserNestedInput
+  directChatsSecond?: Prisma.DirectConversationUncheckedUpdateManyWithoutSecondUserNestedInput
+  chatMemberships?: Prisma.ChatMembershipUncheckedUpdateManyWithoutUserNestedInput
+  chatMessages?: Prisma.ChatMessageUncheckedUpdateManyWithoutSenderNestedInput
+  chatEncryptionKey?: Prisma.ChatEncryptionKeyUncheckedUpdateOneWithoutUserNestedInput
+  accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutFeedbackAuthoredInput = {
@@ -1067,20 +1390,28 @@ export type UserCreateWithoutFeedbackAuthoredInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   role?: string
-  locale?: string
   banned?: boolean | null
   banReason?: string | null
   banExpires?: Date | string | null
-  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
-  accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
-  assignmentsAsIntern?: Prisma.WeeklyAssignmentCreateNestedManyWithoutInternInput
-  assignmentsCreated?: Prisma.WeeklyAssignmentCreateNestedManyWithoutCreatedByInput
-  reflections?: Prisma.ReflectionCreateNestedManyWithoutInternInput
-  discussionNote?: Prisma.DiscussionNoteCreateNestedOneWithoutUserInput
+  locale?: string
+  secureLoginVersion?: number
+  DailyPlan?: Prisma.DailyPlanCreateNestedManyWithoutUserInput
   resourcesAdded?: Prisma.DepartmentResourceCreateNestedManyWithoutCreatedByInput
+  discussionNote?: Prisma.DiscussionNoteCreateNestedOneWithoutUserInput
   ideas?: Prisma.IdeaCreateNestedManyWithoutAuthorInput
   ideaNotes?: Prisma.IdeaNoteCreateNestedManyWithoutAuthorInput
-  dailyPlans?: Prisma.DailyPlanCreateNestedManyWithoutUserInput
+  reflections?: Prisma.ReflectionCreateNestedManyWithoutInternInput
+  assignmentsCreated?: Prisma.WeeklyAssignmentCreateNestedManyWithoutCreatedByInput
+  assignmentsAsIntern?: Prisma.WeeklyAssignmentCreateNestedManyWithoutInternInput
+  friendshipsSent?: Prisma.FriendshipCreateNestedManyWithoutRequesterInput
+  friendshipsReceived?: Prisma.FriendshipCreateNestedManyWithoutRecipientInput
+  directChatsFirst?: Prisma.DirectConversationCreateNestedManyWithoutFirstUserInput
+  directChatsSecond?: Prisma.DirectConversationCreateNestedManyWithoutSecondUserInput
+  chatMemberships?: Prisma.ChatMembershipCreateNestedManyWithoutUserInput
+  chatMessages?: Prisma.ChatMessageCreateNestedManyWithoutSenderInput
+  chatEncryptionKey?: Prisma.ChatEncryptionKeyCreateNestedOneWithoutUserInput
+  accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutFeedbackAuthoredInput = {
@@ -1092,20 +1423,28 @@ export type UserUncheckedCreateWithoutFeedbackAuthoredInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   role?: string
-  locale?: string
   banned?: boolean | null
   banReason?: string | null
   banExpires?: Date | string | null
-  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
-  accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
-  assignmentsAsIntern?: Prisma.WeeklyAssignmentUncheckedCreateNestedManyWithoutInternInput
-  assignmentsCreated?: Prisma.WeeklyAssignmentUncheckedCreateNestedManyWithoutCreatedByInput
-  reflections?: Prisma.ReflectionUncheckedCreateNestedManyWithoutInternInput
-  discussionNote?: Prisma.DiscussionNoteUncheckedCreateNestedOneWithoutUserInput
+  locale?: string
+  secureLoginVersion?: number
+  DailyPlan?: Prisma.DailyPlanUncheckedCreateNestedManyWithoutUserInput
   resourcesAdded?: Prisma.DepartmentResourceUncheckedCreateNestedManyWithoutCreatedByInput
+  discussionNote?: Prisma.DiscussionNoteUncheckedCreateNestedOneWithoutUserInput
   ideas?: Prisma.IdeaUncheckedCreateNestedManyWithoutAuthorInput
   ideaNotes?: Prisma.IdeaNoteUncheckedCreateNestedManyWithoutAuthorInput
-  dailyPlans?: Prisma.DailyPlanUncheckedCreateNestedManyWithoutUserInput
+  reflections?: Prisma.ReflectionUncheckedCreateNestedManyWithoutInternInput
+  assignmentsCreated?: Prisma.WeeklyAssignmentUncheckedCreateNestedManyWithoutCreatedByInput
+  assignmentsAsIntern?: Prisma.WeeklyAssignmentUncheckedCreateNestedManyWithoutInternInput
+  friendshipsSent?: Prisma.FriendshipUncheckedCreateNestedManyWithoutRequesterInput
+  friendshipsReceived?: Prisma.FriendshipUncheckedCreateNestedManyWithoutRecipientInput
+  directChatsFirst?: Prisma.DirectConversationUncheckedCreateNestedManyWithoutFirstUserInput
+  directChatsSecond?: Prisma.DirectConversationUncheckedCreateNestedManyWithoutSecondUserInput
+  chatMemberships?: Prisma.ChatMembershipUncheckedCreateNestedManyWithoutUserInput
+  chatMessages?: Prisma.ChatMessageUncheckedCreateNestedManyWithoutSenderInput
+  chatEncryptionKey?: Prisma.ChatEncryptionKeyUncheckedCreateNestedOneWithoutUserInput
+  accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutFeedbackAuthoredInput = {
@@ -1133,20 +1472,28 @@ export type UserUpdateWithoutFeedbackAuthoredInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   role?: Prisma.StringFieldUpdateOperationsInput | string
-  locale?: Prisma.StringFieldUpdateOperationsInput | string
   banned?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   banReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   banExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
-  accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
-  assignmentsAsIntern?: Prisma.WeeklyAssignmentUpdateManyWithoutInternNestedInput
-  assignmentsCreated?: Prisma.WeeklyAssignmentUpdateManyWithoutCreatedByNestedInput
-  reflections?: Prisma.ReflectionUpdateManyWithoutInternNestedInput
-  discussionNote?: Prisma.DiscussionNoteUpdateOneWithoutUserNestedInput
+  locale?: Prisma.StringFieldUpdateOperationsInput | string
+  secureLoginVersion?: Prisma.IntFieldUpdateOperationsInput | number
+  DailyPlan?: Prisma.DailyPlanUpdateManyWithoutUserNestedInput
   resourcesAdded?: Prisma.DepartmentResourceUpdateManyWithoutCreatedByNestedInput
+  discussionNote?: Prisma.DiscussionNoteUpdateOneWithoutUserNestedInput
   ideas?: Prisma.IdeaUpdateManyWithoutAuthorNestedInput
   ideaNotes?: Prisma.IdeaNoteUpdateManyWithoutAuthorNestedInput
-  dailyPlans?: Prisma.DailyPlanUpdateManyWithoutUserNestedInput
+  reflections?: Prisma.ReflectionUpdateManyWithoutInternNestedInput
+  assignmentsCreated?: Prisma.WeeklyAssignmentUpdateManyWithoutCreatedByNestedInput
+  assignmentsAsIntern?: Prisma.WeeklyAssignmentUpdateManyWithoutInternNestedInput
+  friendshipsSent?: Prisma.FriendshipUpdateManyWithoutRequesterNestedInput
+  friendshipsReceived?: Prisma.FriendshipUpdateManyWithoutRecipientNestedInput
+  directChatsFirst?: Prisma.DirectConversationUpdateManyWithoutFirstUserNestedInput
+  directChatsSecond?: Prisma.DirectConversationUpdateManyWithoutSecondUserNestedInput
+  chatMemberships?: Prisma.ChatMembershipUpdateManyWithoutUserNestedInput
+  chatMessages?: Prisma.ChatMessageUpdateManyWithoutSenderNestedInput
+  chatEncryptionKey?: Prisma.ChatEncryptionKeyUpdateOneWithoutUserNestedInput
+  accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutFeedbackAuthoredInput = {
@@ -1158,20 +1505,28 @@ export type UserUncheckedUpdateWithoutFeedbackAuthoredInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   role?: Prisma.StringFieldUpdateOperationsInput | string
-  locale?: Prisma.StringFieldUpdateOperationsInput | string
   banned?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   banReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   banExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
-  accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
-  assignmentsAsIntern?: Prisma.WeeklyAssignmentUncheckedUpdateManyWithoutInternNestedInput
-  assignmentsCreated?: Prisma.WeeklyAssignmentUncheckedUpdateManyWithoutCreatedByNestedInput
-  reflections?: Prisma.ReflectionUncheckedUpdateManyWithoutInternNestedInput
-  discussionNote?: Prisma.DiscussionNoteUncheckedUpdateOneWithoutUserNestedInput
+  locale?: Prisma.StringFieldUpdateOperationsInput | string
+  secureLoginVersion?: Prisma.IntFieldUpdateOperationsInput | number
+  DailyPlan?: Prisma.DailyPlanUncheckedUpdateManyWithoutUserNestedInput
   resourcesAdded?: Prisma.DepartmentResourceUncheckedUpdateManyWithoutCreatedByNestedInput
+  discussionNote?: Prisma.DiscussionNoteUncheckedUpdateOneWithoutUserNestedInput
   ideas?: Prisma.IdeaUncheckedUpdateManyWithoutAuthorNestedInput
   ideaNotes?: Prisma.IdeaNoteUncheckedUpdateManyWithoutAuthorNestedInput
-  dailyPlans?: Prisma.DailyPlanUncheckedUpdateManyWithoutUserNestedInput
+  reflections?: Prisma.ReflectionUncheckedUpdateManyWithoutInternNestedInput
+  assignmentsCreated?: Prisma.WeeklyAssignmentUncheckedUpdateManyWithoutCreatedByNestedInput
+  assignmentsAsIntern?: Prisma.WeeklyAssignmentUncheckedUpdateManyWithoutInternNestedInput
+  friendshipsSent?: Prisma.FriendshipUncheckedUpdateManyWithoutRequesterNestedInput
+  friendshipsReceived?: Prisma.FriendshipUncheckedUpdateManyWithoutRecipientNestedInput
+  directChatsFirst?: Prisma.DirectConversationUncheckedUpdateManyWithoutFirstUserNestedInput
+  directChatsSecond?: Prisma.DirectConversationUncheckedUpdateManyWithoutSecondUserNestedInput
+  chatMemberships?: Prisma.ChatMembershipUncheckedUpdateManyWithoutUserNestedInput
+  chatMessages?: Prisma.ChatMessageUncheckedUpdateManyWithoutSenderNestedInput
+  chatEncryptionKey?: Prisma.ChatEncryptionKeyUncheckedUpdateOneWithoutUserNestedInput
+  accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutDiscussionNoteInput = {
@@ -1183,20 +1538,28 @@ export type UserCreateWithoutDiscussionNoteInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   role?: string
-  locale?: string
   banned?: boolean | null
   banReason?: string | null
   banExpires?: Date | string | null
-  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
-  accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
-  assignmentsAsIntern?: Prisma.WeeklyAssignmentCreateNestedManyWithoutInternInput
-  assignmentsCreated?: Prisma.WeeklyAssignmentCreateNestedManyWithoutCreatedByInput
-  reflections?: Prisma.ReflectionCreateNestedManyWithoutInternInput
-  feedbackAuthored?: Prisma.MentorFeedbackCreateNestedManyWithoutAuthorInput
+  locale?: string
+  secureLoginVersion?: number
+  DailyPlan?: Prisma.DailyPlanCreateNestedManyWithoutUserInput
   resourcesAdded?: Prisma.DepartmentResourceCreateNestedManyWithoutCreatedByInput
   ideas?: Prisma.IdeaCreateNestedManyWithoutAuthorInput
   ideaNotes?: Prisma.IdeaNoteCreateNestedManyWithoutAuthorInput
-  dailyPlans?: Prisma.DailyPlanCreateNestedManyWithoutUserInput
+  feedbackAuthored?: Prisma.MentorFeedbackCreateNestedManyWithoutAuthorInput
+  reflections?: Prisma.ReflectionCreateNestedManyWithoutInternInput
+  assignmentsCreated?: Prisma.WeeklyAssignmentCreateNestedManyWithoutCreatedByInput
+  assignmentsAsIntern?: Prisma.WeeklyAssignmentCreateNestedManyWithoutInternInput
+  friendshipsSent?: Prisma.FriendshipCreateNestedManyWithoutRequesterInput
+  friendshipsReceived?: Prisma.FriendshipCreateNestedManyWithoutRecipientInput
+  directChatsFirst?: Prisma.DirectConversationCreateNestedManyWithoutFirstUserInput
+  directChatsSecond?: Prisma.DirectConversationCreateNestedManyWithoutSecondUserInput
+  chatMemberships?: Prisma.ChatMembershipCreateNestedManyWithoutUserInput
+  chatMessages?: Prisma.ChatMessageCreateNestedManyWithoutSenderInput
+  chatEncryptionKey?: Prisma.ChatEncryptionKeyCreateNestedOneWithoutUserInput
+  accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutDiscussionNoteInput = {
@@ -1208,20 +1571,28 @@ export type UserUncheckedCreateWithoutDiscussionNoteInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   role?: string
-  locale?: string
   banned?: boolean | null
   banReason?: string | null
   banExpires?: Date | string | null
-  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
-  accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
-  assignmentsAsIntern?: Prisma.WeeklyAssignmentUncheckedCreateNestedManyWithoutInternInput
-  assignmentsCreated?: Prisma.WeeklyAssignmentUncheckedCreateNestedManyWithoutCreatedByInput
-  reflections?: Prisma.ReflectionUncheckedCreateNestedManyWithoutInternInput
-  feedbackAuthored?: Prisma.MentorFeedbackUncheckedCreateNestedManyWithoutAuthorInput
+  locale?: string
+  secureLoginVersion?: number
+  DailyPlan?: Prisma.DailyPlanUncheckedCreateNestedManyWithoutUserInput
   resourcesAdded?: Prisma.DepartmentResourceUncheckedCreateNestedManyWithoutCreatedByInput
   ideas?: Prisma.IdeaUncheckedCreateNestedManyWithoutAuthorInput
   ideaNotes?: Prisma.IdeaNoteUncheckedCreateNestedManyWithoutAuthorInput
-  dailyPlans?: Prisma.DailyPlanUncheckedCreateNestedManyWithoutUserInput
+  feedbackAuthored?: Prisma.MentorFeedbackUncheckedCreateNestedManyWithoutAuthorInput
+  reflections?: Prisma.ReflectionUncheckedCreateNestedManyWithoutInternInput
+  assignmentsCreated?: Prisma.WeeklyAssignmentUncheckedCreateNestedManyWithoutCreatedByInput
+  assignmentsAsIntern?: Prisma.WeeklyAssignmentUncheckedCreateNestedManyWithoutInternInput
+  friendshipsSent?: Prisma.FriendshipUncheckedCreateNestedManyWithoutRequesterInput
+  friendshipsReceived?: Prisma.FriendshipUncheckedCreateNestedManyWithoutRecipientInput
+  directChatsFirst?: Prisma.DirectConversationUncheckedCreateNestedManyWithoutFirstUserInput
+  directChatsSecond?: Prisma.DirectConversationUncheckedCreateNestedManyWithoutSecondUserInput
+  chatMemberships?: Prisma.ChatMembershipUncheckedCreateNestedManyWithoutUserInput
+  chatMessages?: Prisma.ChatMessageUncheckedCreateNestedManyWithoutSenderInput
+  chatEncryptionKey?: Prisma.ChatEncryptionKeyUncheckedCreateNestedOneWithoutUserInput
+  accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutDiscussionNoteInput = {
@@ -1249,20 +1620,28 @@ export type UserUpdateWithoutDiscussionNoteInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   role?: Prisma.StringFieldUpdateOperationsInput | string
-  locale?: Prisma.StringFieldUpdateOperationsInput | string
   banned?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   banReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   banExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
-  accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
-  assignmentsAsIntern?: Prisma.WeeklyAssignmentUpdateManyWithoutInternNestedInput
-  assignmentsCreated?: Prisma.WeeklyAssignmentUpdateManyWithoutCreatedByNestedInput
-  reflections?: Prisma.ReflectionUpdateManyWithoutInternNestedInput
-  feedbackAuthored?: Prisma.MentorFeedbackUpdateManyWithoutAuthorNestedInput
+  locale?: Prisma.StringFieldUpdateOperationsInput | string
+  secureLoginVersion?: Prisma.IntFieldUpdateOperationsInput | number
+  DailyPlan?: Prisma.DailyPlanUpdateManyWithoutUserNestedInput
   resourcesAdded?: Prisma.DepartmentResourceUpdateManyWithoutCreatedByNestedInput
   ideas?: Prisma.IdeaUpdateManyWithoutAuthorNestedInput
   ideaNotes?: Prisma.IdeaNoteUpdateManyWithoutAuthorNestedInput
-  dailyPlans?: Prisma.DailyPlanUpdateManyWithoutUserNestedInput
+  feedbackAuthored?: Prisma.MentorFeedbackUpdateManyWithoutAuthorNestedInput
+  reflections?: Prisma.ReflectionUpdateManyWithoutInternNestedInput
+  assignmentsCreated?: Prisma.WeeklyAssignmentUpdateManyWithoutCreatedByNestedInput
+  assignmentsAsIntern?: Prisma.WeeklyAssignmentUpdateManyWithoutInternNestedInput
+  friendshipsSent?: Prisma.FriendshipUpdateManyWithoutRequesterNestedInput
+  friendshipsReceived?: Prisma.FriendshipUpdateManyWithoutRecipientNestedInput
+  directChatsFirst?: Prisma.DirectConversationUpdateManyWithoutFirstUserNestedInput
+  directChatsSecond?: Prisma.DirectConversationUpdateManyWithoutSecondUserNestedInput
+  chatMemberships?: Prisma.ChatMembershipUpdateManyWithoutUserNestedInput
+  chatMessages?: Prisma.ChatMessageUpdateManyWithoutSenderNestedInput
+  chatEncryptionKey?: Prisma.ChatEncryptionKeyUpdateOneWithoutUserNestedInput
+  accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutDiscussionNoteInput = {
@@ -1274,20 +1653,28 @@ export type UserUncheckedUpdateWithoutDiscussionNoteInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   role?: Prisma.StringFieldUpdateOperationsInput | string
-  locale?: Prisma.StringFieldUpdateOperationsInput | string
   banned?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   banReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   banExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
-  accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
-  assignmentsAsIntern?: Prisma.WeeklyAssignmentUncheckedUpdateManyWithoutInternNestedInput
-  assignmentsCreated?: Prisma.WeeklyAssignmentUncheckedUpdateManyWithoutCreatedByNestedInput
-  reflections?: Prisma.ReflectionUncheckedUpdateManyWithoutInternNestedInput
-  feedbackAuthored?: Prisma.MentorFeedbackUncheckedUpdateManyWithoutAuthorNestedInput
+  locale?: Prisma.StringFieldUpdateOperationsInput | string
+  secureLoginVersion?: Prisma.IntFieldUpdateOperationsInput | number
+  DailyPlan?: Prisma.DailyPlanUncheckedUpdateManyWithoutUserNestedInput
   resourcesAdded?: Prisma.DepartmentResourceUncheckedUpdateManyWithoutCreatedByNestedInput
   ideas?: Prisma.IdeaUncheckedUpdateManyWithoutAuthorNestedInput
   ideaNotes?: Prisma.IdeaNoteUncheckedUpdateManyWithoutAuthorNestedInput
-  dailyPlans?: Prisma.DailyPlanUncheckedUpdateManyWithoutUserNestedInput
+  feedbackAuthored?: Prisma.MentorFeedbackUncheckedUpdateManyWithoutAuthorNestedInput
+  reflections?: Prisma.ReflectionUncheckedUpdateManyWithoutInternNestedInput
+  assignmentsCreated?: Prisma.WeeklyAssignmentUncheckedUpdateManyWithoutCreatedByNestedInput
+  assignmentsAsIntern?: Prisma.WeeklyAssignmentUncheckedUpdateManyWithoutInternNestedInput
+  friendshipsSent?: Prisma.FriendshipUncheckedUpdateManyWithoutRequesterNestedInput
+  friendshipsReceived?: Prisma.FriendshipUncheckedUpdateManyWithoutRecipientNestedInput
+  directChatsFirst?: Prisma.DirectConversationUncheckedUpdateManyWithoutFirstUserNestedInput
+  directChatsSecond?: Prisma.DirectConversationUncheckedUpdateManyWithoutSecondUserNestedInput
+  chatMemberships?: Prisma.ChatMembershipUncheckedUpdateManyWithoutUserNestedInput
+  chatMessages?: Prisma.ChatMessageUncheckedUpdateManyWithoutSenderNestedInput
+  chatEncryptionKey?: Prisma.ChatEncryptionKeyUncheckedUpdateOneWithoutUserNestedInput
+  accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutResourcesAddedInput = {
@@ -1299,20 +1686,28 @@ export type UserCreateWithoutResourcesAddedInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   role?: string
-  locale?: string
   banned?: boolean | null
   banReason?: string | null
   banExpires?: Date | string | null
-  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
-  accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
-  assignmentsAsIntern?: Prisma.WeeklyAssignmentCreateNestedManyWithoutInternInput
-  assignmentsCreated?: Prisma.WeeklyAssignmentCreateNestedManyWithoutCreatedByInput
-  reflections?: Prisma.ReflectionCreateNestedManyWithoutInternInput
-  feedbackAuthored?: Prisma.MentorFeedbackCreateNestedManyWithoutAuthorInput
+  locale?: string
+  secureLoginVersion?: number
+  DailyPlan?: Prisma.DailyPlanCreateNestedManyWithoutUserInput
   discussionNote?: Prisma.DiscussionNoteCreateNestedOneWithoutUserInput
   ideas?: Prisma.IdeaCreateNestedManyWithoutAuthorInput
   ideaNotes?: Prisma.IdeaNoteCreateNestedManyWithoutAuthorInput
-  dailyPlans?: Prisma.DailyPlanCreateNestedManyWithoutUserInput
+  feedbackAuthored?: Prisma.MentorFeedbackCreateNestedManyWithoutAuthorInput
+  reflections?: Prisma.ReflectionCreateNestedManyWithoutInternInput
+  assignmentsCreated?: Prisma.WeeklyAssignmentCreateNestedManyWithoutCreatedByInput
+  assignmentsAsIntern?: Prisma.WeeklyAssignmentCreateNestedManyWithoutInternInput
+  friendshipsSent?: Prisma.FriendshipCreateNestedManyWithoutRequesterInput
+  friendshipsReceived?: Prisma.FriendshipCreateNestedManyWithoutRecipientInput
+  directChatsFirst?: Prisma.DirectConversationCreateNestedManyWithoutFirstUserInput
+  directChatsSecond?: Prisma.DirectConversationCreateNestedManyWithoutSecondUserInput
+  chatMemberships?: Prisma.ChatMembershipCreateNestedManyWithoutUserInput
+  chatMessages?: Prisma.ChatMessageCreateNestedManyWithoutSenderInput
+  chatEncryptionKey?: Prisma.ChatEncryptionKeyCreateNestedOneWithoutUserInput
+  accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutResourcesAddedInput = {
@@ -1324,20 +1719,28 @@ export type UserUncheckedCreateWithoutResourcesAddedInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   role?: string
-  locale?: string
   banned?: boolean | null
   banReason?: string | null
   banExpires?: Date | string | null
-  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
-  accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
-  assignmentsAsIntern?: Prisma.WeeklyAssignmentUncheckedCreateNestedManyWithoutInternInput
-  assignmentsCreated?: Prisma.WeeklyAssignmentUncheckedCreateNestedManyWithoutCreatedByInput
-  reflections?: Prisma.ReflectionUncheckedCreateNestedManyWithoutInternInput
-  feedbackAuthored?: Prisma.MentorFeedbackUncheckedCreateNestedManyWithoutAuthorInput
+  locale?: string
+  secureLoginVersion?: number
+  DailyPlan?: Prisma.DailyPlanUncheckedCreateNestedManyWithoutUserInput
   discussionNote?: Prisma.DiscussionNoteUncheckedCreateNestedOneWithoutUserInput
   ideas?: Prisma.IdeaUncheckedCreateNestedManyWithoutAuthorInput
   ideaNotes?: Prisma.IdeaNoteUncheckedCreateNestedManyWithoutAuthorInput
-  dailyPlans?: Prisma.DailyPlanUncheckedCreateNestedManyWithoutUserInput
+  feedbackAuthored?: Prisma.MentorFeedbackUncheckedCreateNestedManyWithoutAuthorInput
+  reflections?: Prisma.ReflectionUncheckedCreateNestedManyWithoutInternInput
+  assignmentsCreated?: Prisma.WeeklyAssignmentUncheckedCreateNestedManyWithoutCreatedByInput
+  assignmentsAsIntern?: Prisma.WeeklyAssignmentUncheckedCreateNestedManyWithoutInternInput
+  friendshipsSent?: Prisma.FriendshipUncheckedCreateNestedManyWithoutRequesterInput
+  friendshipsReceived?: Prisma.FriendshipUncheckedCreateNestedManyWithoutRecipientInput
+  directChatsFirst?: Prisma.DirectConversationUncheckedCreateNestedManyWithoutFirstUserInput
+  directChatsSecond?: Prisma.DirectConversationUncheckedCreateNestedManyWithoutSecondUserInput
+  chatMemberships?: Prisma.ChatMembershipUncheckedCreateNestedManyWithoutUserInput
+  chatMessages?: Prisma.ChatMessageUncheckedCreateNestedManyWithoutSenderInput
+  chatEncryptionKey?: Prisma.ChatEncryptionKeyUncheckedCreateNestedOneWithoutUserInput
+  accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutResourcesAddedInput = {
@@ -1365,20 +1768,28 @@ export type UserUpdateWithoutResourcesAddedInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   role?: Prisma.StringFieldUpdateOperationsInput | string
-  locale?: Prisma.StringFieldUpdateOperationsInput | string
   banned?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   banReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   banExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
-  accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
-  assignmentsAsIntern?: Prisma.WeeklyAssignmentUpdateManyWithoutInternNestedInput
-  assignmentsCreated?: Prisma.WeeklyAssignmentUpdateManyWithoutCreatedByNestedInput
-  reflections?: Prisma.ReflectionUpdateManyWithoutInternNestedInput
-  feedbackAuthored?: Prisma.MentorFeedbackUpdateManyWithoutAuthorNestedInput
+  locale?: Prisma.StringFieldUpdateOperationsInput | string
+  secureLoginVersion?: Prisma.IntFieldUpdateOperationsInput | number
+  DailyPlan?: Prisma.DailyPlanUpdateManyWithoutUserNestedInput
   discussionNote?: Prisma.DiscussionNoteUpdateOneWithoutUserNestedInput
   ideas?: Prisma.IdeaUpdateManyWithoutAuthorNestedInput
   ideaNotes?: Prisma.IdeaNoteUpdateManyWithoutAuthorNestedInput
-  dailyPlans?: Prisma.DailyPlanUpdateManyWithoutUserNestedInput
+  feedbackAuthored?: Prisma.MentorFeedbackUpdateManyWithoutAuthorNestedInput
+  reflections?: Prisma.ReflectionUpdateManyWithoutInternNestedInput
+  assignmentsCreated?: Prisma.WeeklyAssignmentUpdateManyWithoutCreatedByNestedInput
+  assignmentsAsIntern?: Prisma.WeeklyAssignmentUpdateManyWithoutInternNestedInput
+  friendshipsSent?: Prisma.FriendshipUpdateManyWithoutRequesterNestedInput
+  friendshipsReceived?: Prisma.FriendshipUpdateManyWithoutRecipientNestedInput
+  directChatsFirst?: Prisma.DirectConversationUpdateManyWithoutFirstUserNestedInput
+  directChatsSecond?: Prisma.DirectConversationUpdateManyWithoutSecondUserNestedInput
+  chatMemberships?: Prisma.ChatMembershipUpdateManyWithoutUserNestedInput
+  chatMessages?: Prisma.ChatMessageUpdateManyWithoutSenderNestedInput
+  chatEncryptionKey?: Prisma.ChatEncryptionKeyUpdateOneWithoutUserNestedInput
+  accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutResourcesAddedInput = {
@@ -1390,20 +1801,28 @@ export type UserUncheckedUpdateWithoutResourcesAddedInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   role?: Prisma.StringFieldUpdateOperationsInput | string
-  locale?: Prisma.StringFieldUpdateOperationsInput | string
   banned?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   banReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   banExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
-  accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
-  assignmentsAsIntern?: Prisma.WeeklyAssignmentUncheckedUpdateManyWithoutInternNestedInput
-  assignmentsCreated?: Prisma.WeeklyAssignmentUncheckedUpdateManyWithoutCreatedByNestedInput
-  reflections?: Prisma.ReflectionUncheckedUpdateManyWithoutInternNestedInput
-  feedbackAuthored?: Prisma.MentorFeedbackUncheckedUpdateManyWithoutAuthorNestedInput
+  locale?: Prisma.StringFieldUpdateOperationsInput | string
+  secureLoginVersion?: Prisma.IntFieldUpdateOperationsInput | number
+  DailyPlan?: Prisma.DailyPlanUncheckedUpdateManyWithoutUserNestedInput
   discussionNote?: Prisma.DiscussionNoteUncheckedUpdateOneWithoutUserNestedInput
   ideas?: Prisma.IdeaUncheckedUpdateManyWithoutAuthorNestedInput
   ideaNotes?: Prisma.IdeaNoteUncheckedUpdateManyWithoutAuthorNestedInput
-  dailyPlans?: Prisma.DailyPlanUncheckedUpdateManyWithoutUserNestedInput
+  feedbackAuthored?: Prisma.MentorFeedbackUncheckedUpdateManyWithoutAuthorNestedInput
+  reflections?: Prisma.ReflectionUncheckedUpdateManyWithoutInternNestedInput
+  assignmentsCreated?: Prisma.WeeklyAssignmentUncheckedUpdateManyWithoutCreatedByNestedInput
+  assignmentsAsIntern?: Prisma.WeeklyAssignmentUncheckedUpdateManyWithoutInternNestedInput
+  friendshipsSent?: Prisma.FriendshipUncheckedUpdateManyWithoutRequesterNestedInput
+  friendshipsReceived?: Prisma.FriendshipUncheckedUpdateManyWithoutRecipientNestedInput
+  directChatsFirst?: Prisma.DirectConversationUncheckedUpdateManyWithoutFirstUserNestedInput
+  directChatsSecond?: Prisma.DirectConversationUncheckedUpdateManyWithoutSecondUserNestedInput
+  chatMemberships?: Prisma.ChatMembershipUncheckedUpdateManyWithoutUserNestedInput
+  chatMessages?: Prisma.ChatMessageUncheckedUpdateManyWithoutSenderNestedInput
+  chatEncryptionKey?: Prisma.ChatEncryptionKeyUncheckedUpdateOneWithoutUserNestedInput
+  accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutIdeasInput = {
@@ -1415,20 +1834,28 @@ export type UserCreateWithoutIdeasInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   role?: string
-  locale?: string
   banned?: boolean | null
   banReason?: string | null
   banExpires?: Date | string | null
-  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
-  accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
-  assignmentsAsIntern?: Prisma.WeeklyAssignmentCreateNestedManyWithoutInternInput
-  assignmentsCreated?: Prisma.WeeklyAssignmentCreateNestedManyWithoutCreatedByInput
-  reflections?: Prisma.ReflectionCreateNestedManyWithoutInternInput
-  feedbackAuthored?: Prisma.MentorFeedbackCreateNestedManyWithoutAuthorInput
-  discussionNote?: Prisma.DiscussionNoteCreateNestedOneWithoutUserInput
+  locale?: string
+  secureLoginVersion?: number
+  DailyPlan?: Prisma.DailyPlanCreateNestedManyWithoutUserInput
   resourcesAdded?: Prisma.DepartmentResourceCreateNestedManyWithoutCreatedByInput
+  discussionNote?: Prisma.DiscussionNoteCreateNestedOneWithoutUserInput
   ideaNotes?: Prisma.IdeaNoteCreateNestedManyWithoutAuthorInput
-  dailyPlans?: Prisma.DailyPlanCreateNestedManyWithoutUserInput
+  feedbackAuthored?: Prisma.MentorFeedbackCreateNestedManyWithoutAuthorInput
+  reflections?: Prisma.ReflectionCreateNestedManyWithoutInternInput
+  assignmentsCreated?: Prisma.WeeklyAssignmentCreateNestedManyWithoutCreatedByInput
+  assignmentsAsIntern?: Prisma.WeeklyAssignmentCreateNestedManyWithoutInternInput
+  friendshipsSent?: Prisma.FriendshipCreateNestedManyWithoutRequesterInput
+  friendshipsReceived?: Prisma.FriendshipCreateNestedManyWithoutRecipientInput
+  directChatsFirst?: Prisma.DirectConversationCreateNestedManyWithoutFirstUserInput
+  directChatsSecond?: Prisma.DirectConversationCreateNestedManyWithoutSecondUserInput
+  chatMemberships?: Prisma.ChatMembershipCreateNestedManyWithoutUserInput
+  chatMessages?: Prisma.ChatMessageCreateNestedManyWithoutSenderInput
+  chatEncryptionKey?: Prisma.ChatEncryptionKeyCreateNestedOneWithoutUserInput
+  accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutIdeasInput = {
@@ -1440,20 +1867,28 @@ export type UserUncheckedCreateWithoutIdeasInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   role?: string
-  locale?: string
   banned?: boolean | null
   banReason?: string | null
   banExpires?: Date | string | null
-  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
-  accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
-  assignmentsAsIntern?: Prisma.WeeklyAssignmentUncheckedCreateNestedManyWithoutInternInput
-  assignmentsCreated?: Prisma.WeeklyAssignmentUncheckedCreateNestedManyWithoutCreatedByInput
-  reflections?: Prisma.ReflectionUncheckedCreateNestedManyWithoutInternInput
-  feedbackAuthored?: Prisma.MentorFeedbackUncheckedCreateNestedManyWithoutAuthorInput
-  discussionNote?: Prisma.DiscussionNoteUncheckedCreateNestedOneWithoutUserInput
+  locale?: string
+  secureLoginVersion?: number
+  DailyPlan?: Prisma.DailyPlanUncheckedCreateNestedManyWithoutUserInput
   resourcesAdded?: Prisma.DepartmentResourceUncheckedCreateNestedManyWithoutCreatedByInput
+  discussionNote?: Prisma.DiscussionNoteUncheckedCreateNestedOneWithoutUserInput
   ideaNotes?: Prisma.IdeaNoteUncheckedCreateNestedManyWithoutAuthorInput
-  dailyPlans?: Prisma.DailyPlanUncheckedCreateNestedManyWithoutUserInput
+  feedbackAuthored?: Prisma.MentorFeedbackUncheckedCreateNestedManyWithoutAuthorInput
+  reflections?: Prisma.ReflectionUncheckedCreateNestedManyWithoutInternInput
+  assignmentsCreated?: Prisma.WeeklyAssignmentUncheckedCreateNestedManyWithoutCreatedByInput
+  assignmentsAsIntern?: Prisma.WeeklyAssignmentUncheckedCreateNestedManyWithoutInternInput
+  friendshipsSent?: Prisma.FriendshipUncheckedCreateNestedManyWithoutRequesterInput
+  friendshipsReceived?: Prisma.FriendshipUncheckedCreateNestedManyWithoutRecipientInput
+  directChatsFirst?: Prisma.DirectConversationUncheckedCreateNestedManyWithoutFirstUserInput
+  directChatsSecond?: Prisma.DirectConversationUncheckedCreateNestedManyWithoutSecondUserInput
+  chatMemberships?: Prisma.ChatMembershipUncheckedCreateNestedManyWithoutUserInput
+  chatMessages?: Prisma.ChatMessageUncheckedCreateNestedManyWithoutSenderInput
+  chatEncryptionKey?: Prisma.ChatEncryptionKeyUncheckedCreateNestedOneWithoutUserInput
+  accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutIdeasInput = {
@@ -1481,20 +1916,28 @@ export type UserUpdateWithoutIdeasInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   role?: Prisma.StringFieldUpdateOperationsInput | string
-  locale?: Prisma.StringFieldUpdateOperationsInput | string
   banned?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   banReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   banExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
-  accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
-  assignmentsAsIntern?: Prisma.WeeklyAssignmentUpdateManyWithoutInternNestedInput
-  assignmentsCreated?: Prisma.WeeklyAssignmentUpdateManyWithoutCreatedByNestedInput
-  reflections?: Prisma.ReflectionUpdateManyWithoutInternNestedInput
-  feedbackAuthored?: Prisma.MentorFeedbackUpdateManyWithoutAuthorNestedInput
-  discussionNote?: Prisma.DiscussionNoteUpdateOneWithoutUserNestedInput
+  locale?: Prisma.StringFieldUpdateOperationsInput | string
+  secureLoginVersion?: Prisma.IntFieldUpdateOperationsInput | number
+  DailyPlan?: Prisma.DailyPlanUpdateManyWithoutUserNestedInput
   resourcesAdded?: Prisma.DepartmentResourceUpdateManyWithoutCreatedByNestedInput
+  discussionNote?: Prisma.DiscussionNoteUpdateOneWithoutUserNestedInput
   ideaNotes?: Prisma.IdeaNoteUpdateManyWithoutAuthorNestedInput
-  dailyPlans?: Prisma.DailyPlanUpdateManyWithoutUserNestedInput
+  feedbackAuthored?: Prisma.MentorFeedbackUpdateManyWithoutAuthorNestedInput
+  reflections?: Prisma.ReflectionUpdateManyWithoutInternNestedInput
+  assignmentsCreated?: Prisma.WeeklyAssignmentUpdateManyWithoutCreatedByNestedInput
+  assignmentsAsIntern?: Prisma.WeeklyAssignmentUpdateManyWithoutInternNestedInput
+  friendshipsSent?: Prisma.FriendshipUpdateManyWithoutRequesterNestedInput
+  friendshipsReceived?: Prisma.FriendshipUpdateManyWithoutRecipientNestedInput
+  directChatsFirst?: Prisma.DirectConversationUpdateManyWithoutFirstUserNestedInput
+  directChatsSecond?: Prisma.DirectConversationUpdateManyWithoutSecondUserNestedInput
+  chatMemberships?: Prisma.ChatMembershipUpdateManyWithoutUserNestedInput
+  chatMessages?: Prisma.ChatMessageUpdateManyWithoutSenderNestedInput
+  chatEncryptionKey?: Prisma.ChatEncryptionKeyUpdateOneWithoutUserNestedInput
+  accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutIdeasInput = {
@@ -1506,20 +1949,28 @@ export type UserUncheckedUpdateWithoutIdeasInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   role?: Prisma.StringFieldUpdateOperationsInput | string
-  locale?: Prisma.StringFieldUpdateOperationsInput | string
   banned?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   banReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   banExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
-  accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
-  assignmentsAsIntern?: Prisma.WeeklyAssignmentUncheckedUpdateManyWithoutInternNestedInput
-  assignmentsCreated?: Prisma.WeeklyAssignmentUncheckedUpdateManyWithoutCreatedByNestedInput
-  reflections?: Prisma.ReflectionUncheckedUpdateManyWithoutInternNestedInput
-  feedbackAuthored?: Prisma.MentorFeedbackUncheckedUpdateManyWithoutAuthorNestedInput
-  discussionNote?: Prisma.DiscussionNoteUncheckedUpdateOneWithoutUserNestedInput
+  locale?: Prisma.StringFieldUpdateOperationsInput | string
+  secureLoginVersion?: Prisma.IntFieldUpdateOperationsInput | number
+  DailyPlan?: Prisma.DailyPlanUncheckedUpdateManyWithoutUserNestedInput
   resourcesAdded?: Prisma.DepartmentResourceUncheckedUpdateManyWithoutCreatedByNestedInput
+  discussionNote?: Prisma.DiscussionNoteUncheckedUpdateOneWithoutUserNestedInput
   ideaNotes?: Prisma.IdeaNoteUncheckedUpdateManyWithoutAuthorNestedInput
-  dailyPlans?: Prisma.DailyPlanUncheckedUpdateManyWithoutUserNestedInput
+  feedbackAuthored?: Prisma.MentorFeedbackUncheckedUpdateManyWithoutAuthorNestedInput
+  reflections?: Prisma.ReflectionUncheckedUpdateManyWithoutInternNestedInput
+  assignmentsCreated?: Prisma.WeeklyAssignmentUncheckedUpdateManyWithoutCreatedByNestedInput
+  assignmentsAsIntern?: Prisma.WeeklyAssignmentUncheckedUpdateManyWithoutInternNestedInput
+  friendshipsSent?: Prisma.FriendshipUncheckedUpdateManyWithoutRequesterNestedInput
+  friendshipsReceived?: Prisma.FriendshipUncheckedUpdateManyWithoutRecipientNestedInput
+  directChatsFirst?: Prisma.DirectConversationUncheckedUpdateManyWithoutFirstUserNestedInput
+  directChatsSecond?: Prisma.DirectConversationUncheckedUpdateManyWithoutSecondUserNestedInput
+  chatMemberships?: Prisma.ChatMembershipUncheckedUpdateManyWithoutUserNestedInput
+  chatMessages?: Prisma.ChatMessageUncheckedUpdateManyWithoutSenderNestedInput
+  chatEncryptionKey?: Prisma.ChatEncryptionKeyUncheckedUpdateOneWithoutUserNestedInput
+  accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutIdeaNotesInput = {
@@ -1531,20 +1982,28 @@ export type UserCreateWithoutIdeaNotesInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   role?: string
-  locale?: string
   banned?: boolean | null
   banReason?: string | null
   banExpires?: Date | string | null
-  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
-  accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
-  assignmentsAsIntern?: Prisma.WeeklyAssignmentCreateNestedManyWithoutInternInput
-  assignmentsCreated?: Prisma.WeeklyAssignmentCreateNestedManyWithoutCreatedByInput
-  reflections?: Prisma.ReflectionCreateNestedManyWithoutInternInput
-  feedbackAuthored?: Prisma.MentorFeedbackCreateNestedManyWithoutAuthorInput
-  discussionNote?: Prisma.DiscussionNoteCreateNestedOneWithoutUserInput
+  locale?: string
+  secureLoginVersion?: number
+  DailyPlan?: Prisma.DailyPlanCreateNestedManyWithoutUserInput
   resourcesAdded?: Prisma.DepartmentResourceCreateNestedManyWithoutCreatedByInput
+  discussionNote?: Prisma.DiscussionNoteCreateNestedOneWithoutUserInput
   ideas?: Prisma.IdeaCreateNestedManyWithoutAuthorInput
-  dailyPlans?: Prisma.DailyPlanCreateNestedManyWithoutUserInput
+  feedbackAuthored?: Prisma.MentorFeedbackCreateNestedManyWithoutAuthorInput
+  reflections?: Prisma.ReflectionCreateNestedManyWithoutInternInput
+  assignmentsCreated?: Prisma.WeeklyAssignmentCreateNestedManyWithoutCreatedByInput
+  assignmentsAsIntern?: Prisma.WeeklyAssignmentCreateNestedManyWithoutInternInput
+  friendshipsSent?: Prisma.FriendshipCreateNestedManyWithoutRequesterInput
+  friendshipsReceived?: Prisma.FriendshipCreateNestedManyWithoutRecipientInput
+  directChatsFirst?: Prisma.DirectConversationCreateNestedManyWithoutFirstUserInput
+  directChatsSecond?: Prisma.DirectConversationCreateNestedManyWithoutSecondUserInput
+  chatMemberships?: Prisma.ChatMembershipCreateNestedManyWithoutUserInput
+  chatMessages?: Prisma.ChatMessageCreateNestedManyWithoutSenderInput
+  chatEncryptionKey?: Prisma.ChatEncryptionKeyCreateNestedOneWithoutUserInput
+  accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutIdeaNotesInput = {
@@ -1556,20 +2015,28 @@ export type UserUncheckedCreateWithoutIdeaNotesInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   role?: string
-  locale?: string
   banned?: boolean | null
   banReason?: string | null
   banExpires?: Date | string | null
-  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
-  accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
-  assignmentsAsIntern?: Prisma.WeeklyAssignmentUncheckedCreateNestedManyWithoutInternInput
-  assignmentsCreated?: Prisma.WeeklyAssignmentUncheckedCreateNestedManyWithoutCreatedByInput
-  reflections?: Prisma.ReflectionUncheckedCreateNestedManyWithoutInternInput
-  feedbackAuthored?: Prisma.MentorFeedbackUncheckedCreateNestedManyWithoutAuthorInput
-  discussionNote?: Prisma.DiscussionNoteUncheckedCreateNestedOneWithoutUserInput
+  locale?: string
+  secureLoginVersion?: number
+  DailyPlan?: Prisma.DailyPlanUncheckedCreateNestedManyWithoutUserInput
   resourcesAdded?: Prisma.DepartmentResourceUncheckedCreateNestedManyWithoutCreatedByInput
+  discussionNote?: Prisma.DiscussionNoteUncheckedCreateNestedOneWithoutUserInput
   ideas?: Prisma.IdeaUncheckedCreateNestedManyWithoutAuthorInput
-  dailyPlans?: Prisma.DailyPlanUncheckedCreateNestedManyWithoutUserInput
+  feedbackAuthored?: Prisma.MentorFeedbackUncheckedCreateNestedManyWithoutAuthorInput
+  reflections?: Prisma.ReflectionUncheckedCreateNestedManyWithoutInternInput
+  assignmentsCreated?: Prisma.WeeklyAssignmentUncheckedCreateNestedManyWithoutCreatedByInput
+  assignmentsAsIntern?: Prisma.WeeklyAssignmentUncheckedCreateNestedManyWithoutInternInput
+  friendshipsSent?: Prisma.FriendshipUncheckedCreateNestedManyWithoutRequesterInput
+  friendshipsReceived?: Prisma.FriendshipUncheckedCreateNestedManyWithoutRecipientInput
+  directChatsFirst?: Prisma.DirectConversationUncheckedCreateNestedManyWithoutFirstUserInput
+  directChatsSecond?: Prisma.DirectConversationUncheckedCreateNestedManyWithoutSecondUserInput
+  chatMemberships?: Prisma.ChatMembershipUncheckedCreateNestedManyWithoutUserInput
+  chatMessages?: Prisma.ChatMessageUncheckedCreateNestedManyWithoutSenderInput
+  chatEncryptionKey?: Prisma.ChatEncryptionKeyUncheckedCreateNestedOneWithoutUserInput
+  accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutIdeaNotesInput = {
@@ -1597,20 +2064,28 @@ export type UserUpdateWithoutIdeaNotesInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   role?: Prisma.StringFieldUpdateOperationsInput | string
-  locale?: Prisma.StringFieldUpdateOperationsInput | string
   banned?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   banReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   banExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
-  accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
-  assignmentsAsIntern?: Prisma.WeeklyAssignmentUpdateManyWithoutInternNestedInput
-  assignmentsCreated?: Prisma.WeeklyAssignmentUpdateManyWithoutCreatedByNestedInput
-  reflections?: Prisma.ReflectionUpdateManyWithoutInternNestedInput
-  feedbackAuthored?: Prisma.MentorFeedbackUpdateManyWithoutAuthorNestedInput
-  discussionNote?: Prisma.DiscussionNoteUpdateOneWithoutUserNestedInput
+  locale?: Prisma.StringFieldUpdateOperationsInput | string
+  secureLoginVersion?: Prisma.IntFieldUpdateOperationsInput | number
+  DailyPlan?: Prisma.DailyPlanUpdateManyWithoutUserNestedInput
   resourcesAdded?: Prisma.DepartmentResourceUpdateManyWithoutCreatedByNestedInput
+  discussionNote?: Prisma.DiscussionNoteUpdateOneWithoutUserNestedInput
   ideas?: Prisma.IdeaUpdateManyWithoutAuthorNestedInput
-  dailyPlans?: Prisma.DailyPlanUpdateManyWithoutUserNestedInput
+  feedbackAuthored?: Prisma.MentorFeedbackUpdateManyWithoutAuthorNestedInput
+  reflections?: Prisma.ReflectionUpdateManyWithoutInternNestedInput
+  assignmentsCreated?: Prisma.WeeklyAssignmentUpdateManyWithoutCreatedByNestedInput
+  assignmentsAsIntern?: Prisma.WeeklyAssignmentUpdateManyWithoutInternNestedInput
+  friendshipsSent?: Prisma.FriendshipUpdateManyWithoutRequesterNestedInput
+  friendshipsReceived?: Prisma.FriendshipUpdateManyWithoutRecipientNestedInput
+  directChatsFirst?: Prisma.DirectConversationUpdateManyWithoutFirstUserNestedInput
+  directChatsSecond?: Prisma.DirectConversationUpdateManyWithoutSecondUserNestedInput
+  chatMemberships?: Prisma.ChatMembershipUpdateManyWithoutUserNestedInput
+  chatMessages?: Prisma.ChatMessageUpdateManyWithoutSenderNestedInput
+  chatEncryptionKey?: Prisma.ChatEncryptionKeyUpdateOneWithoutUserNestedInput
+  accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutIdeaNotesInput = {
@@ -1622,136 +2097,28 @@ export type UserUncheckedUpdateWithoutIdeaNotesInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   role?: Prisma.StringFieldUpdateOperationsInput | string
-  locale?: Prisma.StringFieldUpdateOperationsInput | string
   banned?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   banReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   banExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
-  accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
-  assignmentsAsIntern?: Prisma.WeeklyAssignmentUncheckedUpdateManyWithoutInternNestedInput
-  assignmentsCreated?: Prisma.WeeklyAssignmentUncheckedUpdateManyWithoutCreatedByNestedInput
-  reflections?: Prisma.ReflectionUncheckedUpdateManyWithoutInternNestedInput
-  feedbackAuthored?: Prisma.MentorFeedbackUncheckedUpdateManyWithoutAuthorNestedInput
-  discussionNote?: Prisma.DiscussionNoteUncheckedUpdateOneWithoutUserNestedInput
+  locale?: Prisma.StringFieldUpdateOperationsInput | string
+  secureLoginVersion?: Prisma.IntFieldUpdateOperationsInput | number
+  DailyPlan?: Prisma.DailyPlanUncheckedUpdateManyWithoutUserNestedInput
   resourcesAdded?: Prisma.DepartmentResourceUncheckedUpdateManyWithoutCreatedByNestedInput
-  ideas?: Prisma.IdeaUncheckedUpdateManyWithoutAuthorNestedInput
-  dailyPlans?: Prisma.DailyPlanUncheckedUpdateManyWithoutUserNestedInput
-}
-
-export type UserCreateWithoutDailyPlansInput = {
-  id: string
-  name: string
-  email: string
-  emailVerified?: boolean
-  image?: string | null
-  createdAt?: Date | string
-  updatedAt?: Date | string
-  role?: string
-  locale?: string
-  banned?: boolean | null
-  banReason?: string | null
-  banExpires?: Date | string | null
-  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
-  accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
-  assignmentsAsIntern?: Prisma.WeeklyAssignmentCreateNestedManyWithoutInternInput
-  assignmentsCreated?: Prisma.WeeklyAssignmentCreateNestedManyWithoutCreatedByInput
-  reflections?: Prisma.ReflectionCreateNestedManyWithoutInternInput
-  feedbackAuthored?: Prisma.MentorFeedbackCreateNestedManyWithoutAuthorInput
-  discussionNote?: Prisma.DiscussionNoteCreateNestedOneWithoutUserInput
-  resourcesAdded?: Prisma.DepartmentResourceCreateNestedManyWithoutCreatedByInput
-  ideas?: Prisma.IdeaCreateNestedManyWithoutAuthorInput
-  ideaNotes?: Prisma.IdeaNoteCreateNestedManyWithoutAuthorInput
-}
-
-export type UserUncheckedCreateWithoutDailyPlansInput = {
-  id: string
-  name: string
-  email: string
-  emailVerified?: boolean
-  image?: string | null
-  createdAt?: Date | string
-  updatedAt?: Date | string
-  role?: string
-  locale?: string
-  banned?: boolean | null
-  banReason?: string | null
-  banExpires?: Date | string | null
-  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
-  accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
-  assignmentsAsIntern?: Prisma.WeeklyAssignmentUncheckedCreateNestedManyWithoutInternInput
-  assignmentsCreated?: Prisma.WeeklyAssignmentUncheckedCreateNestedManyWithoutCreatedByInput
-  reflections?: Prisma.ReflectionUncheckedCreateNestedManyWithoutInternInput
-  feedbackAuthored?: Prisma.MentorFeedbackUncheckedCreateNestedManyWithoutAuthorInput
-  discussionNote?: Prisma.DiscussionNoteUncheckedCreateNestedOneWithoutUserInput
-  resourcesAdded?: Prisma.DepartmentResourceUncheckedCreateNestedManyWithoutCreatedByInput
-  ideas?: Prisma.IdeaUncheckedCreateNestedManyWithoutAuthorInput
-  ideaNotes?: Prisma.IdeaNoteUncheckedCreateNestedManyWithoutAuthorInput
-}
-
-export type UserCreateOrConnectWithoutDailyPlansInput = {
-  where: Prisma.UserWhereUniqueInput
-  create: Prisma.XOR<Prisma.UserCreateWithoutDailyPlansInput, Prisma.UserUncheckedCreateWithoutDailyPlansInput>
-}
-
-export type UserUpsertWithoutDailyPlansInput = {
-  update: Prisma.XOR<Prisma.UserUpdateWithoutDailyPlansInput, Prisma.UserUncheckedUpdateWithoutDailyPlansInput>
-  create: Prisma.XOR<Prisma.UserCreateWithoutDailyPlansInput, Prisma.UserUncheckedCreateWithoutDailyPlansInput>
-  where?: Prisma.UserWhereInput
-}
-
-export type UserUpdateToOneWithWhereWithoutDailyPlansInput = {
-  where?: Prisma.UserWhereInput
-  data: Prisma.XOR<Prisma.UserUpdateWithoutDailyPlansInput, Prisma.UserUncheckedUpdateWithoutDailyPlansInput>
-}
-
-export type UserUpdateWithoutDailyPlansInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.StringFieldUpdateOperationsInput | string
-  email?: Prisma.StringFieldUpdateOperationsInput | string
-  emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  role?: Prisma.StringFieldUpdateOperationsInput | string
-  locale?: Prisma.StringFieldUpdateOperationsInput | string
-  banned?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
-  banReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  banExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
-  accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
-  assignmentsAsIntern?: Prisma.WeeklyAssignmentUpdateManyWithoutInternNestedInput
-  assignmentsCreated?: Prisma.WeeklyAssignmentUpdateManyWithoutCreatedByNestedInput
-  reflections?: Prisma.ReflectionUpdateManyWithoutInternNestedInput
-  feedbackAuthored?: Prisma.MentorFeedbackUpdateManyWithoutAuthorNestedInput
-  discussionNote?: Prisma.DiscussionNoteUpdateOneWithoutUserNestedInput
-  resourcesAdded?: Prisma.DepartmentResourceUpdateManyWithoutCreatedByNestedInput
-  ideas?: Prisma.IdeaUpdateManyWithoutAuthorNestedInput
-  ideaNotes?: Prisma.IdeaNoteUpdateManyWithoutAuthorNestedInput
-}
-
-export type UserUncheckedUpdateWithoutDailyPlansInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.StringFieldUpdateOperationsInput | string
-  email?: Prisma.StringFieldUpdateOperationsInput | string
-  emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  role?: Prisma.StringFieldUpdateOperationsInput | string
-  locale?: Prisma.StringFieldUpdateOperationsInput | string
-  banned?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
-  banReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  banExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
-  accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
-  assignmentsAsIntern?: Prisma.WeeklyAssignmentUncheckedUpdateManyWithoutInternNestedInput
-  assignmentsCreated?: Prisma.WeeklyAssignmentUncheckedUpdateManyWithoutCreatedByNestedInput
-  reflections?: Prisma.ReflectionUncheckedUpdateManyWithoutInternNestedInput
-  feedbackAuthored?: Prisma.MentorFeedbackUncheckedUpdateManyWithoutAuthorNestedInput
   discussionNote?: Prisma.DiscussionNoteUncheckedUpdateOneWithoutUserNestedInput
-  resourcesAdded?: Prisma.DepartmentResourceUncheckedUpdateManyWithoutCreatedByNestedInput
   ideas?: Prisma.IdeaUncheckedUpdateManyWithoutAuthorNestedInput
-  ideaNotes?: Prisma.IdeaNoteUncheckedUpdateManyWithoutAuthorNestedInput
+  feedbackAuthored?: Prisma.MentorFeedbackUncheckedUpdateManyWithoutAuthorNestedInput
+  reflections?: Prisma.ReflectionUncheckedUpdateManyWithoutInternNestedInput
+  assignmentsCreated?: Prisma.WeeklyAssignmentUncheckedUpdateManyWithoutCreatedByNestedInput
+  assignmentsAsIntern?: Prisma.WeeklyAssignmentUncheckedUpdateManyWithoutInternNestedInput
+  friendshipsSent?: Prisma.FriendshipUncheckedUpdateManyWithoutRequesterNestedInput
+  friendshipsReceived?: Prisma.FriendshipUncheckedUpdateManyWithoutRecipientNestedInput
+  directChatsFirst?: Prisma.DirectConversationUncheckedUpdateManyWithoutFirstUserNestedInput
+  directChatsSecond?: Prisma.DirectConversationUncheckedUpdateManyWithoutSecondUserNestedInput
+  chatMemberships?: Prisma.ChatMembershipUncheckedUpdateManyWithoutUserNestedInput
+  chatMessages?: Prisma.ChatMessageUncheckedUpdateManyWithoutSenderNestedInput
+  chatEncryptionKey?: Prisma.ChatEncryptionKeyUncheckedUpdateOneWithoutUserNestedInput
+  accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutSessionsInput = {
@@ -1763,20 +2130,28 @@ export type UserCreateWithoutSessionsInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   role?: string
-  locale?: string
   banned?: boolean | null
   banReason?: string | null
   banExpires?: Date | string | null
-  accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
-  assignmentsAsIntern?: Prisma.WeeklyAssignmentCreateNestedManyWithoutInternInput
-  assignmentsCreated?: Prisma.WeeklyAssignmentCreateNestedManyWithoutCreatedByInput
-  reflections?: Prisma.ReflectionCreateNestedManyWithoutInternInput
-  feedbackAuthored?: Prisma.MentorFeedbackCreateNestedManyWithoutAuthorInput
-  discussionNote?: Prisma.DiscussionNoteCreateNestedOneWithoutUserInput
+  locale?: string
+  secureLoginVersion?: number
+  DailyPlan?: Prisma.DailyPlanCreateNestedManyWithoutUserInput
   resourcesAdded?: Prisma.DepartmentResourceCreateNestedManyWithoutCreatedByInput
+  discussionNote?: Prisma.DiscussionNoteCreateNestedOneWithoutUserInput
   ideas?: Prisma.IdeaCreateNestedManyWithoutAuthorInput
   ideaNotes?: Prisma.IdeaNoteCreateNestedManyWithoutAuthorInput
-  dailyPlans?: Prisma.DailyPlanCreateNestedManyWithoutUserInput
+  feedbackAuthored?: Prisma.MentorFeedbackCreateNestedManyWithoutAuthorInput
+  reflections?: Prisma.ReflectionCreateNestedManyWithoutInternInput
+  assignmentsCreated?: Prisma.WeeklyAssignmentCreateNestedManyWithoutCreatedByInput
+  assignmentsAsIntern?: Prisma.WeeklyAssignmentCreateNestedManyWithoutInternInput
+  friendshipsSent?: Prisma.FriendshipCreateNestedManyWithoutRequesterInput
+  friendshipsReceived?: Prisma.FriendshipCreateNestedManyWithoutRecipientInput
+  directChatsFirst?: Prisma.DirectConversationCreateNestedManyWithoutFirstUserInput
+  directChatsSecond?: Prisma.DirectConversationCreateNestedManyWithoutSecondUserInput
+  chatMemberships?: Prisma.ChatMembershipCreateNestedManyWithoutUserInput
+  chatMessages?: Prisma.ChatMessageCreateNestedManyWithoutSenderInput
+  chatEncryptionKey?: Prisma.ChatEncryptionKeyCreateNestedOneWithoutUserInput
+  accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutSessionsInput = {
@@ -1788,20 +2163,28 @@ export type UserUncheckedCreateWithoutSessionsInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   role?: string
-  locale?: string
   banned?: boolean | null
   banReason?: string | null
   banExpires?: Date | string | null
-  accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
-  assignmentsAsIntern?: Prisma.WeeklyAssignmentUncheckedCreateNestedManyWithoutInternInput
-  assignmentsCreated?: Prisma.WeeklyAssignmentUncheckedCreateNestedManyWithoutCreatedByInput
-  reflections?: Prisma.ReflectionUncheckedCreateNestedManyWithoutInternInput
-  feedbackAuthored?: Prisma.MentorFeedbackUncheckedCreateNestedManyWithoutAuthorInput
-  discussionNote?: Prisma.DiscussionNoteUncheckedCreateNestedOneWithoutUserInput
+  locale?: string
+  secureLoginVersion?: number
+  DailyPlan?: Prisma.DailyPlanUncheckedCreateNestedManyWithoutUserInput
   resourcesAdded?: Prisma.DepartmentResourceUncheckedCreateNestedManyWithoutCreatedByInput
+  discussionNote?: Prisma.DiscussionNoteUncheckedCreateNestedOneWithoutUserInput
   ideas?: Prisma.IdeaUncheckedCreateNestedManyWithoutAuthorInput
   ideaNotes?: Prisma.IdeaNoteUncheckedCreateNestedManyWithoutAuthorInput
-  dailyPlans?: Prisma.DailyPlanUncheckedCreateNestedManyWithoutUserInput
+  feedbackAuthored?: Prisma.MentorFeedbackUncheckedCreateNestedManyWithoutAuthorInput
+  reflections?: Prisma.ReflectionUncheckedCreateNestedManyWithoutInternInput
+  assignmentsCreated?: Prisma.WeeklyAssignmentUncheckedCreateNestedManyWithoutCreatedByInput
+  assignmentsAsIntern?: Prisma.WeeklyAssignmentUncheckedCreateNestedManyWithoutInternInput
+  friendshipsSent?: Prisma.FriendshipUncheckedCreateNestedManyWithoutRequesterInput
+  friendshipsReceived?: Prisma.FriendshipUncheckedCreateNestedManyWithoutRecipientInput
+  directChatsFirst?: Prisma.DirectConversationUncheckedCreateNestedManyWithoutFirstUserInput
+  directChatsSecond?: Prisma.DirectConversationUncheckedCreateNestedManyWithoutSecondUserInput
+  chatMemberships?: Prisma.ChatMembershipUncheckedCreateNestedManyWithoutUserInput
+  chatMessages?: Prisma.ChatMessageUncheckedCreateNestedManyWithoutSenderInput
+  chatEncryptionKey?: Prisma.ChatEncryptionKeyUncheckedCreateNestedOneWithoutUserInput
+  accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutSessionsInput = {
@@ -1829,20 +2212,28 @@ export type UserUpdateWithoutSessionsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   role?: Prisma.StringFieldUpdateOperationsInput | string
-  locale?: Prisma.StringFieldUpdateOperationsInput | string
   banned?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   banReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   banExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
-  assignmentsAsIntern?: Prisma.WeeklyAssignmentUpdateManyWithoutInternNestedInput
-  assignmentsCreated?: Prisma.WeeklyAssignmentUpdateManyWithoutCreatedByNestedInput
-  reflections?: Prisma.ReflectionUpdateManyWithoutInternNestedInput
-  feedbackAuthored?: Prisma.MentorFeedbackUpdateManyWithoutAuthorNestedInput
-  discussionNote?: Prisma.DiscussionNoteUpdateOneWithoutUserNestedInput
+  locale?: Prisma.StringFieldUpdateOperationsInput | string
+  secureLoginVersion?: Prisma.IntFieldUpdateOperationsInput | number
+  DailyPlan?: Prisma.DailyPlanUpdateManyWithoutUserNestedInput
   resourcesAdded?: Prisma.DepartmentResourceUpdateManyWithoutCreatedByNestedInput
+  discussionNote?: Prisma.DiscussionNoteUpdateOneWithoutUserNestedInput
   ideas?: Prisma.IdeaUpdateManyWithoutAuthorNestedInput
   ideaNotes?: Prisma.IdeaNoteUpdateManyWithoutAuthorNestedInput
-  dailyPlans?: Prisma.DailyPlanUpdateManyWithoutUserNestedInput
+  feedbackAuthored?: Prisma.MentorFeedbackUpdateManyWithoutAuthorNestedInput
+  reflections?: Prisma.ReflectionUpdateManyWithoutInternNestedInput
+  assignmentsCreated?: Prisma.WeeklyAssignmentUpdateManyWithoutCreatedByNestedInput
+  assignmentsAsIntern?: Prisma.WeeklyAssignmentUpdateManyWithoutInternNestedInput
+  friendshipsSent?: Prisma.FriendshipUpdateManyWithoutRequesterNestedInput
+  friendshipsReceived?: Prisma.FriendshipUpdateManyWithoutRecipientNestedInput
+  directChatsFirst?: Prisma.DirectConversationUpdateManyWithoutFirstUserNestedInput
+  directChatsSecond?: Prisma.DirectConversationUpdateManyWithoutSecondUserNestedInput
+  chatMemberships?: Prisma.ChatMembershipUpdateManyWithoutUserNestedInput
+  chatMessages?: Prisma.ChatMessageUpdateManyWithoutSenderNestedInput
+  chatEncryptionKey?: Prisma.ChatEncryptionKeyUpdateOneWithoutUserNestedInput
+  accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutSessionsInput = {
@@ -1854,20 +2245,28 @@ export type UserUncheckedUpdateWithoutSessionsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   role?: Prisma.StringFieldUpdateOperationsInput | string
-  locale?: Prisma.StringFieldUpdateOperationsInput | string
   banned?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   banReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   banExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
-  assignmentsAsIntern?: Prisma.WeeklyAssignmentUncheckedUpdateManyWithoutInternNestedInput
-  assignmentsCreated?: Prisma.WeeklyAssignmentUncheckedUpdateManyWithoutCreatedByNestedInput
-  reflections?: Prisma.ReflectionUncheckedUpdateManyWithoutInternNestedInput
-  feedbackAuthored?: Prisma.MentorFeedbackUncheckedUpdateManyWithoutAuthorNestedInput
-  discussionNote?: Prisma.DiscussionNoteUncheckedUpdateOneWithoutUserNestedInput
+  locale?: Prisma.StringFieldUpdateOperationsInput | string
+  secureLoginVersion?: Prisma.IntFieldUpdateOperationsInput | number
+  DailyPlan?: Prisma.DailyPlanUncheckedUpdateManyWithoutUserNestedInput
   resourcesAdded?: Prisma.DepartmentResourceUncheckedUpdateManyWithoutCreatedByNestedInput
+  discussionNote?: Prisma.DiscussionNoteUncheckedUpdateOneWithoutUserNestedInput
   ideas?: Prisma.IdeaUncheckedUpdateManyWithoutAuthorNestedInput
   ideaNotes?: Prisma.IdeaNoteUncheckedUpdateManyWithoutAuthorNestedInput
-  dailyPlans?: Prisma.DailyPlanUncheckedUpdateManyWithoutUserNestedInput
+  feedbackAuthored?: Prisma.MentorFeedbackUncheckedUpdateManyWithoutAuthorNestedInput
+  reflections?: Prisma.ReflectionUncheckedUpdateManyWithoutInternNestedInput
+  assignmentsCreated?: Prisma.WeeklyAssignmentUncheckedUpdateManyWithoutCreatedByNestedInput
+  assignmentsAsIntern?: Prisma.WeeklyAssignmentUncheckedUpdateManyWithoutInternNestedInput
+  friendshipsSent?: Prisma.FriendshipUncheckedUpdateManyWithoutRequesterNestedInput
+  friendshipsReceived?: Prisma.FriendshipUncheckedUpdateManyWithoutRecipientNestedInput
+  directChatsFirst?: Prisma.DirectConversationUncheckedUpdateManyWithoutFirstUserNestedInput
+  directChatsSecond?: Prisma.DirectConversationUncheckedUpdateManyWithoutSecondUserNestedInput
+  chatMemberships?: Prisma.ChatMembershipUncheckedUpdateManyWithoutUserNestedInput
+  chatMessages?: Prisma.ChatMessageUncheckedUpdateManyWithoutSenderNestedInput
+  chatEncryptionKey?: Prisma.ChatEncryptionKeyUncheckedUpdateOneWithoutUserNestedInput
+  accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutAccountsInput = {
@@ -1879,20 +2278,28 @@ export type UserCreateWithoutAccountsInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   role?: string
-  locale?: string
   banned?: boolean | null
   banReason?: string | null
   banExpires?: Date | string | null
-  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
-  assignmentsAsIntern?: Prisma.WeeklyAssignmentCreateNestedManyWithoutInternInput
-  assignmentsCreated?: Prisma.WeeklyAssignmentCreateNestedManyWithoutCreatedByInput
-  reflections?: Prisma.ReflectionCreateNestedManyWithoutInternInput
-  feedbackAuthored?: Prisma.MentorFeedbackCreateNestedManyWithoutAuthorInput
-  discussionNote?: Prisma.DiscussionNoteCreateNestedOneWithoutUserInput
+  locale?: string
+  secureLoginVersion?: number
+  DailyPlan?: Prisma.DailyPlanCreateNestedManyWithoutUserInput
   resourcesAdded?: Prisma.DepartmentResourceCreateNestedManyWithoutCreatedByInput
+  discussionNote?: Prisma.DiscussionNoteCreateNestedOneWithoutUserInput
   ideas?: Prisma.IdeaCreateNestedManyWithoutAuthorInput
   ideaNotes?: Prisma.IdeaNoteCreateNestedManyWithoutAuthorInput
-  dailyPlans?: Prisma.DailyPlanCreateNestedManyWithoutUserInput
+  feedbackAuthored?: Prisma.MentorFeedbackCreateNestedManyWithoutAuthorInput
+  reflections?: Prisma.ReflectionCreateNestedManyWithoutInternInput
+  assignmentsCreated?: Prisma.WeeklyAssignmentCreateNestedManyWithoutCreatedByInput
+  assignmentsAsIntern?: Prisma.WeeklyAssignmentCreateNestedManyWithoutInternInput
+  friendshipsSent?: Prisma.FriendshipCreateNestedManyWithoutRequesterInput
+  friendshipsReceived?: Prisma.FriendshipCreateNestedManyWithoutRecipientInput
+  directChatsFirst?: Prisma.DirectConversationCreateNestedManyWithoutFirstUserInput
+  directChatsSecond?: Prisma.DirectConversationCreateNestedManyWithoutSecondUserInput
+  chatMemberships?: Prisma.ChatMembershipCreateNestedManyWithoutUserInput
+  chatMessages?: Prisma.ChatMessageCreateNestedManyWithoutSenderInput
+  chatEncryptionKey?: Prisma.ChatEncryptionKeyCreateNestedOneWithoutUserInput
+  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutAccountsInput = {
@@ -1904,20 +2311,28 @@ export type UserUncheckedCreateWithoutAccountsInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   role?: string
-  locale?: string
   banned?: boolean | null
   banReason?: string | null
   banExpires?: Date | string | null
-  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
-  assignmentsAsIntern?: Prisma.WeeklyAssignmentUncheckedCreateNestedManyWithoutInternInput
-  assignmentsCreated?: Prisma.WeeklyAssignmentUncheckedCreateNestedManyWithoutCreatedByInput
-  reflections?: Prisma.ReflectionUncheckedCreateNestedManyWithoutInternInput
-  feedbackAuthored?: Prisma.MentorFeedbackUncheckedCreateNestedManyWithoutAuthorInput
-  discussionNote?: Prisma.DiscussionNoteUncheckedCreateNestedOneWithoutUserInput
+  locale?: string
+  secureLoginVersion?: number
+  DailyPlan?: Prisma.DailyPlanUncheckedCreateNestedManyWithoutUserInput
   resourcesAdded?: Prisma.DepartmentResourceUncheckedCreateNestedManyWithoutCreatedByInput
+  discussionNote?: Prisma.DiscussionNoteUncheckedCreateNestedOneWithoutUserInput
   ideas?: Prisma.IdeaUncheckedCreateNestedManyWithoutAuthorInput
   ideaNotes?: Prisma.IdeaNoteUncheckedCreateNestedManyWithoutAuthorInput
-  dailyPlans?: Prisma.DailyPlanUncheckedCreateNestedManyWithoutUserInput
+  feedbackAuthored?: Prisma.MentorFeedbackUncheckedCreateNestedManyWithoutAuthorInput
+  reflections?: Prisma.ReflectionUncheckedCreateNestedManyWithoutInternInput
+  assignmentsCreated?: Prisma.WeeklyAssignmentUncheckedCreateNestedManyWithoutCreatedByInput
+  assignmentsAsIntern?: Prisma.WeeklyAssignmentUncheckedCreateNestedManyWithoutInternInput
+  friendshipsSent?: Prisma.FriendshipUncheckedCreateNestedManyWithoutRequesterInput
+  friendshipsReceived?: Prisma.FriendshipUncheckedCreateNestedManyWithoutRecipientInput
+  directChatsFirst?: Prisma.DirectConversationUncheckedCreateNestedManyWithoutFirstUserInput
+  directChatsSecond?: Prisma.DirectConversationUncheckedCreateNestedManyWithoutSecondUserInput
+  chatMemberships?: Prisma.ChatMembershipUncheckedCreateNestedManyWithoutUserInput
+  chatMessages?: Prisma.ChatMessageUncheckedCreateNestedManyWithoutSenderInput
+  chatEncryptionKey?: Prisma.ChatEncryptionKeyUncheckedCreateNestedOneWithoutUserInput
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutAccountsInput = {
@@ -1945,20 +2360,28 @@ export type UserUpdateWithoutAccountsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   role?: Prisma.StringFieldUpdateOperationsInput | string
-  locale?: Prisma.StringFieldUpdateOperationsInput | string
   banned?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   banReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   banExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
-  assignmentsAsIntern?: Prisma.WeeklyAssignmentUpdateManyWithoutInternNestedInput
-  assignmentsCreated?: Prisma.WeeklyAssignmentUpdateManyWithoutCreatedByNestedInput
-  reflections?: Prisma.ReflectionUpdateManyWithoutInternNestedInput
-  feedbackAuthored?: Prisma.MentorFeedbackUpdateManyWithoutAuthorNestedInput
-  discussionNote?: Prisma.DiscussionNoteUpdateOneWithoutUserNestedInput
+  locale?: Prisma.StringFieldUpdateOperationsInput | string
+  secureLoginVersion?: Prisma.IntFieldUpdateOperationsInput | number
+  DailyPlan?: Prisma.DailyPlanUpdateManyWithoutUserNestedInput
   resourcesAdded?: Prisma.DepartmentResourceUpdateManyWithoutCreatedByNestedInput
+  discussionNote?: Prisma.DiscussionNoteUpdateOneWithoutUserNestedInput
   ideas?: Prisma.IdeaUpdateManyWithoutAuthorNestedInput
   ideaNotes?: Prisma.IdeaNoteUpdateManyWithoutAuthorNestedInput
-  dailyPlans?: Prisma.DailyPlanUpdateManyWithoutUserNestedInput
+  feedbackAuthored?: Prisma.MentorFeedbackUpdateManyWithoutAuthorNestedInput
+  reflections?: Prisma.ReflectionUpdateManyWithoutInternNestedInput
+  assignmentsCreated?: Prisma.WeeklyAssignmentUpdateManyWithoutCreatedByNestedInput
+  assignmentsAsIntern?: Prisma.WeeklyAssignmentUpdateManyWithoutInternNestedInput
+  friendshipsSent?: Prisma.FriendshipUpdateManyWithoutRequesterNestedInput
+  friendshipsReceived?: Prisma.FriendshipUpdateManyWithoutRecipientNestedInput
+  directChatsFirst?: Prisma.DirectConversationUpdateManyWithoutFirstUserNestedInput
+  directChatsSecond?: Prisma.DirectConversationUpdateManyWithoutSecondUserNestedInput
+  chatMemberships?: Prisma.ChatMembershipUpdateManyWithoutUserNestedInput
+  chatMessages?: Prisma.ChatMessageUpdateManyWithoutSenderNestedInput
+  chatEncryptionKey?: Prisma.ChatEncryptionKeyUpdateOneWithoutUserNestedInput
+  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutAccountsInput = {
@@ -1970,20 +2393,1212 @@ export type UserUncheckedUpdateWithoutAccountsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   role?: Prisma.StringFieldUpdateOperationsInput | string
-  locale?: Prisma.StringFieldUpdateOperationsInput | string
   banned?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   banReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   banExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
-  assignmentsAsIntern?: Prisma.WeeklyAssignmentUncheckedUpdateManyWithoutInternNestedInput
-  assignmentsCreated?: Prisma.WeeklyAssignmentUncheckedUpdateManyWithoutCreatedByNestedInput
-  reflections?: Prisma.ReflectionUncheckedUpdateManyWithoutInternNestedInput
-  feedbackAuthored?: Prisma.MentorFeedbackUncheckedUpdateManyWithoutAuthorNestedInput
-  discussionNote?: Prisma.DiscussionNoteUncheckedUpdateOneWithoutUserNestedInput
+  locale?: Prisma.StringFieldUpdateOperationsInput | string
+  secureLoginVersion?: Prisma.IntFieldUpdateOperationsInput | number
+  DailyPlan?: Prisma.DailyPlanUncheckedUpdateManyWithoutUserNestedInput
   resourcesAdded?: Prisma.DepartmentResourceUncheckedUpdateManyWithoutCreatedByNestedInput
+  discussionNote?: Prisma.DiscussionNoteUncheckedUpdateOneWithoutUserNestedInput
   ideas?: Prisma.IdeaUncheckedUpdateManyWithoutAuthorNestedInput
   ideaNotes?: Prisma.IdeaNoteUncheckedUpdateManyWithoutAuthorNestedInput
-  dailyPlans?: Prisma.DailyPlanUncheckedUpdateManyWithoutUserNestedInput
+  feedbackAuthored?: Prisma.MentorFeedbackUncheckedUpdateManyWithoutAuthorNestedInput
+  reflections?: Prisma.ReflectionUncheckedUpdateManyWithoutInternNestedInput
+  assignmentsCreated?: Prisma.WeeklyAssignmentUncheckedUpdateManyWithoutCreatedByNestedInput
+  assignmentsAsIntern?: Prisma.WeeklyAssignmentUncheckedUpdateManyWithoutInternNestedInput
+  friendshipsSent?: Prisma.FriendshipUncheckedUpdateManyWithoutRequesterNestedInput
+  friendshipsReceived?: Prisma.FriendshipUncheckedUpdateManyWithoutRecipientNestedInput
+  directChatsFirst?: Prisma.DirectConversationUncheckedUpdateManyWithoutFirstUserNestedInput
+  directChatsSecond?: Prisma.DirectConversationUncheckedUpdateManyWithoutSecondUserNestedInput
+  chatMemberships?: Prisma.ChatMembershipUncheckedUpdateManyWithoutUserNestedInput
+  chatMessages?: Prisma.ChatMessageUncheckedUpdateManyWithoutSenderNestedInput
+  chatEncryptionKey?: Prisma.ChatEncryptionKeyUncheckedUpdateOneWithoutUserNestedInput
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
+}
+
+export type UserCreateWithoutDailyPlanInput = {
+  id: string
+  name: string
+  email: string
+  emailVerified?: boolean
+  image?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  role?: string
+  banned?: boolean | null
+  banReason?: string | null
+  banExpires?: Date | string | null
+  locale?: string
+  secureLoginVersion?: number
+  resourcesAdded?: Prisma.DepartmentResourceCreateNestedManyWithoutCreatedByInput
+  discussionNote?: Prisma.DiscussionNoteCreateNestedOneWithoutUserInput
+  ideas?: Prisma.IdeaCreateNestedManyWithoutAuthorInput
+  ideaNotes?: Prisma.IdeaNoteCreateNestedManyWithoutAuthorInput
+  feedbackAuthored?: Prisma.MentorFeedbackCreateNestedManyWithoutAuthorInput
+  reflections?: Prisma.ReflectionCreateNestedManyWithoutInternInput
+  assignmentsCreated?: Prisma.WeeklyAssignmentCreateNestedManyWithoutCreatedByInput
+  assignmentsAsIntern?: Prisma.WeeklyAssignmentCreateNestedManyWithoutInternInput
+  friendshipsSent?: Prisma.FriendshipCreateNestedManyWithoutRequesterInput
+  friendshipsReceived?: Prisma.FriendshipCreateNestedManyWithoutRecipientInput
+  directChatsFirst?: Prisma.DirectConversationCreateNestedManyWithoutFirstUserInput
+  directChatsSecond?: Prisma.DirectConversationCreateNestedManyWithoutSecondUserInput
+  chatMemberships?: Prisma.ChatMembershipCreateNestedManyWithoutUserInput
+  chatMessages?: Prisma.ChatMessageCreateNestedManyWithoutSenderInput
+  chatEncryptionKey?: Prisma.ChatEncryptionKeyCreateNestedOneWithoutUserInput
+  accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
+}
+
+export type UserUncheckedCreateWithoutDailyPlanInput = {
+  id: string
+  name: string
+  email: string
+  emailVerified?: boolean
+  image?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  role?: string
+  banned?: boolean | null
+  banReason?: string | null
+  banExpires?: Date | string | null
+  locale?: string
+  secureLoginVersion?: number
+  resourcesAdded?: Prisma.DepartmentResourceUncheckedCreateNestedManyWithoutCreatedByInput
+  discussionNote?: Prisma.DiscussionNoteUncheckedCreateNestedOneWithoutUserInput
+  ideas?: Prisma.IdeaUncheckedCreateNestedManyWithoutAuthorInput
+  ideaNotes?: Prisma.IdeaNoteUncheckedCreateNestedManyWithoutAuthorInput
+  feedbackAuthored?: Prisma.MentorFeedbackUncheckedCreateNestedManyWithoutAuthorInput
+  reflections?: Prisma.ReflectionUncheckedCreateNestedManyWithoutInternInput
+  assignmentsCreated?: Prisma.WeeklyAssignmentUncheckedCreateNestedManyWithoutCreatedByInput
+  assignmentsAsIntern?: Prisma.WeeklyAssignmentUncheckedCreateNestedManyWithoutInternInput
+  friendshipsSent?: Prisma.FriendshipUncheckedCreateNestedManyWithoutRequesterInput
+  friendshipsReceived?: Prisma.FriendshipUncheckedCreateNestedManyWithoutRecipientInput
+  directChatsFirst?: Prisma.DirectConversationUncheckedCreateNestedManyWithoutFirstUserInput
+  directChatsSecond?: Prisma.DirectConversationUncheckedCreateNestedManyWithoutSecondUserInput
+  chatMemberships?: Prisma.ChatMembershipUncheckedCreateNestedManyWithoutUserInput
+  chatMessages?: Prisma.ChatMessageUncheckedCreateNestedManyWithoutSenderInput
+  chatEncryptionKey?: Prisma.ChatEncryptionKeyUncheckedCreateNestedOneWithoutUserInput
+  accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
+}
+
+export type UserCreateOrConnectWithoutDailyPlanInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutDailyPlanInput, Prisma.UserUncheckedCreateWithoutDailyPlanInput>
+}
+
+export type UserUpsertWithoutDailyPlanInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutDailyPlanInput, Prisma.UserUncheckedUpdateWithoutDailyPlanInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutDailyPlanInput, Prisma.UserUncheckedCreateWithoutDailyPlanInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutDailyPlanInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutDailyPlanInput, Prisma.UserUncheckedUpdateWithoutDailyPlanInput>
+}
+
+export type UserUpdateWithoutDailyPlanInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  role?: Prisma.StringFieldUpdateOperationsInput | string
+  banned?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  banReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  banExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  locale?: Prisma.StringFieldUpdateOperationsInput | string
+  secureLoginVersion?: Prisma.IntFieldUpdateOperationsInput | number
+  resourcesAdded?: Prisma.DepartmentResourceUpdateManyWithoutCreatedByNestedInput
+  discussionNote?: Prisma.DiscussionNoteUpdateOneWithoutUserNestedInput
+  ideas?: Prisma.IdeaUpdateManyWithoutAuthorNestedInput
+  ideaNotes?: Prisma.IdeaNoteUpdateManyWithoutAuthorNestedInput
+  feedbackAuthored?: Prisma.MentorFeedbackUpdateManyWithoutAuthorNestedInput
+  reflections?: Prisma.ReflectionUpdateManyWithoutInternNestedInput
+  assignmentsCreated?: Prisma.WeeklyAssignmentUpdateManyWithoutCreatedByNestedInput
+  assignmentsAsIntern?: Prisma.WeeklyAssignmentUpdateManyWithoutInternNestedInput
+  friendshipsSent?: Prisma.FriendshipUpdateManyWithoutRequesterNestedInput
+  friendshipsReceived?: Prisma.FriendshipUpdateManyWithoutRecipientNestedInput
+  directChatsFirst?: Prisma.DirectConversationUpdateManyWithoutFirstUserNestedInput
+  directChatsSecond?: Prisma.DirectConversationUpdateManyWithoutSecondUserNestedInput
+  chatMemberships?: Prisma.ChatMembershipUpdateManyWithoutUserNestedInput
+  chatMessages?: Prisma.ChatMessageUpdateManyWithoutSenderNestedInput
+  chatEncryptionKey?: Prisma.ChatEncryptionKeyUpdateOneWithoutUserNestedInput
+  accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutDailyPlanInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  role?: Prisma.StringFieldUpdateOperationsInput | string
+  banned?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  banReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  banExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  locale?: Prisma.StringFieldUpdateOperationsInput | string
+  secureLoginVersion?: Prisma.IntFieldUpdateOperationsInput | number
+  resourcesAdded?: Prisma.DepartmentResourceUncheckedUpdateManyWithoutCreatedByNestedInput
+  discussionNote?: Prisma.DiscussionNoteUncheckedUpdateOneWithoutUserNestedInput
+  ideas?: Prisma.IdeaUncheckedUpdateManyWithoutAuthorNestedInput
+  ideaNotes?: Prisma.IdeaNoteUncheckedUpdateManyWithoutAuthorNestedInput
+  feedbackAuthored?: Prisma.MentorFeedbackUncheckedUpdateManyWithoutAuthorNestedInput
+  reflections?: Prisma.ReflectionUncheckedUpdateManyWithoutInternNestedInput
+  assignmentsCreated?: Prisma.WeeklyAssignmentUncheckedUpdateManyWithoutCreatedByNestedInput
+  assignmentsAsIntern?: Prisma.WeeklyAssignmentUncheckedUpdateManyWithoutInternNestedInput
+  friendshipsSent?: Prisma.FriendshipUncheckedUpdateManyWithoutRequesterNestedInput
+  friendshipsReceived?: Prisma.FriendshipUncheckedUpdateManyWithoutRecipientNestedInput
+  directChatsFirst?: Prisma.DirectConversationUncheckedUpdateManyWithoutFirstUserNestedInput
+  directChatsSecond?: Prisma.DirectConversationUncheckedUpdateManyWithoutSecondUserNestedInput
+  chatMemberships?: Prisma.ChatMembershipUncheckedUpdateManyWithoutUserNestedInput
+  chatMessages?: Prisma.ChatMessageUncheckedUpdateManyWithoutSenderNestedInput
+  chatEncryptionKey?: Prisma.ChatEncryptionKeyUncheckedUpdateOneWithoutUserNestedInput
+  accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
+}
+
+export type UserCreateWithoutDirectChatsFirstInput = {
+  id: string
+  name: string
+  email: string
+  emailVerified?: boolean
+  image?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  role?: string
+  banned?: boolean | null
+  banReason?: string | null
+  banExpires?: Date | string | null
+  locale?: string
+  secureLoginVersion?: number
+  DailyPlan?: Prisma.DailyPlanCreateNestedManyWithoutUserInput
+  resourcesAdded?: Prisma.DepartmentResourceCreateNestedManyWithoutCreatedByInput
+  discussionNote?: Prisma.DiscussionNoteCreateNestedOneWithoutUserInput
+  ideas?: Prisma.IdeaCreateNestedManyWithoutAuthorInput
+  ideaNotes?: Prisma.IdeaNoteCreateNestedManyWithoutAuthorInput
+  feedbackAuthored?: Prisma.MentorFeedbackCreateNestedManyWithoutAuthorInput
+  reflections?: Prisma.ReflectionCreateNestedManyWithoutInternInput
+  assignmentsCreated?: Prisma.WeeklyAssignmentCreateNestedManyWithoutCreatedByInput
+  assignmentsAsIntern?: Prisma.WeeklyAssignmentCreateNestedManyWithoutInternInput
+  friendshipsSent?: Prisma.FriendshipCreateNestedManyWithoutRequesterInput
+  friendshipsReceived?: Prisma.FriendshipCreateNestedManyWithoutRecipientInput
+  directChatsSecond?: Prisma.DirectConversationCreateNestedManyWithoutSecondUserInput
+  chatMemberships?: Prisma.ChatMembershipCreateNestedManyWithoutUserInput
+  chatMessages?: Prisma.ChatMessageCreateNestedManyWithoutSenderInput
+  chatEncryptionKey?: Prisma.ChatEncryptionKeyCreateNestedOneWithoutUserInput
+  accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
+}
+
+export type UserUncheckedCreateWithoutDirectChatsFirstInput = {
+  id: string
+  name: string
+  email: string
+  emailVerified?: boolean
+  image?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  role?: string
+  banned?: boolean | null
+  banReason?: string | null
+  banExpires?: Date | string | null
+  locale?: string
+  secureLoginVersion?: number
+  DailyPlan?: Prisma.DailyPlanUncheckedCreateNestedManyWithoutUserInput
+  resourcesAdded?: Prisma.DepartmentResourceUncheckedCreateNestedManyWithoutCreatedByInput
+  discussionNote?: Prisma.DiscussionNoteUncheckedCreateNestedOneWithoutUserInput
+  ideas?: Prisma.IdeaUncheckedCreateNestedManyWithoutAuthorInput
+  ideaNotes?: Prisma.IdeaNoteUncheckedCreateNestedManyWithoutAuthorInput
+  feedbackAuthored?: Prisma.MentorFeedbackUncheckedCreateNestedManyWithoutAuthorInput
+  reflections?: Prisma.ReflectionUncheckedCreateNestedManyWithoutInternInput
+  assignmentsCreated?: Prisma.WeeklyAssignmentUncheckedCreateNestedManyWithoutCreatedByInput
+  assignmentsAsIntern?: Prisma.WeeklyAssignmentUncheckedCreateNestedManyWithoutInternInput
+  friendshipsSent?: Prisma.FriendshipUncheckedCreateNestedManyWithoutRequesterInput
+  friendshipsReceived?: Prisma.FriendshipUncheckedCreateNestedManyWithoutRecipientInput
+  directChatsSecond?: Prisma.DirectConversationUncheckedCreateNestedManyWithoutSecondUserInput
+  chatMemberships?: Prisma.ChatMembershipUncheckedCreateNestedManyWithoutUserInput
+  chatMessages?: Prisma.ChatMessageUncheckedCreateNestedManyWithoutSenderInput
+  chatEncryptionKey?: Prisma.ChatEncryptionKeyUncheckedCreateNestedOneWithoutUserInput
+  accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
+}
+
+export type UserCreateOrConnectWithoutDirectChatsFirstInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutDirectChatsFirstInput, Prisma.UserUncheckedCreateWithoutDirectChatsFirstInput>
+}
+
+export type UserCreateWithoutDirectChatsSecondInput = {
+  id: string
+  name: string
+  email: string
+  emailVerified?: boolean
+  image?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  role?: string
+  banned?: boolean | null
+  banReason?: string | null
+  banExpires?: Date | string | null
+  locale?: string
+  secureLoginVersion?: number
+  DailyPlan?: Prisma.DailyPlanCreateNestedManyWithoutUserInput
+  resourcesAdded?: Prisma.DepartmentResourceCreateNestedManyWithoutCreatedByInput
+  discussionNote?: Prisma.DiscussionNoteCreateNestedOneWithoutUserInput
+  ideas?: Prisma.IdeaCreateNestedManyWithoutAuthorInput
+  ideaNotes?: Prisma.IdeaNoteCreateNestedManyWithoutAuthorInput
+  feedbackAuthored?: Prisma.MentorFeedbackCreateNestedManyWithoutAuthorInput
+  reflections?: Prisma.ReflectionCreateNestedManyWithoutInternInput
+  assignmentsCreated?: Prisma.WeeklyAssignmentCreateNestedManyWithoutCreatedByInput
+  assignmentsAsIntern?: Prisma.WeeklyAssignmentCreateNestedManyWithoutInternInput
+  friendshipsSent?: Prisma.FriendshipCreateNestedManyWithoutRequesterInput
+  friendshipsReceived?: Prisma.FriendshipCreateNestedManyWithoutRecipientInput
+  directChatsFirst?: Prisma.DirectConversationCreateNestedManyWithoutFirstUserInput
+  chatMemberships?: Prisma.ChatMembershipCreateNestedManyWithoutUserInput
+  chatMessages?: Prisma.ChatMessageCreateNestedManyWithoutSenderInput
+  chatEncryptionKey?: Prisma.ChatEncryptionKeyCreateNestedOneWithoutUserInput
+  accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
+}
+
+export type UserUncheckedCreateWithoutDirectChatsSecondInput = {
+  id: string
+  name: string
+  email: string
+  emailVerified?: boolean
+  image?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  role?: string
+  banned?: boolean | null
+  banReason?: string | null
+  banExpires?: Date | string | null
+  locale?: string
+  secureLoginVersion?: number
+  DailyPlan?: Prisma.DailyPlanUncheckedCreateNestedManyWithoutUserInput
+  resourcesAdded?: Prisma.DepartmentResourceUncheckedCreateNestedManyWithoutCreatedByInput
+  discussionNote?: Prisma.DiscussionNoteUncheckedCreateNestedOneWithoutUserInput
+  ideas?: Prisma.IdeaUncheckedCreateNestedManyWithoutAuthorInput
+  ideaNotes?: Prisma.IdeaNoteUncheckedCreateNestedManyWithoutAuthorInput
+  feedbackAuthored?: Prisma.MentorFeedbackUncheckedCreateNestedManyWithoutAuthorInput
+  reflections?: Prisma.ReflectionUncheckedCreateNestedManyWithoutInternInput
+  assignmentsCreated?: Prisma.WeeklyAssignmentUncheckedCreateNestedManyWithoutCreatedByInput
+  assignmentsAsIntern?: Prisma.WeeklyAssignmentUncheckedCreateNestedManyWithoutInternInput
+  friendshipsSent?: Prisma.FriendshipUncheckedCreateNestedManyWithoutRequesterInput
+  friendshipsReceived?: Prisma.FriendshipUncheckedCreateNestedManyWithoutRecipientInput
+  directChatsFirst?: Prisma.DirectConversationUncheckedCreateNestedManyWithoutFirstUserInput
+  chatMemberships?: Prisma.ChatMembershipUncheckedCreateNestedManyWithoutUserInput
+  chatMessages?: Prisma.ChatMessageUncheckedCreateNestedManyWithoutSenderInput
+  chatEncryptionKey?: Prisma.ChatEncryptionKeyUncheckedCreateNestedOneWithoutUserInput
+  accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
+}
+
+export type UserCreateOrConnectWithoutDirectChatsSecondInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutDirectChatsSecondInput, Prisma.UserUncheckedCreateWithoutDirectChatsSecondInput>
+}
+
+export type UserUpsertWithoutDirectChatsFirstInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutDirectChatsFirstInput, Prisma.UserUncheckedUpdateWithoutDirectChatsFirstInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutDirectChatsFirstInput, Prisma.UserUncheckedCreateWithoutDirectChatsFirstInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutDirectChatsFirstInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutDirectChatsFirstInput, Prisma.UserUncheckedUpdateWithoutDirectChatsFirstInput>
+}
+
+export type UserUpdateWithoutDirectChatsFirstInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  role?: Prisma.StringFieldUpdateOperationsInput | string
+  banned?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  banReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  banExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  locale?: Prisma.StringFieldUpdateOperationsInput | string
+  secureLoginVersion?: Prisma.IntFieldUpdateOperationsInput | number
+  DailyPlan?: Prisma.DailyPlanUpdateManyWithoutUserNestedInput
+  resourcesAdded?: Prisma.DepartmentResourceUpdateManyWithoutCreatedByNestedInput
+  discussionNote?: Prisma.DiscussionNoteUpdateOneWithoutUserNestedInput
+  ideas?: Prisma.IdeaUpdateManyWithoutAuthorNestedInput
+  ideaNotes?: Prisma.IdeaNoteUpdateManyWithoutAuthorNestedInput
+  feedbackAuthored?: Prisma.MentorFeedbackUpdateManyWithoutAuthorNestedInput
+  reflections?: Prisma.ReflectionUpdateManyWithoutInternNestedInput
+  assignmentsCreated?: Prisma.WeeklyAssignmentUpdateManyWithoutCreatedByNestedInput
+  assignmentsAsIntern?: Prisma.WeeklyAssignmentUpdateManyWithoutInternNestedInput
+  friendshipsSent?: Prisma.FriendshipUpdateManyWithoutRequesterNestedInput
+  friendshipsReceived?: Prisma.FriendshipUpdateManyWithoutRecipientNestedInput
+  directChatsSecond?: Prisma.DirectConversationUpdateManyWithoutSecondUserNestedInput
+  chatMemberships?: Prisma.ChatMembershipUpdateManyWithoutUserNestedInput
+  chatMessages?: Prisma.ChatMessageUpdateManyWithoutSenderNestedInput
+  chatEncryptionKey?: Prisma.ChatEncryptionKeyUpdateOneWithoutUserNestedInput
+  accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutDirectChatsFirstInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  role?: Prisma.StringFieldUpdateOperationsInput | string
+  banned?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  banReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  banExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  locale?: Prisma.StringFieldUpdateOperationsInput | string
+  secureLoginVersion?: Prisma.IntFieldUpdateOperationsInput | number
+  DailyPlan?: Prisma.DailyPlanUncheckedUpdateManyWithoutUserNestedInput
+  resourcesAdded?: Prisma.DepartmentResourceUncheckedUpdateManyWithoutCreatedByNestedInput
+  discussionNote?: Prisma.DiscussionNoteUncheckedUpdateOneWithoutUserNestedInput
+  ideas?: Prisma.IdeaUncheckedUpdateManyWithoutAuthorNestedInput
+  ideaNotes?: Prisma.IdeaNoteUncheckedUpdateManyWithoutAuthorNestedInput
+  feedbackAuthored?: Prisma.MentorFeedbackUncheckedUpdateManyWithoutAuthorNestedInput
+  reflections?: Prisma.ReflectionUncheckedUpdateManyWithoutInternNestedInput
+  assignmentsCreated?: Prisma.WeeklyAssignmentUncheckedUpdateManyWithoutCreatedByNestedInput
+  assignmentsAsIntern?: Prisma.WeeklyAssignmentUncheckedUpdateManyWithoutInternNestedInput
+  friendshipsSent?: Prisma.FriendshipUncheckedUpdateManyWithoutRequesterNestedInput
+  friendshipsReceived?: Prisma.FriendshipUncheckedUpdateManyWithoutRecipientNestedInput
+  directChatsSecond?: Prisma.DirectConversationUncheckedUpdateManyWithoutSecondUserNestedInput
+  chatMemberships?: Prisma.ChatMembershipUncheckedUpdateManyWithoutUserNestedInput
+  chatMessages?: Prisma.ChatMessageUncheckedUpdateManyWithoutSenderNestedInput
+  chatEncryptionKey?: Prisma.ChatEncryptionKeyUncheckedUpdateOneWithoutUserNestedInput
+  accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
+}
+
+export type UserUpsertWithoutDirectChatsSecondInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutDirectChatsSecondInput, Prisma.UserUncheckedUpdateWithoutDirectChatsSecondInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutDirectChatsSecondInput, Prisma.UserUncheckedCreateWithoutDirectChatsSecondInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutDirectChatsSecondInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutDirectChatsSecondInput, Prisma.UserUncheckedUpdateWithoutDirectChatsSecondInput>
+}
+
+export type UserUpdateWithoutDirectChatsSecondInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  role?: Prisma.StringFieldUpdateOperationsInput | string
+  banned?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  banReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  banExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  locale?: Prisma.StringFieldUpdateOperationsInput | string
+  secureLoginVersion?: Prisma.IntFieldUpdateOperationsInput | number
+  DailyPlan?: Prisma.DailyPlanUpdateManyWithoutUserNestedInput
+  resourcesAdded?: Prisma.DepartmentResourceUpdateManyWithoutCreatedByNestedInput
+  discussionNote?: Prisma.DiscussionNoteUpdateOneWithoutUserNestedInput
+  ideas?: Prisma.IdeaUpdateManyWithoutAuthorNestedInput
+  ideaNotes?: Prisma.IdeaNoteUpdateManyWithoutAuthorNestedInput
+  feedbackAuthored?: Prisma.MentorFeedbackUpdateManyWithoutAuthorNestedInput
+  reflections?: Prisma.ReflectionUpdateManyWithoutInternNestedInput
+  assignmentsCreated?: Prisma.WeeklyAssignmentUpdateManyWithoutCreatedByNestedInput
+  assignmentsAsIntern?: Prisma.WeeklyAssignmentUpdateManyWithoutInternNestedInput
+  friendshipsSent?: Prisma.FriendshipUpdateManyWithoutRequesterNestedInput
+  friendshipsReceived?: Prisma.FriendshipUpdateManyWithoutRecipientNestedInput
+  directChatsFirst?: Prisma.DirectConversationUpdateManyWithoutFirstUserNestedInput
+  chatMemberships?: Prisma.ChatMembershipUpdateManyWithoutUserNestedInput
+  chatMessages?: Prisma.ChatMessageUpdateManyWithoutSenderNestedInput
+  chatEncryptionKey?: Prisma.ChatEncryptionKeyUpdateOneWithoutUserNestedInput
+  accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutDirectChatsSecondInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  role?: Prisma.StringFieldUpdateOperationsInput | string
+  banned?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  banReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  banExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  locale?: Prisma.StringFieldUpdateOperationsInput | string
+  secureLoginVersion?: Prisma.IntFieldUpdateOperationsInput | number
+  DailyPlan?: Prisma.DailyPlanUncheckedUpdateManyWithoutUserNestedInput
+  resourcesAdded?: Prisma.DepartmentResourceUncheckedUpdateManyWithoutCreatedByNestedInput
+  discussionNote?: Prisma.DiscussionNoteUncheckedUpdateOneWithoutUserNestedInput
+  ideas?: Prisma.IdeaUncheckedUpdateManyWithoutAuthorNestedInput
+  ideaNotes?: Prisma.IdeaNoteUncheckedUpdateManyWithoutAuthorNestedInput
+  feedbackAuthored?: Prisma.MentorFeedbackUncheckedUpdateManyWithoutAuthorNestedInput
+  reflections?: Prisma.ReflectionUncheckedUpdateManyWithoutInternNestedInput
+  assignmentsCreated?: Prisma.WeeklyAssignmentUncheckedUpdateManyWithoutCreatedByNestedInput
+  assignmentsAsIntern?: Prisma.WeeklyAssignmentUncheckedUpdateManyWithoutInternNestedInput
+  friendshipsSent?: Prisma.FriendshipUncheckedUpdateManyWithoutRequesterNestedInput
+  friendshipsReceived?: Prisma.FriendshipUncheckedUpdateManyWithoutRecipientNestedInput
+  directChatsFirst?: Prisma.DirectConversationUncheckedUpdateManyWithoutFirstUserNestedInput
+  chatMemberships?: Prisma.ChatMembershipUncheckedUpdateManyWithoutUserNestedInput
+  chatMessages?: Prisma.ChatMessageUncheckedUpdateManyWithoutSenderNestedInput
+  chatEncryptionKey?: Prisma.ChatEncryptionKeyUncheckedUpdateOneWithoutUserNestedInput
+  accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
+}
+
+export type UserCreateWithoutChatMembershipsInput = {
+  id: string
+  name: string
+  email: string
+  emailVerified?: boolean
+  image?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  role?: string
+  banned?: boolean | null
+  banReason?: string | null
+  banExpires?: Date | string | null
+  locale?: string
+  secureLoginVersion?: number
+  DailyPlan?: Prisma.DailyPlanCreateNestedManyWithoutUserInput
+  resourcesAdded?: Prisma.DepartmentResourceCreateNestedManyWithoutCreatedByInput
+  discussionNote?: Prisma.DiscussionNoteCreateNestedOneWithoutUserInput
+  ideas?: Prisma.IdeaCreateNestedManyWithoutAuthorInput
+  ideaNotes?: Prisma.IdeaNoteCreateNestedManyWithoutAuthorInput
+  feedbackAuthored?: Prisma.MentorFeedbackCreateNestedManyWithoutAuthorInput
+  reflections?: Prisma.ReflectionCreateNestedManyWithoutInternInput
+  assignmentsCreated?: Prisma.WeeklyAssignmentCreateNestedManyWithoutCreatedByInput
+  assignmentsAsIntern?: Prisma.WeeklyAssignmentCreateNestedManyWithoutInternInput
+  friendshipsSent?: Prisma.FriendshipCreateNestedManyWithoutRequesterInput
+  friendshipsReceived?: Prisma.FriendshipCreateNestedManyWithoutRecipientInput
+  directChatsFirst?: Prisma.DirectConversationCreateNestedManyWithoutFirstUserInput
+  directChatsSecond?: Prisma.DirectConversationCreateNestedManyWithoutSecondUserInput
+  chatMessages?: Prisma.ChatMessageCreateNestedManyWithoutSenderInput
+  chatEncryptionKey?: Prisma.ChatEncryptionKeyCreateNestedOneWithoutUserInput
+  accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
+}
+
+export type UserUncheckedCreateWithoutChatMembershipsInput = {
+  id: string
+  name: string
+  email: string
+  emailVerified?: boolean
+  image?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  role?: string
+  banned?: boolean | null
+  banReason?: string | null
+  banExpires?: Date | string | null
+  locale?: string
+  secureLoginVersion?: number
+  DailyPlan?: Prisma.DailyPlanUncheckedCreateNestedManyWithoutUserInput
+  resourcesAdded?: Prisma.DepartmentResourceUncheckedCreateNestedManyWithoutCreatedByInput
+  discussionNote?: Prisma.DiscussionNoteUncheckedCreateNestedOneWithoutUserInput
+  ideas?: Prisma.IdeaUncheckedCreateNestedManyWithoutAuthorInput
+  ideaNotes?: Prisma.IdeaNoteUncheckedCreateNestedManyWithoutAuthorInput
+  feedbackAuthored?: Prisma.MentorFeedbackUncheckedCreateNestedManyWithoutAuthorInput
+  reflections?: Prisma.ReflectionUncheckedCreateNestedManyWithoutInternInput
+  assignmentsCreated?: Prisma.WeeklyAssignmentUncheckedCreateNestedManyWithoutCreatedByInput
+  assignmentsAsIntern?: Prisma.WeeklyAssignmentUncheckedCreateNestedManyWithoutInternInput
+  friendshipsSent?: Prisma.FriendshipUncheckedCreateNestedManyWithoutRequesterInput
+  friendshipsReceived?: Prisma.FriendshipUncheckedCreateNestedManyWithoutRecipientInput
+  directChatsFirst?: Prisma.DirectConversationUncheckedCreateNestedManyWithoutFirstUserInput
+  directChatsSecond?: Prisma.DirectConversationUncheckedCreateNestedManyWithoutSecondUserInput
+  chatMessages?: Prisma.ChatMessageUncheckedCreateNestedManyWithoutSenderInput
+  chatEncryptionKey?: Prisma.ChatEncryptionKeyUncheckedCreateNestedOneWithoutUserInput
+  accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
+}
+
+export type UserCreateOrConnectWithoutChatMembershipsInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutChatMembershipsInput, Prisma.UserUncheckedCreateWithoutChatMembershipsInput>
+}
+
+export type UserUpsertWithoutChatMembershipsInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutChatMembershipsInput, Prisma.UserUncheckedUpdateWithoutChatMembershipsInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutChatMembershipsInput, Prisma.UserUncheckedCreateWithoutChatMembershipsInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutChatMembershipsInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutChatMembershipsInput, Prisma.UserUncheckedUpdateWithoutChatMembershipsInput>
+}
+
+export type UserUpdateWithoutChatMembershipsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  role?: Prisma.StringFieldUpdateOperationsInput | string
+  banned?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  banReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  banExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  locale?: Prisma.StringFieldUpdateOperationsInput | string
+  secureLoginVersion?: Prisma.IntFieldUpdateOperationsInput | number
+  DailyPlan?: Prisma.DailyPlanUpdateManyWithoutUserNestedInput
+  resourcesAdded?: Prisma.DepartmentResourceUpdateManyWithoutCreatedByNestedInput
+  discussionNote?: Prisma.DiscussionNoteUpdateOneWithoutUserNestedInput
+  ideas?: Prisma.IdeaUpdateManyWithoutAuthorNestedInput
+  ideaNotes?: Prisma.IdeaNoteUpdateManyWithoutAuthorNestedInput
+  feedbackAuthored?: Prisma.MentorFeedbackUpdateManyWithoutAuthorNestedInput
+  reflections?: Prisma.ReflectionUpdateManyWithoutInternNestedInput
+  assignmentsCreated?: Prisma.WeeklyAssignmentUpdateManyWithoutCreatedByNestedInput
+  assignmentsAsIntern?: Prisma.WeeklyAssignmentUpdateManyWithoutInternNestedInput
+  friendshipsSent?: Prisma.FriendshipUpdateManyWithoutRequesterNestedInput
+  friendshipsReceived?: Prisma.FriendshipUpdateManyWithoutRecipientNestedInput
+  directChatsFirst?: Prisma.DirectConversationUpdateManyWithoutFirstUserNestedInput
+  directChatsSecond?: Prisma.DirectConversationUpdateManyWithoutSecondUserNestedInput
+  chatMessages?: Prisma.ChatMessageUpdateManyWithoutSenderNestedInput
+  chatEncryptionKey?: Prisma.ChatEncryptionKeyUpdateOneWithoutUserNestedInput
+  accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutChatMembershipsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  role?: Prisma.StringFieldUpdateOperationsInput | string
+  banned?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  banReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  banExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  locale?: Prisma.StringFieldUpdateOperationsInput | string
+  secureLoginVersion?: Prisma.IntFieldUpdateOperationsInput | number
+  DailyPlan?: Prisma.DailyPlanUncheckedUpdateManyWithoutUserNestedInput
+  resourcesAdded?: Prisma.DepartmentResourceUncheckedUpdateManyWithoutCreatedByNestedInput
+  discussionNote?: Prisma.DiscussionNoteUncheckedUpdateOneWithoutUserNestedInput
+  ideas?: Prisma.IdeaUncheckedUpdateManyWithoutAuthorNestedInput
+  ideaNotes?: Prisma.IdeaNoteUncheckedUpdateManyWithoutAuthorNestedInput
+  feedbackAuthored?: Prisma.MentorFeedbackUncheckedUpdateManyWithoutAuthorNestedInput
+  reflections?: Prisma.ReflectionUncheckedUpdateManyWithoutInternNestedInput
+  assignmentsCreated?: Prisma.WeeklyAssignmentUncheckedUpdateManyWithoutCreatedByNestedInput
+  assignmentsAsIntern?: Prisma.WeeklyAssignmentUncheckedUpdateManyWithoutInternNestedInput
+  friendshipsSent?: Prisma.FriendshipUncheckedUpdateManyWithoutRequesterNestedInput
+  friendshipsReceived?: Prisma.FriendshipUncheckedUpdateManyWithoutRecipientNestedInput
+  directChatsFirst?: Prisma.DirectConversationUncheckedUpdateManyWithoutFirstUserNestedInput
+  directChatsSecond?: Prisma.DirectConversationUncheckedUpdateManyWithoutSecondUserNestedInput
+  chatMessages?: Prisma.ChatMessageUncheckedUpdateManyWithoutSenderNestedInput
+  chatEncryptionKey?: Prisma.ChatEncryptionKeyUncheckedUpdateOneWithoutUserNestedInput
+  accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
+}
+
+export type UserCreateWithoutChatMessagesInput = {
+  id: string
+  name: string
+  email: string
+  emailVerified?: boolean
+  image?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  role?: string
+  banned?: boolean | null
+  banReason?: string | null
+  banExpires?: Date | string | null
+  locale?: string
+  secureLoginVersion?: number
+  DailyPlan?: Prisma.DailyPlanCreateNestedManyWithoutUserInput
+  resourcesAdded?: Prisma.DepartmentResourceCreateNestedManyWithoutCreatedByInput
+  discussionNote?: Prisma.DiscussionNoteCreateNestedOneWithoutUserInput
+  ideas?: Prisma.IdeaCreateNestedManyWithoutAuthorInput
+  ideaNotes?: Prisma.IdeaNoteCreateNestedManyWithoutAuthorInput
+  feedbackAuthored?: Prisma.MentorFeedbackCreateNestedManyWithoutAuthorInput
+  reflections?: Prisma.ReflectionCreateNestedManyWithoutInternInput
+  assignmentsCreated?: Prisma.WeeklyAssignmentCreateNestedManyWithoutCreatedByInput
+  assignmentsAsIntern?: Prisma.WeeklyAssignmentCreateNestedManyWithoutInternInput
+  friendshipsSent?: Prisma.FriendshipCreateNestedManyWithoutRequesterInput
+  friendshipsReceived?: Prisma.FriendshipCreateNestedManyWithoutRecipientInput
+  directChatsFirst?: Prisma.DirectConversationCreateNestedManyWithoutFirstUserInput
+  directChatsSecond?: Prisma.DirectConversationCreateNestedManyWithoutSecondUserInput
+  chatMemberships?: Prisma.ChatMembershipCreateNestedManyWithoutUserInput
+  chatEncryptionKey?: Prisma.ChatEncryptionKeyCreateNestedOneWithoutUserInput
+  accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
+}
+
+export type UserUncheckedCreateWithoutChatMessagesInput = {
+  id: string
+  name: string
+  email: string
+  emailVerified?: boolean
+  image?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  role?: string
+  banned?: boolean | null
+  banReason?: string | null
+  banExpires?: Date | string | null
+  locale?: string
+  secureLoginVersion?: number
+  DailyPlan?: Prisma.DailyPlanUncheckedCreateNestedManyWithoutUserInput
+  resourcesAdded?: Prisma.DepartmentResourceUncheckedCreateNestedManyWithoutCreatedByInput
+  discussionNote?: Prisma.DiscussionNoteUncheckedCreateNestedOneWithoutUserInput
+  ideas?: Prisma.IdeaUncheckedCreateNestedManyWithoutAuthorInput
+  ideaNotes?: Prisma.IdeaNoteUncheckedCreateNestedManyWithoutAuthorInput
+  feedbackAuthored?: Prisma.MentorFeedbackUncheckedCreateNestedManyWithoutAuthorInput
+  reflections?: Prisma.ReflectionUncheckedCreateNestedManyWithoutInternInput
+  assignmentsCreated?: Prisma.WeeklyAssignmentUncheckedCreateNestedManyWithoutCreatedByInput
+  assignmentsAsIntern?: Prisma.WeeklyAssignmentUncheckedCreateNestedManyWithoutInternInput
+  friendshipsSent?: Prisma.FriendshipUncheckedCreateNestedManyWithoutRequesterInput
+  friendshipsReceived?: Prisma.FriendshipUncheckedCreateNestedManyWithoutRecipientInput
+  directChatsFirst?: Prisma.DirectConversationUncheckedCreateNestedManyWithoutFirstUserInput
+  directChatsSecond?: Prisma.DirectConversationUncheckedCreateNestedManyWithoutSecondUserInput
+  chatMemberships?: Prisma.ChatMembershipUncheckedCreateNestedManyWithoutUserInput
+  chatEncryptionKey?: Prisma.ChatEncryptionKeyUncheckedCreateNestedOneWithoutUserInput
+  accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
+}
+
+export type UserCreateOrConnectWithoutChatMessagesInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutChatMessagesInput, Prisma.UserUncheckedCreateWithoutChatMessagesInput>
+}
+
+export type UserUpsertWithoutChatMessagesInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutChatMessagesInput, Prisma.UserUncheckedUpdateWithoutChatMessagesInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutChatMessagesInput, Prisma.UserUncheckedCreateWithoutChatMessagesInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutChatMessagesInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutChatMessagesInput, Prisma.UserUncheckedUpdateWithoutChatMessagesInput>
+}
+
+export type UserUpdateWithoutChatMessagesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  role?: Prisma.StringFieldUpdateOperationsInput | string
+  banned?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  banReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  banExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  locale?: Prisma.StringFieldUpdateOperationsInput | string
+  secureLoginVersion?: Prisma.IntFieldUpdateOperationsInput | number
+  DailyPlan?: Prisma.DailyPlanUpdateManyWithoutUserNestedInput
+  resourcesAdded?: Prisma.DepartmentResourceUpdateManyWithoutCreatedByNestedInput
+  discussionNote?: Prisma.DiscussionNoteUpdateOneWithoutUserNestedInput
+  ideas?: Prisma.IdeaUpdateManyWithoutAuthorNestedInput
+  ideaNotes?: Prisma.IdeaNoteUpdateManyWithoutAuthorNestedInput
+  feedbackAuthored?: Prisma.MentorFeedbackUpdateManyWithoutAuthorNestedInput
+  reflections?: Prisma.ReflectionUpdateManyWithoutInternNestedInput
+  assignmentsCreated?: Prisma.WeeklyAssignmentUpdateManyWithoutCreatedByNestedInput
+  assignmentsAsIntern?: Prisma.WeeklyAssignmentUpdateManyWithoutInternNestedInput
+  friendshipsSent?: Prisma.FriendshipUpdateManyWithoutRequesterNestedInput
+  friendshipsReceived?: Prisma.FriendshipUpdateManyWithoutRecipientNestedInput
+  directChatsFirst?: Prisma.DirectConversationUpdateManyWithoutFirstUserNestedInput
+  directChatsSecond?: Prisma.DirectConversationUpdateManyWithoutSecondUserNestedInput
+  chatMemberships?: Prisma.ChatMembershipUpdateManyWithoutUserNestedInput
+  chatEncryptionKey?: Prisma.ChatEncryptionKeyUpdateOneWithoutUserNestedInput
+  accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutChatMessagesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  role?: Prisma.StringFieldUpdateOperationsInput | string
+  banned?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  banReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  banExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  locale?: Prisma.StringFieldUpdateOperationsInput | string
+  secureLoginVersion?: Prisma.IntFieldUpdateOperationsInput | number
+  DailyPlan?: Prisma.DailyPlanUncheckedUpdateManyWithoutUserNestedInput
+  resourcesAdded?: Prisma.DepartmentResourceUncheckedUpdateManyWithoutCreatedByNestedInput
+  discussionNote?: Prisma.DiscussionNoteUncheckedUpdateOneWithoutUserNestedInput
+  ideas?: Prisma.IdeaUncheckedUpdateManyWithoutAuthorNestedInput
+  ideaNotes?: Prisma.IdeaNoteUncheckedUpdateManyWithoutAuthorNestedInput
+  feedbackAuthored?: Prisma.MentorFeedbackUncheckedUpdateManyWithoutAuthorNestedInput
+  reflections?: Prisma.ReflectionUncheckedUpdateManyWithoutInternNestedInput
+  assignmentsCreated?: Prisma.WeeklyAssignmentUncheckedUpdateManyWithoutCreatedByNestedInput
+  assignmentsAsIntern?: Prisma.WeeklyAssignmentUncheckedUpdateManyWithoutInternNestedInput
+  friendshipsSent?: Prisma.FriendshipUncheckedUpdateManyWithoutRequesterNestedInput
+  friendshipsReceived?: Prisma.FriendshipUncheckedUpdateManyWithoutRecipientNestedInput
+  directChatsFirst?: Prisma.DirectConversationUncheckedUpdateManyWithoutFirstUserNestedInput
+  directChatsSecond?: Prisma.DirectConversationUncheckedUpdateManyWithoutSecondUserNestedInput
+  chatMemberships?: Prisma.ChatMembershipUncheckedUpdateManyWithoutUserNestedInput
+  chatEncryptionKey?: Prisma.ChatEncryptionKeyUncheckedUpdateOneWithoutUserNestedInput
+  accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
+}
+
+export type UserCreateWithoutFriendshipsSentInput = {
+  id: string
+  name: string
+  email: string
+  emailVerified?: boolean
+  image?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  role?: string
+  banned?: boolean | null
+  banReason?: string | null
+  banExpires?: Date | string | null
+  locale?: string
+  secureLoginVersion?: number
+  DailyPlan?: Prisma.DailyPlanCreateNestedManyWithoutUserInput
+  resourcesAdded?: Prisma.DepartmentResourceCreateNestedManyWithoutCreatedByInput
+  discussionNote?: Prisma.DiscussionNoteCreateNestedOneWithoutUserInput
+  ideas?: Prisma.IdeaCreateNestedManyWithoutAuthorInput
+  ideaNotes?: Prisma.IdeaNoteCreateNestedManyWithoutAuthorInput
+  feedbackAuthored?: Prisma.MentorFeedbackCreateNestedManyWithoutAuthorInput
+  reflections?: Prisma.ReflectionCreateNestedManyWithoutInternInput
+  assignmentsCreated?: Prisma.WeeklyAssignmentCreateNestedManyWithoutCreatedByInput
+  assignmentsAsIntern?: Prisma.WeeklyAssignmentCreateNestedManyWithoutInternInput
+  friendshipsReceived?: Prisma.FriendshipCreateNestedManyWithoutRecipientInput
+  directChatsFirst?: Prisma.DirectConversationCreateNestedManyWithoutFirstUserInput
+  directChatsSecond?: Prisma.DirectConversationCreateNestedManyWithoutSecondUserInput
+  chatMemberships?: Prisma.ChatMembershipCreateNestedManyWithoutUserInput
+  chatMessages?: Prisma.ChatMessageCreateNestedManyWithoutSenderInput
+  chatEncryptionKey?: Prisma.ChatEncryptionKeyCreateNestedOneWithoutUserInput
+  accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
+}
+
+export type UserUncheckedCreateWithoutFriendshipsSentInput = {
+  id: string
+  name: string
+  email: string
+  emailVerified?: boolean
+  image?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  role?: string
+  banned?: boolean | null
+  banReason?: string | null
+  banExpires?: Date | string | null
+  locale?: string
+  secureLoginVersion?: number
+  DailyPlan?: Prisma.DailyPlanUncheckedCreateNestedManyWithoutUserInput
+  resourcesAdded?: Prisma.DepartmentResourceUncheckedCreateNestedManyWithoutCreatedByInput
+  discussionNote?: Prisma.DiscussionNoteUncheckedCreateNestedOneWithoutUserInput
+  ideas?: Prisma.IdeaUncheckedCreateNestedManyWithoutAuthorInput
+  ideaNotes?: Prisma.IdeaNoteUncheckedCreateNestedManyWithoutAuthorInput
+  feedbackAuthored?: Prisma.MentorFeedbackUncheckedCreateNestedManyWithoutAuthorInput
+  reflections?: Prisma.ReflectionUncheckedCreateNestedManyWithoutInternInput
+  assignmentsCreated?: Prisma.WeeklyAssignmentUncheckedCreateNestedManyWithoutCreatedByInput
+  assignmentsAsIntern?: Prisma.WeeklyAssignmentUncheckedCreateNestedManyWithoutInternInput
+  friendshipsReceived?: Prisma.FriendshipUncheckedCreateNestedManyWithoutRecipientInput
+  directChatsFirst?: Prisma.DirectConversationUncheckedCreateNestedManyWithoutFirstUserInput
+  directChatsSecond?: Prisma.DirectConversationUncheckedCreateNestedManyWithoutSecondUserInput
+  chatMemberships?: Prisma.ChatMembershipUncheckedCreateNestedManyWithoutUserInput
+  chatMessages?: Prisma.ChatMessageUncheckedCreateNestedManyWithoutSenderInput
+  chatEncryptionKey?: Prisma.ChatEncryptionKeyUncheckedCreateNestedOneWithoutUserInput
+  accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
+}
+
+export type UserCreateOrConnectWithoutFriendshipsSentInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutFriendshipsSentInput, Prisma.UserUncheckedCreateWithoutFriendshipsSentInput>
+}
+
+export type UserCreateWithoutFriendshipsReceivedInput = {
+  id: string
+  name: string
+  email: string
+  emailVerified?: boolean
+  image?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  role?: string
+  banned?: boolean | null
+  banReason?: string | null
+  banExpires?: Date | string | null
+  locale?: string
+  secureLoginVersion?: number
+  DailyPlan?: Prisma.DailyPlanCreateNestedManyWithoutUserInput
+  resourcesAdded?: Prisma.DepartmentResourceCreateNestedManyWithoutCreatedByInput
+  discussionNote?: Prisma.DiscussionNoteCreateNestedOneWithoutUserInput
+  ideas?: Prisma.IdeaCreateNestedManyWithoutAuthorInput
+  ideaNotes?: Prisma.IdeaNoteCreateNestedManyWithoutAuthorInput
+  feedbackAuthored?: Prisma.MentorFeedbackCreateNestedManyWithoutAuthorInput
+  reflections?: Prisma.ReflectionCreateNestedManyWithoutInternInput
+  assignmentsCreated?: Prisma.WeeklyAssignmentCreateNestedManyWithoutCreatedByInput
+  assignmentsAsIntern?: Prisma.WeeklyAssignmentCreateNestedManyWithoutInternInput
+  friendshipsSent?: Prisma.FriendshipCreateNestedManyWithoutRequesterInput
+  directChatsFirst?: Prisma.DirectConversationCreateNestedManyWithoutFirstUserInput
+  directChatsSecond?: Prisma.DirectConversationCreateNestedManyWithoutSecondUserInput
+  chatMemberships?: Prisma.ChatMembershipCreateNestedManyWithoutUserInput
+  chatMessages?: Prisma.ChatMessageCreateNestedManyWithoutSenderInput
+  chatEncryptionKey?: Prisma.ChatEncryptionKeyCreateNestedOneWithoutUserInput
+  accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
+}
+
+export type UserUncheckedCreateWithoutFriendshipsReceivedInput = {
+  id: string
+  name: string
+  email: string
+  emailVerified?: boolean
+  image?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  role?: string
+  banned?: boolean | null
+  banReason?: string | null
+  banExpires?: Date | string | null
+  locale?: string
+  secureLoginVersion?: number
+  DailyPlan?: Prisma.DailyPlanUncheckedCreateNestedManyWithoutUserInput
+  resourcesAdded?: Prisma.DepartmentResourceUncheckedCreateNestedManyWithoutCreatedByInput
+  discussionNote?: Prisma.DiscussionNoteUncheckedCreateNestedOneWithoutUserInput
+  ideas?: Prisma.IdeaUncheckedCreateNestedManyWithoutAuthorInput
+  ideaNotes?: Prisma.IdeaNoteUncheckedCreateNestedManyWithoutAuthorInput
+  feedbackAuthored?: Prisma.MentorFeedbackUncheckedCreateNestedManyWithoutAuthorInput
+  reflections?: Prisma.ReflectionUncheckedCreateNestedManyWithoutInternInput
+  assignmentsCreated?: Prisma.WeeklyAssignmentUncheckedCreateNestedManyWithoutCreatedByInput
+  assignmentsAsIntern?: Prisma.WeeklyAssignmentUncheckedCreateNestedManyWithoutInternInput
+  friendshipsSent?: Prisma.FriendshipUncheckedCreateNestedManyWithoutRequesterInput
+  directChatsFirst?: Prisma.DirectConversationUncheckedCreateNestedManyWithoutFirstUserInput
+  directChatsSecond?: Prisma.DirectConversationUncheckedCreateNestedManyWithoutSecondUserInput
+  chatMemberships?: Prisma.ChatMembershipUncheckedCreateNestedManyWithoutUserInput
+  chatMessages?: Prisma.ChatMessageUncheckedCreateNestedManyWithoutSenderInput
+  chatEncryptionKey?: Prisma.ChatEncryptionKeyUncheckedCreateNestedOneWithoutUserInput
+  accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
+}
+
+export type UserCreateOrConnectWithoutFriendshipsReceivedInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutFriendshipsReceivedInput, Prisma.UserUncheckedCreateWithoutFriendshipsReceivedInput>
+}
+
+export type UserUpsertWithoutFriendshipsSentInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutFriendshipsSentInput, Prisma.UserUncheckedUpdateWithoutFriendshipsSentInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutFriendshipsSentInput, Prisma.UserUncheckedCreateWithoutFriendshipsSentInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutFriendshipsSentInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutFriendshipsSentInput, Prisma.UserUncheckedUpdateWithoutFriendshipsSentInput>
+}
+
+export type UserUpdateWithoutFriendshipsSentInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  role?: Prisma.StringFieldUpdateOperationsInput | string
+  banned?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  banReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  banExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  locale?: Prisma.StringFieldUpdateOperationsInput | string
+  secureLoginVersion?: Prisma.IntFieldUpdateOperationsInput | number
+  DailyPlan?: Prisma.DailyPlanUpdateManyWithoutUserNestedInput
+  resourcesAdded?: Prisma.DepartmentResourceUpdateManyWithoutCreatedByNestedInput
+  discussionNote?: Prisma.DiscussionNoteUpdateOneWithoutUserNestedInput
+  ideas?: Prisma.IdeaUpdateManyWithoutAuthorNestedInput
+  ideaNotes?: Prisma.IdeaNoteUpdateManyWithoutAuthorNestedInput
+  feedbackAuthored?: Prisma.MentorFeedbackUpdateManyWithoutAuthorNestedInput
+  reflections?: Prisma.ReflectionUpdateManyWithoutInternNestedInput
+  assignmentsCreated?: Prisma.WeeklyAssignmentUpdateManyWithoutCreatedByNestedInput
+  assignmentsAsIntern?: Prisma.WeeklyAssignmentUpdateManyWithoutInternNestedInput
+  friendshipsReceived?: Prisma.FriendshipUpdateManyWithoutRecipientNestedInput
+  directChatsFirst?: Prisma.DirectConversationUpdateManyWithoutFirstUserNestedInput
+  directChatsSecond?: Prisma.DirectConversationUpdateManyWithoutSecondUserNestedInput
+  chatMemberships?: Prisma.ChatMembershipUpdateManyWithoutUserNestedInput
+  chatMessages?: Prisma.ChatMessageUpdateManyWithoutSenderNestedInput
+  chatEncryptionKey?: Prisma.ChatEncryptionKeyUpdateOneWithoutUserNestedInput
+  accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutFriendshipsSentInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  role?: Prisma.StringFieldUpdateOperationsInput | string
+  banned?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  banReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  banExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  locale?: Prisma.StringFieldUpdateOperationsInput | string
+  secureLoginVersion?: Prisma.IntFieldUpdateOperationsInput | number
+  DailyPlan?: Prisma.DailyPlanUncheckedUpdateManyWithoutUserNestedInput
+  resourcesAdded?: Prisma.DepartmentResourceUncheckedUpdateManyWithoutCreatedByNestedInput
+  discussionNote?: Prisma.DiscussionNoteUncheckedUpdateOneWithoutUserNestedInput
+  ideas?: Prisma.IdeaUncheckedUpdateManyWithoutAuthorNestedInput
+  ideaNotes?: Prisma.IdeaNoteUncheckedUpdateManyWithoutAuthorNestedInput
+  feedbackAuthored?: Prisma.MentorFeedbackUncheckedUpdateManyWithoutAuthorNestedInput
+  reflections?: Prisma.ReflectionUncheckedUpdateManyWithoutInternNestedInput
+  assignmentsCreated?: Prisma.WeeklyAssignmentUncheckedUpdateManyWithoutCreatedByNestedInput
+  assignmentsAsIntern?: Prisma.WeeklyAssignmentUncheckedUpdateManyWithoutInternNestedInput
+  friendshipsReceived?: Prisma.FriendshipUncheckedUpdateManyWithoutRecipientNestedInput
+  directChatsFirst?: Prisma.DirectConversationUncheckedUpdateManyWithoutFirstUserNestedInput
+  directChatsSecond?: Prisma.DirectConversationUncheckedUpdateManyWithoutSecondUserNestedInput
+  chatMemberships?: Prisma.ChatMembershipUncheckedUpdateManyWithoutUserNestedInput
+  chatMessages?: Prisma.ChatMessageUncheckedUpdateManyWithoutSenderNestedInput
+  chatEncryptionKey?: Prisma.ChatEncryptionKeyUncheckedUpdateOneWithoutUserNestedInput
+  accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
+}
+
+export type UserUpsertWithoutFriendshipsReceivedInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutFriendshipsReceivedInput, Prisma.UserUncheckedUpdateWithoutFriendshipsReceivedInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutFriendshipsReceivedInput, Prisma.UserUncheckedCreateWithoutFriendshipsReceivedInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutFriendshipsReceivedInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutFriendshipsReceivedInput, Prisma.UserUncheckedUpdateWithoutFriendshipsReceivedInput>
+}
+
+export type UserUpdateWithoutFriendshipsReceivedInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  role?: Prisma.StringFieldUpdateOperationsInput | string
+  banned?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  banReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  banExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  locale?: Prisma.StringFieldUpdateOperationsInput | string
+  secureLoginVersion?: Prisma.IntFieldUpdateOperationsInput | number
+  DailyPlan?: Prisma.DailyPlanUpdateManyWithoutUserNestedInput
+  resourcesAdded?: Prisma.DepartmentResourceUpdateManyWithoutCreatedByNestedInput
+  discussionNote?: Prisma.DiscussionNoteUpdateOneWithoutUserNestedInput
+  ideas?: Prisma.IdeaUpdateManyWithoutAuthorNestedInput
+  ideaNotes?: Prisma.IdeaNoteUpdateManyWithoutAuthorNestedInput
+  feedbackAuthored?: Prisma.MentorFeedbackUpdateManyWithoutAuthorNestedInput
+  reflections?: Prisma.ReflectionUpdateManyWithoutInternNestedInput
+  assignmentsCreated?: Prisma.WeeklyAssignmentUpdateManyWithoutCreatedByNestedInput
+  assignmentsAsIntern?: Prisma.WeeklyAssignmentUpdateManyWithoutInternNestedInput
+  friendshipsSent?: Prisma.FriendshipUpdateManyWithoutRequesterNestedInput
+  directChatsFirst?: Prisma.DirectConversationUpdateManyWithoutFirstUserNestedInput
+  directChatsSecond?: Prisma.DirectConversationUpdateManyWithoutSecondUserNestedInput
+  chatMemberships?: Prisma.ChatMembershipUpdateManyWithoutUserNestedInput
+  chatMessages?: Prisma.ChatMessageUpdateManyWithoutSenderNestedInput
+  chatEncryptionKey?: Prisma.ChatEncryptionKeyUpdateOneWithoutUserNestedInput
+  accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutFriendshipsReceivedInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  role?: Prisma.StringFieldUpdateOperationsInput | string
+  banned?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  banReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  banExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  locale?: Prisma.StringFieldUpdateOperationsInput | string
+  secureLoginVersion?: Prisma.IntFieldUpdateOperationsInput | number
+  DailyPlan?: Prisma.DailyPlanUncheckedUpdateManyWithoutUserNestedInput
+  resourcesAdded?: Prisma.DepartmentResourceUncheckedUpdateManyWithoutCreatedByNestedInput
+  discussionNote?: Prisma.DiscussionNoteUncheckedUpdateOneWithoutUserNestedInput
+  ideas?: Prisma.IdeaUncheckedUpdateManyWithoutAuthorNestedInput
+  ideaNotes?: Prisma.IdeaNoteUncheckedUpdateManyWithoutAuthorNestedInput
+  feedbackAuthored?: Prisma.MentorFeedbackUncheckedUpdateManyWithoutAuthorNestedInput
+  reflections?: Prisma.ReflectionUncheckedUpdateManyWithoutInternNestedInput
+  assignmentsCreated?: Prisma.WeeklyAssignmentUncheckedUpdateManyWithoutCreatedByNestedInput
+  assignmentsAsIntern?: Prisma.WeeklyAssignmentUncheckedUpdateManyWithoutInternNestedInput
+  friendshipsSent?: Prisma.FriendshipUncheckedUpdateManyWithoutRequesterNestedInput
+  directChatsFirst?: Prisma.DirectConversationUncheckedUpdateManyWithoutFirstUserNestedInput
+  directChatsSecond?: Prisma.DirectConversationUncheckedUpdateManyWithoutSecondUserNestedInput
+  chatMemberships?: Prisma.ChatMembershipUncheckedUpdateManyWithoutUserNestedInput
+  chatMessages?: Prisma.ChatMessageUncheckedUpdateManyWithoutSenderNestedInput
+  chatEncryptionKey?: Prisma.ChatEncryptionKeyUncheckedUpdateOneWithoutUserNestedInput
+  accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
+}
+
+export type UserCreateWithoutChatEncryptionKeyInput = {
+  id: string
+  name: string
+  email: string
+  emailVerified?: boolean
+  image?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  role?: string
+  banned?: boolean | null
+  banReason?: string | null
+  banExpires?: Date | string | null
+  locale?: string
+  secureLoginVersion?: number
+  DailyPlan?: Prisma.DailyPlanCreateNestedManyWithoutUserInput
+  resourcesAdded?: Prisma.DepartmentResourceCreateNestedManyWithoutCreatedByInput
+  discussionNote?: Prisma.DiscussionNoteCreateNestedOneWithoutUserInput
+  ideas?: Prisma.IdeaCreateNestedManyWithoutAuthorInput
+  ideaNotes?: Prisma.IdeaNoteCreateNestedManyWithoutAuthorInput
+  feedbackAuthored?: Prisma.MentorFeedbackCreateNestedManyWithoutAuthorInput
+  reflections?: Prisma.ReflectionCreateNestedManyWithoutInternInput
+  assignmentsCreated?: Prisma.WeeklyAssignmentCreateNestedManyWithoutCreatedByInput
+  assignmentsAsIntern?: Prisma.WeeklyAssignmentCreateNestedManyWithoutInternInput
+  friendshipsSent?: Prisma.FriendshipCreateNestedManyWithoutRequesterInput
+  friendshipsReceived?: Prisma.FriendshipCreateNestedManyWithoutRecipientInput
+  directChatsFirst?: Prisma.DirectConversationCreateNestedManyWithoutFirstUserInput
+  directChatsSecond?: Prisma.DirectConversationCreateNestedManyWithoutSecondUserInput
+  chatMemberships?: Prisma.ChatMembershipCreateNestedManyWithoutUserInput
+  chatMessages?: Prisma.ChatMessageCreateNestedManyWithoutSenderInput
+  accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
+}
+
+export type UserUncheckedCreateWithoutChatEncryptionKeyInput = {
+  id: string
+  name: string
+  email: string
+  emailVerified?: boolean
+  image?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  role?: string
+  banned?: boolean | null
+  banReason?: string | null
+  banExpires?: Date | string | null
+  locale?: string
+  secureLoginVersion?: number
+  DailyPlan?: Prisma.DailyPlanUncheckedCreateNestedManyWithoutUserInput
+  resourcesAdded?: Prisma.DepartmentResourceUncheckedCreateNestedManyWithoutCreatedByInput
+  discussionNote?: Prisma.DiscussionNoteUncheckedCreateNestedOneWithoutUserInput
+  ideas?: Prisma.IdeaUncheckedCreateNestedManyWithoutAuthorInput
+  ideaNotes?: Prisma.IdeaNoteUncheckedCreateNestedManyWithoutAuthorInput
+  feedbackAuthored?: Prisma.MentorFeedbackUncheckedCreateNestedManyWithoutAuthorInput
+  reflections?: Prisma.ReflectionUncheckedCreateNestedManyWithoutInternInput
+  assignmentsCreated?: Prisma.WeeklyAssignmentUncheckedCreateNestedManyWithoutCreatedByInput
+  assignmentsAsIntern?: Prisma.WeeklyAssignmentUncheckedCreateNestedManyWithoutInternInput
+  friendshipsSent?: Prisma.FriendshipUncheckedCreateNestedManyWithoutRequesterInput
+  friendshipsReceived?: Prisma.FriendshipUncheckedCreateNestedManyWithoutRecipientInput
+  directChatsFirst?: Prisma.DirectConversationUncheckedCreateNestedManyWithoutFirstUserInput
+  directChatsSecond?: Prisma.DirectConversationUncheckedCreateNestedManyWithoutSecondUserInput
+  chatMemberships?: Prisma.ChatMembershipUncheckedCreateNestedManyWithoutUserInput
+  chatMessages?: Prisma.ChatMessageUncheckedCreateNestedManyWithoutSenderInput
+  accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
+}
+
+export type UserCreateOrConnectWithoutChatEncryptionKeyInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutChatEncryptionKeyInput, Prisma.UserUncheckedCreateWithoutChatEncryptionKeyInput>
+}
+
+export type UserUpsertWithoutChatEncryptionKeyInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutChatEncryptionKeyInput, Prisma.UserUncheckedUpdateWithoutChatEncryptionKeyInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutChatEncryptionKeyInput, Prisma.UserUncheckedCreateWithoutChatEncryptionKeyInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutChatEncryptionKeyInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutChatEncryptionKeyInput, Prisma.UserUncheckedUpdateWithoutChatEncryptionKeyInput>
+}
+
+export type UserUpdateWithoutChatEncryptionKeyInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  role?: Prisma.StringFieldUpdateOperationsInput | string
+  banned?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  banReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  banExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  locale?: Prisma.StringFieldUpdateOperationsInput | string
+  secureLoginVersion?: Prisma.IntFieldUpdateOperationsInput | number
+  DailyPlan?: Prisma.DailyPlanUpdateManyWithoutUserNestedInput
+  resourcesAdded?: Prisma.DepartmentResourceUpdateManyWithoutCreatedByNestedInput
+  discussionNote?: Prisma.DiscussionNoteUpdateOneWithoutUserNestedInput
+  ideas?: Prisma.IdeaUpdateManyWithoutAuthorNestedInput
+  ideaNotes?: Prisma.IdeaNoteUpdateManyWithoutAuthorNestedInput
+  feedbackAuthored?: Prisma.MentorFeedbackUpdateManyWithoutAuthorNestedInput
+  reflections?: Prisma.ReflectionUpdateManyWithoutInternNestedInput
+  assignmentsCreated?: Prisma.WeeklyAssignmentUpdateManyWithoutCreatedByNestedInput
+  assignmentsAsIntern?: Prisma.WeeklyAssignmentUpdateManyWithoutInternNestedInput
+  friendshipsSent?: Prisma.FriendshipUpdateManyWithoutRequesterNestedInput
+  friendshipsReceived?: Prisma.FriendshipUpdateManyWithoutRecipientNestedInput
+  directChatsFirst?: Prisma.DirectConversationUpdateManyWithoutFirstUserNestedInput
+  directChatsSecond?: Prisma.DirectConversationUpdateManyWithoutSecondUserNestedInput
+  chatMemberships?: Prisma.ChatMembershipUpdateManyWithoutUserNestedInput
+  chatMessages?: Prisma.ChatMessageUpdateManyWithoutSenderNestedInput
+  accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutChatEncryptionKeyInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  role?: Prisma.StringFieldUpdateOperationsInput | string
+  banned?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  banReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  banExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  locale?: Prisma.StringFieldUpdateOperationsInput | string
+  secureLoginVersion?: Prisma.IntFieldUpdateOperationsInput | number
+  DailyPlan?: Prisma.DailyPlanUncheckedUpdateManyWithoutUserNestedInput
+  resourcesAdded?: Prisma.DepartmentResourceUncheckedUpdateManyWithoutCreatedByNestedInput
+  discussionNote?: Prisma.DiscussionNoteUncheckedUpdateOneWithoutUserNestedInput
+  ideas?: Prisma.IdeaUncheckedUpdateManyWithoutAuthorNestedInput
+  ideaNotes?: Prisma.IdeaNoteUncheckedUpdateManyWithoutAuthorNestedInput
+  feedbackAuthored?: Prisma.MentorFeedbackUncheckedUpdateManyWithoutAuthorNestedInput
+  reflections?: Prisma.ReflectionUncheckedUpdateManyWithoutInternNestedInput
+  assignmentsCreated?: Prisma.WeeklyAssignmentUncheckedUpdateManyWithoutCreatedByNestedInput
+  assignmentsAsIntern?: Prisma.WeeklyAssignmentUncheckedUpdateManyWithoutInternNestedInput
+  friendshipsSent?: Prisma.FriendshipUncheckedUpdateManyWithoutRequesterNestedInput
+  friendshipsReceived?: Prisma.FriendshipUncheckedUpdateManyWithoutRecipientNestedInput
+  directChatsFirst?: Prisma.DirectConversationUncheckedUpdateManyWithoutFirstUserNestedInput
+  directChatsSecond?: Prisma.DirectConversationUncheckedUpdateManyWithoutSecondUserNestedInput
+  chatMemberships?: Prisma.ChatMembershipUncheckedUpdateManyWithoutUserNestedInput
+  chatMessages?: Prisma.ChatMessageUncheckedUpdateManyWithoutSenderNestedInput
+  accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
 }
 
 
@@ -1992,29 +3607,41 @@ export type UserUncheckedUpdateWithoutAccountsInput = {
  */
 
 export type UserCountOutputType = {
-  sessions: number
-  accounts: number
-  assignmentsAsIntern: number
-  assignmentsCreated: number
-  reflections: number
-  feedbackAuthored: number
+  DailyPlan: number
   resourcesAdded: number
   ideas: number
   ideaNotes: number
-  dailyPlans: number
+  feedbackAuthored: number
+  reflections: number
+  assignmentsCreated: number
+  assignmentsAsIntern: number
+  friendshipsSent: number
+  friendshipsReceived: number
+  directChatsFirst: number
+  directChatsSecond: number
+  chatMemberships: number
+  chatMessages: number
+  accounts: number
+  sessions: number
 }
 
 export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  sessions?: boolean | UserCountOutputTypeCountSessionsArgs
-  accounts?: boolean | UserCountOutputTypeCountAccountsArgs
-  assignmentsAsIntern?: boolean | UserCountOutputTypeCountAssignmentsAsInternArgs
-  assignmentsCreated?: boolean | UserCountOutputTypeCountAssignmentsCreatedArgs
-  reflections?: boolean | UserCountOutputTypeCountReflectionsArgs
-  feedbackAuthored?: boolean | UserCountOutputTypeCountFeedbackAuthoredArgs
+  DailyPlan?: boolean | UserCountOutputTypeCountDailyPlanArgs
   resourcesAdded?: boolean | UserCountOutputTypeCountResourcesAddedArgs
   ideas?: boolean | UserCountOutputTypeCountIdeasArgs
   ideaNotes?: boolean | UserCountOutputTypeCountIdeaNotesArgs
-  dailyPlans?: boolean | UserCountOutputTypeCountDailyPlansArgs
+  feedbackAuthored?: boolean | UserCountOutputTypeCountFeedbackAuthoredArgs
+  reflections?: boolean | UserCountOutputTypeCountReflectionsArgs
+  assignmentsCreated?: boolean | UserCountOutputTypeCountAssignmentsCreatedArgs
+  assignmentsAsIntern?: boolean | UserCountOutputTypeCountAssignmentsAsInternArgs
+  friendshipsSent?: boolean | UserCountOutputTypeCountFriendshipsSentArgs
+  friendshipsReceived?: boolean | UserCountOutputTypeCountFriendshipsReceivedArgs
+  directChatsFirst?: boolean | UserCountOutputTypeCountDirectChatsFirstArgs
+  directChatsSecond?: boolean | UserCountOutputTypeCountDirectChatsSecondArgs
+  chatMemberships?: boolean | UserCountOutputTypeCountChatMembershipsArgs
+  chatMessages?: boolean | UserCountOutputTypeCountChatMessagesArgs
+  accounts?: boolean | UserCountOutputTypeCountAccountsArgs
+  sessions?: boolean | UserCountOutputTypeCountSessionsArgs
 }
 
 /**
@@ -2030,43 +3657,8 @@ export type UserCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Extensi
 /**
  * UserCountOutputType without action
  */
-export type UserCountOutputTypeCountSessionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  where?: Prisma.SessionWhereInput
-}
-
-/**
- * UserCountOutputType without action
- */
-export type UserCountOutputTypeCountAccountsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  where?: Prisma.AccountWhereInput
-}
-
-/**
- * UserCountOutputType without action
- */
-export type UserCountOutputTypeCountAssignmentsAsInternArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  where?: Prisma.WeeklyAssignmentWhereInput
-}
-
-/**
- * UserCountOutputType without action
- */
-export type UserCountOutputTypeCountAssignmentsCreatedArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  where?: Prisma.WeeklyAssignmentWhereInput
-}
-
-/**
- * UserCountOutputType without action
- */
-export type UserCountOutputTypeCountReflectionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  where?: Prisma.ReflectionWhereInput
-}
-
-/**
- * UserCountOutputType without action
- */
-export type UserCountOutputTypeCountFeedbackAuthoredArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  where?: Prisma.MentorFeedbackWhereInput
+export type UserCountOutputTypeCountDailyPlanArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.DailyPlanWhereInput
 }
 
 /**
@@ -2093,6 +3685,90 @@ export type UserCountOutputTypeCountIdeaNotesArgs<ExtArgs extends runtime.Types.
 /**
  * UserCountOutputType without action
  */
+export type UserCountOutputTypeCountFeedbackAuthoredArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.MentorFeedbackWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountReflectionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.ReflectionWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountAssignmentsCreatedArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.WeeklyAssignmentWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountAssignmentsAsInternArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.WeeklyAssignmentWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountFriendshipsSentArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.FriendshipWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountFriendshipsReceivedArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.FriendshipWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountDirectChatsFirstArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.DirectConversationWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountDirectChatsSecondArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.DirectConversationWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountChatMembershipsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.ChatMembershipWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountChatMessagesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.ChatMessageWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountAccountsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.AccountWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountSessionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.SessionWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
 export type UserCountOutputTypeCountDailyPlansArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   where?: Prisma.DailyPlanWhereInput
 }
@@ -2107,21 +3783,29 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   createdAt?: boolean
   updatedAt?: boolean
   role?: boolean
-  locale?: boolean
   banned?: boolean
   banReason?: boolean
   banExpires?: boolean
-  sessions?: boolean | Prisma.User$sessionsArgs<ExtArgs>
-  accounts?: boolean | Prisma.User$accountsArgs<ExtArgs>
-  assignmentsAsIntern?: boolean | Prisma.User$assignmentsAsInternArgs<ExtArgs>
-  assignmentsCreated?: boolean | Prisma.User$assignmentsCreatedArgs<ExtArgs>
-  reflections?: boolean | Prisma.User$reflectionsArgs<ExtArgs>
-  feedbackAuthored?: boolean | Prisma.User$feedbackAuthoredArgs<ExtArgs>
-  discussionNote?: boolean | Prisma.User$discussionNoteArgs<ExtArgs>
+  locale?: boolean
+  secureLoginVersion?: boolean
+  DailyPlan?: boolean | Prisma.User$DailyPlanArgs<ExtArgs>
   resourcesAdded?: boolean | Prisma.User$resourcesAddedArgs<ExtArgs>
+  discussionNote?: boolean | Prisma.User$discussionNoteArgs<ExtArgs>
   ideas?: boolean | Prisma.User$ideasArgs<ExtArgs>
   ideaNotes?: boolean | Prisma.User$ideaNotesArgs<ExtArgs>
-  dailyPlans?: boolean | Prisma.User$dailyPlansArgs<ExtArgs>
+  feedbackAuthored?: boolean | Prisma.User$feedbackAuthoredArgs<ExtArgs>
+  reflections?: boolean | Prisma.User$reflectionsArgs<ExtArgs>
+  assignmentsCreated?: boolean | Prisma.User$assignmentsCreatedArgs<ExtArgs>
+  assignmentsAsIntern?: boolean | Prisma.User$assignmentsAsInternArgs<ExtArgs>
+  friendshipsSent?: boolean | Prisma.User$friendshipsSentArgs<ExtArgs>
+  friendshipsReceived?: boolean | Prisma.User$friendshipsReceivedArgs<ExtArgs>
+  directChatsFirst?: boolean | Prisma.User$directChatsFirstArgs<ExtArgs>
+  directChatsSecond?: boolean | Prisma.User$directChatsSecondArgs<ExtArgs>
+  chatMemberships?: boolean | Prisma.User$chatMembershipsArgs<ExtArgs>
+  chatMessages?: boolean | Prisma.User$chatMessagesArgs<ExtArgs>
+  chatEncryptionKey?: boolean | Prisma.User$chatEncryptionKeyArgs<ExtArgs>
+  accounts?: boolean | Prisma.User$accountsArgs<ExtArgs>
+  sessions?: boolean | Prisma.User$sessionsArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["user"]>
 
@@ -2134,10 +3818,11 @@ export type UserSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   createdAt?: boolean
   updatedAt?: boolean
   role?: boolean
-  locale?: boolean
   banned?: boolean
   banReason?: boolean
   banExpires?: boolean
+  locale?: boolean
+  secureLoginVersion?: boolean
 }, ExtArgs["result"]["user"]>
 
 export type UserSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -2149,10 +3834,11 @@ export type UserSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   createdAt?: boolean
   updatedAt?: boolean
   role?: boolean
-  locale?: boolean
   banned?: boolean
   banReason?: boolean
   banExpires?: boolean
+  locale?: boolean
+  secureLoginVersion?: boolean
 }, ExtArgs["result"]["user"]>
 
 export type UserSelectScalar = {
@@ -2164,25 +3850,33 @@ export type UserSelectScalar = {
   createdAt?: boolean
   updatedAt?: boolean
   role?: boolean
-  locale?: boolean
   banned?: boolean
   banReason?: boolean
   banExpires?: boolean
+  locale?: boolean
+  secureLoginVersion?: boolean
 }
 
-export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "email" | "emailVerified" | "image" | "createdAt" | "updatedAt" | "role" | "locale" | "banned" | "banReason" | "banExpires", ExtArgs["result"]["user"]>
+export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "email" | "emailVerified" | "image" | "createdAt" | "updatedAt" | "role" | "banned" | "banReason" | "banExpires" | "locale" | "secureLoginVersion", ExtArgs["result"]["user"]>
 export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  sessions?: boolean | Prisma.User$sessionsArgs<ExtArgs>
-  accounts?: boolean | Prisma.User$accountsArgs<ExtArgs>
-  assignmentsAsIntern?: boolean | Prisma.User$assignmentsAsInternArgs<ExtArgs>
-  assignmentsCreated?: boolean | Prisma.User$assignmentsCreatedArgs<ExtArgs>
-  reflections?: boolean | Prisma.User$reflectionsArgs<ExtArgs>
-  feedbackAuthored?: boolean | Prisma.User$feedbackAuthoredArgs<ExtArgs>
-  discussionNote?: boolean | Prisma.User$discussionNoteArgs<ExtArgs>
+  DailyPlan?: boolean | Prisma.User$DailyPlanArgs<ExtArgs>
   resourcesAdded?: boolean | Prisma.User$resourcesAddedArgs<ExtArgs>
+  discussionNote?: boolean | Prisma.User$discussionNoteArgs<ExtArgs>
   ideas?: boolean | Prisma.User$ideasArgs<ExtArgs>
   ideaNotes?: boolean | Prisma.User$ideaNotesArgs<ExtArgs>
-  dailyPlans?: boolean | Prisma.User$dailyPlansArgs<ExtArgs>
+  feedbackAuthored?: boolean | Prisma.User$feedbackAuthoredArgs<ExtArgs>
+  reflections?: boolean | Prisma.User$reflectionsArgs<ExtArgs>
+  assignmentsCreated?: boolean | Prisma.User$assignmentsCreatedArgs<ExtArgs>
+  assignmentsAsIntern?: boolean | Prisma.User$assignmentsAsInternArgs<ExtArgs>
+  friendshipsSent?: boolean | Prisma.User$friendshipsSentArgs<ExtArgs>
+  friendshipsReceived?: boolean | Prisma.User$friendshipsReceivedArgs<ExtArgs>
+  directChatsFirst?: boolean | Prisma.User$directChatsFirstArgs<ExtArgs>
+  directChatsSecond?: boolean | Prisma.User$directChatsSecondArgs<ExtArgs>
+  chatMemberships?: boolean | Prisma.User$chatMembershipsArgs<ExtArgs>
+  chatMessages?: boolean | Prisma.User$chatMessagesArgs<ExtArgs>
+  chatEncryptionKey?: boolean | Prisma.User$chatEncryptionKeyArgs<ExtArgs>
+  accounts?: boolean | Prisma.User$accountsArgs<ExtArgs>
+  sessions?: boolean | Prisma.User$sessionsArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type UserIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
@@ -2191,17 +3885,24 @@ export type UserIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensi
 export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "User"
   objects: {
-    sessions: Prisma.$SessionPayload<ExtArgs>[]
-    accounts: Prisma.$AccountPayload<ExtArgs>[]
-    assignmentsAsIntern: Prisma.$WeeklyAssignmentPayload<ExtArgs>[]
-    assignmentsCreated: Prisma.$WeeklyAssignmentPayload<ExtArgs>[]
-    reflections: Prisma.$ReflectionPayload<ExtArgs>[]
-    feedbackAuthored: Prisma.$MentorFeedbackPayload<ExtArgs>[]
-    discussionNote: Prisma.$DiscussionNotePayload<ExtArgs> | null
+    DailyPlan: Prisma.$DailyPlanPayload<ExtArgs>[]
     resourcesAdded: Prisma.$DepartmentResourcePayload<ExtArgs>[]
+    discussionNote: Prisma.$DiscussionNotePayload<ExtArgs> | null
     ideas: Prisma.$IdeaPayload<ExtArgs>[]
     ideaNotes: Prisma.$IdeaNotePayload<ExtArgs>[]
-    dailyPlans: Prisma.$DailyPlanPayload<ExtArgs>[]
+    feedbackAuthored: Prisma.$MentorFeedbackPayload<ExtArgs>[]
+    reflections: Prisma.$ReflectionPayload<ExtArgs>[]
+    assignmentsCreated: Prisma.$WeeklyAssignmentPayload<ExtArgs>[]
+    assignmentsAsIntern: Prisma.$WeeklyAssignmentPayload<ExtArgs>[]
+    friendshipsSent: Prisma.$FriendshipPayload<ExtArgs>[]
+    friendshipsReceived: Prisma.$FriendshipPayload<ExtArgs>[]
+    directChatsFirst: Prisma.$DirectConversationPayload<ExtArgs>[]
+    directChatsSecond: Prisma.$DirectConversationPayload<ExtArgs>[]
+    chatMemberships: Prisma.$ChatMembershipPayload<ExtArgs>[]
+    chatMessages: Prisma.$ChatMessagePayload<ExtArgs>[]
+    chatEncryptionKey: Prisma.$ChatEncryptionKeyPayload<ExtArgs> | null
+    accounts: Prisma.$AccountPayload<ExtArgs>[]
+    sessions: Prisma.$SessionPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -2212,10 +3913,11 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     createdAt: Date
     updatedAt: Date
     role: string
-    locale: string
     banned: boolean | null
     banReason: string | null
     banExpires: Date | null
+    locale: string
+    secureLoginVersion: number
   }, ExtArgs["result"]["user"]>
   composites: {}
 }
@@ -2610,17 +4312,24 @@ readonly fields: UserFieldRefs;
  */
 export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
-  sessions<T extends Prisma.User$sessionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$sessionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$SessionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-  accounts<T extends Prisma.User$accountsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$accountsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AccountPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-  assignmentsAsIntern<T extends Prisma.User$assignmentsAsInternArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$assignmentsAsInternArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$WeeklyAssignmentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-  assignmentsCreated<T extends Prisma.User$assignmentsCreatedArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$assignmentsCreatedArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$WeeklyAssignmentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-  reflections<T extends Prisma.User$reflectionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$reflectionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ReflectionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-  feedbackAuthored<T extends Prisma.User$feedbackAuthoredArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$feedbackAuthoredArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$MentorFeedbackPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-  discussionNote<T extends Prisma.User$discussionNoteArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$discussionNoteArgs<ExtArgs>>): Prisma.Prisma__DiscussionNoteClient<runtime.Types.Result.GetResult<Prisma.$DiscussionNotePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  DailyPlan<T extends Prisma.User$DailyPlanArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$DailyPlanArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$DailyPlanPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   resourcesAdded<T extends Prisma.User$resourcesAddedArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$resourcesAddedArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$DepartmentResourcePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  discussionNote<T extends Prisma.User$discussionNoteArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$discussionNoteArgs<ExtArgs>>): Prisma.Prisma__DiscussionNoteClient<runtime.Types.Result.GetResult<Prisma.$DiscussionNotePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   ideas<T extends Prisma.User$ideasArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$ideasArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$IdeaPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   ideaNotes<T extends Prisma.User$ideaNotesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$ideaNotesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$IdeaNotePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-  dailyPlans<T extends Prisma.User$dailyPlansArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$dailyPlansArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$DailyPlanPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  feedbackAuthored<T extends Prisma.User$feedbackAuthoredArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$feedbackAuthoredArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$MentorFeedbackPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  reflections<T extends Prisma.User$reflectionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$reflectionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ReflectionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  assignmentsCreated<T extends Prisma.User$assignmentsCreatedArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$assignmentsCreatedArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$WeeklyAssignmentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  assignmentsAsIntern<T extends Prisma.User$assignmentsAsInternArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$assignmentsAsInternArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$WeeklyAssignmentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  friendshipsSent<T extends Prisma.User$friendshipsSentArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$friendshipsSentArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$FriendshipPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  friendshipsReceived<T extends Prisma.User$friendshipsReceivedArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$friendshipsReceivedArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$FriendshipPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  directChatsFirst<T extends Prisma.User$directChatsFirstArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$directChatsFirstArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$DirectConversationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  directChatsSecond<T extends Prisma.User$directChatsSecondArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$directChatsSecondArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$DirectConversationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  chatMemberships<T extends Prisma.User$chatMembershipsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$chatMembershipsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ChatMembershipPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  chatMessages<T extends Prisma.User$chatMessagesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$chatMessagesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ChatMessagePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  chatEncryptionKey<T extends Prisma.User$chatEncryptionKeyArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$chatEncryptionKeyArgs<ExtArgs>>): Prisma.Prisma__ChatEncryptionKeyClient<runtime.Types.Result.GetResult<Prisma.$ChatEncryptionKeyPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  accounts<T extends Prisma.User$accountsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$accountsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AccountPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  sessions<T extends Prisma.User$sessionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$sessionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$SessionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -2658,10 +4367,11 @@ export interface UserFieldRefs {
   readonly createdAt: Prisma.FieldRef<"User", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"User", 'DateTime'>
   readonly role: Prisma.FieldRef<"User", 'String'>
-  readonly locale: Prisma.FieldRef<"User", 'String'>
   readonly banned: Prisma.FieldRef<"User", 'Boolean'>
   readonly banReason: Prisma.FieldRef<"User", 'String'>
   readonly banExpires: Prisma.FieldRef<"User", 'DateTime'>
+  readonly locale: Prisma.FieldRef<"User", 'String'>
+  readonly secureLoginVersion: Prisma.FieldRef<"User", 'Int'>
 }
     
 
@@ -3055,166 +4765,27 @@ export type UserDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.Internal
 }
 
 /**
- * User.sessions
+ * User.DailyPlan
  */
-export type User$sessionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type User$DailyPlanArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
-   * Select specific fields to fetch from the Session
+   * Select specific fields to fetch from the DailyPlan
    */
-  select?: Prisma.SessionSelect<ExtArgs> | null
+  select?: Prisma.DailyPlanSelect<ExtArgs> | null
   /**
-   * Omit specific fields from the Session
+   * Omit specific fields from the DailyPlan
    */
-  omit?: Prisma.SessionOmit<ExtArgs> | null
+  omit?: Prisma.DailyPlanOmit<ExtArgs> | null
   /**
    * Choose, which related nodes to fetch as well
    */
-  include?: Prisma.SessionInclude<ExtArgs> | null
-  where?: Prisma.SessionWhereInput
-  orderBy?: Prisma.SessionOrderByWithRelationInput | Prisma.SessionOrderByWithRelationInput[]
-  cursor?: Prisma.SessionWhereUniqueInput
+  include?: Prisma.DailyPlanInclude<ExtArgs> | null
+  where?: Prisma.DailyPlanWhereInput
+  orderBy?: Prisma.DailyPlanOrderByWithRelationInput | Prisma.DailyPlanOrderByWithRelationInput[]
+  cursor?: Prisma.DailyPlanWhereUniqueInput
   take?: number
   skip?: number
-  distinct?: Prisma.SessionScalarFieldEnum | Prisma.SessionScalarFieldEnum[]
-}
-
-/**
- * User.accounts
- */
-export type User$accountsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  /**
-   * Select specific fields to fetch from the Account
-   */
-  select?: Prisma.AccountSelect<ExtArgs> | null
-  /**
-   * Omit specific fields from the Account
-   */
-  omit?: Prisma.AccountOmit<ExtArgs> | null
-  /**
-   * Choose, which related nodes to fetch as well
-   */
-  include?: Prisma.AccountInclude<ExtArgs> | null
-  where?: Prisma.AccountWhereInput
-  orderBy?: Prisma.AccountOrderByWithRelationInput | Prisma.AccountOrderByWithRelationInput[]
-  cursor?: Prisma.AccountWhereUniqueInput
-  take?: number
-  skip?: number
-  distinct?: Prisma.AccountScalarFieldEnum | Prisma.AccountScalarFieldEnum[]
-}
-
-/**
- * User.assignmentsAsIntern
- */
-export type User$assignmentsAsInternArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  /**
-   * Select specific fields to fetch from the WeeklyAssignment
-   */
-  select?: Prisma.WeeklyAssignmentSelect<ExtArgs> | null
-  /**
-   * Omit specific fields from the WeeklyAssignment
-   */
-  omit?: Prisma.WeeklyAssignmentOmit<ExtArgs> | null
-  /**
-   * Choose, which related nodes to fetch as well
-   */
-  include?: Prisma.WeeklyAssignmentInclude<ExtArgs> | null
-  where?: Prisma.WeeklyAssignmentWhereInput
-  orderBy?: Prisma.WeeklyAssignmentOrderByWithRelationInput | Prisma.WeeklyAssignmentOrderByWithRelationInput[]
-  cursor?: Prisma.WeeklyAssignmentWhereUniqueInput
-  take?: number
-  skip?: number
-  distinct?: Prisma.WeeklyAssignmentScalarFieldEnum | Prisma.WeeklyAssignmentScalarFieldEnum[]
-}
-
-/**
- * User.assignmentsCreated
- */
-export type User$assignmentsCreatedArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  /**
-   * Select specific fields to fetch from the WeeklyAssignment
-   */
-  select?: Prisma.WeeklyAssignmentSelect<ExtArgs> | null
-  /**
-   * Omit specific fields from the WeeklyAssignment
-   */
-  omit?: Prisma.WeeklyAssignmentOmit<ExtArgs> | null
-  /**
-   * Choose, which related nodes to fetch as well
-   */
-  include?: Prisma.WeeklyAssignmentInclude<ExtArgs> | null
-  where?: Prisma.WeeklyAssignmentWhereInput
-  orderBy?: Prisma.WeeklyAssignmentOrderByWithRelationInput | Prisma.WeeklyAssignmentOrderByWithRelationInput[]
-  cursor?: Prisma.WeeklyAssignmentWhereUniqueInput
-  take?: number
-  skip?: number
-  distinct?: Prisma.WeeklyAssignmentScalarFieldEnum | Prisma.WeeklyAssignmentScalarFieldEnum[]
-}
-
-/**
- * User.reflections
- */
-export type User$reflectionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  /**
-   * Select specific fields to fetch from the Reflection
-   */
-  select?: Prisma.ReflectionSelect<ExtArgs> | null
-  /**
-   * Omit specific fields from the Reflection
-   */
-  omit?: Prisma.ReflectionOmit<ExtArgs> | null
-  /**
-   * Choose, which related nodes to fetch as well
-   */
-  include?: Prisma.ReflectionInclude<ExtArgs> | null
-  where?: Prisma.ReflectionWhereInput
-  orderBy?: Prisma.ReflectionOrderByWithRelationInput | Prisma.ReflectionOrderByWithRelationInput[]
-  cursor?: Prisma.ReflectionWhereUniqueInput
-  take?: number
-  skip?: number
-  distinct?: Prisma.ReflectionScalarFieldEnum | Prisma.ReflectionScalarFieldEnum[]
-}
-
-/**
- * User.feedbackAuthored
- */
-export type User$feedbackAuthoredArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  /**
-   * Select specific fields to fetch from the MentorFeedback
-   */
-  select?: Prisma.MentorFeedbackSelect<ExtArgs> | null
-  /**
-   * Omit specific fields from the MentorFeedback
-   */
-  omit?: Prisma.MentorFeedbackOmit<ExtArgs> | null
-  /**
-   * Choose, which related nodes to fetch as well
-   */
-  include?: Prisma.MentorFeedbackInclude<ExtArgs> | null
-  where?: Prisma.MentorFeedbackWhereInput
-  orderBy?: Prisma.MentorFeedbackOrderByWithRelationInput | Prisma.MentorFeedbackOrderByWithRelationInput[]
-  cursor?: Prisma.MentorFeedbackWhereUniqueInput
-  take?: number
-  skip?: number
-  distinct?: Prisma.MentorFeedbackScalarFieldEnum | Prisma.MentorFeedbackScalarFieldEnum[]
-}
-
-/**
- * User.discussionNote
- */
-export type User$discussionNoteArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  /**
-   * Select specific fields to fetch from the DiscussionNote
-   */
-  select?: Prisma.DiscussionNoteSelect<ExtArgs> | null
-  /**
-   * Omit specific fields from the DiscussionNote
-   */
-  omit?: Prisma.DiscussionNoteOmit<ExtArgs> | null
-  /**
-   * Choose, which related nodes to fetch as well
-   */
-  include?: Prisma.DiscussionNoteInclude<ExtArgs> | null
-  where?: Prisma.DiscussionNoteWhereInput
+  distinct?: Prisma.DailyPlanScalarFieldEnum | Prisma.DailyPlanScalarFieldEnum[]
 }
 
 /**
@@ -3239,6 +4810,25 @@ export type User$resourcesAddedArgs<ExtArgs extends runtime.Types.Extensions.Int
   take?: number
   skip?: number
   distinct?: Prisma.DepartmentResourceScalarFieldEnum | Prisma.DepartmentResourceScalarFieldEnum[]
+}
+
+/**
+ * User.discussionNote
+ */
+export type User$discussionNoteArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the DiscussionNote
+   */
+  select?: Prisma.DiscussionNoteSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the DiscussionNote
+   */
+  omit?: Prisma.DiscussionNoteOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.DiscussionNoteInclude<ExtArgs> | null
+  where?: Prisma.DiscussionNoteWhereInput
 }
 
 /**
@@ -3287,6 +4877,313 @@ export type User$ideaNotesArgs<ExtArgs extends runtime.Types.Extensions.Internal
   take?: number
   skip?: number
   distinct?: Prisma.IdeaNoteScalarFieldEnum | Prisma.IdeaNoteScalarFieldEnum[]
+}
+
+/**
+ * User.feedbackAuthored
+ */
+export type User$feedbackAuthoredArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the MentorFeedback
+   */
+  select?: Prisma.MentorFeedbackSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the MentorFeedback
+   */
+  omit?: Prisma.MentorFeedbackOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.MentorFeedbackInclude<ExtArgs> | null
+  where?: Prisma.MentorFeedbackWhereInput
+  orderBy?: Prisma.MentorFeedbackOrderByWithRelationInput | Prisma.MentorFeedbackOrderByWithRelationInput[]
+  cursor?: Prisma.MentorFeedbackWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.MentorFeedbackScalarFieldEnum | Prisma.MentorFeedbackScalarFieldEnum[]
+}
+
+/**
+ * User.reflections
+ */
+export type User$reflectionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Reflection
+   */
+  select?: Prisma.ReflectionSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Reflection
+   */
+  omit?: Prisma.ReflectionOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ReflectionInclude<ExtArgs> | null
+  where?: Prisma.ReflectionWhereInput
+  orderBy?: Prisma.ReflectionOrderByWithRelationInput | Prisma.ReflectionOrderByWithRelationInput[]
+  cursor?: Prisma.ReflectionWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.ReflectionScalarFieldEnum | Prisma.ReflectionScalarFieldEnum[]
+}
+
+/**
+ * User.assignmentsCreated
+ */
+export type User$assignmentsCreatedArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the WeeklyAssignment
+   */
+  select?: Prisma.WeeklyAssignmentSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the WeeklyAssignment
+   */
+  omit?: Prisma.WeeklyAssignmentOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.WeeklyAssignmentInclude<ExtArgs> | null
+  where?: Prisma.WeeklyAssignmentWhereInput
+  orderBy?: Prisma.WeeklyAssignmentOrderByWithRelationInput | Prisma.WeeklyAssignmentOrderByWithRelationInput[]
+  cursor?: Prisma.WeeklyAssignmentWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.WeeklyAssignmentScalarFieldEnum | Prisma.WeeklyAssignmentScalarFieldEnum[]
+}
+
+/**
+ * User.assignmentsAsIntern
+ */
+export type User$assignmentsAsInternArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the WeeklyAssignment
+   */
+  select?: Prisma.WeeklyAssignmentSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the WeeklyAssignment
+   */
+  omit?: Prisma.WeeklyAssignmentOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.WeeklyAssignmentInclude<ExtArgs> | null
+  where?: Prisma.WeeklyAssignmentWhereInput
+  orderBy?: Prisma.WeeklyAssignmentOrderByWithRelationInput | Prisma.WeeklyAssignmentOrderByWithRelationInput[]
+  cursor?: Prisma.WeeklyAssignmentWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.WeeklyAssignmentScalarFieldEnum | Prisma.WeeklyAssignmentScalarFieldEnum[]
+}
+
+/**
+ * User.friendshipsSent
+ */
+export type User$friendshipsSentArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Friendship
+   */
+  select?: Prisma.FriendshipSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Friendship
+   */
+  omit?: Prisma.FriendshipOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.FriendshipInclude<ExtArgs> | null
+  where?: Prisma.FriendshipWhereInput
+  orderBy?: Prisma.FriendshipOrderByWithRelationInput | Prisma.FriendshipOrderByWithRelationInput[]
+  cursor?: Prisma.FriendshipWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.FriendshipScalarFieldEnum | Prisma.FriendshipScalarFieldEnum[]
+}
+
+/**
+ * User.friendshipsReceived
+ */
+export type User$friendshipsReceivedArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Friendship
+   */
+  select?: Prisma.FriendshipSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Friendship
+   */
+  omit?: Prisma.FriendshipOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.FriendshipInclude<ExtArgs> | null
+  where?: Prisma.FriendshipWhereInput
+  orderBy?: Prisma.FriendshipOrderByWithRelationInput | Prisma.FriendshipOrderByWithRelationInput[]
+  cursor?: Prisma.FriendshipWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.FriendshipScalarFieldEnum | Prisma.FriendshipScalarFieldEnum[]
+}
+
+/**
+ * User.directChatsFirst
+ */
+export type User$directChatsFirstArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the DirectConversation
+   */
+  select?: Prisma.DirectConversationSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the DirectConversation
+   */
+  omit?: Prisma.DirectConversationOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.DirectConversationInclude<ExtArgs> | null
+  where?: Prisma.DirectConversationWhereInput
+  orderBy?: Prisma.DirectConversationOrderByWithRelationInput | Prisma.DirectConversationOrderByWithRelationInput[]
+  cursor?: Prisma.DirectConversationWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.DirectConversationScalarFieldEnum | Prisma.DirectConversationScalarFieldEnum[]
+}
+
+/**
+ * User.directChatsSecond
+ */
+export type User$directChatsSecondArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the DirectConversation
+   */
+  select?: Prisma.DirectConversationSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the DirectConversation
+   */
+  omit?: Prisma.DirectConversationOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.DirectConversationInclude<ExtArgs> | null
+  where?: Prisma.DirectConversationWhereInput
+  orderBy?: Prisma.DirectConversationOrderByWithRelationInput | Prisma.DirectConversationOrderByWithRelationInput[]
+  cursor?: Prisma.DirectConversationWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.DirectConversationScalarFieldEnum | Prisma.DirectConversationScalarFieldEnum[]
+}
+
+/**
+ * User.chatMemberships
+ */
+export type User$chatMembershipsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the ChatMembership
+   */
+  select?: Prisma.ChatMembershipSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the ChatMembership
+   */
+  omit?: Prisma.ChatMembershipOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ChatMembershipInclude<ExtArgs> | null
+  where?: Prisma.ChatMembershipWhereInput
+  orderBy?: Prisma.ChatMembershipOrderByWithRelationInput | Prisma.ChatMembershipOrderByWithRelationInput[]
+  cursor?: Prisma.ChatMembershipWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.ChatMembershipScalarFieldEnum | Prisma.ChatMembershipScalarFieldEnum[]
+}
+
+/**
+ * User.chatMessages
+ */
+export type User$chatMessagesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the ChatMessage
+   */
+  select?: Prisma.ChatMessageSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the ChatMessage
+   */
+  omit?: Prisma.ChatMessageOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ChatMessageInclude<ExtArgs> | null
+  where?: Prisma.ChatMessageWhereInput
+  orderBy?: Prisma.ChatMessageOrderByWithRelationInput | Prisma.ChatMessageOrderByWithRelationInput[]
+  cursor?: Prisma.ChatMessageWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.ChatMessageScalarFieldEnum | Prisma.ChatMessageScalarFieldEnum[]
+}
+
+/**
+ * User.chatEncryptionKey
+ */
+export type User$chatEncryptionKeyArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the ChatEncryptionKey
+   */
+  select?: Prisma.ChatEncryptionKeySelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the ChatEncryptionKey
+   */
+  omit?: Prisma.ChatEncryptionKeyOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ChatEncryptionKeyInclude<ExtArgs> | null
+  where?: Prisma.ChatEncryptionKeyWhereInput
+}
+
+/**
+ * User.accounts
+ */
+export type User$accountsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Account
+   */
+  select?: Prisma.AccountSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Account
+   */
+  omit?: Prisma.AccountOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.AccountInclude<ExtArgs> | null
+  where?: Prisma.AccountWhereInput
+  orderBy?: Prisma.AccountOrderByWithRelationInput | Prisma.AccountOrderByWithRelationInput[]
+  cursor?: Prisma.AccountWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.AccountScalarFieldEnum | Prisma.AccountScalarFieldEnum[]
+}
+
+/**
+ * User.sessions
+ */
+export type User$sessionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Session
+   */
+  select?: Prisma.SessionSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Session
+   */
+  omit?: Prisma.SessionOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.SessionInclude<ExtArgs> | null
+  where?: Prisma.SessionWhereInput
+  orderBy?: Prisma.SessionOrderByWithRelationInput | Prisma.SessionOrderByWithRelationInput[]
+  cursor?: Prisma.SessionWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.SessionScalarFieldEnum | Prisma.SessionScalarFieldEnum[]
 }
 
 /**

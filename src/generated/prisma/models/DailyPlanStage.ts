@@ -37,31 +37,31 @@ export type DailyPlanStageSumAggregateOutputType = {
 export type DailyPlanStageMinAggregateOutputType = {
   id: string | null
   planId: string | null
-  parentId: string | null
   title: string | null
   order: number | null
   completed: boolean | null
   completedAt: Date | null
+  parentId: string | null
 }
 
 export type DailyPlanStageMaxAggregateOutputType = {
   id: string | null
   planId: string | null
-  parentId: string | null
   title: string | null
   order: number | null
   completed: boolean | null
   completedAt: Date | null
+  parentId: string | null
 }
 
 export type DailyPlanStageCountAggregateOutputType = {
   id: number
   planId: number
-  parentId: number
   title: number
   order: number
   completed: number
   completedAt: number
+  parentId: number
   _all: number
 }
 
@@ -77,31 +77,31 @@ export type DailyPlanStageSumAggregateInputType = {
 export type DailyPlanStageMinAggregateInputType = {
   id?: true
   planId?: true
-  parentId?: true
   title?: true
   order?: true
   completed?: true
   completedAt?: true
+  parentId?: true
 }
 
 export type DailyPlanStageMaxAggregateInputType = {
   id?: true
   planId?: true
-  parentId?: true
   title?: true
   order?: true
   completed?: true
   completedAt?: true
+  parentId?: true
 }
 
 export type DailyPlanStageCountAggregateInputType = {
   id?: true
   planId?: true
-  parentId?: true
   title?: true
   order?: true
   completed?: true
   completedAt?: true
+  parentId?: true
   _all?: true
 }
 
@@ -194,11 +194,11 @@ export type DailyPlanStageGroupByArgs<ExtArgs extends runtime.Types.Extensions.I
 export type DailyPlanStageGroupByOutputType = {
   id: string
   planId: string
-  parentId: string | null
   title: string
   order: number
   completed: boolean
   completedAt: Date | null
+  parentId: string | null
   _count: DailyPlanStageCountAggregateOutputType | null
   _avg: DailyPlanStageAvgAggregateOutputType | null
   _sum: DailyPlanStageSumAggregateOutputType | null
@@ -227,27 +227,27 @@ export type DailyPlanStageWhereInput = {
   NOT?: Prisma.DailyPlanStageWhereInput | Prisma.DailyPlanStageWhereInput[]
   id?: Prisma.StringFilter<"DailyPlanStage"> | string
   planId?: Prisma.StringFilter<"DailyPlanStage"> | string
-  parentId?: Prisma.StringNullableFilter<"DailyPlanStage"> | string | null
   title?: Prisma.StringFilter<"DailyPlanStage"> | string
   order?: Prisma.IntFilter<"DailyPlanStage"> | number
   completed?: Prisma.BoolFilter<"DailyPlanStage"> | boolean
   completedAt?: Prisma.DateTimeNullableFilter<"DailyPlanStage"> | Date | string | null
-  plan?: Prisma.XOR<Prisma.DailyPlanScalarRelationFilter, Prisma.DailyPlanWhereInput>
-  parent?: Prisma.XOR<Prisma.DailyPlanStageNullableScalarRelationFilter, Prisma.DailyPlanStageWhereInput> | null
-  subsections?: Prisma.DailyPlanStageListRelationFilter
+  parentId?: Prisma.StringNullableFilter<"DailyPlanStage"> | string | null
+  DailyPlanStage?: Prisma.XOR<Prisma.DailyPlanStageNullableScalarRelationFilter, Prisma.DailyPlanStageWhereInput> | null
+  other_DailyPlanStage?: Prisma.DailyPlanStageListRelationFilter
+  DailyPlan?: Prisma.XOR<Prisma.DailyPlanScalarRelationFilter, Prisma.DailyPlanWhereInput>
 }
 
 export type DailyPlanStageOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   planId?: Prisma.SortOrder
-  parentId?: Prisma.SortOrderInput | Prisma.SortOrder
   title?: Prisma.SortOrder
   order?: Prisma.SortOrder
   completed?: Prisma.SortOrder
   completedAt?: Prisma.SortOrderInput | Prisma.SortOrder
-  plan?: Prisma.DailyPlanOrderByWithRelationInput
-  parent?: Prisma.DailyPlanStageOrderByWithRelationInput
-  subsections?: Prisma.DailyPlanStageOrderByRelationAggregateInput
+  parentId?: Prisma.SortOrderInput | Prisma.SortOrder
+  DailyPlanStage?: Prisma.DailyPlanStageOrderByWithRelationInput
+  other_DailyPlanStage?: Prisma.DailyPlanStageOrderByRelationAggregateInput
+  DailyPlan?: Prisma.DailyPlanOrderByWithRelationInput
 }
 
 export type DailyPlanStageWhereUniqueInput = Prisma.AtLeast<{
@@ -256,24 +256,24 @@ export type DailyPlanStageWhereUniqueInput = Prisma.AtLeast<{
   OR?: Prisma.DailyPlanStageWhereInput[]
   NOT?: Prisma.DailyPlanStageWhereInput | Prisma.DailyPlanStageWhereInput[]
   planId?: Prisma.StringFilter<"DailyPlanStage"> | string
-  parentId?: Prisma.StringNullableFilter<"DailyPlanStage"> | string | null
   title?: Prisma.StringFilter<"DailyPlanStage"> | string
   order?: Prisma.IntFilter<"DailyPlanStage"> | number
   completed?: Prisma.BoolFilter<"DailyPlanStage"> | boolean
   completedAt?: Prisma.DateTimeNullableFilter<"DailyPlanStage"> | Date | string | null
-  plan?: Prisma.XOR<Prisma.DailyPlanScalarRelationFilter, Prisma.DailyPlanWhereInput>
-  parent?: Prisma.XOR<Prisma.DailyPlanStageNullableScalarRelationFilter, Prisma.DailyPlanStageWhereInput> | null
-  subsections?: Prisma.DailyPlanStageListRelationFilter
+  parentId?: Prisma.StringNullableFilter<"DailyPlanStage"> | string | null
+  DailyPlanStage?: Prisma.XOR<Prisma.DailyPlanStageNullableScalarRelationFilter, Prisma.DailyPlanStageWhereInput> | null
+  other_DailyPlanStage?: Prisma.DailyPlanStageListRelationFilter
+  DailyPlan?: Prisma.XOR<Prisma.DailyPlanScalarRelationFilter, Prisma.DailyPlanWhereInput>
 }, "id">
 
 export type DailyPlanStageOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   planId?: Prisma.SortOrder
-  parentId?: Prisma.SortOrderInput | Prisma.SortOrder
   title?: Prisma.SortOrder
   order?: Prisma.SortOrder
   completed?: Prisma.SortOrder
   completedAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  parentId?: Prisma.SortOrderInput | Prisma.SortOrder
   _count?: Prisma.DailyPlanStageCountOrderByAggregateInput
   _avg?: Prisma.DailyPlanStageAvgOrderByAggregateInput
   _max?: Prisma.DailyPlanStageMaxOrderByAggregateInput
@@ -287,33 +287,33 @@ export type DailyPlanStageScalarWhereWithAggregatesInput = {
   NOT?: Prisma.DailyPlanStageScalarWhereWithAggregatesInput | Prisma.DailyPlanStageScalarWhereWithAggregatesInput[]
   id?: Prisma.StringWithAggregatesFilter<"DailyPlanStage"> | string
   planId?: Prisma.StringWithAggregatesFilter<"DailyPlanStage"> | string
-  parentId?: Prisma.StringNullableWithAggregatesFilter<"DailyPlanStage"> | string | null
   title?: Prisma.StringWithAggregatesFilter<"DailyPlanStage"> | string
   order?: Prisma.IntWithAggregatesFilter<"DailyPlanStage"> | number
   completed?: Prisma.BoolWithAggregatesFilter<"DailyPlanStage"> | boolean
   completedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"DailyPlanStage"> | Date | string | null
+  parentId?: Prisma.StringNullableWithAggregatesFilter<"DailyPlanStage"> | string | null
 }
 
 export type DailyPlanStageCreateInput = {
-  id?: string
+  id: string
   title: string
   order?: number
   completed?: boolean
   completedAt?: Date | string | null
-  plan: Prisma.DailyPlanCreateNestedOneWithoutStagesInput
-  parent?: Prisma.DailyPlanStageCreateNestedOneWithoutSubsectionsInput
-  subsections?: Prisma.DailyPlanStageCreateNestedManyWithoutParentInput
+  DailyPlanStage?: Prisma.DailyPlanStageCreateNestedOneWithoutOther_DailyPlanStageInput
+  other_DailyPlanStage?: Prisma.DailyPlanStageCreateNestedManyWithoutDailyPlanStageInput
+  DailyPlan: Prisma.DailyPlanCreateNestedOneWithoutDailyPlanStageInput
 }
 
 export type DailyPlanStageUncheckedCreateInput = {
-  id?: string
+  id: string
   planId: string
-  parentId?: string | null
   title: string
   order?: number
   completed?: boolean
   completedAt?: Date | string | null
-  subsections?: Prisma.DailyPlanStageUncheckedCreateNestedManyWithoutParentInput
+  parentId?: string | null
+  other_DailyPlanStage?: Prisma.DailyPlanStageUncheckedCreateNestedManyWithoutDailyPlanStageInput
 }
 
 export type DailyPlanStageUpdateInput = {
@@ -322,30 +322,30 @@ export type DailyPlanStageUpdateInput = {
   order?: Prisma.IntFieldUpdateOperationsInput | number
   completed?: Prisma.BoolFieldUpdateOperationsInput | boolean
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  plan?: Prisma.DailyPlanUpdateOneRequiredWithoutStagesNestedInput
-  parent?: Prisma.DailyPlanStageUpdateOneWithoutSubsectionsNestedInput
-  subsections?: Prisma.DailyPlanStageUpdateManyWithoutParentNestedInput
+  DailyPlanStage?: Prisma.DailyPlanStageUpdateOneWithoutOther_DailyPlanStageNestedInput
+  other_DailyPlanStage?: Prisma.DailyPlanStageUpdateManyWithoutDailyPlanStageNestedInput
+  DailyPlan?: Prisma.DailyPlanUpdateOneRequiredWithoutDailyPlanStageNestedInput
 }
 
 export type DailyPlanStageUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   planId?: Prisma.StringFieldUpdateOperationsInput | string
-  parentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   title?: Prisma.StringFieldUpdateOperationsInput | string
   order?: Prisma.IntFieldUpdateOperationsInput | number
   completed?: Prisma.BoolFieldUpdateOperationsInput | boolean
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  subsections?: Prisma.DailyPlanStageUncheckedUpdateManyWithoutParentNestedInput
+  parentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  other_DailyPlanStage?: Prisma.DailyPlanStageUncheckedUpdateManyWithoutDailyPlanStageNestedInput
 }
 
 export type DailyPlanStageCreateManyInput = {
-  id?: string
+  id: string
   planId: string
-  parentId?: string | null
   title: string
   order?: number
   completed?: boolean
   completedAt?: Date | string | null
+  parentId?: string | null
 }
 
 export type DailyPlanStageUpdateManyMutationInput = {
@@ -359,11 +359,11 @@ export type DailyPlanStageUpdateManyMutationInput = {
 export type DailyPlanStageUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   planId?: Prisma.StringFieldUpdateOperationsInput | string
-  parentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   title?: Prisma.StringFieldUpdateOperationsInput | string
   order?: Prisma.IntFieldUpdateOperationsInput | number
   completed?: Prisma.BoolFieldUpdateOperationsInput | boolean
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  parentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type DailyPlanStageListRelationFilter = {
@@ -384,11 +384,11 @@ export type DailyPlanStageNullableScalarRelationFilter = {
 export type DailyPlanStageCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   planId?: Prisma.SortOrder
-  parentId?: Prisma.SortOrder
   title?: Prisma.SortOrder
   order?: Prisma.SortOrder
   completed?: Prisma.SortOrder
   completedAt?: Prisma.SortOrder
+  parentId?: Prisma.SortOrder
 }
 
 export type DailyPlanStageAvgOrderByAggregateInput = {
@@ -398,171 +398,171 @@ export type DailyPlanStageAvgOrderByAggregateInput = {
 export type DailyPlanStageMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   planId?: Prisma.SortOrder
-  parentId?: Prisma.SortOrder
   title?: Prisma.SortOrder
   order?: Prisma.SortOrder
   completed?: Prisma.SortOrder
   completedAt?: Prisma.SortOrder
+  parentId?: Prisma.SortOrder
 }
 
 export type DailyPlanStageMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   planId?: Prisma.SortOrder
-  parentId?: Prisma.SortOrder
   title?: Prisma.SortOrder
   order?: Prisma.SortOrder
   completed?: Prisma.SortOrder
   completedAt?: Prisma.SortOrder
+  parentId?: Prisma.SortOrder
 }
 
 export type DailyPlanStageSumOrderByAggregateInput = {
   order?: Prisma.SortOrder
 }
 
-export type DailyPlanStageCreateNestedManyWithoutPlanInput = {
-  create?: Prisma.XOR<Prisma.DailyPlanStageCreateWithoutPlanInput, Prisma.DailyPlanStageUncheckedCreateWithoutPlanInput> | Prisma.DailyPlanStageCreateWithoutPlanInput[] | Prisma.DailyPlanStageUncheckedCreateWithoutPlanInput[]
-  connectOrCreate?: Prisma.DailyPlanStageCreateOrConnectWithoutPlanInput | Prisma.DailyPlanStageCreateOrConnectWithoutPlanInput[]
-  createMany?: Prisma.DailyPlanStageCreateManyPlanInputEnvelope
+export type DailyPlanStageCreateNestedManyWithoutDailyPlanInput = {
+  create?: Prisma.XOR<Prisma.DailyPlanStageCreateWithoutDailyPlanInput, Prisma.DailyPlanStageUncheckedCreateWithoutDailyPlanInput> | Prisma.DailyPlanStageCreateWithoutDailyPlanInput[] | Prisma.DailyPlanStageUncheckedCreateWithoutDailyPlanInput[]
+  connectOrCreate?: Prisma.DailyPlanStageCreateOrConnectWithoutDailyPlanInput | Prisma.DailyPlanStageCreateOrConnectWithoutDailyPlanInput[]
+  createMany?: Prisma.DailyPlanStageCreateManyDailyPlanInputEnvelope
   connect?: Prisma.DailyPlanStageWhereUniqueInput | Prisma.DailyPlanStageWhereUniqueInput[]
 }
 
-export type DailyPlanStageUncheckedCreateNestedManyWithoutPlanInput = {
-  create?: Prisma.XOR<Prisma.DailyPlanStageCreateWithoutPlanInput, Prisma.DailyPlanStageUncheckedCreateWithoutPlanInput> | Prisma.DailyPlanStageCreateWithoutPlanInput[] | Prisma.DailyPlanStageUncheckedCreateWithoutPlanInput[]
-  connectOrCreate?: Prisma.DailyPlanStageCreateOrConnectWithoutPlanInput | Prisma.DailyPlanStageCreateOrConnectWithoutPlanInput[]
-  createMany?: Prisma.DailyPlanStageCreateManyPlanInputEnvelope
+export type DailyPlanStageUncheckedCreateNestedManyWithoutDailyPlanInput = {
+  create?: Prisma.XOR<Prisma.DailyPlanStageCreateWithoutDailyPlanInput, Prisma.DailyPlanStageUncheckedCreateWithoutDailyPlanInput> | Prisma.DailyPlanStageCreateWithoutDailyPlanInput[] | Prisma.DailyPlanStageUncheckedCreateWithoutDailyPlanInput[]
+  connectOrCreate?: Prisma.DailyPlanStageCreateOrConnectWithoutDailyPlanInput | Prisma.DailyPlanStageCreateOrConnectWithoutDailyPlanInput[]
+  createMany?: Prisma.DailyPlanStageCreateManyDailyPlanInputEnvelope
   connect?: Prisma.DailyPlanStageWhereUniqueInput | Prisma.DailyPlanStageWhereUniqueInput[]
 }
 
-export type DailyPlanStageUpdateManyWithoutPlanNestedInput = {
-  create?: Prisma.XOR<Prisma.DailyPlanStageCreateWithoutPlanInput, Prisma.DailyPlanStageUncheckedCreateWithoutPlanInput> | Prisma.DailyPlanStageCreateWithoutPlanInput[] | Prisma.DailyPlanStageUncheckedCreateWithoutPlanInput[]
-  connectOrCreate?: Prisma.DailyPlanStageCreateOrConnectWithoutPlanInput | Prisma.DailyPlanStageCreateOrConnectWithoutPlanInput[]
-  upsert?: Prisma.DailyPlanStageUpsertWithWhereUniqueWithoutPlanInput | Prisma.DailyPlanStageUpsertWithWhereUniqueWithoutPlanInput[]
-  createMany?: Prisma.DailyPlanStageCreateManyPlanInputEnvelope
+export type DailyPlanStageUpdateManyWithoutDailyPlanNestedInput = {
+  create?: Prisma.XOR<Prisma.DailyPlanStageCreateWithoutDailyPlanInput, Prisma.DailyPlanStageUncheckedCreateWithoutDailyPlanInput> | Prisma.DailyPlanStageCreateWithoutDailyPlanInput[] | Prisma.DailyPlanStageUncheckedCreateWithoutDailyPlanInput[]
+  connectOrCreate?: Prisma.DailyPlanStageCreateOrConnectWithoutDailyPlanInput | Prisma.DailyPlanStageCreateOrConnectWithoutDailyPlanInput[]
+  upsert?: Prisma.DailyPlanStageUpsertWithWhereUniqueWithoutDailyPlanInput | Prisma.DailyPlanStageUpsertWithWhereUniqueWithoutDailyPlanInput[]
+  createMany?: Prisma.DailyPlanStageCreateManyDailyPlanInputEnvelope
   set?: Prisma.DailyPlanStageWhereUniqueInput | Prisma.DailyPlanStageWhereUniqueInput[]
   disconnect?: Prisma.DailyPlanStageWhereUniqueInput | Prisma.DailyPlanStageWhereUniqueInput[]
   delete?: Prisma.DailyPlanStageWhereUniqueInput | Prisma.DailyPlanStageWhereUniqueInput[]
   connect?: Prisma.DailyPlanStageWhereUniqueInput | Prisma.DailyPlanStageWhereUniqueInput[]
-  update?: Prisma.DailyPlanStageUpdateWithWhereUniqueWithoutPlanInput | Prisma.DailyPlanStageUpdateWithWhereUniqueWithoutPlanInput[]
-  updateMany?: Prisma.DailyPlanStageUpdateManyWithWhereWithoutPlanInput | Prisma.DailyPlanStageUpdateManyWithWhereWithoutPlanInput[]
+  update?: Prisma.DailyPlanStageUpdateWithWhereUniqueWithoutDailyPlanInput | Prisma.DailyPlanStageUpdateWithWhereUniqueWithoutDailyPlanInput[]
+  updateMany?: Prisma.DailyPlanStageUpdateManyWithWhereWithoutDailyPlanInput | Prisma.DailyPlanStageUpdateManyWithWhereWithoutDailyPlanInput[]
   deleteMany?: Prisma.DailyPlanStageScalarWhereInput | Prisma.DailyPlanStageScalarWhereInput[]
 }
 
-export type DailyPlanStageUncheckedUpdateManyWithoutPlanNestedInput = {
-  create?: Prisma.XOR<Prisma.DailyPlanStageCreateWithoutPlanInput, Prisma.DailyPlanStageUncheckedCreateWithoutPlanInput> | Prisma.DailyPlanStageCreateWithoutPlanInput[] | Prisma.DailyPlanStageUncheckedCreateWithoutPlanInput[]
-  connectOrCreate?: Prisma.DailyPlanStageCreateOrConnectWithoutPlanInput | Prisma.DailyPlanStageCreateOrConnectWithoutPlanInput[]
-  upsert?: Prisma.DailyPlanStageUpsertWithWhereUniqueWithoutPlanInput | Prisma.DailyPlanStageUpsertWithWhereUniqueWithoutPlanInput[]
-  createMany?: Prisma.DailyPlanStageCreateManyPlanInputEnvelope
+export type DailyPlanStageUncheckedUpdateManyWithoutDailyPlanNestedInput = {
+  create?: Prisma.XOR<Prisma.DailyPlanStageCreateWithoutDailyPlanInput, Prisma.DailyPlanStageUncheckedCreateWithoutDailyPlanInput> | Prisma.DailyPlanStageCreateWithoutDailyPlanInput[] | Prisma.DailyPlanStageUncheckedCreateWithoutDailyPlanInput[]
+  connectOrCreate?: Prisma.DailyPlanStageCreateOrConnectWithoutDailyPlanInput | Prisma.DailyPlanStageCreateOrConnectWithoutDailyPlanInput[]
+  upsert?: Prisma.DailyPlanStageUpsertWithWhereUniqueWithoutDailyPlanInput | Prisma.DailyPlanStageUpsertWithWhereUniqueWithoutDailyPlanInput[]
+  createMany?: Prisma.DailyPlanStageCreateManyDailyPlanInputEnvelope
   set?: Prisma.DailyPlanStageWhereUniqueInput | Prisma.DailyPlanStageWhereUniqueInput[]
   disconnect?: Prisma.DailyPlanStageWhereUniqueInput | Prisma.DailyPlanStageWhereUniqueInput[]
   delete?: Prisma.DailyPlanStageWhereUniqueInput | Prisma.DailyPlanStageWhereUniqueInput[]
   connect?: Prisma.DailyPlanStageWhereUniqueInput | Prisma.DailyPlanStageWhereUniqueInput[]
-  update?: Prisma.DailyPlanStageUpdateWithWhereUniqueWithoutPlanInput | Prisma.DailyPlanStageUpdateWithWhereUniqueWithoutPlanInput[]
-  updateMany?: Prisma.DailyPlanStageUpdateManyWithWhereWithoutPlanInput | Prisma.DailyPlanStageUpdateManyWithWhereWithoutPlanInput[]
+  update?: Prisma.DailyPlanStageUpdateWithWhereUniqueWithoutDailyPlanInput | Prisma.DailyPlanStageUpdateWithWhereUniqueWithoutDailyPlanInput[]
+  updateMany?: Prisma.DailyPlanStageUpdateManyWithWhereWithoutDailyPlanInput | Prisma.DailyPlanStageUpdateManyWithWhereWithoutDailyPlanInput[]
   deleteMany?: Prisma.DailyPlanStageScalarWhereInput | Prisma.DailyPlanStageScalarWhereInput[]
 }
 
-export type DailyPlanStageCreateNestedOneWithoutSubsectionsInput = {
-  create?: Prisma.XOR<Prisma.DailyPlanStageCreateWithoutSubsectionsInput, Prisma.DailyPlanStageUncheckedCreateWithoutSubsectionsInput>
-  connectOrCreate?: Prisma.DailyPlanStageCreateOrConnectWithoutSubsectionsInput
+export type DailyPlanStageCreateNestedOneWithoutOther_DailyPlanStageInput = {
+  create?: Prisma.XOR<Prisma.DailyPlanStageCreateWithoutOther_DailyPlanStageInput, Prisma.DailyPlanStageUncheckedCreateWithoutOther_DailyPlanStageInput>
+  connectOrCreate?: Prisma.DailyPlanStageCreateOrConnectWithoutOther_DailyPlanStageInput
   connect?: Prisma.DailyPlanStageWhereUniqueInput
 }
 
-export type DailyPlanStageCreateNestedManyWithoutParentInput = {
-  create?: Prisma.XOR<Prisma.DailyPlanStageCreateWithoutParentInput, Prisma.DailyPlanStageUncheckedCreateWithoutParentInput> | Prisma.DailyPlanStageCreateWithoutParentInput[] | Prisma.DailyPlanStageUncheckedCreateWithoutParentInput[]
-  connectOrCreate?: Prisma.DailyPlanStageCreateOrConnectWithoutParentInput | Prisma.DailyPlanStageCreateOrConnectWithoutParentInput[]
-  createMany?: Prisma.DailyPlanStageCreateManyParentInputEnvelope
+export type DailyPlanStageCreateNestedManyWithoutDailyPlanStageInput = {
+  create?: Prisma.XOR<Prisma.DailyPlanStageCreateWithoutDailyPlanStageInput, Prisma.DailyPlanStageUncheckedCreateWithoutDailyPlanStageInput> | Prisma.DailyPlanStageCreateWithoutDailyPlanStageInput[] | Prisma.DailyPlanStageUncheckedCreateWithoutDailyPlanStageInput[]
+  connectOrCreate?: Prisma.DailyPlanStageCreateOrConnectWithoutDailyPlanStageInput | Prisma.DailyPlanStageCreateOrConnectWithoutDailyPlanStageInput[]
+  createMany?: Prisma.DailyPlanStageCreateManyDailyPlanStageInputEnvelope
   connect?: Prisma.DailyPlanStageWhereUniqueInput | Prisma.DailyPlanStageWhereUniqueInput[]
 }
 
-export type DailyPlanStageUncheckedCreateNestedManyWithoutParentInput = {
-  create?: Prisma.XOR<Prisma.DailyPlanStageCreateWithoutParentInput, Prisma.DailyPlanStageUncheckedCreateWithoutParentInput> | Prisma.DailyPlanStageCreateWithoutParentInput[] | Prisma.DailyPlanStageUncheckedCreateWithoutParentInput[]
-  connectOrCreate?: Prisma.DailyPlanStageCreateOrConnectWithoutParentInput | Prisma.DailyPlanStageCreateOrConnectWithoutParentInput[]
-  createMany?: Prisma.DailyPlanStageCreateManyParentInputEnvelope
+export type DailyPlanStageUncheckedCreateNestedManyWithoutDailyPlanStageInput = {
+  create?: Prisma.XOR<Prisma.DailyPlanStageCreateWithoutDailyPlanStageInput, Prisma.DailyPlanStageUncheckedCreateWithoutDailyPlanStageInput> | Prisma.DailyPlanStageCreateWithoutDailyPlanStageInput[] | Prisma.DailyPlanStageUncheckedCreateWithoutDailyPlanStageInput[]
+  connectOrCreate?: Prisma.DailyPlanStageCreateOrConnectWithoutDailyPlanStageInput | Prisma.DailyPlanStageCreateOrConnectWithoutDailyPlanStageInput[]
+  createMany?: Prisma.DailyPlanStageCreateManyDailyPlanStageInputEnvelope
   connect?: Prisma.DailyPlanStageWhereUniqueInput | Prisma.DailyPlanStageWhereUniqueInput[]
 }
 
-export type DailyPlanStageUpdateOneWithoutSubsectionsNestedInput = {
-  create?: Prisma.XOR<Prisma.DailyPlanStageCreateWithoutSubsectionsInput, Prisma.DailyPlanStageUncheckedCreateWithoutSubsectionsInput>
-  connectOrCreate?: Prisma.DailyPlanStageCreateOrConnectWithoutSubsectionsInput
-  upsert?: Prisma.DailyPlanStageUpsertWithoutSubsectionsInput
+export type DailyPlanStageUpdateOneWithoutOther_DailyPlanStageNestedInput = {
+  create?: Prisma.XOR<Prisma.DailyPlanStageCreateWithoutOther_DailyPlanStageInput, Prisma.DailyPlanStageUncheckedCreateWithoutOther_DailyPlanStageInput>
+  connectOrCreate?: Prisma.DailyPlanStageCreateOrConnectWithoutOther_DailyPlanStageInput
+  upsert?: Prisma.DailyPlanStageUpsertWithoutOther_DailyPlanStageInput
   disconnect?: Prisma.DailyPlanStageWhereInput | boolean
   delete?: Prisma.DailyPlanStageWhereInput | boolean
   connect?: Prisma.DailyPlanStageWhereUniqueInput
-  update?: Prisma.XOR<Prisma.XOR<Prisma.DailyPlanStageUpdateToOneWithWhereWithoutSubsectionsInput, Prisma.DailyPlanStageUpdateWithoutSubsectionsInput>, Prisma.DailyPlanStageUncheckedUpdateWithoutSubsectionsInput>
+  update?: Prisma.XOR<Prisma.XOR<Prisma.DailyPlanStageUpdateToOneWithWhereWithoutOther_DailyPlanStageInput, Prisma.DailyPlanStageUpdateWithoutOther_DailyPlanStageInput>, Prisma.DailyPlanStageUncheckedUpdateWithoutOther_DailyPlanStageInput>
 }
 
-export type DailyPlanStageUpdateManyWithoutParentNestedInput = {
-  create?: Prisma.XOR<Prisma.DailyPlanStageCreateWithoutParentInput, Prisma.DailyPlanStageUncheckedCreateWithoutParentInput> | Prisma.DailyPlanStageCreateWithoutParentInput[] | Prisma.DailyPlanStageUncheckedCreateWithoutParentInput[]
-  connectOrCreate?: Prisma.DailyPlanStageCreateOrConnectWithoutParentInput | Prisma.DailyPlanStageCreateOrConnectWithoutParentInput[]
-  upsert?: Prisma.DailyPlanStageUpsertWithWhereUniqueWithoutParentInput | Prisma.DailyPlanStageUpsertWithWhereUniqueWithoutParentInput[]
-  createMany?: Prisma.DailyPlanStageCreateManyParentInputEnvelope
+export type DailyPlanStageUpdateManyWithoutDailyPlanStageNestedInput = {
+  create?: Prisma.XOR<Prisma.DailyPlanStageCreateWithoutDailyPlanStageInput, Prisma.DailyPlanStageUncheckedCreateWithoutDailyPlanStageInput> | Prisma.DailyPlanStageCreateWithoutDailyPlanStageInput[] | Prisma.DailyPlanStageUncheckedCreateWithoutDailyPlanStageInput[]
+  connectOrCreate?: Prisma.DailyPlanStageCreateOrConnectWithoutDailyPlanStageInput | Prisma.DailyPlanStageCreateOrConnectWithoutDailyPlanStageInput[]
+  upsert?: Prisma.DailyPlanStageUpsertWithWhereUniqueWithoutDailyPlanStageInput | Prisma.DailyPlanStageUpsertWithWhereUniqueWithoutDailyPlanStageInput[]
+  createMany?: Prisma.DailyPlanStageCreateManyDailyPlanStageInputEnvelope
   set?: Prisma.DailyPlanStageWhereUniqueInput | Prisma.DailyPlanStageWhereUniqueInput[]
   disconnect?: Prisma.DailyPlanStageWhereUniqueInput | Prisma.DailyPlanStageWhereUniqueInput[]
   delete?: Prisma.DailyPlanStageWhereUniqueInput | Prisma.DailyPlanStageWhereUniqueInput[]
   connect?: Prisma.DailyPlanStageWhereUniqueInput | Prisma.DailyPlanStageWhereUniqueInput[]
-  update?: Prisma.DailyPlanStageUpdateWithWhereUniqueWithoutParentInput | Prisma.DailyPlanStageUpdateWithWhereUniqueWithoutParentInput[]
-  updateMany?: Prisma.DailyPlanStageUpdateManyWithWhereWithoutParentInput | Prisma.DailyPlanStageUpdateManyWithWhereWithoutParentInput[]
+  update?: Prisma.DailyPlanStageUpdateWithWhereUniqueWithoutDailyPlanStageInput | Prisma.DailyPlanStageUpdateWithWhereUniqueWithoutDailyPlanStageInput[]
+  updateMany?: Prisma.DailyPlanStageUpdateManyWithWhereWithoutDailyPlanStageInput | Prisma.DailyPlanStageUpdateManyWithWhereWithoutDailyPlanStageInput[]
   deleteMany?: Prisma.DailyPlanStageScalarWhereInput | Prisma.DailyPlanStageScalarWhereInput[]
 }
 
-export type DailyPlanStageUncheckedUpdateManyWithoutParentNestedInput = {
-  create?: Prisma.XOR<Prisma.DailyPlanStageCreateWithoutParentInput, Prisma.DailyPlanStageUncheckedCreateWithoutParentInput> | Prisma.DailyPlanStageCreateWithoutParentInput[] | Prisma.DailyPlanStageUncheckedCreateWithoutParentInput[]
-  connectOrCreate?: Prisma.DailyPlanStageCreateOrConnectWithoutParentInput | Prisma.DailyPlanStageCreateOrConnectWithoutParentInput[]
-  upsert?: Prisma.DailyPlanStageUpsertWithWhereUniqueWithoutParentInput | Prisma.DailyPlanStageUpsertWithWhereUniqueWithoutParentInput[]
-  createMany?: Prisma.DailyPlanStageCreateManyParentInputEnvelope
+export type DailyPlanStageUncheckedUpdateManyWithoutDailyPlanStageNestedInput = {
+  create?: Prisma.XOR<Prisma.DailyPlanStageCreateWithoutDailyPlanStageInput, Prisma.DailyPlanStageUncheckedCreateWithoutDailyPlanStageInput> | Prisma.DailyPlanStageCreateWithoutDailyPlanStageInput[] | Prisma.DailyPlanStageUncheckedCreateWithoutDailyPlanStageInput[]
+  connectOrCreate?: Prisma.DailyPlanStageCreateOrConnectWithoutDailyPlanStageInput | Prisma.DailyPlanStageCreateOrConnectWithoutDailyPlanStageInput[]
+  upsert?: Prisma.DailyPlanStageUpsertWithWhereUniqueWithoutDailyPlanStageInput | Prisma.DailyPlanStageUpsertWithWhereUniqueWithoutDailyPlanStageInput[]
+  createMany?: Prisma.DailyPlanStageCreateManyDailyPlanStageInputEnvelope
   set?: Prisma.DailyPlanStageWhereUniqueInput | Prisma.DailyPlanStageWhereUniqueInput[]
   disconnect?: Prisma.DailyPlanStageWhereUniqueInput | Prisma.DailyPlanStageWhereUniqueInput[]
   delete?: Prisma.DailyPlanStageWhereUniqueInput | Prisma.DailyPlanStageWhereUniqueInput[]
   connect?: Prisma.DailyPlanStageWhereUniqueInput | Prisma.DailyPlanStageWhereUniqueInput[]
-  update?: Prisma.DailyPlanStageUpdateWithWhereUniqueWithoutParentInput | Prisma.DailyPlanStageUpdateWithWhereUniqueWithoutParentInput[]
-  updateMany?: Prisma.DailyPlanStageUpdateManyWithWhereWithoutParentInput | Prisma.DailyPlanStageUpdateManyWithWhereWithoutParentInput[]
+  update?: Prisma.DailyPlanStageUpdateWithWhereUniqueWithoutDailyPlanStageInput | Prisma.DailyPlanStageUpdateWithWhereUniqueWithoutDailyPlanStageInput[]
+  updateMany?: Prisma.DailyPlanStageUpdateManyWithWhereWithoutDailyPlanStageInput | Prisma.DailyPlanStageUpdateManyWithWhereWithoutDailyPlanStageInput[]
   deleteMany?: Prisma.DailyPlanStageScalarWhereInput | Prisma.DailyPlanStageScalarWhereInput[]
 }
 
-export type DailyPlanStageCreateWithoutPlanInput = {
-  id?: string
+export type DailyPlanStageCreateWithoutDailyPlanInput = {
+  id: string
   title: string
   order?: number
   completed?: boolean
   completedAt?: Date | string | null
-  parent?: Prisma.DailyPlanStageCreateNestedOneWithoutSubsectionsInput
-  subsections?: Prisma.DailyPlanStageCreateNestedManyWithoutParentInput
+  DailyPlanStage?: Prisma.DailyPlanStageCreateNestedOneWithoutOther_DailyPlanStageInput
+  other_DailyPlanStage?: Prisma.DailyPlanStageCreateNestedManyWithoutDailyPlanStageInput
 }
 
-export type DailyPlanStageUncheckedCreateWithoutPlanInput = {
-  id?: string
+export type DailyPlanStageUncheckedCreateWithoutDailyPlanInput = {
+  id: string
+  title: string
+  order?: number
+  completed?: boolean
+  completedAt?: Date | string | null
   parentId?: string | null
-  title: string
-  order?: number
-  completed?: boolean
-  completedAt?: Date | string | null
-  subsections?: Prisma.DailyPlanStageUncheckedCreateNestedManyWithoutParentInput
+  other_DailyPlanStage?: Prisma.DailyPlanStageUncheckedCreateNestedManyWithoutDailyPlanStageInput
 }
 
-export type DailyPlanStageCreateOrConnectWithoutPlanInput = {
+export type DailyPlanStageCreateOrConnectWithoutDailyPlanInput = {
   where: Prisma.DailyPlanStageWhereUniqueInput
-  create: Prisma.XOR<Prisma.DailyPlanStageCreateWithoutPlanInput, Prisma.DailyPlanStageUncheckedCreateWithoutPlanInput>
+  create: Prisma.XOR<Prisma.DailyPlanStageCreateWithoutDailyPlanInput, Prisma.DailyPlanStageUncheckedCreateWithoutDailyPlanInput>
 }
 
-export type DailyPlanStageCreateManyPlanInputEnvelope = {
-  data: Prisma.DailyPlanStageCreateManyPlanInput | Prisma.DailyPlanStageCreateManyPlanInput[]
+export type DailyPlanStageCreateManyDailyPlanInputEnvelope = {
+  data: Prisma.DailyPlanStageCreateManyDailyPlanInput | Prisma.DailyPlanStageCreateManyDailyPlanInput[]
   skipDuplicates?: boolean
 }
 
-export type DailyPlanStageUpsertWithWhereUniqueWithoutPlanInput = {
+export type DailyPlanStageUpsertWithWhereUniqueWithoutDailyPlanInput = {
   where: Prisma.DailyPlanStageWhereUniqueInput
-  update: Prisma.XOR<Prisma.DailyPlanStageUpdateWithoutPlanInput, Prisma.DailyPlanStageUncheckedUpdateWithoutPlanInput>
-  create: Prisma.XOR<Prisma.DailyPlanStageCreateWithoutPlanInput, Prisma.DailyPlanStageUncheckedCreateWithoutPlanInput>
+  update: Prisma.XOR<Prisma.DailyPlanStageUpdateWithoutDailyPlanInput, Prisma.DailyPlanStageUncheckedUpdateWithoutDailyPlanInput>
+  create: Prisma.XOR<Prisma.DailyPlanStageCreateWithoutDailyPlanInput, Prisma.DailyPlanStageUncheckedCreateWithoutDailyPlanInput>
 }
 
-export type DailyPlanStageUpdateWithWhereUniqueWithoutPlanInput = {
+export type DailyPlanStageUpdateWithWhereUniqueWithoutDailyPlanInput = {
   where: Prisma.DailyPlanStageWhereUniqueInput
-  data: Prisma.XOR<Prisma.DailyPlanStageUpdateWithoutPlanInput, Prisma.DailyPlanStageUncheckedUpdateWithoutPlanInput>
+  data: Prisma.XOR<Prisma.DailyPlanStageUpdateWithoutDailyPlanInput, Prisma.DailyPlanStageUncheckedUpdateWithoutDailyPlanInput>
 }
 
-export type DailyPlanStageUpdateManyWithWhereWithoutPlanInput = {
+export type DailyPlanStageUpdateManyWithWhereWithoutDailyPlanInput = {
   where: Prisma.DailyPlanStageScalarWhereInput
-  data: Prisma.XOR<Prisma.DailyPlanStageUpdateManyMutationInput, Prisma.DailyPlanStageUncheckedUpdateManyWithoutPlanInput>
+  data: Prisma.XOR<Prisma.DailyPlanStageUpdateManyMutationInput, Prisma.DailyPlanStageUncheckedUpdateManyWithoutDailyPlanInput>
 }
 
 export type DailyPlanStageScalarWhereInput = {
@@ -571,155 +571,155 @@ export type DailyPlanStageScalarWhereInput = {
   NOT?: Prisma.DailyPlanStageScalarWhereInput | Prisma.DailyPlanStageScalarWhereInput[]
   id?: Prisma.StringFilter<"DailyPlanStage"> | string
   planId?: Prisma.StringFilter<"DailyPlanStage"> | string
-  parentId?: Prisma.StringNullableFilter<"DailyPlanStage"> | string | null
   title?: Prisma.StringFilter<"DailyPlanStage"> | string
   order?: Prisma.IntFilter<"DailyPlanStage"> | number
   completed?: Prisma.BoolFilter<"DailyPlanStage"> | boolean
   completedAt?: Prisma.DateTimeNullableFilter<"DailyPlanStage"> | Date | string | null
+  parentId?: Prisma.StringNullableFilter<"DailyPlanStage"> | string | null
 }
 
-export type DailyPlanStageCreateWithoutSubsectionsInput = {
-  id?: string
+export type DailyPlanStageCreateWithoutOther_DailyPlanStageInput = {
+  id: string
   title: string
   order?: number
   completed?: boolean
   completedAt?: Date | string | null
-  plan: Prisma.DailyPlanCreateNestedOneWithoutStagesInput
-  parent?: Prisma.DailyPlanStageCreateNestedOneWithoutSubsectionsInput
+  DailyPlanStage?: Prisma.DailyPlanStageCreateNestedOneWithoutOther_DailyPlanStageInput
+  DailyPlan: Prisma.DailyPlanCreateNestedOneWithoutDailyPlanStageInput
 }
 
-export type DailyPlanStageUncheckedCreateWithoutSubsectionsInput = {
-  id?: string
+export type DailyPlanStageUncheckedCreateWithoutOther_DailyPlanStageInput = {
+  id: string
   planId: string
+  title: string
+  order?: number
+  completed?: boolean
+  completedAt?: Date | string | null
   parentId?: string | null
-  title: string
-  order?: number
-  completed?: boolean
-  completedAt?: Date | string | null
 }
 
-export type DailyPlanStageCreateOrConnectWithoutSubsectionsInput = {
+export type DailyPlanStageCreateOrConnectWithoutOther_DailyPlanStageInput = {
   where: Prisma.DailyPlanStageWhereUniqueInput
-  create: Prisma.XOR<Prisma.DailyPlanStageCreateWithoutSubsectionsInput, Prisma.DailyPlanStageUncheckedCreateWithoutSubsectionsInput>
+  create: Prisma.XOR<Prisma.DailyPlanStageCreateWithoutOther_DailyPlanStageInput, Prisma.DailyPlanStageUncheckedCreateWithoutOther_DailyPlanStageInput>
 }
 
-export type DailyPlanStageCreateWithoutParentInput = {
-  id?: string
+export type DailyPlanStageCreateWithoutDailyPlanStageInput = {
+  id: string
   title: string
   order?: number
   completed?: boolean
   completedAt?: Date | string | null
-  plan: Prisma.DailyPlanCreateNestedOneWithoutStagesInput
-  subsections?: Prisma.DailyPlanStageCreateNestedManyWithoutParentInput
+  other_DailyPlanStage?: Prisma.DailyPlanStageCreateNestedManyWithoutDailyPlanStageInput
+  DailyPlan: Prisma.DailyPlanCreateNestedOneWithoutDailyPlanStageInput
 }
 
-export type DailyPlanStageUncheckedCreateWithoutParentInput = {
-  id?: string
+export type DailyPlanStageUncheckedCreateWithoutDailyPlanStageInput = {
+  id: string
   planId: string
   title: string
   order?: number
   completed?: boolean
   completedAt?: Date | string | null
-  subsections?: Prisma.DailyPlanStageUncheckedCreateNestedManyWithoutParentInput
+  other_DailyPlanStage?: Prisma.DailyPlanStageUncheckedCreateNestedManyWithoutDailyPlanStageInput
 }
 
-export type DailyPlanStageCreateOrConnectWithoutParentInput = {
+export type DailyPlanStageCreateOrConnectWithoutDailyPlanStageInput = {
   where: Prisma.DailyPlanStageWhereUniqueInput
-  create: Prisma.XOR<Prisma.DailyPlanStageCreateWithoutParentInput, Prisma.DailyPlanStageUncheckedCreateWithoutParentInput>
+  create: Prisma.XOR<Prisma.DailyPlanStageCreateWithoutDailyPlanStageInput, Prisma.DailyPlanStageUncheckedCreateWithoutDailyPlanStageInput>
 }
 
-export type DailyPlanStageCreateManyParentInputEnvelope = {
-  data: Prisma.DailyPlanStageCreateManyParentInput | Prisma.DailyPlanStageCreateManyParentInput[]
+export type DailyPlanStageCreateManyDailyPlanStageInputEnvelope = {
+  data: Prisma.DailyPlanStageCreateManyDailyPlanStageInput | Prisma.DailyPlanStageCreateManyDailyPlanStageInput[]
   skipDuplicates?: boolean
 }
 
-export type DailyPlanStageUpsertWithoutSubsectionsInput = {
-  update: Prisma.XOR<Prisma.DailyPlanStageUpdateWithoutSubsectionsInput, Prisma.DailyPlanStageUncheckedUpdateWithoutSubsectionsInput>
-  create: Prisma.XOR<Prisma.DailyPlanStageCreateWithoutSubsectionsInput, Prisma.DailyPlanStageUncheckedCreateWithoutSubsectionsInput>
+export type DailyPlanStageUpsertWithoutOther_DailyPlanStageInput = {
+  update: Prisma.XOR<Prisma.DailyPlanStageUpdateWithoutOther_DailyPlanStageInput, Prisma.DailyPlanStageUncheckedUpdateWithoutOther_DailyPlanStageInput>
+  create: Prisma.XOR<Prisma.DailyPlanStageCreateWithoutOther_DailyPlanStageInput, Prisma.DailyPlanStageUncheckedCreateWithoutOther_DailyPlanStageInput>
   where?: Prisma.DailyPlanStageWhereInput
 }
 
-export type DailyPlanStageUpdateToOneWithWhereWithoutSubsectionsInput = {
+export type DailyPlanStageUpdateToOneWithWhereWithoutOther_DailyPlanStageInput = {
   where?: Prisma.DailyPlanStageWhereInput
-  data: Prisma.XOR<Prisma.DailyPlanStageUpdateWithoutSubsectionsInput, Prisma.DailyPlanStageUncheckedUpdateWithoutSubsectionsInput>
+  data: Prisma.XOR<Prisma.DailyPlanStageUpdateWithoutOther_DailyPlanStageInput, Prisma.DailyPlanStageUncheckedUpdateWithoutOther_DailyPlanStageInput>
 }
 
-export type DailyPlanStageUpdateWithoutSubsectionsInput = {
+export type DailyPlanStageUpdateWithoutOther_DailyPlanStageInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   order?: Prisma.IntFieldUpdateOperationsInput | number
   completed?: Prisma.BoolFieldUpdateOperationsInput | boolean
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  plan?: Prisma.DailyPlanUpdateOneRequiredWithoutStagesNestedInput
-  parent?: Prisma.DailyPlanStageUpdateOneWithoutSubsectionsNestedInput
+  DailyPlanStage?: Prisma.DailyPlanStageUpdateOneWithoutOther_DailyPlanStageNestedInput
+  DailyPlan?: Prisma.DailyPlanUpdateOneRequiredWithoutDailyPlanStageNestedInput
 }
 
-export type DailyPlanStageUncheckedUpdateWithoutSubsectionsInput = {
+export type DailyPlanStageUncheckedUpdateWithoutOther_DailyPlanStageInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   planId?: Prisma.StringFieldUpdateOperationsInput | string
-  parentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   title?: Prisma.StringFieldUpdateOperationsInput | string
   order?: Prisma.IntFieldUpdateOperationsInput | number
   completed?: Prisma.BoolFieldUpdateOperationsInput | boolean
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  parentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
-export type DailyPlanStageUpsertWithWhereUniqueWithoutParentInput = {
+export type DailyPlanStageUpsertWithWhereUniqueWithoutDailyPlanStageInput = {
   where: Prisma.DailyPlanStageWhereUniqueInput
-  update: Prisma.XOR<Prisma.DailyPlanStageUpdateWithoutParentInput, Prisma.DailyPlanStageUncheckedUpdateWithoutParentInput>
-  create: Prisma.XOR<Prisma.DailyPlanStageCreateWithoutParentInput, Prisma.DailyPlanStageUncheckedCreateWithoutParentInput>
+  update: Prisma.XOR<Prisma.DailyPlanStageUpdateWithoutDailyPlanStageInput, Prisma.DailyPlanStageUncheckedUpdateWithoutDailyPlanStageInput>
+  create: Prisma.XOR<Prisma.DailyPlanStageCreateWithoutDailyPlanStageInput, Prisma.DailyPlanStageUncheckedCreateWithoutDailyPlanStageInput>
 }
 
-export type DailyPlanStageUpdateWithWhereUniqueWithoutParentInput = {
+export type DailyPlanStageUpdateWithWhereUniqueWithoutDailyPlanStageInput = {
   where: Prisma.DailyPlanStageWhereUniqueInput
-  data: Prisma.XOR<Prisma.DailyPlanStageUpdateWithoutParentInput, Prisma.DailyPlanStageUncheckedUpdateWithoutParentInput>
+  data: Prisma.XOR<Prisma.DailyPlanStageUpdateWithoutDailyPlanStageInput, Prisma.DailyPlanStageUncheckedUpdateWithoutDailyPlanStageInput>
 }
 
-export type DailyPlanStageUpdateManyWithWhereWithoutParentInput = {
+export type DailyPlanStageUpdateManyWithWhereWithoutDailyPlanStageInput = {
   where: Prisma.DailyPlanStageScalarWhereInput
-  data: Prisma.XOR<Prisma.DailyPlanStageUpdateManyMutationInput, Prisma.DailyPlanStageUncheckedUpdateManyWithoutParentInput>
+  data: Prisma.XOR<Prisma.DailyPlanStageUpdateManyMutationInput, Prisma.DailyPlanStageUncheckedUpdateManyWithoutDailyPlanStageInput>
 }
 
-export type DailyPlanStageCreateManyPlanInput = {
-  id?: string
-  parentId?: string | null
+export type DailyPlanStageCreateManyDailyPlanInput = {
+  id: string
   title: string
   order?: number
   completed?: boolean
   completedAt?: Date | string | null
+  parentId?: string | null
 }
 
-export type DailyPlanStageUpdateWithoutPlanInput = {
+export type DailyPlanStageUpdateWithoutDailyPlanInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   order?: Prisma.IntFieldUpdateOperationsInput | number
   completed?: Prisma.BoolFieldUpdateOperationsInput | boolean
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  parent?: Prisma.DailyPlanStageUpdateOneWithoutSubsectionsNestedInput
-  subsections?: Prisma.DailyPlanStageUpdateManyWithoutParentNestedInput
+  DailyPlanStage?: Prisma.DailyPlanStageUpdateOneWithoutOther_DailyPlanStageNestedInput
+  other_DailyPlanStage?: Prisma.DailyPlanStageUpdateManyWithoutDailyPlanStageNestedInput
 }
 
-export type DailyPlanStageUncheckedUpdateWithoutPlanInput = {
+export type DailyPlanStageUncheckedUpdateWithoutDailyPlanInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  order?: Prisma.IntFieldUpdateOperationsInput | number
+  completed?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   parentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  title?: Prisma.StringFieldUpdateOperationsInput | string
-  order?: Prisma.IntFieldUpdateOperationsInput | number
-  completed?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  subsections?: Prisma.DailyPlanStageUncheckedUpdateManyWithoutParentNestedInput
+  other_DailyPlanStage?: Prisma.DailyPlanStageUncheckedUpdateManyWithoutDailyPlanStageNestedInput
 }
 
-export type DailyPlanStageUncheckedUpdateManyWithoutPlanInput = {
+export type DailyPlanStageUncheckedUpdateManyWithoutDailyPlanInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  parentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   title?: Prisma.StringFieldUpdateOperationsInput | string
   order?: Prisma.IntFieldUpdateOperationsInput | number
   completed?: Prisma.BoolFieldUpdateOperationsInput | boolean
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  parentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
-export type DailyPlanStageCreateManyParentInput = {
-  id?: string
+export type DailyPlanStageCreateManyDailyPlanStageInput = {
+  id: string
   planId: string
   title: string
   order?: number
@@ -727,27 +727,27 @@ export type DailyPlanStageCreateManyParentInput = {
   completedAt?: Date | string | null
 }
 
-export type DailyPlanStageUpdateWithoutParentInput = {
+export type DailyPlanStageUpdateWithoutDailyPlanStageInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   order?: Prisma.IntFieldUpdateOperationsInput | number
   completed?: Prisma.BoolFieldUpdateOperationsInput | boolean
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  plan?: Prisma.DailyPlanUpdateOneRequiredWithoutStagesNestedInput
-  subsections?: Prisma.DailyPlanStageUpdateManyWithoutParentNestedInput
+  other_DailyPlanStage?: Prisma.DailyPlanStageUpdateManyWithoutDailyPlanStageNestedInput
+  DailyPlan?: Prisma.DailyPlanUpdateOneRequiredWithoutDailyPlanStageNestedInput
 }
 
-export type DailyPlanStageUncheckedUpdateWithoutParentInput = {
+export type DailyPlanStageUncheckedUpdateWithoutDailyPlanStageInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   planId?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   order?: Prisma.IntFieldUpdateOperationsInput | number
   completed?: Prisma.BoolFieldUpdateOperationsInput | boolean
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  subsections?: Prisma.DailyPlanStageUncheckedUpdateManyWithoutParentNestedInput
+  other_DailyPlanStage?: Prisma.DailyPlanStageUncheckedUpdateManyWithoutDailyPlanStageNestedInput
 }
 
-export type DailyPlanStageUncheckedUpdateManyWithoutParentInput = {
+export type DailyPlanStageUncheckedUpdateManyWithoutDailyPlanStageInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   planId?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
@@ -762,11 +762,11 @@ export type DailyPlanStageUncheckedUpdateManyWithoutParentInput = {
  */
 
 export type DailyPlanStageCountOutputType = {
-  subsections: number
+  other_DailyPlanStage: number
 }
 
 export type DailyPlanStageCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  subsections?: boolean | DailyPlanStageCountOutputTypeCountSubsectionsArgs
+  other_DailyPlanStage?: boolean | DailyPlanStageCountOutputTypeCountOther_DailyPlanStageArgs
 }
 
 /**
@@ -782,7 +782,7 @@ export type DailyPlanStageCountOutputTypeDefaultArgs<ExtArgs extends runtime.Typ
 /**
  * DailyPlanStageCountOutputType without action
  */
-export type DailyPlanStageCountOutputTypeCountSubsectionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type DailyPlanStageCountOutputTypeCountOther_DailyPlanStageArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   where?: Prisma.DailyPlanStageWhereInput
 }
 
@@ -790,82 +790,82 @@ export type DailyPlanStageCountOutputTypeCountSubsectionsArgs<ExtArgs extends ru
 export type DailyPlanStageSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   planId?: boolean
-  parentId?: boolean
   title?: boolean
   order?: boolean
   completed?: boolean
   completedAt?: boolean
-  plan?: boolean | Prisma.DailyPlanDefaultArgs<ExtArgs>
-  parent?: boolean | Prisma.DailyPlanStage$parentArgs<ExtArgs>
-  subsections?: boolean | Prisma.DailyPlanStage$subsectionsArgs<ExtArgs>
+  parentId?: boolean
+  DailyPlanStage?: boolean | Prisma.DailyPlanStage$DailyPlanStageArgs<ExtArgs>
+  other_DailyPlanStage?: boolean | Prisma.DailyPlanStage$other_DailyPlanStageArgs<ExtArgs>
+  DailyPlan?: boolean | Prisma.DailyPlanDefaultArgs<ExtArgs>
   _count?: boolean | Prisma.DailyPlanStageCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["dailyPlanStage"]>
 
 export type DailyPlanStageSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   planId?: boolean
-  parentId?: boolean
   title?: boolean
   order?: boolean
   completed?: boolean
   completedAt?: boolean
-  plan?: boolean | Prisma.DailyPlanDefaultArgs<ExtArgs>
-  parent?: boolean | Prisma.DailyPlanStage$parentArgs<ExtArgs>
+  parentId?: boolean
+  DailyPlanStage?: boolean | Prisma.DailyPlanStage$DailyPlanStageArgs<ExtArgs>
+  DailyPlan?: boolean | Prisma.DailyPlanDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["dailyPlanStage"]>
 
 export type DailyPlanStageSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   planId?: boolean
-  parentId?: boolean
   title?: boolean
   order?: boolean
   completed?: boolean
   completedAt?: boolean
-  plan?: boolean | Prisma.DailyPlanDefaultArgs<ExtArgs>
-  parent?: boolean | Prisma.DailyPlanStage$parentArgs<ExtArgs>
+  parentId?: boolean
+  DailyPlanStage?: boolean | Prisma.DailyPlanStage$DailyPlanStageArgs<ExtArgs>
+  DailyPlan?: boolean | Prisma.DailyPlanDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["dailyPlanStage"]>
 
 export type DailyPlanStageSelectScalar = {
   id?: boolean
   planId?: boolean
-  parentId?: boolean
   title?: boolean
   order?: boolean
   completed?: boolean
   completedAt?: boolean
+  parentId?: boolean
 }
 
-export type DailyPlanStageOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "planId" | "parentId" | "title" | "order" | "completed" | "completedAt", ExtArgs["result"]["dailyPlanStage"]>
+export type DailyPlanStageOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "planId" | "title" | "order" | "completed" | "completedAt" | "parentId", ExtArgs["result"]["dailyPlanStage"]>
 export type DailyPlanStageInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  plan?: boolean | Prisma.DailyPlanDefaultArgs<ExtArgs>
-  parent?: boolean | Prisma.DailyPlanStage$parentArgs<ExtArgs>
-  subsections?: boolean | Prisma.DailyPlanStage$subsectionsArgs<ExtArgs>
+  DailyPlanStage?: boolean | Prisma.DailyPlanStage$DailyPlanStageArgs<ExtArgs>
+  other_DailyPlanStage?: boolean | Prisma.DailyPlanStage$other_DailyPlanStageArgs<ExtArgs>
+  DailyPlan?: boolean | Prisma.DailyPlanDefaultArgs<ExtArgs>
   _count?: boolean | Prisma.DailyPlanStageCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type DailyPlanStageIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  plan?: boolean | Prisma.DailyPlanDefaultArgs<ExtArgs>
-  parent?: boolean | Prisma.DailyPlanStage$parentArgs<ExtArgs>
+  DailyPlanStage?: boolean | Prisma.DailyPlanStage$DailyPlanStageArgs<ExtArgs>
+  DailyPlan?: boolean | Prisma.DailyPlanDefaultArgs<ExtArgs>
 }
 export type DailyPlanStageIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  plan?: boolean | Prisma.DailyPlanDefaultArgs<ExtArgs>
-  parent?: boolean | Prisma.DailyPlanStage$parentArgs<ExtArgs>
+  DailyPlanStage?: boolean | Prisma.DailyPlanStage$DailyPlanStageArgs<ExtArgs>
+  DailyPlan?: boolean | Prisma.DailyPlanDefaultArgs<ExtArgs>
 }
 
 export type $DailyPlanStagePayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "DailyPlanStage"
   objects: {
-    plan: Prisma.$DailyPlanPayload<ExtArgs>
-    parent: Prisma.$DailyPlanStagePayload<ExtArgs> | null
-    subsections: Prisma.$DailyPlanStagePayload<ExtArgs>[]
+    DailyPlanStage: Prisma.$DailyPlanStagePayload<ExtArgs> | null
+    other_DailyPlanStage: Prisma.$DailyPlanStagePayload<ExtArgs>[]
+    DailyPlan: Prisma.$DailyPlanPayload<ExtArgs>
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
     planId: string
-    parentId: string | null
     title: string
     order: number
     completed: boolean
     completedAt: Date | null
+    parentId: string | null
   }, ExtArgs["result"]["dailyPlanStage"]>
   composites: {}
 }
@@ -1260,9 +1260,9 @@ readonly fields: DailyPlanStageFieldRefs;
  */
 export interface Prisma__DailyPlanStageClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
-  plan<T extends Prisma.DailyPlanDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.DailyPlanDefaultArgs<ExtArgs>>): Prisma.Prisma__DailyPlanClient<runtime.Types.Result.GetResult<Prisma.$DailyPlanPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
-  parent<T extends Prisma.DailyPlanStage$parentArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.DailyPlanStage$parentArgs<ExtArgs>>): Prisma.Prisma__DailyPlanStageClient<runtime.Types.Result.GetResult<Prisma.$DailyPlanStagePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-  subsections<T extends Prisma.DailyPlanStage$subsectionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.DailyPlanStage$subsectionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$DailyPlanStagePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  DailyPlanStage<T extends Prisma.DailyPlanStage$DailyPlanStageArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.DailyPlanStage$DailyPlanStageArgs<ExtArgs>>): Prisma.Prisma__DailyPlanStageClient<runtime.Types.Result.GetResult<Prisma.$DailyPlanStagePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  other_DailyPlanStage<T extends Prisma.DailyPlanStage$other_DailyPlanStageArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.DailyPlanStage$other_DailyPlanStageArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$DailyPlanStagePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  DailyPlan<T extends Prisma.DailyPlanDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.DailyPlanDefaultArgs<ExtArgs>>): Prisma.Prisma__DailyPlanClient<runtime.Types.Result.GetResult<Prisma.$DailyPlanPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1294,11 +1294,11 @@ export interface Prisma__DailyPlanStageClient<T, Null = never, ExtArgs extends r
 export interface DailyPlanStageFieldRefs {
   readonly id: Prisma.FieldRef<"DailyPlanStage", 'String'>
   readonly planId: Prisma.FieldRef<"DailyPlanStage", 'String'>
-  readonly parentId: Prisma.FieldRef<"DailyPlanStage", 'String'>
   readonly title: Prisma.FieldRef<"DailyPlanStage", 'String'>
   readonly order: Prisma.FieldRef<"DailyPlanStage", 'Int'>
   readonly completed: Prisma.FieldRef<"DailyPlanStage", 'Boolean'>
   readonly completedAt: Prisma.FieldRef<"DailyPlanStage", 'DateTime'>
+  readonly parentId: Prisma.FieldRef<"DailyPlanStage", 'String'>
 }
     
 
@@ -1700,9 +1700,9 @@ export type DailyPlanStageDeleteManyArgs<ExtArgs extends runtime.Types.Extension
 }
 
 /**
- * DailyPlanStage.parent
+ * DailyPlanStage.DailyPlanStage
  */
-export type DailyPlanStage$parentArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type DailyPlanStage$DailyPlanStageArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
    * Select specific fields to fetch from the DailyPlanStage
    */
@@ -1719,9 +1719,9 @@ export type DailyPlanStage$parentArgs<ExtArgs extends runtime.Types.Extensions.I
 }
 
 /**
- * DailyPlanStage.subsections
+ * DailyPlanStage.other_DailyPlanStage
  */
-export type DailyPlanStage$subsectionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type DailyPlanStage$other_DailyPlanStageArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
    * Select specific fields to fetch from the DailyPlanStage
    */

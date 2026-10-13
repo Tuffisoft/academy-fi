@@ -1,4 +1,4 @@
-import { requireRole } from "@/lib/session";
+import { requireUser } from "@/lib/session";
 import { Role } from "@/generated/prisma/enums";
 import { ObjectiveCard } from "./objective-card";
 import { AdminObjectiveCard } from "./admin-objective-card";
@@ -44,12 +44,10 @@ export async function ObjectiveCardWrapper({
 }: {
   assignment: Assignment;
 }) {
-  try {
-    await requireRole(Role.OWNER);
-    // User is owner - show admin card
-    return <AdminObjectiveCard assignment={assignment} />;
-  } catch {
-    // User is not owner - show regular card
-    return <ObjectiveCard assignment={assignment} />;
-  }
+  const user = await requireUser();
+  return user.role === Role.OWNER ? (
+    <AdminObjectiveCard assignment={assignment} />
+  ) : (
+    <ObjectiveCard assignment={assignment} />
+  );
 }

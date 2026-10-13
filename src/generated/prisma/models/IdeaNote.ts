@@ -182,8 +182,8 @@ export type IdeaNoteWhereInput = {
   authorId?: Prisma.StringNullableFilter<"IdeaNote"> | string | null
   content?: Prisma.StringFilter<"IdeaNote"> | string
   createdAt?: Prisma.DateTimeFilter<"IdeaNote"> | Date | string
-  idea?: Prisma.XOR<Prisma.IdeaScalarRelationFilter, Prisma.IdeaWhereInput>
   author?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
+  idea?: Prisma.XOR<Prisma.IdeaScalarRelationFilter, Prisma.IdeaWhereInput>
 }
 
 export type IdeaNoteOrderByWithRelationInput = {
@@ -192,8 +192,8 @@ export type IdeaNoteOrderByWithRelationInput = {
   authorId?: Prisma.SortOrderInput | Prisma.SortOrder
   content?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
-  idea?: Prisma.IdeaOrderByWithRelationInput
   author?: Prisma.UserOrderByWithRelationInput
+  idea?: Prisma.IdeaOrderByWithRelationInput
 }
 
 export type IdeaNoteWhereUniqueInput = Prisma.AtLeast<{
@@ -205,8 +205,8 @@ export type IdeaNoteWhereUniqueInput = Prisma.AtLeast<{
   authorId?: Prisma.StringNullableFilter<"IdeaNote"> | string | null
   content?: Prisma.StringFilter<"IdeaNote"> | string
   createdAt?: Prisma.DateTimeFilter<"IdeaNote"> | Date | string
-  idea?: Prisma.XOR<Prisma.IdeaScalarRelationFilter, Prisma.IdeaWhereInput>
   author?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
+  idea?: Prisma.XOR<Prisma.IdeaScalarRelationFilter, Prisma.IdeaWhereInput>
 }, "id">
 
 export type IdeaNoteOrderByWithAggregationInput = {
@@ -235,8 +235,8 @@ export type IdeaNoteCreateInput = {
   id?: string
   content: string
   createdAt?: Date | string
-  idea: Prisma.IdeaCreateNestedOneWithoutNotesInput
   author?: Prisma.UserCreateNestedOneWithoutIdeaNotesInput
+  idea: Prisma.IdeaCreateNestedOneWithoutNotesInput
 }
 
 export type IdeaNoteUncheckedCreateInput = {
@@ -251,8 +251,8 @@ export type IdeaNoteUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   content?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  idea?: Prisma.IdeaUpdateOneRequiredWithoutNotesNestedInput
   author?: Prisma.UserUpdateOneWithoutIdeaNotesNestedInput
+  idea?: Prisma.IdeaUpdateOneRequiredWithoutNotesNestedInput
 }
 
 export type IdeaNoteUncheckedUpdateInput = {
@@ -558,8 +558,8 @@ export type IdeaNoteSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs
   authorId?: boolean
   content?: boolean
   createdAt?: boolean
-  idea?: boolean | Prisma.IdeaDefaultArgs<ExtArgs>
   author?: boolean | Prisma.IdeaNote$authorArgs<ExtArgs>
+  idea?: boolean | Prisma.IdeaDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["ideaNote"]>
 
 export type IdeaNoteSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -568,8 +568,8 @@ export type IdeaNoteSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exte
   authorId?: boolean
   content?: boolean
   createdAt?: boolean
-  idea?: boolean | Prisma.IdeaDefaultArgs<ExtArgs>
   author?: boolean | Prisma.IdeaNote$authorArgs<ExtArgs>
+  idea?: boolean | Prisma.IdeaDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["ideaNote"]>
 
 export type IdeaNoteSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -578,8 +578,8 @@ export type IdeaNoteSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exte
   authorId?: boolean
   content?: boolean
   createdAt?: boolean
-  idea?: boolean | Prisma.IdeaDefaultArgs<ExtArgs>
   author?: boolean | Prisma.IdeaNote$authorArgs<ExtArgs>
+  idea?: boolean | Prisma.IdeaDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["ideaNote"]>
 
 export type IdeaNoteSelectScalar = {
@@ -592,23 +592,23 @@ export type IdeaNoteSelectScalar = {
 
 export type IdeaNoteOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "ideaId" | "authorId" | "content" | "createdAt", ExtArgs["result"]["ideaNote"]>
 export type IdeaNoteInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  idea?: boolean | Prisma.IdeaDefaultArgs<ExtArgs>
   author?: boolean | Prisma.IdeaNote$authorArgs<ExtArgs>
+  idea?: boolean | Prisma.IdeaDefaultArgs<ExtArgs>
 }
 export type IdeaNoteIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  idea?: boolean | Prisma.IdeaDefaultArgs<ExtArgs>
   author?: boolean | Prisma.IdeaNote$authorArgs<ExtArgs>
+  idea?: boolean | Prisma.IdeaDefaultArgs<ExtArgs>
 }
 export type IdeaNoteIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  idea?: boolean | Prisma.IdeaDefaultArgs<ExtArgs>
   author?: boolean | Prisma.IdeaNote$authorArgs<ExtArgs>
+  idea?: boolean | Prisma.IdeaDefaultArgs<ExtArgs>
 }
 
 export type $IdeaNotePayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "IdeaNote"
   objects: {
-    idea: Prisma.$IdeaPayload<ExtArgs>
     author: Prisma.$UserPayload<ExtArgs> | null
+    idea: Prisma.$IdeaPayload<ExtArgs>
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1010,8 +1010,8 @@ readonly fields: IdeaNoteFieldRefs;
  */
 export interface Prisma__IdeaNoteClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
-  idea<T extends Prisma.IdeaDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.IdeaDefaultArgs<ExtArgs>>): Prisma.Prisma__IdeaClient<runtime.Types.Result.GetResult<Prisma.$IdeaPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   author<T extends Prisma.IdeaNote$authorArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.IdeaNote$authorArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  idea<T extends Prisma.IdeaDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.IdeaDefaultArgs<ExtArgs>>): Prisma.Prisma__IdeaClient<runtime.Types.Result.GetResult<Prisma.$IdeaPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
