@@ -2,7 +2,7 @@ import { prisma } from "@/lib/prisma";
 import type {
   FriendsSnapshot,
   UserSearchResult,
-} from "@/lib/types/friends.types";
+} from "@/lib/chat/types/friends.types";
 
 export class FriendshipError extends Error {}
 

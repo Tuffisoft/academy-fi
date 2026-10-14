@@ -1,7 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getCurrentSession } from "@/lib/session";
-import { ChatError, getConversationsForUser, getMessagePage } from "@/lib/chat";
-import { MessageEncryptionError } from "@/lib/server-encryption";
+import { ChatError, getConversationsForUser, getMessagePage } from "@/lib/chat/services/chat";
+import { MessageEncryptionError } from "@/lib/chat/server-encryption";
+import { getGroupInvitations } from "@/lib/chat/services/groups";
 
 // Reads use GET so Next's client-side server-action queue cannot hold up sending.
 export async function GET(request: NextRequest) {
@@ -14,6 +15,8 @@ export async function GET(request: NextRequest) {
     );
   try {
     const params = request.nextUrl.searchParams;
+    if (params.get("view") === "group-invitations")
+      return NextResponse.json({ ok: true, data: await getGroupInvitations(session.user.id) }, { headers });
     const conversationId = params.get("conversationId");
     if (!conversationId)
       return NextResponse.json(

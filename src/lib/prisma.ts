@@ -9,6 +9,9 @@ function supportsChat(client: PrismaClient | undefined): client is PrismaClient 
     typeof client?.directConversation?.findMany === "function" &&
     typeof client?.friendship?.findMany === "function" &&
     typeof client?.chatMessage?.findMany === "function" &&
+    typeof client?.groupConversation?.findMany === "function" &&
+    typeof client?.groupMembership?.findMany === "function" &&
+    typeof client?.groupMessage?.findMany === "function" &&
     client?.chatMessage?.fields?.encrypted,
   );
 }

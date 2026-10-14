@@ -5,15 +5,22 @@ import {
   decryptStoredMessage,
   encryptStoredMessage,
   validateMessageText,
-} from "./server-encryption";
-import type {
-  Conversation,
-  MessagePage,
-} from "@/lib/types/chat.types";
+} from "../server-encryption";
+import type { Conversation, MessagePage } from "@/lib/chat/types/chat.types";
 
-export class ChatError extends Error {}
+import { ChatError, toMessage } from "./chat-message";
+export { ChatError, toMessage } from "./chat-message";
+import {
+  createGroupMessage,
+  deleteGroupMessage,
+  editGroupMessage,
+  getGroupConversations,
+  getGroupMessagePage,
+  getGroupParticipants,
+  isGroupConversationId,
+  markGroupRead,
+} from "./groups";
 const PAGE_SIZE = 100;
-export { MAX_MESSAGE_LENGTH } from "./server-encryption";
 type Database = typeof prisma | Prisma.TransactionClient;
 
 function pairKey(first: string, second: string) {
@@ -39,34 +46,6 @@ function messageText(row: {
   clientId: string;
 }) {
   return decryptStoredMessage(row.encrypted, row);
-}
-
-export function toMessage(
-  row: {
-    id: string;
-    clientId: string;
-    sequence: number;
-    encrypted: unknown;
-    conversationId: string;
-    senderId: string;
-    createdAt: Date;
-    editedAt: Date | null;
-  },
-  userId: string,
-  senderName: string,
-) {
-  return {
-    id: row.id,
-    clientId: row.clientId,
-    sequence: row.sequence,
-    text: messageText(row),
-    storageProtection: "server" as const,
-    senderId: row.senderId,
-    senderName,
-    own: row.senderId === userId,
-    createdAt: row.createdAt.toISOString(),
-    edited: row.editedAt !== null,
-  };
 }
 
 async function requireMembership(
@@ -144,7 +123,7 @@ export async function openDirectConversation(
   });
 }
 
-export async function getConversationsForUser(
+async function getDirectConversationsForUser(
   userId: string,
 ): Promise<Conversation[]> {
   const memberships = await prisma.chatMembership.findMany({
@@ -209,18 +188,28 @@ export async function getConversationsForUser(
   });
 }
 
+export async function getConversationsForUser(
+  userId: string,
+): Promise<Conversation[]> {
+  const [direct, groups] = await Promise.all([
+    getDirectConversationsForUser(userId),
+    getGroupConversations(userId),
+  ]);
+  return [...direct, ...groups].sort((first, second) =>
+    second.updatedAt.localeCompare(first.updatedAt),
+  );
+}
+
 export async function getMessagePage(
   userId: string,
   conversationId: string,
   options: { before?: number; from?: number } = {},
 ): Promise<MessagePage> {
+  if (isGroupConversationId(conversationId))
+    return getGroupMessagePage(userId, conversationId, options);
   validateSequence(options.before);
   validateSequence(options.from);
   const member = await requireMembership(prisma, userId, conversationId);
-  const otherId =
-    member.conversation.firstUserId === userId
-      ? member.conversation.secondUserId
-      : member.conversation.firstUserId;
   const [rows, canSend] = await Promise.all([
     prisma.chatMessage.findMany({
       where: {
@@ -253,7 +242,6 @@ export async function getMessagePage(
     );
   return {
     conversationId,
-    peer: { userId: otherId },
     messages: rows.map((row) => toMessage(row, userId, row.sender.name)),
     hasOlder,
     canSend,
@@ -266,6 +254,11 @@ export async function createChatMessage(
   text: string,
   clientId: string,
 ) {
+  if (isGroupConversationId(conversationId))
+    return {
+      ...(await createGroupMessage(userId, conversationId, text, clientId)),
+      text: null,
+    };
   validateMessageText(text);
   validateId(clientId);
   try {
@@ -344,6 +337,8 @@ export async function updateChatMessage(
   messageId: string,
   text: string,
 ) {
+  if (isGroupConversationId(conversationId))
+    return editGroupMessage(userId, conversationId, messageId, text);
   validateMessageText(text);
   validateId(messageId);
   return prisma.$transaction(async (db) => {
@@ -381,6 +376,8 @@ export async function removeChatMessage(
   conversationId: string,
   messageId: string,
 ) {
+  if (isGroupConversationId(conversationId))
+    return deleteGroupMessage(userId, conversationId, messageId);
   validateId(messageId);
   return prisma.$transaction(async (db) => {
     await requireMembership(db, userId, conversationId);
@@ -397,6 +394,8 @@ export async function removeChatMessage(
 }
 
 export async function hideConversation(userId: string, conversationId: string) {
+  if (isGroupConversationId(conversationId))
+    throw new ChatError("Nutze die Aktion Gruppe verlassen.");
   await requireMembership(prisma, userId, conversationId);
   await prisma.chatMembership.update({
     where: { conversationId_userId: { conversationId, userId } },
@@ -409,9 +408,10 @@ export async function markConversationRead(
   conversationId: string,
   sequence: number,
 ) {
+  if (isGroupConversationId(conversationId))
+    return markGroupRead(userId, conversationId, sequence);
   if (!Number.isSafeInteger(sequence) || sequence < 1)
     throw new ChatError("Ungültiger Lesestand.");
-  validateSequence(sequence);
   const member = await requireMembership(prisma, userId, conversationId);
   if (sequence > member.conversation.nextSequence)
     throw new ChatError("Ungültiger Lesestand.");
@@ -422,6 +422,8 @@ export async function markConversationRead(
 }
 
 export async function getConversationParticipants(conversationId: string) {
+  if (isGroupConversationId(conversationId))
+    return getGroupParticipants(conversationId);
   const conversation = await prisma.directConversation.findUniqueOrThrow({
     where: { id: conversationId },
     select: { firstUserId: true, secondUserId: true },

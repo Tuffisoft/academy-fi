@@ -1,9 +1,9 @@
 import { getTranslations } from "next-intl/server";
 import { requireUser } from "@/lib/session";
 import { getAllAssignmentsForIntern } from "@/lib/data/assignments";
-import { getConversationsForUser } from "@/lib/chat";
-import { isRealtimeConfigured } from "@/lib/realtime";
-import { RealtimeProvider } from "@/lib/providers/realtime-provider";
+import { getConversationsForUser } from "@/lib/chat/services/chat";
+import { isRealtimeConfigured } from "@/lib/chat/realtime/server";
+import { RealtimeProvider } from "@/lib/chat/realtime/provider";
 import { DashboardHeader } from "@/components/fi/dashboard/dashboard-header";
 import { AccountMenu } from "@/components/fi/dashboard/account-menu";
 import { AdminDashboard } from "@/components/fi/dashboard/AdminDashboard";

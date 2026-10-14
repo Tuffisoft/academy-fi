@@ -5,7 +5,7 @@ import { Link, useRouter } from "@/i18n/navigation";
 import { MessageSquare } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { authClient } from "@/lib/auth-client";
-import { useUnreadCount } from "@/lib/providers/realtime-provider";
+import { useUnreadCount } from "@/lib/chat/realtime/provider";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import {

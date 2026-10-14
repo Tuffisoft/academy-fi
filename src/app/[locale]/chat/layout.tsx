@@ -3,10 +3,10 @@ import { Suspense } from "react";
 import { DashboardHeader } from "@/components/fi/dashboard/dashboard-header";
 import { PageLoading } from "@/components/fi/page-loading";
 import { requireUser } from "@/lib/session";
-import { getConversationsForUser } from "@/lib/chat";
-import { isRealtimeConfigured } from "@/lib/realtime";
-import { RealtimeProvider } from "@/lib/providers/realtime-provider";
-import { isMasterKeyConfigured } from "@/lib/server-encryption";
+import { getConversationsForUser } from "@/lib/chat/services/chat";
+import { isRealtimeConfigured } from "@/lib/chat/realtime/server";
+import { RealtimeProvider } from "@/lib/chat/realtime/provider";
+import { isMasterKeyConfigured } from "@/lib/chat/server-encryption";
 
 export const viewport: Viewport = {
   width: "device-width",

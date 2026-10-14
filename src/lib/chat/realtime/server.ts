@@ -1,7 +1,7 @@
 import "server-only";
 import { Rest } from "ably";
-import { getConversationParticipants } from "@/lib/chat";
-import { userChannel } from "@/lib/realtime-channel";
+import { getConversationParticipants } from "@/lib/chat/services/chat";
+import { userChannel } from "@/lib/chat/realtime/channel";
 
 let client: Rest | undefined;
 

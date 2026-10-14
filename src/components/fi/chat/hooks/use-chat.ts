@@ -1,19 +1,19 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
-import { readMessages } from "@/lib/chat-client";
+import { readMessages } from "@/lib/chat/client";
 import {
   deleteConversationAction,
   markConversationReadAction,
   openConversationAction,
-} from "@/lib/actions/conversation.actions";
+} from "@/lib/chat/actions/conversation.actions";
 import {
   deleteMessageAction,
   editMessageAction,
   sendMessageAction,
-} from "@/lib/actions/message.actions";
-import { useRealtime } from "@/lib/providers/realtime-provider";
-import type { ChatResult, MessagePage } from "@/lib/types/chat.types";
+} from "@/lib/chat/actions/message.actions";
+import { useRealtime } from "@/lib/chat/realtime/provider";
+import type { ChatResult, MessagePage } from "@/lib/chat/types/chat.types";
 
 function rememberPage(
   cache: Map<string, MessagePage>,
@@ -21,6 +21,8 @@ function rememberPage(
   page: MessagePage,
 ) {
   cache.delete(id);
+  // Group membership and its history boundary can change between openings.
+  if (page.group) return;
   cache.set(id, page);
   if (cache.size > 8) cache.delete(cache.keys().next().value!);
 }
@@ -61,7 +63,12 @@ export function useChat() {
         rememberPage(pages.current, conversationId, result.data);
         setPage(result.data);
         setError(null);
-      } else setError(result.error);
+      } else {
+        pages.current.delete(conversationId);
+        pageRef.current = null;
+        setPage(null);
+        setError(result.error);
+      }
     } catch {
       if (request === revision.current)
         setError("Die Nachrichten konnten nicht aktualisiert werden.");

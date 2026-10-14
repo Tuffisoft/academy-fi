@@ -8,14 +8,13 @@ export type Message = {
   senderName: string;
   createdAt: string;
   edited: boolean;
-  storageProtection?: "server";
   delivery?: "sending" | "failed";
 };
 export type Conversation = {
   id: string;
   name: string;
   initials: string;
-  group: false;
+  group: boolean;
   unreadCount: number;
   lastMessage: string | null;
   updatedAt: string;
@@ -25,13 +24,22 @@ export type ChatUser = { id: string; name: string };
 
 export type MessagePage = {
   conversationId: string;
-  peer: { userId: string };
+  group?: GroupDetails;
   messages: Message[];
   hasOlder: boolean;
   canSend: boolean;
 };
-export type ChatSnapshot = {
-  page: MessagePage | null;
+export type GroupMember = {
+  userId: string;
+  name: string;
+  role: "ADMIN" | "MEMBER";
+  status: "INVITED" | "ACTIVE";
 };
+export type GroupDetails = {
+  name: string;
+  canManage: boolean;
+  members: GroupMember[];
+};
+export type GroupInvitation = { conversationId: string; name: string };
 export type ChatResult<T> =
   { ok: true; data: T } | { ok: false; error: string };

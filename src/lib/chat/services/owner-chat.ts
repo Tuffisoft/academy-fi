@@ -1,6 +1,6 @@
 import "server-only";
 import { prisma } from "@/lib/prisma";
-import { ChatError, toMessage } from "@/lib/chat";
+import { ChatError, toMessage } from "@/lib/chat/services/chat";
 
 async function requireOwner(userId: string) {
   const user = await prisma.user.findUnique({

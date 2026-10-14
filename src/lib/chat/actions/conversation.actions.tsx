@@ -7,9 +7,9 @@ import {
   openDirectConversation,
   hideConversation,
   markConversationRead,
-} from "@/lib/chat";
-import { notifyConversation, notifyUsers } from "@/lib/realtime";
-import type { ChatResult } from "@/lib/types/chat.types";
+} from "@/lib/chat/services/chat";
+import { notifyConversation, notifyUsers } from "@/lib/chat/realtime/server";
+import type { ChatResult } from "@/lib/chat/types/chat.types";
 
 function failure(error: unknown): ChatResult<never> {
   return {

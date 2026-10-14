@@ -3,7 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { requireUser } from "@/lib/session";
 import { prisma } from "@/lib/prisma";
-import { notifyUsers } from "@/lib/realtime";
+import { notifyUsers } from "@/lib/chat/realtime/server";
 import {
   FriendshipError,
   getFriendsForUser,
@@ -13,12 +13,12 @@ import {
   declineFriendshipRequest,
   cancelFriendshipRequest,
   removeFriendship,
-} from "@/lib/friends";
+} from "@/lib/chat/services/friends";
 import type {
   FriendsResult,
   FriendsSnapshot,
   UserSearchResult,
-} from "@/lib/types/friends.types";
+} from "@/lib/chat/types/friends.types";
 
 function failure(error: unknown): FriendsResult<never> {
   return {

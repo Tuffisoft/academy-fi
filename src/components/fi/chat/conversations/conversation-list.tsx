@@ -1,10 +1,11 @@
 "use client";
 
 import { Search } from "lucide-react";
+import type { ReactNode } from "react";
 
 import { cn } from "@/lib/utils";
 import { ConversationRow } from "./conversation-row";
-import type { ChatSection, Conversation } from "@/lib/types/chat.types";
+import type { ChatSection, Conversation } from "@/lib/chat/types/chat.types";
 
 type ConversationListProps = {
   active?: Conversation;
@@ -16,6 +17,8 @@ type ConversationListProps = {
   onOpen: (id: string) => void;
   onDelete: (id: string) => void;
   pending: boolean;
+  headerActions?: ReactNode;
+  children?: ReactNode;
 };
 
 const sectionTitles: Record<ChatSection, string> = {
@@ -34,6 +37,8 @@ export function ConversationList({
   onOpen,
   onDelete,
   pending,
+  headerActions,
+  children,
 }: ConversationListProps) {
   return (
     <aside
@@ -44,9 +49,12 @@ export function ConversationList({
       )}
     >
       <div className="border-b p-4">
-        <h1 className="mb-4 text-2xl font-semibold tracking-tight">
-          {sectionTitles[section]}
-        </h1>
+        <div className="mb-4 flex items-center justify-between gap-2">
+          <h1 className="text-2xl font-semibold tracking-tight">
+            {sectionTitles[section]}
+          </h1>
+          {headerActions}
+        </div>
         <label className="flex items-center gap-3 rounded-xl bg-muted px-4 py-3 focus-within:ring-2 focus-within:ring-ring">
           <Search
             className="size-4 shrink-0 text-muted-foreground"
@@ -63,6 +71,7 @@ export function ConversationList({
       </div>
 
       <div className="min-h-0 flex-1 space-y-1 overflow-y-auto overscroll-contain p-2">
+        {children}
         {visible.map((conversation) => (
           <ConversationRow
             key={conversation.id}
@@ -77,7 +86,9 @@ export function ConversationList({
           <p className="px-3 py-8 text-sm text-muted-foreground">
             {search
               ? "Keine Treffer."
-              : "Noch keine Unterhaltungen. Öffne einen Chat unter Kontakte."}
+              : section === "groups"
+                ? "Noch keine Gruppen."
+                : "Noch keine Unterhaltungen. Öffne einen Chat unter Kontakte."}
           </p>
         )}
       </div>

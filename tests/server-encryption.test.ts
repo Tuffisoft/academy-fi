@@ -6,7 +6,7 @@ import {
   encryptStoredMessage,
   isMasterKeyConfigured,
   MessageEncryptionError,
-} from "../src/lib/server-encryption";
+} from "../src/lib/chat/server-encryption";
 
 const previousKey = process.env.CHAT_MASTER_KEY;
 const key = randomBytes(32).toString("base64");

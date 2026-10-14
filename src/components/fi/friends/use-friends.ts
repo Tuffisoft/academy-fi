@@ -1,9 +1,9 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
-import { getFriendsAction } from "@/lib/actions/friend.actions";
-import type { FriendsSnapshot } from "@/lib/types/friends.types";
-import { useRealtime } from "@/lib/providers/realtime-provider";
+import { getFriendsAction } from "@/lib/chat/actions/friend.actions";
+import type { FriendsSnapshot } from "@/lib/chat/types/friends.types";
+import { useRealtime } from "@/lib/chat/realtime/provider";
 
 export function useFriends(initialSnapshot: FriendsSnapshot) {
   const { subscribe } = useRealtime();

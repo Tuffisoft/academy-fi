@@ -3,8 +3,8 @@ import test from "node:test";
 import {
   unconfirmedMessages,
   visibleMessages,
-} from "../src/components/fi/chat/message-delivery";
-import type { Message } from "@/lib/types/chat.types";
+} from "../src/components/fi/chat/utils/message-delivery";
+import type { Message } from "@/lib/chat/types/chat.types";
 
 const queued: Message = {
   id: "pending-local",

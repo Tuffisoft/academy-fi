@@ -8,14 +8,14 @@ import {
   updateChatMessage,
   removeChatMessage,
   toMessage,
-} from "@/lib/chat";
-import { notifyConversation } from "@/lib/realtime";
-import type { ChatResult, Message } from "@/lib/types/chat.types";
-import { MessageEncryptionError } from "@/lib/server-encryption";
+} from "@/lib/chat/services/chat";
+import { notifyConversation } from "@/lib/chat/realtime/server";
+import type { ChatResult, Message } from "@/lib/chat/types/chat.types";
+import { MessageEncryptionError } from "@/lib/chat/server-encryption";
 
 type MutationResult = ChatResult<{ realtimeDelivered: boolean }>;
 
-function failure(error: unknown): MutationResult {
+function failure(error: unknown): ChatResult<never> {
   return {
     ok: false,
     error:
@@ -46,13 +46,7 @@ export async function sendMessageAction(
       data: toMessage(message, user.id, user.name),
     };
   } catch (error) {
-    return {
-      ok: false,
-      error:
-        error instanceof ChatError || error instanceof MessageEncryptionError
-          ? error.message
-          : "Die Nachricht konnte nicht verarbeitet werden.",
-    };
+    return failure(error);
   }
 }
 

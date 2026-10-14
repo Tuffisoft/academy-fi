@@ -25,11 +25,11 @@ test(
       openDirectConversation,
       removeChatMessage,
       updateChatMessage,
-    } = await import("../src/lib/chat");
+    } = await import("../src/lib/chat/services/chat");
     const { getOwnerConversations, getOwnerMessagePage } =
-      await import("../src/lib/owner-chat");
+      await import("../src/lib/chat/services/owner-chat");
     const { acceptFriendshipRequest, removeFriendship, sendFriendshipRequest } =
-      await import("../src/lib/friends");
+      await import("../src/lib/chat/services/friends");
     const ids = Array.from({ length: 4 }, () => randomUUID());
     const [alice, bob, outsider, owner] = ids;
     try {

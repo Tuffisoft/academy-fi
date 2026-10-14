@@ -18,7 +18,7 @@ import {
   respondToFriendRequestAction,
   searchUsersAction,
   sendFriendRequestAction,
-} from "@/lib/actions/friend.actions";
+} from "@/lib/chat/actions/friend.actions";
 import { Button } from "@/components/ui/button";
 import { FriendAvatar } from "./friend-avatar";
 import type {
@@ -26,7 +26,7 @@ import type {
   FriendsResult,
   FriendsSnapshot,
   UserSearchResult,
-} from "@/lib/types/friends.types";
+} from "@/lib/chat/types/friends.types";
 
 type FriendsPanelProps = {
   snapshot: FriendsSnapshot;

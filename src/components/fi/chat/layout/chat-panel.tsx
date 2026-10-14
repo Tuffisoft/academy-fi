@@ -1,21 +1,20 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { Fragment, useEffect, useRef, useState } from "react";
 import { MessageCircle, RefreshCw } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { ChatHeader } from "./chat-header";
-import { MessageComposer } from "./message-composer";
-import { MessageItem } from "./message-item";
+import { MessageComposer } from "../messages/message-composer";
+import { MessageItem } from "../messages/message-item";
 import type {
   ChatUser,
   Conversation,
   Message,
   MessagePage,
-} from "@/lib/types/chat.types";
-import { unconfirmedMessages, visibleMessages } from "./message-delivery";
-import { Fragment } from "react";
-import { dayLabel, messageDay } from "./chat-format";
+} from "@/lib/chat/types/chat.types";
+import { unconfirmedMessages, visibleMessages } from "../utils/message-delivery";
+import { dayLabel, messageDay } from "../utils/chat-format";
 
 type ChatPanelProps = {
   currentUser: ChatUser;
@@ -30,6 +29,7 @@ type ChatPanelProps = {
   onDelete: (id: string) => Promise<boolean>;
   onLoadOlder: () => Promise<void>;
   onRefresh: () => Promise<void>;
+  onManageGroup?: () => void;
 };
 
 export function ChatPanel({
@@ -45,6 +45,7 @@ export function ChatPanel({
   onDelete,
   onLoadOlder,
   onRefresh,
+  onManageGroup,
 }: ChatPanelProps) {
   const [draft, setDraft] = useState("");
   const [editingId, setEditingId] = useState<string | null>(null);
@@ -166,7 +167,11 @@ export function ChatPanel({
         !active && "hidden md:flex",
       )}
     >
-      <ChatHeader conversation={active} onBack={onBack} />
+      <ChatHeader
+        conversation={active}
+        onBack={onBack}
+        onManageGroup={onManageGroup}
+      />
       <div
         ref={logRef}
         role="log"
@@ -226,8 +231,8 @@ export function ChatPanel({
               </div>
             )}
             <MessageItem
-              key={message.id}
               message={message}
+              showAuthor={Boolean(active?.group)}
               pending={pending}
               isEditing={editingId === message.id}
               editText={editText}
@@ -265,9 +270,9 @@ function ConversationPlaceholder() {
   return (
     <div className="flex min-h-72 flex-col items-center justify-center text-center">
       <MessageCircle className="mb-4 size-10 text-primary" aria-hidden="true" />
-      <h2 className="font-semibold">Ein Gespräch beginnt mit Hallo.</h2>
+      <h2 className="font-semibold">Deine Unterhaltungen</h2>
       <p className="mt-2 max-w-xs text-sm text-muted-foreground">
-        Wähle eine Unterhaltung oder starte ein Gespräch unter Kontakte.
+        Wähle einen Direktchat oder eine Gruppe.
       </p>
     </div>
   );

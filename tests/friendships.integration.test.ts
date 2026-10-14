@@ -12,7 +12,7 @@ import {
   removeFriendship,
   searchUsersForFriendship,
   sendFriendshipRequest,
-} from "../src/lib/friends";
+} from "../src/lib/chat/services/friends";
 
 test("friendship lifecycle and permissions", async () => {
   assert.equal(process.env.DATABASE_ENV, "development");

@@ -2,27 +2,55 @@
 
 import { Link } from "@/i18n/navigation";
 import { useLayoutEffect, useRef, useState } from "react";
-import { ArrowLeft } from "lucide-react";
-import { ChatNavigation } from "./chat-navigation";
-import { ChatPanel } from "./chat-panel";
-import { ConversationList } from "./conversation-list";
-import { useChat } from "./use-chat";
-import type { ChatSection, ChatUser } from "@/lib/types/chat.types";
+import { ArrowLeft, LogOut } from "lucide-react";
+import { ChatNavigation } from "./layout/chat-navigation";
+import { ChatPanel } from "./layout/chat-panel";
+import { ConversationList } from "./conversations/conversation-list";
+import { useChat } from "./hooks/use-chat";
+import type {
+  ChatSection,
+  ChatUser,
+  Conversation,
+  GroupInvitation,
+} from "@/lib/chat/types/chat.types";
+import { useGroups } from "./hooks/use-groups";
+import { CreateGroupDialog } from "./groups/create-group-dialog";
+import { GroupInvitations } from "./groups/group-invitations";
+import { GroupManager } from "./groups/group-manager";
+import {
+  createGroupAction,
+  leaveGroupAction,
+  respondToGroupInvitationAction,
+} from "@/lib/chat/actions/group.actions";
+import { Button } from "@/components/ui/button";
+import {
+  AlertDialog,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 import { FriendsPanel } from "@/components/fi/friends/friends-panel";
 import { useFriends } from "@/components/fi/friends/use-friends";
-import type { FriendsSnapshot } from "@/lib/types/friends.types";
+import type { FriendsSnapshot } from "@/lib/chat/types/friends.types";
 
 export default function Chat({
   initialFriends,
+  initialGroupInvitations,
   currentUser,
 }: {
   initialFriends: FriendsSnapshot;
+  initialGroupInvitations: GroupInvitation[];
   currentUser: ChatUser;
 }) {
   const friends = useFriends(initialFriends);
   const chat = useChat();
+  const groups = useGroups(initialGroupInvitations, chat.refresh);
   const [section, setSection] = useState<ChatSection>("chats");
   const [search, setSearch] = useState("");
+  const [manageGroup, setManageGroup] = useState(false);
+  const [leaveTarget, setLeaveTarget] = useState<Conversation | null>(null);
   const mainRef = useRef<HTMLElement>(null);
 
   useLayoutEffect(() => {
@@ -47,10 +75,7 @@ export default function Chat({
         shell.style.setProperty("--messenger-height", `${height}px`);
         shell.style.setProperty("--messenger-top", `${top}px`);
         shell.dataset.keyboardOpen = String(window.innerHeight - height > 120);
-        root.style.setProperty(
-          "--fi-visible-height",
-          `${height}px`,
-        );
+        root.style.setProperty("--fi-visible-height", `${height}px`);
       }
     }
 
@@ -82,12 +107,17 @@ export default function Chat({
     };
   }, []);
   const active = chat.conversations.find((item) => item.id === chat.activeId);
-  const visible = chat.conversations.filter((item) =>
-    item.name.toLowerCase().includes(search.toLowerCase()),
+  const visible = chat.conversations.filter(
+    (item) =>
+      item.group === (section === "groups") &&
+      item.name.toLowerCase().includes(search.toLowerCase()),
   );
 
   function selectSection(next: ChatSection) {
-    if (next !== "chats") chat.close();
+    if (next !== section) {
+      chat.close();
+      setManageGroup(false);
+    }
     setSection(next);
   }
 
@@ -96,6 +126,41 @@ export default function Chat({
       setSection("chats");
       setSearch("");
     }
+  }
+
+  async function createGroup(name: string, contactIds: string[]) {
+    const result = await groups.run(() => createGroupAction(name, contactIds));
+    if (!result) return false;
+    setSection("groups");
+    setSearch("");
+    setManageGroup(false);
+    await chat.open(result.data);
+    return true;
+  }
+
+  async function respondToInvitation(id: string, accept: boolean) {
+    const result = await groups.run(() =>
+      respondToGroupInvitationAction(id, accept),
+    );
+    if (result && accept) {
+      setSection("groups");
+      setSearch("");
+      await chat.open(id);
+    }
+  }
+
+  async function leaveGroup() {
+    if (!leaveTarget) return;
+    const result = await groups.run(
+      () => leaveGroupAction(leaveTarget.id),
+      async () => {
+        if (chat.activeId === leaveTarget.id) {
+          chat.close();
+          setManageGroup(false);
+        }
+      },
+    );
+    if (result) setLeaveTarget(null);
   }
 
   const connectionLabels = {
@@ -134,8 +199,16 @@ export default function Chat({
         </p>
       )}
       {chat.notice && (
-        <p role="status" className="mb-3 shrink-0 text-sm text-muted-foreground">
+        <p
+          role="status"
+          className="mb-3 shrink-0 text-sm text-muted-foreground"
+        >
           {chat.notice}
+        </p>
+      )}
+      {groups.error && (
+        <p role="alert" className="mb-3 shrink-0 text-sm text-destructive">
+          {groups.error}
         </p>
       )}
 
@@ -143,6 +216,7 @@ export default function Chat({
         <ChatNavigation
           active={active}
           incomingRequests={friends.snapshot.incoming.length}
+          incomingGroupInvitations={groups.invitations.length}
           section={section}
           setSection={selectSection}
           setSearch={setSearch}
@@ -156,13 +230,6 @@ export default function Chat({
             onStartChat={startChat}
             chatPending={chat.pending}
           />
-        ) : section === "groups" ? (
-          <section className="flex flex-1 flex-col items-center justify-center p-6 text-center">
-            <h1 className="font-semibold">Gruppen</h1>
-            <p className="mt-2 text-sm text-muted-foreground">
-              Gruppenchats folgen im nächsten Schritt.
-            </p>
-          </section>
         ) : (
           <>
             <ConversationList
@@ -173,16 +240,42 @@ export default function Chat({
               visible={visible}
               onSearchChange={setSearch}
               onOpen={(id) => void chat.open(id)}
-              onDelete={(id) => void chat.hide(id)}
-              pending={chat.pending}
-            />
+              onDelete={(id) => {
+                const conversation = chat.conversations.find(
+                  (item) => item.id === id,
+                );
+                if (conversation?.group) setLeaveTarget(conversation);
+                else void chat.hide(id);
+              }}
+              pending={chat.pending || groups.pending}
+              headerActions={
+                section === "groups" ? (
+                  <CreateGroupDialog
+                    contacts={friends.snapshot.friends}
+                    pending={groups.pending}
+                    error={groups.error}
+                    onCreate={createGroup}
+                  />
+                ) : undefined
+              }
+            >
+              {section === "groups" && (
+                <GroupInvitations
+                  invitations={groups.invitations}
+                  loading={groups.loading}
+                  pending={groups.pending}
+                  onRespond={respondToInvitation}
+                  onRefresh={groups.refresh}
+                />
+              )}
+            </ConversationList>
             <ChatPanel
               currentUser={currentUser}
               key={chat.activeId ?? "empty"}
               active={active}
               page={chat.page}
               loading={chat.loading}
-              pending={chat.pending}
+              pending={chat.pending || groups.pending}
               loadingOlder={chat.loadingOlder}
               onBack={chat.close}
               onSend={chat.send}
@@ -190,10 +283,69 @@ export default function Chat({
               onDelete={chat.remove}
               onLoadOlder={chat.loadOlder}
               onRefresh={chat.refresh}
+              onManageGroup={
+                chat.page?.group ? () => setManageGroup(true) : undefined
+              }
             />
           </>
         )}
       </div>
+      {active?.group && chat.page?.group && (
+        <GroupManager
+          key={`${active.id}:${chat.page.group.name}`}
+          conversationId={active.id}
+          group={chat.page.group}
+          userId={currentUser.id}
+          contacts={friends.snapshot.friends}
+          pending={groups.pending}
+          error={groups.error}
+          open={manageGroup}
+          onOpenChange={setManageGroup}
+          onRun={groups.run}
+          onLeave={() => setLeaveTarget(active)}
+        />
+      )}
+      <AlertDialog
+        open={Boolean(leaveTarget)}
+        onOpenChange={(open) => {
+          if (!open && !groups.pending) setLeaveTarget(null);
+        }}
+      >
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Gruppe verlassen?</AlertDialogTitle>
+            <AlertDialogDescription className="wrap-anywhere">
+              Du verlierst den Zugriff auf „{leaveTarget?.name}“. Beim Austritt
+              des letzten Admins übernimmt ein verbleibendes Mitglied die
+              Verwaltung.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          {groups.error && (
+            <p role="alert" className="text-sm text-destructive">
+              {groups.error}
+            </p>
+          )}
+          <AlertDialogFooter>
+            <Button
+              type="button"
+              variant="outline"
+              disabled={groups.pending}
+              onClick={() => setLeaveTarget(null)}
+            >
+              Abbrechen
+            </Button>
+            <Button
+              type="button"
+              variant="destructive"
+              disabled={groups.pending}
+              onClick={() => void leaveGroup()}
+            >
+              <LogOut aria-hidden="true" />{" "}
+              {groups.pending ? "Wird verlassen …" : "Verlassen"}
+            </Button>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </main>
   );
 }

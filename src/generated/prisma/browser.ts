@@ -122,3 +122,18 @@ export type Friendship = Prisma.FriendshipModel
  * 
  */
 export type ChatEncryptionKey = Prisma.ChatEncryptionKeyModel
+/**
+ * Model GroupConversation
+ * 
+ */
+export type GroupConversation = Prisma.GroupConversationModel
+/**
+ * Model GroupMembership
+ * 
+ */
+export type GroupMembership = Prisma.GroupMembershipModel
+/**
+ * Model GroupMessage
+ * 
+ */
+export type GroupMessage = Prisma.GroupMessageModel
