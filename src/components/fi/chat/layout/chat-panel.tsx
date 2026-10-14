@@ -15,6 +15,7 @@ import type {
 } from "@/lib/chat/types/chat.types";
 import { unconfirmedMessages, visibleMessages } from "../utils/message-delivery";
 import { dayLabel, messageDay } from "../utils/chat-format";
+import { createMessageId } from "../utils/message-id";
 
 type ChatPanelProps = {
   currentUser: ChatUser;
@@ -86,7 +87,7 @@ export function ChatPanel({
   async function send() {
     const text = draft.trim();
     if (pending || !text || !page?.canSend) return;
-    const clientId = crypto.randomUUID();
+    const clientId = createMessageId();
     const message: Message = {
       id: `pending-${clientId}`,
       clientId,
