@@ -13,6 +13,7 @@ import {
 import { Realtime } from "ably";
 import { readConversations } from "@/lib/chat/client";
 import { userChannel } from "@/lib/chat/realtime/channel";
+import { useUnreadTabTitle } from "@/lib/chat/realtime/use-unread-tab-title";
 import type { Conversation } from "@/lib/chat/types/chat.types";
 
 type Listener = (
@@ -163,6 +164,8 @@ export function RealtimeProvider({
     }),
     [conversations, status, error, refreshConversations, subscribe],
   );
+
+  useUnreadTabTitle(value.unreadCount);
 
   return (
     <RealtimeContext.Provider value={value}>
