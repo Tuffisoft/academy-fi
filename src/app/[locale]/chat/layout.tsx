@@ -1,6 +1,6 @@
 import type { Viewport } from "next";
 import { Suspense } from "react";
-import { DashboardHeader } from "@/components/fi/dashboard/dashboard-header";
+import { DashboardHeader } from "@/components/fi/header/dashboard-header";
 import { Footer } from "@/components/fi/footer";
 import { PageLoading } from "@/components/fi/page-loading";
 import { requireUser } from "@/lib/session";
@@ -35,7 +35,11 @@ async function ChatLayoutContent({ children }: { children: React.ReactNode }) {
       initialConversations={conversations}
     >
       <div className="academy-dashboard flex h-dvh min-h-0 w-full flex-none flex-col overflow-hidden bg-background text-foreground">
-        <DashboardHeader name={user.name} role={user.role ?? "INTERN"} />
+        <DashboardHeader
+          name={user.name}
+          role={user.role ?? "INTERN"}
+          image={user.image ?? null}
+        />
         {!isMasterKeyConfigured() && (
           <p role="alert" className="shrink-0 border-b bg-destructive/10 px-6 py-3 text-sm text-destructive">
             Der Nachrichtenversand ist derzeit nicht verfügbar.
