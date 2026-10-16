@@ -1,52 +1,27 @@
 "use client";
 
 import { useTranslations } from "next-intl";
-import { Link, useRouter } from "@/i18n/navigation";
+import { Link } from "@/i18n/navigation";
 import { MessageSquare } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { authClient } from "@/lib/auth-client";
 import { useUnreadCount } from "@/lib/chat/realtime/provider";
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuGroup,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-
-function initials(name: string) {
-  return name
-    .split(" ")
-    .map((part) => part[0])
-    .join("")
-    .slice(0, 2)
-    .toUpperCase();
-}
+import { AvatarChangeDialog } from "@/components/fi/header/avatar/avatar-change-dialog";
 
 export function DashboardHeader({
   name,
   role,
+  image,
 }: {
   name: string;
   role: string;
+  image: string | null;
 }) {
-  const t = useTranslations("auth");
-  const router = useRouter();
   const tNav = useTranslations("nav");
   const unreadCount = useUnreadCount();
   const chatLabel = unreadCount > 0
     ? tNav("chatUnread", { count: unreadCount })
     : tNav("chat");
-
-  async function handleSignOut() {
-    await authClient.signOut();
-    router.push("/sign-in");
-    router.refresh();
-  }
 
   return (
     <header className="flex items-center justify-between border-b border-border px-6 py-4">
@@ -74,22 +49,7 @@ export function DashboardHeader({
             </span>
           )}
         </Button>
-        <DropdownMenu>
-          <DropdownMenuTrigger className="rounded-full">
-            <Avatar>
-              <AvatarFallback>{initials(name)}</AvatarFallback>
-            </Avatar>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            <DropdownMenuGroup>
-              <DropdownMenuLabel>{name}</DropdownMenuLabel>
-            </DropdownMenuGroup>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem onClick={handleSignOut}>
-              {t("signOut")}
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
+        <AvatarChangeDialog name={name} image={image} />
       </div>
     </header>
   );

@@ -1,6 +1,6 @@
 import { getTranslations } from "next-intl/server";
 import { requireUser } from "@/lib/session";
-import { DashboardHeader } from "@/components/fi/dashboard/dashboard-header";
+import { DashboardHeader } from "@/components/fi/header/dashboard-header";
 import { BreadcrumbNav } from "@/components/fi/breadcrumb-nav";
 import { DepartmentsList } from "@/components/fi/learning/departments-list";
 import { ManageDepartments } from "@/components/fi/learning/manage-departments";
@@ -12,7 +12,11 @@ export default async function LearningPage() {
 
   return (
     <div className="flex flex-1 flex-col">
-      <DashboardHeader name={user.name} role={user.role ?? "INTERN"} />
+      <DashboardHeader
+        name={user.name}
+        role={user.role ?? "INTERN"}
+        image={user.image ?? null}
+      />
       <main className="flex flex-1 flex-col gap-6 p-6">
         <BreadcrumbNav items={[{ label: t("title") }]} />
         <div>

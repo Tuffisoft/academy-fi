@@ -80,6 +80,18 @@
     "resetPasswordMismatch": "Passwords do not match.",
     "resetPasswordInvalidToken": "This link is invalid or has expired."
   },
+  "header": {
+    "openProfileSettings": "Open profile settings",
+    "profileSettingsTitle": "Profile settings",
+    "profileSettingsDescription": "Change your profile picture. The image can be up to 4 MB.",
+    "profileImageLabel": "New profile picture",
+    "profileImageHelp": "Image files up to 4 MB.",
+    "profileImageSave": "Save image",
+    "profileImageUploading": "Uploading image...",
+    "profileImageUpdated": "Profile picture updated.",
+    "profileImageUploadError": "Unable to upload profile picture.",
+    "profileImageCleanupError": "Profile picture updated, but the old image could not be deleted."
+  },
   "dashboard": {
     "welcome": "Welcome, {name}",
     "ownerDescription": "Owner dashboard is coming next: review interns, assignments and feedback.",

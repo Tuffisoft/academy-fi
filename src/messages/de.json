@@ -80,6 +80,18 @@
     "resetPasswordMismatch": "Die Passwörter stimmen nicht überein.",
     "resetPasswordInvalidToken": "Dieser Link ist ungültig oder abgelaufen."
   },
+  "header": {
+    "openProfileSettings": "Profileinstellungen öffnen",
+    "profileSettingsTitle": "Profileinstellungen",
+    "profileSettingsDescription": "Ändere dein Profilbild. Das Bild darf maximal 4 MB groß sein.",
+    "profileImageLabel": "Neues Profilbild",
+    "profileImageHelp": "Bilddateien bis maximal 4 MB.",
+    "profileImageSave": "Bild speichern",
+    "profileImageUploading": "Bild wird hochgeladen...",
+    "profileImageUpdated": "Profilbild wurde aktualisiert.",
+    "profileImageUploadError": "Profilbild konnte nicht hochgeladen werden.",
+    "profileImageCleanupError": "Profilbild aktualisiert, aber das alte Bild konnte nicht gelöscht werden."
+  },
   "dashboard": {
     "welcome": "Willkommen, {name}",
     "ownerDescription": "Als Nächstes folgt das Owner-Dashboard: Interns, Aufgaben und Feedback im Überblick.",

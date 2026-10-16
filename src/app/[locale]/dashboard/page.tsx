@@ -4,7 +4,7 @@ import { getAllAssignmentsForIntern } from "@/lib/data/assignments";
 import { getConversationsForUser } from "@/lib/chat/services/chat";
 import { isRealtimeConfigured } from "@/lib/chat/realtime/server";
 import { RealtimeProvider } from "@/lib/chat/realtime/provider";
-import { DashboardHeader } from "@/components/fi/dashboard/dashboard-header";
+import { DashboardHeader } from "@/components/fi/header/dashboard-header";
 import { AccountMenu } from "@/components/fi/dashboard/account-menu";
 import { AdminDashboard } from "@/components/fi/dashboard/AdminDashboard";
 import { LearningCard } from "@/components/fi/dashboard/learning-card";
@@ -40,7 +40,11 @@ export default async function DashboardPage() {
         enabled={isRealtimeConfigured()}
         initialConversations={conversations}
       >
-        <DashboardHeader name={user.name} role={user.role ?? "INTERN"} />
+        <DashboardHeader
+          name={user.name}
+          role={user.role ?? "INTERN"}
+          image={user.image ?? null}
+        />
       </RealtimeProvider>
       <div className="px-6 pt-6">
         <BreadcrumbNav items={[]} />

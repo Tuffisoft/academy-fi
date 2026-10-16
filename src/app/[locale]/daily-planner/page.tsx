@@ -2,7 +2,7 @@ import { getTranslations } from "next-intl/server";
 import { requireUser } from "@/lib/session";
 import { getDailyPlan, getDailyPlanArchive } from "@/lib/data/daily-plans";
 import { isValidPlanDate, todayPlanDate } from "@/lib/daily-plan-date";
-import { DashboardHeader } from "@/components/fi/dashboard/dashboard-header";
+import { DashboardHeader } from "@/components/fi/header/dashboard-header";
 import { BreadcrumbNav } from "@/components/fi/breadcrumb-nav";
 import { DateNavigator } from "@/components/fi/daily-planner/date-navigator";
 import { PlanEditor } from "@/components/fi/daily-planner/plan-editor";
@@ -35,7 +35,11 @@ export default async function DailyPlannerPage({
 
   return (
     <div className="flex flex-1 flex-col">
-      <DashboardHeader name={user.name} role={user.role ?? "INTERN"} />
+      <DashboardHeader
+        name={user.name}
+        role={user.role ?? "INTERN"}
+        image={user.image ?? null}
+      />
       <main className="flex flex-1 flex-col gap-6 p-6">
         <BreadcrumbNav items={[{ label: t("title") }]} />
         <div>

@@ -1,7 +1,7 @@
 import { getTranslations } from "next-intl/server";
 import { requireRole } from "@/lib/session";
 import { Role } from "@/generated/prisma/enums";
-import { DashboardHeader } from "@/components/fi/dashboard/dashboard-header";
+import { DashboardHeader } from "@/components/fi/header/dashboard-header";
 import { BreadcrumbNav } from "@/components/fi/breadcrumb-nav";
 import { requireUser } from "@/lib/session";
 import { ObjectivesGrid } from "@/components/fi/objectives/objectives-grid";
@@ -13,7 +13,11 @@ export default async function ObjectivesPage() {
 
   return (
     <div className="flex flex-1 flex-col">
-      <DashboardHeader name={user.name} role={user.role ?? "INTERN"} />
+      <DashboardHeader
+        name={user.name}
+        role={user.role ?? "INTERN"}
+        image={user.image ?? null}
+      />
       <main className="flex flex-1 flex-col gap-6 p-6">
         <BreadcrumbNav items={[{ label: t("title") }]} />
         <div>
