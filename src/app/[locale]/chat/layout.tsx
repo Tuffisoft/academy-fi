@@ -1,6 +1,7 @@
 import type { Viewport } from "next";
 import { Suspense } from "react";
 import { DashboardHeader } from "@/components/fi/dashboard/dashboard-header";
+import { Footer } from "@/components/fi/footer";
 import { PageLoading } from "@/components/fi/page-loading";
 import { requireUser } from "@/lib/session";
 import { getConversationsForUser } from "@/lib/chat/services/chat";
@@ -41,6 +42,7 @@ async function ChatLayoutContent({ children }: { children: React.ReactNode }) {
           </p>
         )}
         {children}
+        <Footer />
       </div>
     </RealtimeProvider>
   );

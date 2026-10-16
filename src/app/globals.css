@@ -215,14 +215,13 @@
   min-height: 0;
   overflow: hidden;
 }
-.academy-dashboard[data-messenger-active="true"] > header {
+.academy-dashboard[data-messenger-active="true"] > header,
+.academy-dashboard[data-messenger-active="true"] > footer {
   flex-shrink: 0;
 }
-.academy-dashboard[data-messenger-active="true"] > footer {
-  display: none;
-}
 
-/* The Academy footer is outside the chat shell in the locale layout. */
+/* The chat renders its footer inside the viewport-sized shell. Hide the
+   locale layout's footer while the chat is visible to avoid a duplicate. */
 html[data-messenger-active="true"] body > footer {
   display: none;
 }
@@ -266,11 +265,8 @@ html[data-messenger-active="true"] body {
     flex-shrink: 0;
   }
 
-  .academy-dashboard[data-messenger-active="true"] > footer {
-    display: none;
-  }
-
-  .messenger button {
+  .messenger button,
+  .academy-dashboard[data-messenger-active="true"] > footer button {
     min-width: 2.75rem;
     min-height: 2.75rem;
   }
