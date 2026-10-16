@@ -11,9 +11,9 @@ import {
   type ReactNode,
 } from "react";
 import { Realtime } from "ably";
-import { readConversations } from "@/lib/chat-client";
-import { userChannel } from "@/lib/realtime-channel";
-import type { Conversation } from "@/lib/types/chat.types";
+import { readConversations } from "@/lib/chat/client";
+import { userChannel } from "@/lib/chat/realtime/channel";
+import type { Conversation } from "@/lib/chat/types/chat.types";
 
 type Listener = (
   event: "chat.changed" | "contacts.changed" | "reconnected",

@@ -1,11 +1,11 @@
 "use client";
 
-import { Hash, Trash2 } from "lucide-react";
+import { Hash, LogOut, Trash2 } from "lucide-react";
 
 import { ActionMenu } from "@/components/fi/action-menu";
 import { cn } from "@/lib/utils";
-import type { Conversation } from "@/lib/types/chat.types";
-import { dayLabel, messageTime } from "./chat-format";
+import type { Conversation } from "@/lib/chat/types/chat.types";
+import { dayLabel, messageTime } from "../utils/chat-format";
 
 type ConversationRowProps = {
   conversation: Conversation;
@@ -76,8 +76,10 @@ export function ConversationRow({
             label={`Weitere Aktionen für ${conversation.name}`}
             actions={[
               {
-                label: "Für mich entfernen",
-                icon: Trash2,
+                label: conversation.group
+                  ? "Gruppe verlassen"
+                  : "Für mich entfernen",
+                icon: conversation.group ? LogOut : Trash2,
                 destructive: true,
                 onClick: onDelete,
               },

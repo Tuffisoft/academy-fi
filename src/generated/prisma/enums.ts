@@ -23,3 +23,19 @@ export const FriendshipStatus = {
 } as const
 
 export type FriendshipStatus = (typeof FriendshipStatus)[keyof typeof FriendshipStatus]
+
+
+export const GroupRole = {
+  ADMIN: 'ADMIN',
+  MEMBER: 'MEMBER'
+} as const
+
+export type GroupRole = (typeof GroupRole)[keyof typeof GroupRole]
+
+
+export const GroupMemberStatus = {
+  INVITED: 'INVITED',
+  ACTIVE: 'ACTIVE'
+} as const
+
+export type GroupMemberStatus = (typeof GroupMemberStatus)[keyof typeof GroupMemberStatus]

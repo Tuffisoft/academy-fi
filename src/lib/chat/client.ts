@@ -4,7 +4,8 @@ import type {
   ChatResult,
   Conversation,
   MessagePage,
-} from "@/lib/types/chat.types";
+  GroupInvitation,
+} from "@/lib/chat/types/chat.types";
 
 async function read<T>(params: URLSearchParams): Promise<ChatResult<T>> {
   const response = await fetch("/api/chat?" + params, {
@@ -16,6 +17,8 @@ async function read<T>(params: URLSearchParams): Promise<ChatResult<T>> {
 
 export const readConversations = () =>
   read<Conversation[]>(new URLSearchParams());
+export const readGroupInvitations = () =>
+  read<GroupInvitation[]>(new URLSearchParams({ view: "group-invitations" }));
 export function readMessages(
   conversationId: string,
   position: { from?: number; before?: number } = {},

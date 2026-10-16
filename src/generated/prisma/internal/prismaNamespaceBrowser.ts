@@ -71,7 +71,10 @@ export const ModelName = {
   ChatMembership: 'ChatMembership',
   ChatMessage: 'ChatMessage',
   Friendship: 'Friendship',
-  ChatEncryptionKey: 'ChatEncryptionKey'
+  ChatEncryptionKey: 'ChatEncryptionKey',
+  GroupConversation: 'GroupConversation',
+  GroupMembership: 'GroupMembership',
+  GroupMessage: 'GroupMessage'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -378,6 +381,45 @@ export const ChatEncryptionKeyScalarFieldEnum = {
 export type ChatEncryptionKeyScalarFieldEnum = (typeof ChatEncryptionKeyScalarFieldEnum)[keyof typeof ChatEncryptionKeyScalarFieldEnum]
 
 
+export const GroupConversationScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  nextSequence: 'nextSequence',
+  archivedAt: 'archivedAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type GroupConversationScalarFieldEnum = (typeof GroupConversationScalarFieldEnum)[keyof typeof GroupConversationScalarFieldEnum]
+
+
+export const GroupMembershipScalarFieldEnum = {
+  conversationId: 'conversationId',
+  userId: 'userId',
+  role: 'role',
+  status: 'status',
+  joinedSequence: 'joinedSequence',
+  lastReadSequence: 'lastReadSequence',
+  joinedAt: 'joinedAt'
+} as const
+
+export type GroupMembershipScalarFieldEnum = (typeof GroupMembershipScalarFieldEnum)[keyof typeof GroupMembershipScalarFieldEnum]
+
+
+export const GroupMessageScalarFieldEnum = {
+  id: 'id',
+  conversationId: 'conversationId',
+  senderId: 'senderId',
+  clientId: 'clientId',
+  sequence: 'sequence',
+  encrypted: 'encrypted',
+  createdAt: 'createdAt',
+  editedAt: 'editedAt'
+} as const
+
+export type GroupMessageScalarFieldEnum = (typeof GroupMessageScalarFieldEnum)[keyof typeof GroupMessageScalarFieldEnum]
+
+
 export const SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -392,6 +434,13 @@ export const NullableJsonNullValueInput = {
 } as const
 
 export type NullableJsonNullValueInput = (typeof NullableJsonNullValueInput)[keyof typeof NullableJsonNullValueInput]
+
+
+export const JsonNullValueInput = {
+  JsonNull: JsonNull
+} as const
+
+export type JsonNullValueInput = (typeof JsonNullValueInput)[keyof typeof JsonNullValueInput]
 
 
 export const QueryMode = {

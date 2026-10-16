@@ -1,4 +1,4 @@
-import type { Message } from "@/lib/types/chat.types";
+import type { Message } from "@/lib/chat/types/chat.types";
 
 export function unconfirmedMessages(
   serverMessages: Message[],

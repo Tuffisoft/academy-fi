@@ -2,12 +2,12 @@ import assert from "node:assert/strict";
 import { after, before, test } from "node:test";
 import { randomBytes } from "node:crypto";
 import { prisma } from "../src/lib/prisma";
-import { ChatError, getMessagePage, updateChatMessage } from "../src/lib/chat";
-import { getOwnerMessagePage } from "../src/lib/owner-chat";
+import { ChatError, getMessagePage, updateChatMessage } from "../src/lib/chat/services/chat";
+import { getOwnerMessagePage } from "../src/lib/chat/services/owner-chat";
 import {
   decryptStoredMessage,
   encryptStoredMessage,
-} from "../src/lib/server-encryption";
+} from "../src/lib/chat/server-encryption";
 
 const previousKey = process.env.CHAT_MASTER_KEY;
 const context = {

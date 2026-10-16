@@ -2,7 +2,8 @@ import Chat from "@/components/fi/chat";
 import { Suspense } from "react";
 import { PageLoading } from "@/components/fi/page-loading";
 import { requireUser } from "@/lib/session";
-import { getFriendsForUser } from "@/lib/friends";
+import { getFriendsForUser } from "@/lib/chat/services/friends";
+import { getGroupInvitations } from "@/lib/chat/services/groups";
 
 export default function ChatPage() {
   return (
@@ -14,13 +15,17 @@ export default function ChatPage() {
 
 async function ChatContent() {
   const user = await requireUser();
-  const friends = await getFriendsForUser(user.id);
+  const [friends, groupInvitations] = await Promise.all([
+    getFriendsForUser(user.id),
+    getGroupInvitations(user.id),
+  ]);
 
   return (
     <Chat
       key={user.id}
       currentUser={{ id: user.id, name: user.name }}
       initialFriends={friends}
+      initialGroupInvitations={groupInvitations}
     />
   );
 }

@@ -188,6 +188,8 @@ model User {
   directChatsSecond   DirectConversation[] @relation("DirectChatSecondUser")
   chatMemberships     ChatMembership[]
   chatMessages        ChatMessage[]
+  groupMemberships    GroupMembership[]
+  groupMessages       GroupMessage[]
   chatEncryptionKey   ChatEncryptionKey?
   accounts            Account[]
   sessions            Session[]
@@ -320,4 +322,56 @@ model ChatEncryptionKey {
   nonce      String
   ciphertext String
   createdAt  DateTime @default(now())
+}
+
+enum GroupRole {
+  ADMIN
+  MEMBER
+}
+
+enum GroupMemberStatus {
+  INVITED
+  ACTIVE
+}
+
+model GroupConversation {
+  id           String            @id
+  name         String
+  nextSequence Int               @default(0)
+  archivedAt   DateTime?
+  createdAt    DateTime          @default(now())
+  updatedAt    DateTime          @updatedAt
+  members      GroupMembership[]
+  messages     GroupMessage[]
+}
+
+model GroupMembership {
+  conversationId   String
+  conversation     GroupConversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+  userId           String
+  user             User              @relation(fields: [userId], references: [id], onDelete: Cascade)
+  role             GroupRole         @default(MEMBER)
+  status           GroupMemberStatus @default(INVITED)
+  joinedSequence   Int               @default(0)
+  lastReadSequence Int               @default(0)
+  joinedAt         DateTime          @default(now())
+
+  @@id([conversationId, userId])
+  @@index([userId, status])
+}
+
+model GroupMessage {
+  id             String            @id @default(cuid())
+  conversationId String
+  conversation   GroupConversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+  senderId       String
+  sender         User              @relation(fields: [senderId], references: [id], onDelete: Cascade)
+  clientId       String
+  sequence       Int
+  encrypted      Json
+  createdAt      DateTime          @default(now())
+  editedAt       DateTime?
+
+  @@unique([conversationId, sequence])
+  @@unique([senderId, clientId])
 }

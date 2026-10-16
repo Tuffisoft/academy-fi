@@ -1,6 +1,6 @@
 import { getCurrentSession } from "@/lib/session";
-import { getRealtimeServer, isRealtimeConfigured } from "@/lib/realtime";
-import { userChannel } from "@/lib/realtime-channel";
+import { getRealtimeServer, isRealtimeConfigured } from "@/lib/chat/realtime/server";
+import { userChannel } from "@/lib/chat/realtime/channel";
 
 export async function POST() {
   const session = await getCurrentSession();

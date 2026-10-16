@@ -3,7 +3,7 @@ import assert from "node:assert/strict";
 import { randomUUID } from "node:crypto";
 import test from "node:test";
 import { Rest, Realtime } from "ably";
-import { userChannel } from "../src/lib/realtime-channel";
+import { userChannel } from "../src/lib/chat/realtime/channel";
 
 test("user channels escape capability wildcards", () => {
   assert.ok(!userChannel("unsafe:*id").includes("*"));

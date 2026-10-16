@@ -2,14 +2,15 @@
 
 import { Check, Clock3, Pencil, RotateCcw, Trash2 } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { messageTime } from "./chat-format";
+import { messageTime } from "../utils/chat-format";
 
 import { ActionMenu } from "@/components/fi/action-menu";
 import { Button } from "@/components/ui/button";
-import type { Message } from "@/lib/types/chat.types";
+import type { Message } from "@/lib/chat/types/chat.types";
 
 type MessageItemProps = {
   message: Message;
+  showAuthor?: boolean;
   pending: boolean;
   isEditing: boolean;
   editText: string;
@@ -23,6 +24,7 @@ type MessageItemProps = {
 
 export function MessageItem({
   message,
+  showAuthor = false,
   pending,
   isEditing,
   editText,
@@ -55,7 +57,15 @@ export function MessageItem({
           isEditing && "w-full",
         )}
       >
-        <div className="sr-only">{authorName}</div>
+        <div
+          className={
+            showAuthor && !message.own
+              ? "mb-1 truncate text-xs font-semibold text-primary"
+              : "sr-only"
+          }
+        >
+          {authorName}
+        </div>
 
         {isEditing ? (
           <div className="space-y-2">
