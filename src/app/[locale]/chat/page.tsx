@@ -7,7 +7,7 @@ import { getGroupInvitations } from "@/lib/chat/services/groups";
 
 export default function ChatPage() {
   return (
-    <Suspense fallback={<PageLoading />}>
+    <Suspense fallback={<PageLoading showHeader={false} />}>
       <ChatContent />
     </Suspense>
   );
