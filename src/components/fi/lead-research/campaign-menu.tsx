@@ -15,12 +15,15 @@ export function CampaignMenu({ search, onRun, onShow, running }: { search: LeadS
   const [dialog, setDialog] = useState<"edit" | "delete" | null>(null);
 
   return <>
+    <Button variant="ghost" size="icon-sm" aria-label={t("runSearch")} title={t("runSearch")} disabled={running || search.status === "QUEUED" || search.status === "RUNNING"} onClick={() => onRun(search.id)}>
+      <Play aria-hidden="true" />
+    </Button>
+    <Button variant="ghost" size="icon-sm" aria-label={t("jobShowResults")} title={t("jobShowResults")} disabled={search.status === "QUEUED" || search.status === "RUNNING" || search.resultCount === 0} onClick={() => onShow(search.id)}>
+      <Eye aria-hidden="true" />
+    </Button>
     <DropdownMenu>
       <DropdownMenuTrigger render={<Button variant="ghost" size="icon-sm" aria-label={t("actionsFor", { location: search.location, industry: search.industry })}><Ellipsis aria-hidden="true" /></Button>} />
       <DropdownMenuContent align="end">
-        <DropdownMenuItem disabled={running || search.status === "QUEUED" || search.status === "RUNNING"} onClick={() => onRun(search.id)}><Play aria-hidden="true" />{t("runSearch")}</DropdownMenuItem>
-        <DropdownMenuItem disabled={search.status === "QUEUED" || search.status === "RUNNING" || search.resultCount === 0} onClick={() => onShow(search.id)}><Eye aria-hidden="true" />{t("jobShowResults")}</DropdownMenuItem>
-        <DropdownMenuSeparator />
         <DropdownMenuItem disabled={running || !isLeadSearchMutable(search.status)} onClick={() => setDialog("edit")}><Pencil aria-hidden="true" />{t("edit")}</DropdownMenuItem>
         <DropdownMenuSeparator />
         <DropdownMenuItem variant="destructive" disabled={running || !isLeadSearchMutable(search.status)} onClick={() => setDialog("delete")}><Trash2 aria-hidden="true" />{t("delete")}</DropdownMenuItem>

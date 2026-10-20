@@ -3,7 +3,7 @@
 ## Verhalten
 
 - Neue Recherche: Parameter eingeben, prüfen und als Entwurf speichern.
-- Die Speicherung startet weder Unternehmenssuche noch Website-Analyse. Die Unternehmenssuche wird ausdrücklich über „Google-Suche starten“ im Kampagnenmenü ausgelöst.
+- Die Speicherung startet weder Unternehmenssuche noch Website-Analyse. Die Unternehmenssuche wird ausdrücklich über den Play-Button „Google-Suche starten“ links neben dem Drei-Punkte-Menü ausgelöst. Daneben öffnet der Augen-Button die Ergebnisse; Bearbeiten und Löschen stehen im Menü.
 - Inaktive Kampagnen können bearbeitet und nach Bestätigung gelöscht werden. Owner dürfen alle verwalten, andere Nutzer nur ihre eigenen. Beim Bearbeiten wird die Kampagne zum Entwurf und ihre Place-ID-Liste geleert. Berechtigung und inaktiver Status werden atomar in der Schreibabfrage geprüft; laufende und wartende Aufträge bleiben gesperrt.
 - OWNER sehen alle Aufträge, andere Nutzer ausschließlich ihre eigenen. Der Server bestimmt Ersteller und Anfangsstatus; Client-Eingaben können diese nicht überschreiben.
 - Kampagnen zeigen Ort, Branche, Radius, Status und Erstellungszeit. Details zeigen die vollständigen Suchparameter; Owner sehen zusätzlich den Ersteller in der Tabelle.
@@ -24,7 +24,7 @@
 2. Den Schlüssel ausschließlich serverseitig als `GOOGLE_PLACES_API_KEY` in der lokalen `.env` bzw. den Hosting-Secrets hinterlegen. Keine `NEXT_PUBLIC_`-Variable verwenden und den Schlüssel nicht einchecken.
 3. Den Schlüssel auf die Places API und, soweit mit dem Hosting möglich, die Server-IP-Adressen beschränken. Quoten passend zum gewünschten Budget konfigurieren; Budgetbenachrichtigungen allein sind keine Ausgabensperre.
 4. Entwicklungsserver nach Änderung der Umgebungsvariable neu starten.
-5. Kampagne speichern, Drei-Punkte-Menü öffnen, Google-Suche starten.
+5. Kampagne speichern und mit dem Play-Button die Google-Suche starten.
 
 Pro Hintergrundlauf: eine Ortsabfrage und höchstens drei Business-Text-Search-Seiten, jeweils mit 12 Sekunden Request-Timeout. Keine automatischen kostenpflichtigen Wiederholungen. Kontaktfelder werden im Hintergrund nicht angefordert. Die Anbindung unterstützt bis zu 50 km Radius und höchstens 60 Google-Treffer vor Filterung. Frei eingegebene Branchen gehen als Suchtext an Google; Radiusfilter und Dublettenerkennung behalten die Reihenfolge der gelieferten Treffer bei. Die Ortsauflösung verwendet Googles ersten Ortstreffer.
 

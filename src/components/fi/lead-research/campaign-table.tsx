@@ -23,7 +23,7 @@ export function CampaignTable({ searches, isOwner, compact, onRun, onShow, runni
   return <div className="space-y-4">
     <Table>
       <TableHeader><TableRow>
-        {["campaign", "status", ...(isOwner ? ["author"] : []), "created", "actions"].map((key) => <TableHead key={key}>{t(key)}</TableHead>)}
+        {["campaign", "status", ...(isOwner ? ["author"] : []), "created", "actions"].map((key) => <TableHead key={key} className={key === "actions" ? "w-px text-center" : undefined}>{t(key)}</TableHead>)}
       </TableRow></TableHeader>
       <TableBody>
         {visible.length === 0 ? <TableRow><TableCell colSpan={isOwner ? 5 : 4} className="h-36 whitespace-normal text-center">
@@ -35,8 +35,8 @@ export function CampaignTable({ searches, isOwner, compact, onRun, onShow, runni
           <TableCell><Badge variant="secondary">{t(`statuses.${search.status}`)}</Badge>{search.status === "COMPLETED" && <p className="mt-1 text-xs text-muted-foreground">{t("leadCount", { count: search.resultCount })}</p>}</TableCell>
           {isOwner && <TableCell>{search.authorName}</TableCell>}
           <TableCell><time dateTime={search.createdAt}>{dateLabel(search.createdAt)}</time></TableCell>
-          <TableCell>
-            <div className="flex items-center gap-2">
+          <TableCell className="w-px align-middle">
+            <div className="flex items-center justify-end gap-2">
             <Dialog>
               <DialogTrigger render={<Button variant="outline" size="sm" aria-label={t("detailsFor", { location: search.location, industry: search.industry })}>{t("details")}</Button>} />
               <DialogContent className="max-h-[90dvh] overflow-y-auto sm:max-w-lg">
