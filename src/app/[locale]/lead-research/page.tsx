@@ -5,6 +5,8 @@ import { BreadcrumbNav } from "@/components/fi/breadcrumb-nav";
 import { LeadResearchWorkspace } from "@/components/fi/lead-research/lead-research-workspace";
 import { getLeadSearches } from "@/lib/data/lead-searches";
 
+export const maxDuration = 60;
+
 export default async function LeadResearchPage() {
   const user = await requireUser();
   const t = await getTranslations("leadResearch");
@@ -19,7 +21,7 @@ export default async function LeadResearchPage() {
           <h1 className="text-2xl font-semibold tracking-tight">{t("title")}</h1>
           <p className="mt-1 text-sm text-muted-foreground">{t("description")}</p>
         </div>
-        <LeadResearchWorkspace searches={searches} isOwner={user.role === "OWNER"} />
+        <LeadResearchWorkspace searches={searches} isOwner={user.role === "OWNER"} googleConfigured={Boolean(process.env.GOOGLE_PLACES_API_KEY?.trim())} />
       </main>
     </div>
   );

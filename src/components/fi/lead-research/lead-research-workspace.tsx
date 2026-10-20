@@ -1,22 +1,43 @@
 "use client";
 
-import { useState } from "react";
+import { useRef, useState, useTransition } from "react";
 import { useTranslations } from "next-intl";
-import { ArrowRight, BarChart3, Building2, FolderSearch, LayoutDashboard, ListFilter, Search, Users } from "lucide-react";
+import { ArrowRight, BarChart3, FolderSearch, LayoutDashboard, Users } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardAction, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { runLeadSearchAction } from "@/lib/actions/lead-searches.actions";
+import { PlacesResults, type LivePlacesResult } from "./places-results";
 import { LeadSearchDialog } from "./lead-search-dialog";
 import { CampaignTable } from "./campaign-table";
 import type { LeadSearchSummary } from "@/lib/lead-research/types";
 
 type View = "overview" | "campaigns" | "leads" | "analytics";
 
-export function LeadResearchWorkspace({ searches, isOwner }: { searches: LeadSearchSummary[]; isOwner: boolean }) {
+export function LeadResearchWorkspace({ searches, isOwner, googleConfigured }: { searches: LeadSearchSummary[]; isOwner: boolean; googleConfigured: boolean }) {
   const t = useTranslations("leadResearch");
   const [view, setView] = useState<View>("overview");
+  const [result, setResult] = useState<LivePlacesResult | null>(null);
+  const [error, setError] = useState<string | null>(null);
+  const [pending, startTransition] = useTransition();
+  const [runId, setRunId] = useState(0);
+  const submitting = useRef(false);
+  function runSearch(id: string) {
+    if (submitting.current) return;
+    submitting.current = true;
+    setError(null);
+    setResult(null);
+    setRunId((value) => value + 1);
+    setView("leads");
+    startTransition(async () => {
+      try {
+        const response = await runLeadSearchAction(id);
+        if (!response.success) { setError(t(response.error)); return; }
+        setResult(response);
+      } catch { setError(t("googleUnavailable")); }
+      finally { submitting.current = false; }
+    });
+  }
   const navigation = [
     { value: "overview", icon: LayoutDashboard },
     { value: "campaigns", icon: FolderSearch },
@@ -41,11 +62,13 @@ export function LeadResearchWorkspace({ searches, isOwner }: { searches: LeadSea
         <Badge variant="outline">{t("setupBadge")}</Badge>
         <span>{t("setupHint")}</span>
       </div>
+      {!googleConfigured && <p role="status" className="text-sm text-muted-foreground">{t("googleNotConfigured")}</p>}
+      {error && <p role="alert" className="text-sm text-destructive">{error}</p>}
 
       {(view === "overview" || view === "analytics") && (
         <div className="grid gap-4 sm:grid-cols-3">
           {[
-            { title: "totalLeads", value: "0", hint: "totalHint", icon: Users },
+            { title: "totalLeads", value: String(searches.reduce((sum, search) => sum + search.resultCount, 0)), hint: "totalHint", icon: Users },
             { title: "averageScore", value: "—", hint: "scoreHint", icon: BarChart3 },
             { title: "totalCampaigns", value: String(searches.length), hint: "campaignHint", icon: FolderSearch },
           ].map(({ title, value, hint, icon: Icon }) => (
@@ -70,7 +93,7 @@ export function LeadResearchWorkspace({ searches, isOwner }: { searches: LeadSea
           </CardHeader>
           <CardContent>
             <p className="mb-3 text-xs text-muted-foreground">{isOwner ? t("ownerVisibility") : t("internVisibility")}</p>
-            <CampaignTable key={searches.length} searches={searches} isOwner={isOwner} compact={view === "overview"} />
+            <CampaignTable key={searches.length} searches={searches} isOwner={isOwner} compact={view === "overview"} onRun={runSearch} running={pending} />
           </CardContent>
         </Card>
       )}
@@ -78,33 +101,7 @@ export function LeadResearchWorkspace({ searches, isOwner }: { searches: LeadSea
       {(view === "overview" || view === "leads" || view === "analytics") && (
         <div className={view === "overview" ? "grid min-w-0 gap-4 lg:grid-cols-3" : "grid min-w-0 gap-4"}>
           {view !== "analytics" && (
-            <Card className={view === "overview" ? "min-w-0 lg:col-span-2" : "min-w-0"}>
-              <CardHeader>
-                <CardTitle>{t("leads")}</CardTitle>
-                <CardDescription>{t("leadsDescription")}</CardDescription>
-                <CardAction><Badge variant="secondary">{t("leadCount", { count: 0 })}</Badge></CardAction>
-              </CardHeader>
-              {view === "leads" && <CardContent className="flex flex-wrap gap-2">
-                <div className="relative min-w-0 flex-1">
-                  <Search className="absolute top-2 left-2 size-4 text-muted-foreground" aria-hidden="true" />
-                  <Input className="pl-8" placeholder={t("searchLeads")} aria-label={t("searchLeads")} disabled />
-                </div>
-                <Button variant="outline" disabled><ListFilter aria-hidden="true" />{t("filters")}</Button>
-              </CardContent>}
-              <CardContent>
-                <Table>
-                  <TableHeader><TableRow>
-                    {["company", "website", "score", "email", "phone"].map((key) => <TableHead key={key}>{t(key)}</TableHead>)}
-                  </TableRow></TableHeader>
-                  <TableBody><TableRow><TableCell colSpan={5} className="h-52 whitespace-normal text-center">
-                    <Building2 className="mx-auto mb-3 size-7 text-muted-foreground" aria-hidden="true" />
-                    <p className="font-medium">{t("noLeads")}</p>
-                    <p className="mx-auto mt-1 max-w-sm text-sm text-muted-foreground">{t("noLeadsHint")}</p>
-                  </TableCell></TableRow></TableBody>
-                </Table>
-              </CardContent>
-              {view === "overview" && <CardFooter><Button variant="outline" size="sm" onClick={() => setView("leads")}>{t("browseLeads")}<ArrowRight aria-hidden="true" /></Button></CardFooter>}
-            </Card>
+            <PlacesResults key={runId} result={result} pending={pending} compact={view === "overview"} />
           )}
           {view !== "leads" && <Card>
             <CardHeader>

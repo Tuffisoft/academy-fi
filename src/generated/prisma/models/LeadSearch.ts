@@ -71,6 +71,7 @@ export type LeadSearchCountAggregateOutputType = {
   maxResults: number
   analyzeWebsites: number
   status: number
+  googlePlaceIds: number
   createdAt: number
   updatedAt: number
   _all: number
@@ -122,6 +123,7 @@ export type LeadSearchCountAggregateInputType = {
   maxResults?: true
   analyzeWebsites?: true
   status?: true
+  googlePlaceIds?: true
   createdAt?: true
   updatedAt?: true
   _all?: true
@@ -222,6 +224,7 @@ export type LeadSearchGroupByOutputType = {
   maxResults: number
   analyzeWebsites: boolean
   status: $Enums.LeadSearchStatus
+  googlePlaceIds: string[]
   createdAt: Date
   updatedAt: Date
   _count: LeadSearchCountAggregateOutputType | null
@@ -258,6 +261,7 @@ export type LeadSearchWhereInput = {
   maxResults?: Prisma.IntFilter<"LeadSearch"> | number
   analyzeWebsites?: Prisma.BoolFilter<"LeadSearch"> | boolean
   status?: Prisma.EnumLeadSearchStatusFilter<"LeadSearch"> | $Enums.LeadSearchStatus
+  googlePlaceIds?: Prisma.StringNullableListFilter<"LeadSearch">
   createdAt?: Prisma.DateTimeFilter<"LeadSearch"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"LeadSearch"> | Date | string
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
@@ -272,6 +276,7 @@ export type LeadSearchOrderByWithRelationInput = {
   maxResults?: Prisma.SortOrder
   analyzeWebsites?: Prisma.SortOrder
   status?: Prisma.SortOrder
+  googlePlaceIds?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   user?: Prisma.UserOrderByWithRelationInput
@@ -289,6 +294,7 @@ export type LeadSearchWhereUniqueInput = Prisma.AtLeast<{
   maxResults?: Prisma.IntFilter<"LeadSearch"> | number
   analyzeWebsites?: Prisma.BoolFilter<"LeadSearch"> | boolean
   status?: Prisma.EnumLeadSearchStatusFilter<"LeadSearch"> | $Enums.LeadSearchStatus
+  googlePlaceIds?: Prisma.StringNullableListFilter<"LeadSearch">
   createdAt?: Prisma.DateTimeFilter<"LeadSearch"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"LeadSearch"> | Date | string
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
@@ -303,6 +309,7 @@ export type LeadSearchOrderByWithAggregationInput = {
   maxResults?: Prisma.SortOrder
   analyzeWebsites?: Prisma.SortOrder
   status?: Prisma.SortOrder
+  googlePlaceIds?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   _count?: Prisma.LeadSearchCountOrderByAggregateInput
@@ -324,6 +331,7 @@ export type LeadSearchScalarWhereWithAggregatesInput = {
   maxResults?: Prisma.IntWithAggregatesFilter<"LeadSearch"> | number
   analyzeWebsites?: Prisma.BoolWithAggregatesFilter<"LeadSearch"> | boolean
   status?: Prisma.EnumLeadSearchStatusWithAggregatesFilter<"LeadSearch"> | $Enums.LeadSearchStatus
+  googlePlaceIds?: Prisma.StringNullableListFilter<"LeadSearch">
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"LeadSearch"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"LeadSearch"> | Date | string
 }
@@ -336,6 +344,7 @@ export type LeadSearchCreateInput = {
   maxResults: number
   analyzeWebsites?: boolean
   status?: $Enums.LeadSearchStatus
+  googlePlaceIds?: Prisma.LeadSearchCreategooglePlaceIdsInput | string[]
   createdAt?: Date | string
   updatedAt?: Date | string
   user: Prisma.UserCreateNestedOneWithoutLeadSearchesInput
@@ -350,6 +359,7 @@ export type LeadSearchUncheckedCreateInput = {
   maxResults: number
   analyzeWebsites?: boolean
   status?: $Enums.LeadSearchStatus
+  googlePlaceIds?: Prisma.LeadSearchCreategooglePlaceIdsInput | string[]
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -362,6 +372,7 @@ export type LeadSearchUpdateInput = {
   maxResults?: Prisma.IntFieldUpdateOperationsInput | number
   analyzeWebsites?: Prisma.BoolFieldUpdateOperationsInput | boolean
   status?: Prisma.EnumLeadSearchStatusFieldUpdateOperationsInput | $Enums.LeadSearchStatus
+  googlePlaceIds?: Prisma.LeadSearchUpdategooglePlaceIdsInput | string[]
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   user?: Prisma.UserUpdateOneRequiredWithoutLeadSearchesNestedInput
@@ -376,6 +387,7 @@ export type LeadSearchUncheckedUpdateInput = {
   maxResults?: Prisma.IntFieldUpdateOperationsInput | number
   analyzeWebsites?: Prisma.BoolFieldUpdateOperationsInput | boolean
   status?: Prisma.EnumLeadSearchStatusFieldUpdateOperationsInput | $Enums.LeadSearchStatus
+  googlePlaceIds?: Prisma.LeadSearchUpdategooglePlaceIdsInput | string[]
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -389,6 +401,7 @@ export type LeadSearchCreateManyInput = {
   maxResults: number
   analyzeWebsites?: boolean
   status?: $Enums.LeadSearchStatus
+  googlePlaceIds?: Prisma.LeadSearchCreategooglePlaceIdsInput | string[]
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -401,6 +414,7 @@ export type LeadSearchUpdateManyMutationInput = {
   maxResults?: Prisma.IntFieldUpdateOperationsInput | number
   analyzeWebsites?: Prisma.BoolFieldUpdateOperationsInput | boolean
   status?: Prisma.EnumLeadSearchStatusFieldUpdateOperationsInput | $Enums.LeadSearchStatus
+  googlePlaceIds?: Prisma.LeadSearchUpdategooglePlaceIdsInput | string[]
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -414,6 +428,7 @@ export type LeadSearchUncheckedUpdateManyInput = {
   maxResults?: Prisma.IntFieldUpdateOperationsInput | number
   analyzeWebsites?: Prisma.BoolFieldUpdateOperationsInput | boolean
   status?: Prisma.EnumLeadSearchStatusFieldUpdateOperationsInput | $Enums.LeadSearchStatus
+  googlePlaceIds?: Prisma.LeadSearchUpdategooglePlaceIdsInput | string[]
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -428,6 +443,14 @@ export type LeadSearchOrderByRelationAggregateInput = {
   _count?: Prisma.SortOrder
 }
 
+export type StringNullableListFilter<$PrismaModel = never> = {
+  equals?: string[] | Prisma.ListStringFieldRefInput<$PrismaModel> | null
+  has?: string | Prisma.StringFieldRefInput<$PrismaModel> | null
+  hasEvery?: string[] | Prisma.ListStringFieldRefInput<$PrismaModel>
+  hasSome?: string[] | Prisma.ListStringFieldRefInput<$PrismaModel>
+  isEmpty?: boolean
+}
+
 export type LeadSearchCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   userId?: Prisma.SortOrder
@@ -437,6 +460,7 @@ export type LeadSearchCountOrderByAggregateInput = {
   maxResults?: Prisma.SortOrder
   analyzeWebsites?: Prisma.SortOrder
   status?: Prisma.SortOrder
+  googlePlaceIds?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -519,6 +543,10 @@ export type LeadSearchUncheckedUpdateManyWithoutUserNestedInput = {
   deleteMany?: Prisma.LeadSearchScalarWhereInput | Prisma.LeadSearchScalarWhereInput[]
 }
 
+export type LeadSearchCreategooglePlaceIdsInput = {
+  set: string[]
+}
+
 export type FloatFieldUpdateOperationsInput = {
   set?: number
   increment?: number
@@ -531,6 +559,11 @@ export type EnumLeadSearchStatusFieldUpdateOperationsInput = {
   set?: $Enums.LeadSearchStatus
 }
 
+export type LeadSearchUpdategooglePlaceIdsInput = {
+  set?: string[]
+  push?: string | string[]
+}
+
 export type LeadSearchCreateWithoutUserInput = {
   id?: string
   location: string
@@ -539,6 +572,7 @@ export type LeadSearchCreateWithoutUserInput = {
   maxResults: number
   analyzeWebsites?: boolean
   status?: $Enums.LeadSearchStatus
+  googlePlaceIds?: Prisma.LeadSearchCreategooglePlaceIdsInput | string[]
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -551,6 +585,7 @@ export type LeadSearchUncheckedCreateWithoutUserInput = {
   maxResults: number
   analyzeWebsites?: boolean
   status?: $Enums.LeadSearchStatus
+  googlePlaceIds?: Prisma.LeadSearchCreategooglePlaceIdsInput | string[]
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -593,6 +628,7 @@ export type LeadSearchScalarWhereInput = {
   maxResults?: Prisma.IntFilter<"LeadSearch"> | number
   analyzeWebsites?: Prisma.BoolFilter<"LeadSearch"> | boolean
   status?: Prisma.EnumLeadSearchStatusFilter<"LeadSearch"> | $Enums.LeadSearchStatus
+  googlePlaceIds?: Prisma.StringNullableListFilter<"LeadSearch">
   createdAt?: Prisma.DateTimeFilter<"LeadSearch"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"LeadSearch"> | Date | string
 }
@@ -605,6 +641,7 @@ export type LeadSearchCreateManyUserInput = {
   maxResults: number
   analyzeWebsites?: boolean
   status?: $Enums.LeadSearchStatus
+  googlePlaceIds?: Prisma.LeadSearchCreategooglePlaceIdsInput | string[]
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -617,6 +654,7 @@ export type LeadSearchUpdateWithoutUserInput = {
   maxResults?: Prisma.IntFieldUpdateOperationsInput | number
   analyzeWebsites?: Prisma.BoolFieldUpdateOperationsInput | boolean
   status?: Prisma.EnumLeadSearchStatusFieldUpdateOperationsInput | $Enums.LeadSearchStatus
+  googlePlaceIds?: Prisma.LeadSearchUpdategooglePlaceIdsInput | string[]
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -629,6 +667,7 @@ export type LeadSearchUncheckedUpdateWithoutUserInput = {
   maxResults?: Prisma.IntFieldUpdateOperationsInput | number
   analyzeWebsites?: Prisma.BoolFieldUpdateOperationsInput | boolean
   status?: Prisma.EnumLeadSearchStatusFieldUpdateOperationsInput | $Enums.LeadSearchStatus
+  googlePlaceIds?: Prisma.LeadSearchUpdategooglePlaceIdsInput | string[]
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -641,6 +680,7 @@ export type LeadSearchUncheckedUpdateManyWithoutUserInput = {
   maxResults?: Prisma.IntFieldUpdateOperationsInput | number
   analyzeWebsites?: Prisma.BoolFieldUpdateOperationsInput | boolean
   status?: Prisma.EnumLeadSearchStatusFieldUpdateOperationsInput | $Enums.LeadSearchStatus
+  googlePlaceIds?: Prisma.LeadSearchUpdategooglePlaceIdsInput | string[]
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -656,6 +696,7 @@ export type LeadSearchSelect<ExtArgs extends runtime.Types.Extensions.InternalAr
   maxResults?: boolean
   analyzeWebsites?: boolean
   status?: boolean
+  googlePlaceIds?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
@@ -670,6 +711,7 @@ export type LeadSearchSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Ex
   maxResults?: boolean
   analyzeWebsites?: boolean
   status?: boolean
+  googlePlaceIds?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
@@ -684,6 +726,7 @@ export type LeadSearchSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Ex
   maxResults?: boolean
   analyzeWebsites?: boolean
   status?: boolean
+  googlePlaceIds?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
@@ -698,11 +741,12 @@ export type LeadSearchSelectScalar = {
   maxResults?: boolean
   analyzeWebsites?: boolean
   status?: boolean
+  googlePlaceIds?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type LeadSearchOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "location" | "radiusKm" | "industry" | "maxResults" | "analyzeWebsites" | "status" | "createdAt" | "updatedAt", ExtArgs["result"]["leadSearch"]>
+export type LeadSearchOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "location" | "radiusKm" | "industry" | "maxResults" | "analyzeWebsites" | "status" | "googlePlaceIds" | "createdAt" | "updatedAt", ExtArgs["result"]["leadSearch"]>
 export type LeadSearchInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }
@@ -727,6 +771,7 @@ export type $LeadSearchPayload<ExtArgs extends runtime.Types.Extensions.Internal
     maxResults: number
     analyzeWebsites: boolean
     status: $Enums.LeadSearchStatus
+    googlePlaceIds: string[]
     createdAt: Date
     updatedAt: Date
   }, ExtArgs["result"]["leadSearch"]>
@@ -1161,6 +1206,7 @@ export interface LeadSearchFieldRefs {
   readonly maxResults: Prisma.FieldRef<"LeadSearch", 'Int'>
   readonly analyzeWebsites: Prisma.FieldRef<"LeadSearch", 'Boolean'>
   readonly status: Prisma.FieldRef<"LeadSearch", 'LeadSearchStatus'>
+  readonly googlePlaceIds: Prisma.FieldRef<"LeadSearch", 'String[]'>
   readonly createdAt: Prisma.FieldRef<"LeadSearch", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"LeadSearch", 'DateTime'>
 }

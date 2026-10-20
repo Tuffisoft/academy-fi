@@ -11,11 +11,11 @@ export async function getLeadSearches(): Promise<LeadSearchSummary[]> {
     orderBy: [{ createdAt: "desc" }, { id: "desc" }],
     select: {
       id: true, location: true, industry: true, radiusKm: true, maxResults: true,
-      analyzeWebsites: true, status: true, createdAt: true,
+      analyzeWebsites: true, status: true, createdAt: true, googlePlaceIds: true,
       user: { select: { name: true } },
     },
   });
-  return searches.map(({ user: author, createdAt, ...search }) => ({
-    ...search, authorName: author.name, createdAt: createdAt.toISOString(),
+  return searches.map(({ user: author, createdAt, googlePlaceIds, ...search }) => ({
+    ...search, authorName: author.name, resultCount: googlePlaceIds.length, createdAt: createdAt.toISOString(),
   }));
 }

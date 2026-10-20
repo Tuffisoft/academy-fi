@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
-import { leadSearchDraftScope, leadSearchScope, MAX_SEARCH_RESULTS, parseLeadSearchInput } from "../src/lib/lead-research/search-input";
+import { leadSearchMutableScope, leadSearchScope, MAX_SEARCH_RESULTS, parseLeadSearchInput } from "../src/lib/lead-research/search-input";
 
 const valid = { location: "  Kiel  ", radiusKm: 12.5, industry: "  Bäckereien  ", maxResults: 250, analyzeWebsites: false };
 
@@ -9,10 +9,12 @@ test("edit and delete filters prevent foreign or already running campaigns from 
     { id: "a", userId: "alice", status: "DRAFT" },
     { id: "b", userId: "bob", status: "DRAFT" },
     { id: "c", userId: "alice", status: "RUNNING" },
+    { id: "d", userId: "alice", status: "COMPLETED" },
+    { id: "e", userId: "alice", status: "QUEUED" },
   ];
   function matches(user: { id: string; role: string }, id: unknown) {
-    const where = leadSearchDraftScope(user, id);
-    return where ? campaigns.filter((row) => Object.entries(where).every(([key, value]) => row[key as keyof typeof row] === value)).length : 0;
+    const where = leadSearchMutableScope(user, id);
+    return where ? campaigns.filter((row) => row.id === where.id && where.status.in.some((status) => status === row.status) && (!("userId" in where) || row.userId === where.userId)).length : 0;
   }
   const alice = { id: "alice", role: "INTERN" };
   const owner = { id: "owner", role: "OWNER" };
@@ -21,6 +23,8 @@ test("edit and delete filters prevent foreign or already running campaigns from 
   assert.equal(matches(alice, "c"), 0);
   assert.equal(matches(owner, "b"), 1);
   assert.equal(matches(owner, "c"), 0);
+  assert.equal(matches(alice, "d"), 1);
+  assert.equal(matches(alice, "e"), 0);
   for (const id of [undefined, null, "", " ", {}, "x".repeat(129)]) assert.equal(matches(owner, id), 0);
 });
 

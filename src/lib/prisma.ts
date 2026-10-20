@@ -6,6 +6,7 @@ const globalForPrisma = globalThis as unknown as { prisma?: PrismaClient };
 function supportsCurrentSchema(client: PrismaClient | undefined): client is PrismaClient {
   return Boolean(
     typeof client?.leadSearch?.findMany === "function" &&
+    client?.leadSearch?.fields?.googlePlaceIds &&
     typeof client?.chatMembership?.findMany === "function" &&
     typeof client?.directConversation?.findMany === "function" &&
     typeof client?.friendship?.findMany === "function" &&

@@ -6,7 +6,7 @@ import { Pencil, Plus } from "lucide-react";
 import { toast } from "sonner";
 import { createLeadSearchAction, updateLeadSearchAction } from "@/lib/actions/lead-searches.actions";
 import type { LeadSearchSummary } from "@/lib/lead-research/types";
-import { MAX_SEARCH_RESULTS } from "@/lib/lead-research/search-input";
+import { isLeadSearchMutable, MAX_SEARCH_RESULTS } from "@/lib/lead-research/search-input";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
@@ -96,7 +96,7 @@ export function LeadSearchDialog({ search, open: controlledOpen, onOpenChange, h
     >
       {!hideTrigger && <DialogTrigger
         render={
-          <Button variant={search ? "outline" : "default"} size={search ? "sm" : "default"} disabled={search ? search.status !== "DRAFT" : false} aria-label={search ? t("editFor", { location: search.location, industry: search.industry }) : undefined}>
+          <Button variant={search ? "outline" : "default"} size={search ? "sm" : "default"} disabled={search ? !isLeadSearchMutable(search.status) : false} aria-label={search ? t("editFor", { location: search.location, industry: search.industry }) : undefined}>
             {search ? <Pencil aria-hidden="true" /> : <Plus aria-hidden="true" />}
             {t(search ? "edit" : "newSearch")}
           </Button>

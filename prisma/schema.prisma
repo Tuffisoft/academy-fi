@@ -217,6 +217,7 @@ model LeadSearch {
   maxResults      Int
   analyzeWebsites Boolean          @default(true)
   status          LeadSearchStatus @default(DRAFT)
+  googlePlaceIds  String[]         @default([])
   createdAt       DateTime         @default(now())
   updatedAt       DateTime         @updatedAt
 

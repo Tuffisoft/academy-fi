@@ -10,7 +10,7 @@ import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, Di
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { CampaignMenu } from "./campaign-menu";
 
-export function CampaignTable({ searches, isOwner, compact }: { searches: LeadSearchSummary[]; isOwner: boolean; compact: boolean }) {
+export function CampaignTable({ searches, isOwner, compact, onRun, running }: { searches: LeadSearchSummary[]; isOwner: boolean; compact: boolean; onRun: (id: string) => void; running: boolean }) {
   const t = useTranslations("leadResearch");
   const format = useFormatter();
   const [page, setPage] = useState(0);
@@ -32,7 +32,7 @@ export function CampaignTable({ searches, isOwner, compact }: { searches: LeadSe
           <p className="mt-1 text-sm text-muted-foreground">{t("noCampaignsHint")}</p>
         </TableCell></TableRow> : visible.map((search) => <TableRow key={search.id}>
           <TableCell className="max-w-72 whitespace-normal"><p className="wrap-anywhere font-medium">{search.location}</p><p className="wrap-anywhere text-xs text-muted-foreground">{search.industry} · {t("radiusValue", { value: search.radiusKm })}</p></TableCell>
-          <TableCell><Badge variant="secondary">{t(`statuses.${search.status}`)}</Badge></TableCell>
+          <TableCell><Badge variant="secondary">{t(`statuses.${search.status}`)}</Badge>{search.status === "COMPLETED" && <p className="mt-1 text-xs text-muted-foreground">{t("leadCount", { count: search.resultCount })}</p>}</TableCell>
           {isOwner && <TableCell>{search.authorName}</TableCell>}
           <TableCell><time dateTime={search.createdAt}>{dateLabel(search.createdAt)}</time></TableCell>
           <TableCell>
@@ -51,7 +51,7 @@ export function CampaignTable({ searches, isOwner, compact }: { searches: LeadSe
                 </dl>
               </DialogContent>
             </Dialog>
-            <CampaignMenu search={search} />
+            <CampaignMenu search={search} onRun={onRun} running={running} />
             </div>
           </TableCell>
         </TableRow>)}

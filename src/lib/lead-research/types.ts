@@ -10,4 +10,5 @@ export type LeadSearchSummary = {
   status: LeadSearchStatus;
   createdAt: string;
   authorName: string;
+  resultCount: number;
 };

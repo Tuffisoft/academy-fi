@@ -281,6 +281,7 @@ export const LeadSearchScalarFieldEnum = {
   maxResults: 'maxResults',
   analyzeWebsites: 'analyzeWebsites',
   status: 'status',
+  googlePlaceIds: 'googlePlaceIds',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
