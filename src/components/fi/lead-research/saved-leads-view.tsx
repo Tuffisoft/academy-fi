@@ -13,14 +13,18 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { SaveLeadButton } from "./save-lead-button";
 import { AuditScore, LeadDetailsDialog } from "./lead-details-dialog";
 import type { AuditSummary } from "@/lib/lead-research/audit-types";
+import { auditIsActive, compareAuditQuality } from "@/lib/lead-research/audit-progress";
 
 export function SavedLeadsView({ leads, audits, isOwner, enabled }: { leads: SavedLeadSummary[]; audits: AuditSummary[]; isOwner: boolean; enabled: boolean }) {
   const t = useTranslations("leadResearch");
   const [page, setPage] = useState(0);
   const [retry, setRetry] = useState(0);
+  const auditByPlace = new Map(audits.map((audit) => [JSON.stringify([audit.userId, audit.placeId]), audit]));
+  const sorted = audits.length > 0 && !audits.some(auditIsActive);
+  const orderedLeads = sorted ? [...leads].sort((a, b) => compareAuditQuality(auditByPlace.get(JSON.stringify([a.userId, a.placeId])), auditByPlace.get(JSON.stringify([b.userId, b.placeId])))) : leads;
   const currentPage = Math.min(page, Math.max(0, Math.ceil(leads.length / 10) - 1));
   const offset = currentPage * 10;
-  const rows = leads.slice(offset, offset + 10);
+  const rows = orderedLeads.slice(offset, offset + 10);
   const requestKey = JSON.stringify(rows.map((lead) => ({ id: lead.id, placeId: lead.placeId })));
   const cache = useRef(new Map<string, PlaceResult>());
   const requests = useRef(new Map<string, ReturnType<typeof loadSavedLeadDetailsAction>>());
@@ -58,10 +62,10 @@ export function SavedLeadsView({ leads, audits, isOwner, enabled }: { leads: Sav
   const places = new Map((snapshot?.key === requestKey ? snapshot.places : []).map((place) => [place.id, place]));
   const error = snapshot?.key === requestKey ? snapshot.error : null;
   const columns = isOwner ? 8 : 7;
-  const auditByPlace = new Map(audits.map((audit) => [JSON.stringify([audit.userId, audit.placeId]), audit]));
   return <Card className="min-w-0">
     <CardHeader><CardTitle>{t("savedLeads")}</CardTitle><CardDescription>{t("savedLeadsDescription")}</CardDescription><CardAction><Badge variant="secondary">{t("leadCount", { count: leads.length })}</Badge></CardAction></CardHeader>
     <CardContent className="space-y-4">
+      {sorted && <p className="text-xs text-muted-foreground">{t("auditSortedHint")}</p>}
       {error && <div className="flex flex-wrap items-center gap-3"><p role="alert" className="text-sm text-destructive">{t(error)}</p><Button variant="outline" size="sm" onClick={() => setRetry((value) => value + 1)}>{t("retryDetails")}</Button></div>}
       <Table>
         <TableHeader><TableRow>{["company", "address", "website", "phone", ...(isOwner ? ["author"] : []), "auditQuality", "selection", "leadDetails"].map((key) => <TableHead key={key}>{t(key)}</TableHead>)}</TableRow></TableHeader>

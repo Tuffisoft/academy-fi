@@ -17,6 +17,7 @@ import { useLivePlaces } from "./use-live-places";
 import { SavedLeadsView } from "./saved-leads-view";
 import type { AuditSummary } from "@/lib/lead-research/audit-types";
 import { qualityStyles, qualityTone } from "./quality-presentation";
+import { AuditProgressCard } from "./audit-progress-card";
 
 type View = "overview" | "campaigns" | "leads" | "savedLeads" | "analytics";
 
@@ -64,6 +65,7 @@ export function LeadResearchWorkspace({ searches: initialSearches, savedLeads, a
 
   return (
     <div className="flex min-w-0 flex-col gap-5">
+      <AuditProgressCard audits={audits} searching={pending || searches.some((search) => ["QUEUED", "RUNNING"].includes(search.status))} />
       <div className="flex flex-wrap items-center justify-between gap-3 border-b pb-4">
         <nav aria-label={t("navigation")} className="flex flex-wrap gap-1">
           {navigation.map(({ value, icon: Icon }) => (
@@ -84,7 +86,6 @@ export function LeadResearchWorkspace({ searches: initialSearches, savedLeads, a
       {detailsError && <p role="alert" className="text-sm text-destructive">{t(detailsError)}</p>}
       {statusError && <p role="alert" className="text-sm text-destructive">{t("jobStatusError")}</p>}
       <div className={view === "savedLeads" ? "contents" : "hidden"}><SavedLeadsView leads={savedLeads} audits={audits} isOwner={isOwner} enabled={view === "savedLeads"} /></div>
-      {audits.some((audit) => ["QUEUED", "RUNNING"].includes(audit.status)) && <p role="status" className="text-sm text-muted-foreground">{t("auditProgress", { done: audits.filter((audit) => !["QUEUED", "RUNNING"].includes(audit.status)).length, total: audits.length })}</p>}
       {searches.filter((search) => search.status === "RUNNING" || search.status === "QUEUED" || search.id === selected?.id).map((search) => <SearchJobStatus key={search.id + search.runId} search={search} />)}
 
       {(view === "overview" || view === "analytics") && (

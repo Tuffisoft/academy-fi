@@ -3,6 +3,18 @@
     "loading": "Wird geladen …"
   },
   "leadResearch": {
+    "auditProgressTitle": "Website-Prüfungen laufen",
+    "auditProgressComplete": "Website-Prüfungen beendet",
+    "auditFindingCompanies": "Unternehmen werden gesucht",
+    "auditEstimatePreparing": "Prozent und Restzeit stehen fest, sobald die Trefferzahl bekannt ist.",
+    "auditCompletedCount": "{done} von {total} Leads beendet",
+    "auditFailureCount": "{count, plural, one {# Prüfung mit Fehler beendet} other {# Prüfungen mit Fehler beendet}}",
+    "auditProgressPercent": "Fortschritt",
+    "auditTimeRemaining": "Geschätzte Restzeit",
+    "auditMinutesSeconds": "Minuten : Sekunden",
+    "auditEstimateHint": "Die Restzeit ist eine Schätzung aus bisherigen Laufzeiten und wird laufend angepasst.",
+    "auditSortedHint": "Schlechteste gemessene Website zuerst · Nicht bewertete Treffer am Ende.",
+    "auditParallelCount": "Bis zu {count} Leads gleichzeitig",
     "leadDetails": "Lead-Details",
     "leadDetailsFor": "Details und Prüfbericht für {name}",
     "auditQuality": "Website-Qualität",
@@ -15,7 +27,12 @@
     "auditIssueCount": "{count, plural, =0 {Keine Auffälligkeiten} one {# Auffälligkeit} other {# Auffälligkeiten}}",
     "auditChecksHeading": "Technische Prüfungen",
     "auditMethod": "So entsteht die Bewertung",
-    "auditRating": { "good": "Gut", "medium": "Mittel", "poor": "Schlecht", "unknown": "Nicht bewertet" },
+    "auditRating": {
+      "good": "Gut",
+      "medium": "Mittel",
+      "poor": "Schlecht",
+      "unknown": "Nicht bewertet"
+    },
     "auditReport": "Website-Prüfbericht",
     "auditPlaceId": "Google Place-ID",
     "auditDetailsDescription": "Verfügbare Firmendaten und technischer Website-Prüfbericht.",
@@ -54,9 +71,27 @@
     "auditUnsafeUrl": "Die angegebene Website-Adresse kann nicht als öffentliche HTTP(S)-Website geprüft werden.",
     "auditInterrupted": "Die Hintergrundprüfung wurde unterbrochen. Es erfolgt kein automatischer erneuter API-Abruf.",
     "auditQueueError": "Der Prüfauftrag konnte nicht an die Hintergrundverarbeitung übergeben werden.",
-    "auditStatuses": { "NOT_STARTED": "Noch nicht geprüft", "QUEUED": "Prüfung wartet", "RUNNING": "Wird geprüft", "COMPLETED": "Geprüft", "NO_WEBSITE": "Keine Website angegeben", "FAILED": "Nicht prüfbar" },
-    "auditMetrics": { "lcpMs": "LCP · größter sichtbarer Inhalt", "fcpMs": "FCP · erster sichtbarer Inhalt", "tbtMs": "TBT · blockierte Hauptthread-Zeit", "cls": "CLS · Layout-Verschiebungen" },
-    "auditChecks": { "viewport": "Mobiler Viewport", "document-title": "Seitentitel", "meta-description": "Meta-Beschreibung", "is-crawlable": "Für Suchmaschinen zugänglich", "is-on-https": "HTTPS-Prüfung" },
+    "auditStatuses": {
+      "NOT_STARTED": "Noch nicht geprüft",
+      "QUEUED": "Prüfung wartet",
+      "RUNNING": "Wird geprüft",
+      "COMPLETED": "Geprüft",
+      "NO_WEBSITE": "Keine Website angegeben",
+      "FAILED": "Nicht prüfbar"
+    },
+    "auditMetrics": {
+      "lcpMs": "LCP · größter sichtbarer Inhalt",
+      "fcpMs": "FCP · erster sichtbarer Inhalt",
+      "tbtMs": "TBT · blockierte Hauptthread-Zeit",
+      "cls": "CLS · Layout-Verschiebungen"
+    },
+    "auditChecks": {
+      "viewport": "Mobiler Viewport",
+      "document-title": "Seitentitel",
+      "meta-description": "Meta-Beschreibung",
+      "is-crawlable": "Für Suchmaschinen zugänglich",
+      "is-on-https": "HTTPS-Prüfung"
+    },
     "jobCapacity": "Es laufen bereits drei Recherchen. Bitte warte, bis ein Suchlauf abgeschlossen ist, und starte dann erneut.",
     "jobQueued": "Suchlauf wartet auf die Verarbeitung.",
     "jobLocating": "Der Suchmittelpunkt wird bestimmt.",

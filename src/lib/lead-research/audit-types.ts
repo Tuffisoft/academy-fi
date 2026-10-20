@@ -6,4 +6,7 @@ export type AuditSummary = {
   qualityScore: number | null;
   checkedAt: string | null;
   errorCode: string | null;
+  batchId: string;
+  startedAt: string | null;
+  updatedAt: string;
 };

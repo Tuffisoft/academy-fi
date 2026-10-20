@@ -14,6 +14,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { AuditScore, LeadDetailsDialog } from "./lead-details-dialog";
 import type { AuditSummary } from "@/lib/lead-research/audit-types";
+import { auditIsActive, compareAuditQuality } from "@/lib/lead-research/audit-progress";
 
 export type LivePlacesResult = Awaited<ReturnType<typeof searchGooglePlaces>>;
 
@@ -21,12 +22,14 @@ export function PlacesResults({ result, pending, compact, searchId, savedLeads =
   const t = useTranslations("leadResearch");
   const [query, setQuery] = useState("");
   const [page, setPage] = useState(0);
+  const auditsByPlace = new Map(audits.map((audit) => [audit.placeId, audit]));
   const visible = result?.results.filter((place) => `${place.name} ${place.address ?? ""} ${place.phone ?? ""}`.toLocaleLowerCase().includes(query.toLocaleLowerCase())) ?? [];
+  const sorted = !pending && audits.length > 0 && !audits.some(auditIsActive);
+  if (sorted) visible.sort((a, b) => compareAuditQuality(auditsByPlace.get(a.id), auditsByPlace.get(b.id)));
   const currentPage = Math.min(page, Math.max(0, Math.ceil(visible.length / 10) - 1));
   const offset = currentPage * 10;
   const rows = visible.slice(offset, offset + 10);
   const savedByPlace = new Map(savedLeads.filter((lead) => lead.userId === userId).map((lead) => [lead.placeId, lead.id]));
-  const auditsByPlace = new Map(audits.map((audit) => [audit.placeId, audit]));
   return <Card className={compact ? "min-w-0 lg:col-span-2" : "min-w-0"}>
     <CardHeader>
       <CardTitle>{t("leads")}</CardTitle>
@@ -35,6 +38,7 @@ export function PlacesResults({ result, pending, compact, searchId, savedLeads =
     </CardHeader>
     <CardContent className="space-y-3">
       {result && <p className="text-xs text-muted-foreground">{t("liveNotice")}</p>}
+      {sorted && <p className="text-xs text-muted-foreground">{t("auditSortedHint")}</p>}
       {result?.resultLimit && <p className="text-sm text-muted-foreground">{t("googleResultLimit")}</p>}
       {result?.partialError && <p role="alert" className="text-sm text-destructive">{t("partialResults")} {t(result.partialError)}</p>}
       {!compact && <Input value={query} onChange={(event) => { setQuery(event.target.value); setPage(0); }} placeholder={t("searchLeads")} aria-label={t("searchLeads")} disabled={!result} />}

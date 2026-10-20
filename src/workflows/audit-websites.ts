@@ -1,16 +1,15 @@
 import { sleep } from "workflow";
 import type { AuditTicket } from "@/lib/lead-research/audit-jobs";
+import { runAuditPool } from "@/lib/lead-research/audit-scheduling";
 
 export async function auditWebsites(tickets: AuditTicket[]) {
   "use workflow";
-  for (let offset = 0; offset < tickets.length; offset += 3) {
-    await Promise.all(tickets.slice(offset, offset + 3).map(async (ticket) => {
+  await runAuditPool(tickets, async (ticket) => {
       try {
         let result = await checkWebsite(ticket);
         while (result === "busy") { await sleep("5s"); result = await checkWebsite(ticket); }
       } catch { await markInterrupted(ticket); }
-    }));
-  }
+  });
 }
 
 async function checkWebsite(ticket: AuditTicket) {

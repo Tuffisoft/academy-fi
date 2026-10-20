@@ -3,6 +3,18 @@
     "loading": "Loading …"
   },
   "leadResearch": {
+    "auditProgressTitle": "Website audits running",
+    "auditProgressComplete": "Website audits finished",
+    "auditFindingCompanies": "Finding businesses",
+    "auditEstimatePreparing": "Progress and remaining time become available once the result count is known.",
+    "auditCompletedCount": "{done} of {total} leads finished",
+    "auditFailureCount": "{count, plural, one {# audit ended with an error} other {# audits ended with an error}}",
+    "auditProgressPercent": "Progress",
+    "auditTimeRemaining": "Estimated time remaining",
+    "auditMinutesSeconds": "Minutes : seconds",
+    "auditEstimateHint": "Remaining time is estimated from previous durations and adjusted continuously.",
+    "auditSortedHint": "Worst measured website first · Unrated results at the end.",
+    "auditParallelCount": "Up to {count} leads at once",
     "leadDetails": "Lead details",
     "leadDetailsFor": "Details and website report for {name}",
     "auditQuality": "Website quality",

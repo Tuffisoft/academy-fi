@@ -5,6 +5,7 @@ import { prisma } from "@/lib/prisma";
 import { Prisma } from "@/generated/prisma/client";
 import { auditWebsites } from "@/workflows/audit-websites";
 import { executeWebsiteAudit } from "./run-website-audit";
+import { MAX_PARALLEL_WEBSITE_AUDITS } from "./audit-scheduling";
 
 export type AuditTicket = { id: string; token: string };
 
@@ -44,7 +45,7 @@ export async function processWebsiteAudit(ticket: AuditTicket) {
       await tx.$queryRaw`SELECT pg_advisory_xact_lock(20261020, 5)::text`;
       const cutoff = new Date(Date.now() - 120000);
       await tx.websiteAudit.updateMany({ where: { status: "RUNNING", startedAt: { lt: cutoff } }, data: { status: "FAILED", qualityScore: null, errorCode: "auditInterrupted", checkedAt: new Date() } });
-      if (await tx.websiteAudit.count({ where: { status: "RUNNING" } }) >= 3) return "busy" as const;
+      if (await tx.websiteAudit.count({ where: { status: "RUNNING" } }) >= MAX_PARALLEL_WEBSITE_AUDITS) return "busy" as const;
       const result = await tx.websiteAudit.updateMany({ where: { ...where, status: "QUEUED" }, data: { status: "RUNNING", startedAt: new Date(), errorCode: null } });
       return result.count ? "claimed" as const : "skip" as const;
     }),
