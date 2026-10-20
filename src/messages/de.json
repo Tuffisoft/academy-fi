@@ -64,6 +64,7 @@
     "yes": "Ja",
     "no": "Nein",
     "actions": "Aktionen",
+    "actionsFor": "Aktionen für {industry} in {location}",
     "edit": "Bearbeiten",
     "editFor": "{industry} in {location} bearbeiten",
     "editSearch": "Recherche bearbeiten",

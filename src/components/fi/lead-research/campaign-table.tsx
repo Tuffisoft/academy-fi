@@ -8,8 +8,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { LeadSearchDialog } from "./lead-search-dialog";
-import { DeleteSearchDialog } from "./delete-search-dialog";
+import { CampaignMenu } from "./campaign-menu";
 
 export function CampaignTable({ searches, isOwner, compact }: { searches: LeadSearchSummary[]; isOwner: boolean; compact: boolean }) {
   const t = useTranslations("leadResearch");
@@ -52,8 +51,7 @@ export function CampaignTable({ searches, isOwner, compact }: { searches: LeadSe
                 </dl>
               </DialogContent>
             </Dialog>
-            <LeadSearchDialog search={search} />
-            <DeleteSearchDialog search={search} />
+            <CampaignMenu search={search} />
             </div>
           </TableCell>
         </TableRow>)}

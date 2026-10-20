@@ -30,9 +30,16 @@ type SearchPreview = {
   analyzeWebsites: boolean;
 };
 
-export function LeadSearchDialog({ search }: { search?: LeadSearchSummary }) {
+export function LeadSearchDialog({ search, open: controlledOpen, onOpenChange, hideTrigger = false }: {
+  search?: LeadSearchSummary;
+  open?: boolean;
+  onOpenChange?: (open: boolean) => void;
+  hideTrigger?: boolean;
+}) {
   const t = useTranslations("leadResearch");
-  const [open, setOpen] = useState(false);
+  const [internalOpen, setInternalOpen] = useState(false);
+  const open = controlledOpen ?? internalOpen;
+  const setOpen = onOpenChange ?? setInternalOpen;
   const [preview, setPreview] = useState<SearchPreview | null>(null);
   const [analyzeWebsites, setAnalyzeWebsites] = useState(search?.analyzeWebsites ?? true);
   const [isPending, startTransition] = useTransition();
@@ -87,14 +94,14 @@ export function LeadSearchDialog({ search }: { search?: LeadSearchSummary }) {
         setAnalyzeWebsites(search?.analyzeWebsites ?? true);
       }}
     >
-      <DialogTrigger
+      {!hideTrigger && <DialogTrigger
         render={
           <Button variant={search ? "outline" : "default"} size={search ? "sm" : "default"} disabled={search ? search.status !== "DRAFT" : false} aria-label={search ? t("editFor", { location: search.location, industry: search.industry }) : undefined}>
             {search ? <Pencil aria-hidden="true" /> : <Plus aria-hidden="true" />}
             {t(search ? "edit" : "newSearch")}
           </Button>
         }
-      />
+      />}
       <DialogContent className="max-h-[90dvh] overflow-y-auto sm:max-w-xl">
         <DialogHeader>
           <DialogTitle>{t(search ? "editSearch" : "newSearch")}</DialogTitle>

@@ -9,9 +9,16 @@ import type { LeadSearchSummary } from "@/lib/lead-research/types";
 import { Button } from "@/components/ui/button";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
 
-export function DeleteSearchDialog({ search }: { search: LeadSearchSummary }) {
+export function DeleteSearchDialog({ search, open: controlledOpen, onOpenChange, hideTrigger = false }: {
+  search: LeadSearchSummary;
+  open?: boolean;
+  onOpenChange?: (open: boolean) => void;
+  hideTrigger?: boolean;
+}) {
   const t = useTranslations("leadResearch");
-  const [open, setOpen] = useState(false);
+  const [internalOpen, setInternalOpen] = useState(false);
+  const open = controlledOpen ?? internalOpen;
+  const setOpen = onOpenChange ?? setInternalOpen;
   const [error, setError] = useState<string | null>(null);
   const [isPending, startTransition] = useTransition();
   const submitting = useRef(false);
@@ -33,7 +40,7 @@ export function DeleteSearchDialog({ search }: { search: LeadSearchSummary }) {
   }
 
   return <AlertDialog open={open} onOpenChange={(value) => { if (!submitting.current) { setOpen(value); setError(null); } }}>
-    <AlertDialogTrigger render={<Button variant="destructive" size="sm" disabled={search.status !== "DRAFT"} aria-label={t("deleteFor", { location: search.location, industry: search.industry })}><Trash2 aria-hidden="true" />{t("delete")}</Button>} />
+    {!hideTrigger && <AlertDialogTrigger render={<Button variant="destructive" size="sm" disabled={search.status !== "DRAFT"} aria-label={t("deleteFor", { location: search.location, industry: search.industry })}><Trash2 aria-hidden="true" />{t("delete")}</Button>} />}
     <AlertDialogContent>
       <AlertDialogHeader>
         <AlertDialogTitle>{t("deleteTitle")}</AlertDialogTitle>
