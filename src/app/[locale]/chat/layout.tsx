@@ -2,7 +2,7 @@ import type { Viewport } from "next";
 import { Suspense } from "react";
 import { DashboardHeader } from "@/components/fi/header/dashboard-header";
 import { Footer } from "@/components/fi/footer";
-import { PageLoading } from "@/components/fi/page-loading";
+import { ChatSkeleton } from "@/components/fi/loading/chat-skeleton";
 import { requireUser } from "@/lib/session";
 import { getConversationsForUser } from "@/lib/chat/services/chat";
 import { isRealtimeConfigured } from "@/lib/chat/realtime/server";
@@ -17,7 +17,7 @@ export const viewport: Viewport = {
 
 export default function ChatLayout({ children }: { children: React.ReactNode }) {
   return (
-    <Suspense fallback={<PageLoading />}>
+    <Suspense fallback={<ChatSkeleton withHeader />}>
       <ChatLayoutContent>{children}</ChatLayoutContent>
     </Suspense>
   );

@@ -1,13 +1,13 @@
 import Chat from "@/components/fi/chat";
 import { Suspense } from "react";
-import { PageLoading } from "@/components/fi/page-loading";
+import { ChatSkeleton } from "@/components/fi/loading/chat-skeleton";
 import { requireUser } from "@/lib/session";
 import { getFriendsForUser } from "@/lib/chat/services/friends";
 import { getGroupInvitations } from "@/lib/chat/services/groups";
 
 export default function ChatPage() {
   return (
-    <Suspense fallback={<PageLoading showHeader={false} />}>
+    <Suspense fallback={<ChatSkeleton />}>
       <ChatContent />
     </Suspense>
   );
