@@ -1,8 +1,12 @@
 "use client";
 
-import { useState, type FormEvent } from "react";
+import { useRef, useState, useTransition, type FormEvent } from "react";
 import { useTranslations } from "next-intl";
-import { Plus } from "lucide-react";
+import { Pencil, Plus } from "lucide-react";
+import { toast } from "sonner";
+import { createLeadSearchAction, updateLeadSearchAction } from "@/lib/actions/lead-searches.actions";
+import type { LeadSearchSummary } from "@/lib/lead-research/types";
+import { MAX_SEARCH_RESULTS } from "@/lib/lead-research/search-input";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
@@ -26,11 +30,14 @@ type SearchPreview = {
   analyzeWebsites: boolean;
 };
 
-export function LeadSearchDialog() {
+export function LeadSearchDialog({ search }: { search?: LeadSearchSummary }) {
   const t = useTranslations("leadResearch");
   const [open, setOpen] = useState(false);
   const [preview, setPreview] = useState<SearchPreview | null>(null);
-  const [analyzeWebsites, setAnalyzeWebsites] = useState(true);
+  const [analyzeWebsites, setAnalyzeWebsites] = useState(search?.analyzeWebsites ?? true);
+  const [isPending, startTransition] = useTransition();
+  const submitting = useRef(false);
+  const [error, setError] = useState<string | null>(null);
 
   function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -44,39 +51,68 @@ export function LeadSearchDialog() {
     });
   }
 
+  function saveSearch() {
+    if (!preview || submitting.current) return;
+    submitting.current = true;
+    setError(null);
+    startTransition(async () => {
+      try {
+        const result = search
+          ? await updateLeadSearchAction(search.id, preview)
+          : await createLeadSearchAction(preview);
+        if (!result.success) {
+          setError(t(result.error));
+          return;
+        }
+        toast.success(t(search ? "updateSuccess" : "saveSuccess"));
+        setOpen(false);
+        setPreview(null);
+        setAnalyzeWebsites(search?.analyzeWebsites ?? true);
+      } catch {
+        setError(t("saveError"));
+      } finally {
+        submitting.current = false;
+      }
+    });
+  }
+
   return (
     <Dialog
       open={open}
       onOpenChange={(value) => {
+        if (submitting.current) return;
         setOpen(value);
         setPreview(null);
-        setAnalyzeWebsites(true);
+        setError(null);
+        setAnalyzeWebsites(search?.analyzeWebsites ?? true);
       }}
     >
       <DialogTrigger
         render={
-          <Button>
-            <Plus aria-hidden="true" />
-            {t("newSearch")}
+          <Button variant={search ? "outline" : "default"} size={search ? "sm" : "default"} disabled={search ? search.status !== "DRAFT" : false} aria-label={search ? t("editFor", { location: search.location, industry: search.industry }) : undefined}>
+            {search ? <Pencil aria-hidden="true" /> : <Plus aria-hidden="true" />}
+            {t(search ? "edit" : "newSearch")}
           </Button>
         }
       />
       <DialogContent className="max-h-[90dvh] overflow-y-auto sm:max-w-xl">
         <DialogHeader>
-          <DialogTitle>{t("newSearch")}</DialogTitle>
+          <DialogTitle>{t(search ? "editSearch" : "newSearch")}</DialogTitle>
           <DialogDescription>{t("formDescription")}</DialogDescription>
         </DialogHeader>
         <form
           onSubmit={handleSubmit}
-          onChange={() => setPreview(null)}
+          onChange={() => { setPreview(null); setError(null); }}
           className="flex flex-col gap-5"
         >
+          <fieldset disabled={isPending} className="flex min-w-0 flex-col gap-5">
           <div className="grid gap-4 sm:grid-cols-2">
             <div className="flex flex-col gap-2">
               <Label htmlFor="lead-location">{t("location")}</Label>
               <Input
                 id="lead-location"
                 name="location"
+                defaultValue={search?.location}
                 placeholder={t("locationPlaceholder")}
                 required
                 pattern=".*\S.*"
@@ -88,6 +124,7 @@ export function LeadSearchDialog() {
               <Input
                 id="lead-radius"
                 name="radiusKm"
+                defaultValue={search?.radiusKm}
                 type="number"
                 min={0.1}
                 step="any"
@@ -101,6 +138,7 @@ export function LeadSearchDialog() {
               <Input
                 id="lead-industry"
                 name="industry"
+                defaultValue={search?.industry}
                 placeholder={t("industryPlaceholder")}
                 required
                 pattern=".*\S.*"
@@ -112,10 +150,11 @@ export function LeadSearchDialog() {
               <Input
                 id="lead-max-results"
                 name="maxResults"
+                defaultValue={search?.maxResults}
                 type="number"
                 min={1}
                 step={1}
-                max={Number.MAX_SAFE_INTEGER}
+                max={MAX_SEARCH_RESULTS}
                 placeholder="100"
                 aria-describedby="lead-result-help"
                 required
@@ -140,13 +179,14 @@ export function LeadSearchDialog() {
           <Button type="submit" className="self-start">
             {t("previewButton")}
           </Button>
+          </fieldset>
         </form>
         <div role="status" aria-live="polite" aria-atomic="true">
           {preview && (
             <Card size="sm">
               <CardHeader>
                 <CardTitle>{t("previewTitle")}</CardTitle>
-                <Badge variant="secondary">{t("notStarted")}</Badge>
+                <Badge variant="secondary">{t("unsaved")}</Badge>
               </CardHeader>
               <CardContent>
                 <dl className="grid gap-3 sm:grid-cols-2">
@@ -169,10 +209,14 @@ export function LeadSearchDialog() {
                     </div>
                   ))}
                 </dl>
+                <Button type="button" onClick={saveSearch} disabled={isPending} className="mt-4">
+                  {isPending ? t("saving") : t(search ? "saveChanges" : "saveSearch")}
+                </Button>
               </CardContent>
             </Card>
           )}
         </div>
+        {error && <p role="alert" className="text-sm text-destructive">{error}</p>}
       </DialogContent>
     </Dialog>
   );

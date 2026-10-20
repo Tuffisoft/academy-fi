@@ -193,8 +193,35 @@ model User {
   chatEncryptionKey   ChatEncryptionKey?
   accounts            Account[]
   sessions            Session[]
+  leadSearches        LeadSearch[]
 
   @@map("user")
+}
+
+enum LeadSearchStatus {
+  DRAFT
+  QUEUED
+  RUNNING
+  COMPLETED
+  FAILED
+  CANCELLED
+}
+
+model LeadSearch {
+  id              String           @id @default(cuid())
+  userId          String
+  user            User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  location        String           @db.VarChar(200)
+  radiusKm        Float
+  industry        String           @db.VarChar(200)
+  maxResults      Int
+  analyzeWebsites Boolean          @default(true)
+  status          LeadSearchStatus @default(DRAFT)
+  createdAt       DateTime         @default(now())
+  updatedAt       DateTime         @updatedAt
+
+  @@index([userId, createdAt])
+  @@index([createdAt])
 }
 
 model Session {

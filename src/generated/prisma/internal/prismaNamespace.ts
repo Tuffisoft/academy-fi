@@ -410,6 +410,7 @@ export const ModelName = {
   DailyPlan: 'DailyPlan',
   DailyPlanStage: 'DailyPlanStage',
   User: 'User',
+  LeadSearch: 'LeadSearch',
   Session: 'Session',
   Account: 'Account',
   Verification: 'Verification',
@@ -436,7 +437,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "weeklyAssignment" | "assignmentChecklistItem" | "taskStage" | "reflection" | "mentorFeedback" | "discussionNote" | "department" | "departmentResource" | "idea" | "ideaNote" | "dailyPlan" | "dailyPlanStage" | "user" | "session" | "account" | "verification" | "directConversation" | "chatMembership" | "chatMessage" | "friendship" | "chatEncryptionKey" | "groupConversation" | "groupMembership" | "groupMessage"
+    modelProps: "weeklyAssignment" | "assignmentChecklistItem" | "taskStage" | "reflection" | "mentorFeedback" | "discussionNote" | "department" | "departmentResource" | "idea" | "ideaNote" | "dailyPlan" | "dailyPlanStage" | "user" | "leadSearch" | "session" | "account" | "verification" | "directConversation" | "chatMembership" | "chatMessage" | "friendship" | "chatEncryptionKey" | "groupConversation" | "groupMembership" | "groupMessage"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -1399,6 +1400,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         count: {
           args: Prisma.UserCountArgs<ExtArgs>
           result: runtime.Types.Utils.Optional<Prisma.UserCountAggregateOutputType> | number
+        }
+      }
+    }
+    LeadSearch: {
+      payload: Prisma.$LeadSearchPayload<ExtArgs>
+      fields: Prisma.LeadSearchFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.LeadSearchFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LeadSearchPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.LeadSearchFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LeadSearchPayload>
+        }
+        findFirst: {
+          args: Prisma.LeadSearchFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LeadSearchPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.LeadSearchFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LeadSearchPayload>
+        }
+        findMany: {
+          args: Prisma.LeadSearchFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LeadSearchPayload>[]
+        }
+        create: {
+          args: Prisma.LeadSearchCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LeadSearchPayload>
+        }
+        createMany: {
+          args: Prisma.LeadSearchCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.LeadSearchCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LeadSearchPayload>[]
+        }
+        delete: {
+          args: Prisma.LeadSearchDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LeadSearchPayload>
+        }
+        update: {
+          args: Prisma.LeadSearchUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LeadSearchPayload>
+        }
+        deleteMany: {
+          args: Prisma.LeadSearchDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.LeadSearchUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.LeadSearchUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LeadSearchPayload>[]
+        }
+        upsert: {
+          args: Prisma.LeadSearchUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LeadSearchPayload>
+        }
+        aggregate: {
+          args: Prisma.LeadSearchAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateLeadSearch>
+        }
+        groupBy: {
+          args: Prisma.LeadSearchGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.LeadSearchGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.LeadSearchCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.LeadSearchCountAggregateOutputType> | number
         }
       }
     }
@@ -2433,6 +2508,22 @@ export const UserScalarFieldEnum = {
 export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
 
 
+export const LeadSearchScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  location: 'location',
+  radiusKm: 'radiusKm',
+  industry: 'industry',
+  maxResults: 'maxResults',
+  analyzeWebsites: 'analyzeWebsites',
+  status: 'status',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type LeadSearchScalarFieldEnum = (typeof LeadSearchScalarFieldEnum)[keyof typeof LeadSearchScalarFieldEnum]
+
+
 export const SessionScalarFieldEnum = {
   id: 'id',
   expiresAt: 'expiresAt',
@@ -2686,6 +2777,34 @@ export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel,
 
 
 /**
+ * Reference to a field of type 'Float'
+ */
+export type FloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float'>
+    
+
+
+/**
+ * Reference to a field of type 'Float[]'
+ */
+export type ListFloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float[]'>
+    
+
+
+/**
+ * Reference to a field of type 'LeadSearchStatus'
+ */
+export type EnumLeadSearchStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'LeadSearchStatus'>
+    
+
+
+/**
+ * Reference to a field of type 'LeadSearchStatus[]'
+ */
+export type ListEnumLeadSearchStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'LeadSearchStatus[]'>
+    
+
+
+/**
  * Reference to a field of type 'Json'
  */
 export type JsonFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Json'>
@@ -2738,20 +2857,6 @@ export type EnumGroupMemberStatusFieldRefInput<$PrismaModel> = FieldRefInputType
  * Reference to a field of type 'GroupMemberStatus[]'
  */
 export type ListEnumGroupMemberStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'GroupMemberStatus[]'>
-    
-
-
-/**
- * Reference to a field of type 'Float'
- */
-export type FloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float'>
-    
-
-
-/**
- * Reference to a field of type 'Float[]'
- */
-export type ListFloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float[]'>
     
 
 /**
@@ -2918,6 +3023,7 @@ export type GlobalOmitConfig = {
   dailyPlan?: Prisma.DailyPlanOmit
   dailyPlanStage?: Prisma.DailyPlanStageOmit
   user?: Prisma.UserOmit
+  leadSearch?: Prisma.LeadSearchOmit
   session?: Prisma.SessionOmit
   account?: Prisma.AccountOmit
   verification?: Prisma.VerificationOmit

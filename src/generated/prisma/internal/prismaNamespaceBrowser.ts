@@ -64,6 +64,7 @@ export const ModelName = {
   DailyPlan: 'DailyPlan',
   DailyPlanStage: 'DailyPlanStage',
   User: 'User',
+  LeadSearch: 'LeadSearch',
   Session: 'Session',
   Account: 'Account',
   Verification: 'Verification',
@@ -269,6 +270,22 @@ export const UserScalarFieldEnum = {
 } as const
 
 export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
+
+
+export const LeadSearchScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  location: 'location',
+  radiusKm: 'radiusKm',
+  industry: 'industry',
+  maxResults: 'maxResults',
+  analyzeWebsites: 'analyzeWebsites',
+  status: 'status',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type LeadSearchScalarFieldEnum = (typeof LeadSearchScalarFieldEnum)[keyof typeof LeadSearchScalarFieldEnum]
 
 
 export const SessionScalarFieldEnum = {

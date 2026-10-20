@@ -9,10 +9,12 @@ import { Card, CardAction, CardContent, CardDescription, CardFooter, CardHeader,
 import { Input } from "@/components/ui/input";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { LeadSearchDialog } from "./lead-search-dialog";
+import { CampaignTable } from "./campaign-table";
+import type { LeadSearchSummary } from "@/lib/lead-research/types";
 
 type View = "overview" | "campaigns" | "leads" | "analytics";
 
-export function LeadResearchWorkspace() {
+export function LeadResearchWorkspace({ searches, isOwner }: { searches: LeadSearchSummary[]; isOwner: boolean }) {
   const t = useTranslations("leadResearch");
   const [view, setView] = useState<View>("overview");
   const navigation = [
@@ -45,7 +47,7 @@ export function LeadResearchWorkspace() {
           {[
             { title: "totalLeads", value: "0", hint: "totalHint", icon: Users },
             { title: "averageScore", value: "—", hint: "scoreHint", icon: BarChart3 },
-            { title: "totalCampaigns", value: "0", hint: "campaignHint", icon: FolderSearch },
+            { title: "totalCampaigns", value: String(searches.length), hint: "campaignHint", icon: FolderSearch },
           ].map(({ title, value, hint, icon: Icon }) => (
             <Card key={title}>
               <CardHeader>
@@ -67,16 +69,8 @@ export function LeadResearchWorkspace() {
             {view === "overview" && <CardAction><Button variant="ghost" size="sm" onClick={() => setView("campaigns")}>{t("viewAll")}<ArrowRight aria-hidden="true" /></Button></CardAction>}
           </CardHeader>
           <CardContent>
-            <Table>
-              <TableHeader><TableRow>
-                {["campaign", "status", "leads", "created"].map((key) => <TableHead key={key}>{t(key)}</TableHead>)}
-              </TableRow></TableHeader>
-              <TableBody><TableRow><TableCell colSpan={4} className="h-36 whitespace-normal text-center">
-                <FolderSearch className="mx-auto mb-3 size-6 text-muted-foreground" aria-hidden="true" />
-                <p className="font-medium">{t("noCampaigns")}</p>
-                <p className="mt-1 text-sm text-muted-foreground">{t("noCampaignsHint")}</p>
-              </TableCell></TableRow></TableBody>
-            </Table>
+            <p className="mb-3 text-xs text-muted-foreground">{isOwner ? t("ownerVisibility") : t("internVisibility")}</p>
+            <CampaignTable key={searches.length} searches={searches} isOwner={isOwner} compact={view === "overview"} />
           </CardContent>
         </Card>
       )}

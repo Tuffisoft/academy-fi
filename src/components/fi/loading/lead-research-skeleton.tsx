@@ -24,7 +24,7 @@ export function LeadResearchSkeleton() {
         <CardHeader><Skeleton className="h-5 w-28" /><CardAction><Skeleton className="size-4" /></CardAction><Skeleton className="h-9 w-16" /></CardHeader>
         <CardFooter><Skeleton className="h-4 w-full max-w-48" /></CardFooter>
       </Card>)}</div>
-      <Card><CardHeadingSkeleton action /><CardContent><TableSkeleton columns={4} rows={3} /></CardContent></Card>
+      <Card><CardHeadingSkeleton action /><CardContent><TableSkeleton columns={5} rows={3} /></CardContent></Card>
       <div className="grid min-w-0 gap-4 lg:grid-cols-3">
         <Card className="min-w-0 lg:col-span-2"><CardHeadingSkeleton action /><CardContent><TableSkeleton columns={5} rows={4} /></CardContent><CardFooter><Skeleton className="h-7 w-36" /></CardFooter></Card>
         <Card><CardHeadingSkeleton /><CardContent className="flex flex-1 flex-col gap-6">

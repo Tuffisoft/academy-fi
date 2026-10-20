@@ -107,6 +107,11 @@ export type DailyPlanStage = Prisma.DailyPlanStageModel
  */
 export type User = Prisma.UserModel
 /**
+ * Model LeadSearch
+ * 
+ */
+export type LeadSearch = Prisma.LeadSearchModel
+/**
  * Model Session
  * 
  */
