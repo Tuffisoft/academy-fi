@@ -2,46 +2,53 @@
 
 import { useRef, useState, useTransition } from "react";
 import { useTranslations } from "next-intl";
-import { ArrowRight, BarChart3, FolderSearch, LayoutDashboard, Users } from "lucide-react";
+import { ArrowRight, BarChart3, Bookmark, FolderSearch, LayoutDashboard, Users } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardAction, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { runLeadSearchAction } from "@/lib/actions/lead-searches.actions";
-import { PlacesResults, type LivePlacesResult } from "./places-results";
+import { PlacesResults } from "./places-results";
 import { LeadSearchDialog } from "./lead-search-dialog";
 import { CampaignTable } from "./campaign-table";
-import type { LeadSearchSummary } from "@/lib/lead-research/types";
+import type { LeadSearchSummary, SavedLeadSummary } from "@/lib/lead-research/types";
+import { useSearchProgress } from "./use-search-progress";
+import { SearchJobStatus } from "./search-job-status";
+import { useLivePlaces } from "./use-live-places";
+import { SavedLeadsView } from "./saved-leads-view";
 
-type View = "overview" | "campaigns" | "leads" | "analytics";
+type View = "overview" | "campaigns" | "leads" | "savedLeads" | "analytics";
 
-export function LeadResearchWorkspace({ searches, isOwner, googleConfigured }: { searches: LeadSearchSummary[]; isOwner: boolean; googleConfigured: boolean }) {
+export function LeadResearchWorkspace({ searches: initialSearches, savedLeads, userId, isOwner, googleConfigured }: { searches: LeadSearchSummary[]; savedLeads: SavedLeadSummary[]; userId: string; isOwner: boolean; googleConfigured: boolean }) {
   const t = useTranslations("leadResearch");
+  const { searches, statusError } = useSearchProgress(initialSearches);
   const [view, setView] = useState<View>("overview");
-  const [result, setResult] = useState<LivePlacesResult | null>(null);
+  const [selectedId, setSelectedId] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [pending, startTransition] = useTransition();
-  const [runId, setRunId] = useState(0);
+  const selected = searches.find((search) => search.id === selectedId) ?? searches.find((search) => search.status === "RUNNING" || search.status === "QUEUED") ?? searches.find((search) => search.resultCount > 0);
+  const isSearching = selected?.status === "RUNNING" || selected?.status === "QUEUED";
+  const { result, loading: loadingDetails, error: detailsError } = useLivePlaces(selected?.id, selected?.runId, selected?.resultCount ?? 0, view === "leads" && !isSearching && !pending);
   const submitting = useRef(false);
   function runSearch(id: string) {
     if (submitting.current) return;
     submitting.current = true;
     setError(null);
-    setResult(null);
-    setRunId((value) => value + 1);
+    setSelectedId(id);
     setView("leads");
     startTransition(async () => {
       try {
         const response = await runLeadSearchAction(id);
         if (!response.success) { setError(t(response.error)); return; }
-        setResult(response);
       } catch { setError(t("googleUnavailable")); }
       finally { submitting.current = false; }
     });
   }
+  function showResults(id: string) { setSelectedId(id); setError(null); setView("leads"); }
   const navigation = [
     { value: "overview", icon: LayoutDashboard },
     { value: "campaigns", icon: FolderSearch },
     { value: "leads", icon: Users },
+    { value: "savedLeads", icon: Bookmark },
     { value: "analytics", icon: BarChart3 },
   ] as const;
 
@@ -64,6 +71,10 @@ export function LeadResearchWorkspace({ searches, isOwner, googleConfigured }: {
       </div>
       {!googleConfigured && <p role="status" className="text-sm text-muted-foreground">{t("googleNotConfigured")}</p>}
       {error && <p role="alert" className="text-sm text-destructive">{error}</p>}
+      {detailsError && <p role="alert" className="text-sm text-destructive">{t(detailsError)}</p>}
+      {statusError && <p role="alert" className="text-sm text-destructive">{t("jobStatusError")}</p>}
+      <div className={view === "savedLeads" ? "contents" : "hidden"}><SavedLeadsView leads={savedLeads} isOwner={isOwner} enabled={view === "savedLeads"} /></div>
+      {searches.filter((search) => search.status === "RUNNING" || search.status === "QUEUED" || search.id === selected?.id).map((search) => <SearchJobStatus key={search.id + search.runId} search={search} />)}
 
       {(view === "overview" || view === "analytics") && (
         <div className="grid gap-4 sm:grid-cols-3">
@@ -93,7 +104,7 @@ export function LeadResearchWorkspace({ searches, isOwner, googleConfigured }: {
           </CardHeader>
           <CardContent>
             <p className="mb-3 text-xs text-muted-foreground">{isOwner ? t("ownerVisibility") : t("internVisibility")}</p>
-            <CampaignTable key={searches.length} searches={searches} isOwner={isOwner} compact={view === "overview"} onRun={runSearch} running={pending} />
+            <CampaignTable key={searches.length} searches={searches} isOwner={isOwner} compact={view === "overview"} onRun={runSearch} onShow={showResults} running={pending} />
           </CardContent>
         </Card>
       )}
@@ -101,7 +112,9 @@ export function LeadResearchWorkspace({ searches, isOwner, googleConfigured }: {
       {(view === "overview" || view === "leads" || view === "analytics") && (
         <div className={view === "overview" ? "grid min-w-0 gap-4 lg:grid-cols-3" : "grid min-w-0 gap-4"}>
           {view !== "analytics" && (
-            <PlacesResults key={runId} result={result} pending={pending} compact={view === "overview"} />
+            <div className={view === "overview" ? "min-w-0 space-y-3 lg:col-span-2" : "min-w-0 space-y-3"}>
+              <PlacesResults key={selected?.id + String(selected?.runId)} result={result} pending={pending || isSearching || loadingDetails} compact={view === "overview"} searchId={selected?.id} savedLeads={savedLeads} userId={userId} />
+            </div>
           )}
           {view !== "leads" && <Card>
             <CardHeader>

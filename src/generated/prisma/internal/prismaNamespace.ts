@@ -411,6 +411,7 @@ export const ModelName = {
   DailyPlanStage: 'DailyPlanStage',
   User: 'User',
   LeadSearch: 'LeadSearch',
+  SavedLead: 'SavedLead',
   Session: 'Session',
   Account: 'Account',
   Verification: 'Verification',
@@ -437,7 +438,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "weeklyAssignment" | "assignmentChecklistItem" | "taskStage" | "reflection" | "mentorFeedback" | "discussionNote" | "department" | "departmentResource" | "idea" | "ideaNote" | "dailyPlan" | "dailyPlanStage" | "user" | "leadSearch" | "session" | "account" | "verification" | "directConversation" | "chatMembership" | "chatMessage" | "friendship" | "chatEncryptionKey" | "groupConversation" | "groupMembership" | "groupMessage"
+    modelProps: "weeklyAssignment" | "assignmentChecklistItem" | "taskStage" | "reflection" | "mentorFeedback" | "discussionNote" | "department" | "departmentResource" | "idea" | "ideaNote" | "dailyPlan" | "dailyPlanStage" | "user" | "leadSearch" | "savedLead" | "session" | "account" | "verification" | "directConversation" | "chatMembership" | "chatMessage" | "friendship" | "chatEncryptionKey" | "groupConversation" | "groupMembership" | "groupMessage"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -1474,6 +1475,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         count: {
           args: Prisma.LeadSearchCountArgs<ExtArgs>
           result: runtime.Types.Utils.Optional<Prisma.LeadSearchCountAggregateOutputType> | number
+        }
+      }
+    }
+    SavedLead: {
+      payload: Prisma.$SavedLeadPayload<ExtArgs>
+      fields: Prisma.SavedLeadFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.SavedLeadFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SavedLeadPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.SavedLeadFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SavedLeadPayload>
+        }
+        findFirst: {
+          args: Prisma.SavedLeadFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SavedLeadPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.SavedLeadFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SavedLeadPayload>
+        }
+        findMany: {
+          args: Prisma.SavedLeadFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SavedLeadPayload>[]
+        }
+        create: {
+          args: Prisma.SavedLeadCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SavedLeadPayload>
+        }
+        createMany: {
+          args: Prisma.SavedLeadCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.SavedLeadCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SavedLeadPayload>[]
+        }
+        delete: {
+          args: Prisma.SavedLeadDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SavedLeadPayload>
+        }
+        update: {
+          args: Prisma.SavedLeadUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SavedLeadPayload>
+        }
+        deleteMany: {
+          args: Prisma.SavedLeadDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.SavedLeadUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.SavedLeadUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SavedLeadPayload>[]
+        }
+        upsert: {
+          args: Prisma.SavedLeadUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SavedLeadPayload>
+        }
+        aggregate: {
+          args: Prisma.SavedLeadAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateSavedLead>
+        }
+        groupBy: {
+          args: Prisma.SavedLeadGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.SavedLeadGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.SavedLeadCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.SavedLeadCountAggregateOutputType> | number
         }
       }
     }
@@ -2518,11 +2593,29 @@ export const LeadSearchScalarFieldEnum = {
   analyzeWebsites: 'analyzeWebsites',
   status: 'status',
   googlePlaceIds: 'googlePlaceIds',
+  runId: 'runId',
+  startedAt: 'startedAt',
+  finishedAt: 'finishedAt',
+  phase: 'phase',
+  processedPages: 'processedPages',
+  errorCode: 'errorCode',
+  resultLimit: 'resultLimit',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
 
 export type LeadSearchScalarFieldEnum = (typeof LeadSearchScalarFieldEnum)[keyof typeof LeadSearchScalarFieldEnum]
+
+
+export const SavedLeadScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  placeId: 'placeId',
+  sourceSearchId: 'sourceSearchId',
+  createdAt: 'createdAt'
+} as const
+
+export type SavedLeadScalarFieldEnum = (typeof SavedLeadScalarFieldEnum)[keyof typeof SavedLeadScalarFieldEnum]
 
 
 export const SessionScalarFieldEnum = {
@@ -3025,6 +3118,7 @@ export type GlobalOmitConfig = {
   dailyPlanStage?: Prisma.DailyPlanStageOmit
   user?: Prisma.UserOmit
   leadSearch?: Prisma.LeadSearchOmit
+  savedLead?: Prisma.SavedLeadOmit
   session?: Prisma.SessionOmit
   account?: Prisma.AccountOmit
   verification?: Prisma.VerificationOmit

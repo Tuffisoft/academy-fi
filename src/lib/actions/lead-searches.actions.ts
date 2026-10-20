@@ -1,41 +1,65 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
+import { after } from "next/server";
+import { randomUUID } from "node:crypto";
 import { prisma } from "@/lib/prisma";
 import { requireUser } from "@/lib/session";
 import { leadSearchMutableScope, leadSearchScope, parseLeadSearchInput } from "@/lib/lead-research/search-input";
-import { PlacesError, searchGooglePlaces } from "@/lib/lead-research/google-places";
+import { loadGooglePlaceDetails, PlacesError } from "@/lib/lead-research/google-places";
+import { expireSearchJobs, processLeadSearchJob } from "@/lib/lead-research/search-jobs";
+import { SEARCH_JOB_TIMEOUT_MS } from "@/lib/lead-research/run-search-job";
 
 export async function runLeadSearchAction(id: unknown) {
   const user = await requireUser();
   if (typeof id !== "string" || !id || id.length > 128) return { success: false as const, error: "notEditable" as const };
   const key = process.env.GOOGLE_PLACES_API_KEY;
   if (!key?.trim()) return { success: false as const, error: "googleNotConfigured" as const };
+  await expireSearchJobs(user);
   const search = await prisma.leadSearch.findFirst({ where: { id, ...leadSearchScope(user) } });
   if (!search) return { success: false as const, error: "notEditable" as const };
   if (search.radiusKm > 50) return { success: false as const, error: "googleRadius" as const };
-  const startedAt = new Date();
-  const staleBefore = new Date(startedAt.getTime() - 120_000);
-  const claim = await prisma.leadSearch.updateMany({
-    where: {
-      id, ...leadSearchScope(user), updatedAt: search.updatedAt,
-      OR: [{ status: { in: ["DRAFT", "FAILED", "COMPLETED"] } }, { status: "RUNNING", updatedAt: { lt: staleBefore } }],
-    },
-    data: { status: "RUNNING", updatedAt: startedAt },
-  });
-  if (!claim.count) return { success: false as const, error: "googleBusy" as const };
-  const runWhere = { id, status: "RUNNING" as const, updatedAt: startedAt };
-  try {
-    const result = await searchGooglePlaces(search, key);
-    const saved = await prisma.leadSearch.updateMany({
-      where: runWhere, data: { status: "COMPLETED", googlePlaceIds: result.results.map((place) => place.id) },
+  const runId = randomUUID();
+  const admission = await prisma.$transaction(async (tx) => {
+    // Serialize admissions across Vercel instances without holding a transaction during Google calls.
+    await tx.$queryRaw`SELECT pg_advisory_xact_lock(20261020, 4)::text`;
+    const active = { status: { in: ["QUEUED", "RUNNING"] as ("QUEUED" | "RUNNING")[] }, startedAt: { gte: new Date(Date.now() - SEARCH_JOB_TIMEOUT_MS) } };
+    if (await tx.leadSearch.count({ where: { ...active, userId: search.userId } }) > 0) return "busy";
+    if (await tx.leadSearch.count({ where: active }) >= 3) return "full";
+    const claim = await tx.leadSearch.updateMany({
+      where: { id, ...leadSearchScope(user), updatedAt: search.updatedAt, status: { in: ["DRAFT", "FAILED", "COMPLETED", "CANCELLED"] } },
+      data: { status: "QUEUED", runId, startedAt: new Date(), finishedAt: null, phase: "QUEUED", processedPages: 0, googlePlaceIds: [], errorCode: null, resultLimit: false },
     });
-    if (!saved.count) return { success: false as const, error: "googleBusy" as const };
-    revalidatePath("/[locale]/lead-research", "page");
-    return { success: true as const, ...result };
+    return claim.count ? "accepted" : "busy";
+  });
+  if (admission !== "accepted") return { success: false as const, error: admission === "full" ? "jobCapacity" as const : "googleBusy" as const };
+  after(async () => {
+    try { await processLeadSearchJob(id, runId); }
+    catch { console.error("Lead search background job interrupted", runId); }
+  });
+  revalidatePath("/[locale]/lead-research", "page");
+  return { success: true as const, runId };
+}
+
+export async function cancelLeadSearchAction(id: unknown) {
+  const user = await requireUser();
+  if (typeof id !== "string" || !id || id.length > 128) return { success: false as const };
+  const result = await prisma.leadSearch.updateMany({ where: { id, ...leadSearchScope(user), status: { in: ["QUEUED", "RUNNING"] } }, data: { status: "CANCELLED", phase: "DONE", finishedAt: new Date() } });
+  revalidatePath("/[locale]/lead-research", "page");
+  return { success: result.count > 0 };
+}
+
+export async function loadLeadSearchResultsAction(id: unknown, offset: unknown) {
+  const user = await requireUser();
+  if (typeof id !== "string" || !id || id.length > 128 || typeof offset !== "number" || !Number.isInteger(offset) || offset < 0 || offset > 60) return { success: false as const, error: "invalidInput" as const };
+  const search = await prisma.leadSearch.findFirst({ where: { id, ...leadSearchScope(user), status: { in: ["COMPLETED", "FAILED", "CANCELLED"] } } });
+  if (!search) return { success: false as const, error: "notEditable" as const };
+  const ids = search.googlePlaceIds.slice(offset, offset + 10);
+  if (!ids.length) return { success: true as const, results: [], partialError: null, resolvedLocation: search.location, resultLimit: search.resultLimit, nextOffset: offset, total: search.googlePlaceIds.length, runId: search.runId };
+  try {
+    const result = await loadGooglePlaceDetails(ids, process.env.GOOGLE_PLACES_API_KEY);
+    return { success: true as const, ...result, resolvedLocation: search.location, resultLimit: search.resultLimit, nextOffset: offset + result.processedCount, total: search.googlePlaceIds.length, runId: search.runId };
   } catch (error) {
-    await prisma.leadSearch.updateMany({ where: runWhere, data: { status: "FAILED" } });
-    revalidatePath("/[locale]/lead-research", "page");
     return { success: false as const, error: error instanceof PlacesError ? error.code : "googleUnavailable" as const };
   }
 }
@@ -65,7 +89,7 @@ export async function updateLeadSearchAction(id: unknown, input: unknown): Promi
   if (!data || !where) return { success: false, error: "invalidInput" };
   try {
     // Ownership and inactive state are checked in the same query as the write.
-    const result = await prisma.leadSearch.updateMany({ where, data: { ...data, status: "DRAFT", googlePlaceIds: [] } });
+    const result = await prisma.leadSearch.updateMany({ where, data: { ...data, status: "DRAFT", googlePlaceIds: [], runId: null, startedAt: null, finishedAt: null, phase: null, processedPages: 0, errorCode: null, resultLimit: false } });
     if (result.count === 0) return { success: false, error: "notEditable" };
   } catch {
     return { success: false, error: "saveError" };

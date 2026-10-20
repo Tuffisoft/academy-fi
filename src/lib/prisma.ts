@@ -7,6 +7,8 @@ function supportsCurrentSchema(client: PrismaClient | undefined): client is Pris
   return Boolean(
     typeof client?.leadSearch?.findMany === "function" &&
     client?.leadSearch?.fields?.googlePlaceIds &&
+    client?.leadSearch?.fields?.runId &&
+    typeof client?.savedLead?.findMany === "function" &&
     typeof client?.chatMembership?.findMany === "function" &&
     typeof client?.directConversation?.findMany === "function" &&
     typeof client?.friendship?.findMany === "function" &&

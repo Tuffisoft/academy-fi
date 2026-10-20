@@ -1,12 +1,61 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
-import { distanceKm, PlacesError, safePlacesUrl, searchGooglePlaces } from "../src/lib/lead-research/google-places";
+import { distanceKm, loadGooglePlaceDetails, PlacesError, safePlacesUrl, searchGooglePlaces } from "../src/lib/lead-research/google-places";
 
 const input = { location: "Hamburg", industry: "Elektriker", radiusKm: 20, maxResults: 100, analyzeWebsites: true };
 const center = { latitude: 53.55, longitude: 9.99 };
 const place = (id: string, extra: Record<string, unknown> = {}) => ({ id, displayName: { text: `Business ${id}` }, location: center, ...extra });
 const json = (data: unknown, status = 200) => new Response(JSON.stringify(data), { status, headers: { "Content-Type": "application/json" } });
 const location = () => json({ places: [{ location: center, formattedAddress: "Hamburg, Deutschland" }] });
+
+test("background search reports actual pages and IDs without requesting contact fields", async () => {
+  const progress: unknown[] = [];
+  let calls = 0;
+  await searchGooglePlaces(input, "key", async (_url, init) => {
+    calls++;
+    if (calls === 1) return location();
+    const mask = (init.headers as Record<string, string>)["X-Goog-FieldMask"];
+    assert.ok(!mask.includes("websiteUri"));
+    assert.ok(!mask.includes("PhoneNumber"));
+    return json({ places: [place("a")] });
+  }, async (data) => { progress.push(data); }, false);
+  assert.deepEqual(progress, [
+    { phase: "LOCATING", processedPages: 0, placeIds: [] },
+    { phase: "SEARCHING", processedPages: 0, placeIds: [] },
+    { phase: "SEARCHING", processedPages: 1, placeIds: ["a"] },
+  ]);
+});
+
+test("explicit detail retrieval is bounded to ten requests and three concurrent requests", async () => {
+  let active = 0;
+  let maximum = 0;
+  let calls = 0;
+  const result = await loadGooglePlaceDetails(Array.from({ length: 20 }, (_, index) => `id-${index}`), "key", async (url, init) => {
+    calls++;
+    active++;
+    maximum = Math.max(maximum, active);
+    await Promise.resolve();
+    active--;
+    assert.equal(init.cache, "no-store");
+    return json(place(decodeURIComponent(url.split("/").at(-1)!)));
+  });
+  assert.equal(calls, 10);
+  assert.ok(maximum <= 3);
+  assert.equal(result.processedCount, 10);
+  assert.equal(result.results.length, 10);
+});
+
+test("detail quota errors stop subsequent batches and retain successful responses", async () => {
+  let calls = 0;
+  const result = await loadGooglePlaceDetails(["a", "b", "c", "d", "e"], "key", async (url) => {
+    calls++;
+    return url.endsWith("/a") ? json(place("a")) : json({}, 429);
+  });
+  assert.equal(calls, 3);
+  assert.equal(result.processedCount, 3);
+  assert.equal(result.results.length, 1);
+  assert.equal(result.partialError, "googleQuota");
+});
 
 test("Google search uses server headers, bounded pagination, radius filtering and ID deduplication", async () => {
   const calls: RequestInit[] = [];

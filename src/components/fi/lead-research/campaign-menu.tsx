@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useTranslations } from "next-intl";
-import { Ellipsis, Pencil, Play, Trash2 } from "lucide-react";
+import { Ellipsis, Eye, Pencil, Play, Trash2 } from "lucide-react";
 import type { LeadSearchSummary } from "@/lib/lead-research/types";
 import { isLeadSearchMutable } from "@/lib/lead-research/search-input";
 import { Button } from "@/components/ui/button";
@@ -10,7 +10,7 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSepara
 import { LeadSearchDialog } from "./lead-search-dialog";
 import { DeleteSearchDialog } from "./delete-search-dialog";
 
-export function CampaignMenu({ search, onRun, running }: { search: LeadSearchSummary; onRun: (id: string) => void; running: boolean }) {
+export function CampaignMenu({ search, onRun, onShow, running }: { search: LeadSearchSummary; onRun: (id: string) => void; onShow: (id: string) => void; running: boolean }) {
   const t = useTranslations("leadResearch");
   const [dialog, setDialog] = useState<"edit" | "delete" | null>(null);
 
@@ -18,7 +18,8 @@ export function CampaignMenu({ search, onRun, running }: { search: LeadSearchSum
     <DropdownMenu>
       <DropdownMenuTrigger render={<Button variant="ghost" size="icon-sm" aria-label={t("actionsFor", { location: search.location, industry: search.industry })}><Ellipsis aria-hidden="true" /></Button>} />
       <DropdownMenuContent align="end">
-        <DropdownMenuItem disabled={running || search.status === "QUEUED"} onClick={() => onRun(search.id)}><Play aria-hidden="true" />{t("runSearch")}</DropdownMenuItem>
+        <DropdownMenuItem disabled={running || search.status === "QUEUED" || search.status === "RUNNING"} onClick={() => onRun(search.id)}><Play aria-hidden="true" />{t("runSearch")}</DropdownMenuItem>
+        <DropdownMenuItem disabled={search.status === "QUEUED" || search.status === "RUNNING" || search.resultCount === 0} onClick={() => onShow(search.id)}><Eye aria-hidden="true" />{t("jobShowResults")}</DropdownMenuItem>
         <DropdownMenuSeparator />
         <DropdownMenuItem disabled={running || !isLeadSearchMutable(search.status)} onClick={() => setDialog("edit")}><Pencil aria-hidden="true" />{t("edit")}</DropdownMenuItem>
         <DropdownMenuSeparator />

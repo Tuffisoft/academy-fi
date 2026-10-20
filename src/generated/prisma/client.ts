@@ -112,6 +112,11 @@ export type User = Prisma.UserModel
  */
 export type LeadSearch = Prisma.LeadSearchModel
 /**
+ * Model SavedLead
+ * 
+ */
+export type SavedLead = Prisma.SavedLeadModel
+/**
  * Model Session
  * 
  */

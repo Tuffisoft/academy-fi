@@ -194,6 +194,7 @@ model User {
   accounts            Account[]
   sessions            Session[]
   leadSearches        LeadSearch[]
+  savedLeads          SavedLead[]
 
   @@map("user")
 }
@@ -218,11 +219,33 @@ model LeadSearch {
   analyzeWebsites Boolean          @default(true)
   status          LeadSearchStatus @default(DRAFT)
   googlePlaceIds  String[]         @default([])
+  savedLeads      SavedLead[]
+  runId           String?
+  startedAt       DateTime?
+  finishedAt      DateTime?
+  phase           String?          @db.VarChar(20)
+  processedPages  Int              @default(0)
+  errorCode       String?          @db.VarChar(40)
+  resultLimit     Boolean          @default(false)
   createdAt       DateTime         @default(now())
   updatedAt       DateTime         @updatedAt
 
   @@index([userId, createdAt])
   @@index([createdAt])
+}
+
+model SavedLead {
+  id             String      @id @default(cuid())
+  userId         String
+  user           User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  placeId        String      @db.VarChar(512)
+  sourceSearchId String?
+  sourceSearch   LeadSearch? @relation(fields: [sourceSearchId], references: [id], onDelete: SetNull)
+  createdAt      DateTime    @default(now())
+
+  @@unique([userId, placeId])
+  @@index([userId, createdAt])
+  @@index([sourceSearchId])
 }
 
 model Session {

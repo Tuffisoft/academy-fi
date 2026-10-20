@@ -20,6 +20,7 @@ export const GOOGLE_MAX_RADIUS_KM = 50;
 const ENDPOINT = "https://places.googleapis.com/v1/places:searchText";
 const RESULT_FIELDS = "places.id,places.displayName,places.formattedAddress,places.location,places.websiteUri,places.nationalPhoneNumber,places.googleMapsUri,places.attributions,nextPageToken";
 type Fetcher = (url: string, init: RequestInit) => Promise<Response>;
+export type SearchProgress = { phase: "LOCATING" | "SEARCHING"; processedPages: number; placeIds: string[] };
 type Point = { latitude: number; longitude: number };
 type RawPlace = {
   id?: unknown; displayName?: { text?: unknown }; formattedAddress?: unknown;
@@ -47,7 +48,7 @@ export function distanceKm(a: Point, b: Point) {
   return 6371.0088 * 2 * Math.asin(Math.sqrt(Math.min(1, Math.max(0, h))));
 }
 
-export async function searchGooglePlaces(input: LeadSearchInput, key: string | undefined, fetcher: Fetcher = fetch) {
+export async function searchGooglePlaces(input: LeadSearchInput, key: string | undefined, fetcher: Fetcher = fetch, onProgress?: (progress: SearchProgress) => Promise<void>, includeContactDetails = true) {
   if (!key?.trim()) throw new PlacesError("googleNotConfigured");
   if (input.radiusKm > GOOGLE_MAX_RADIUS_KM) throw new PlacesError("googleRadius");
 
@@ -71,6 +72,7 @@ export async function searchGooglePlaces(input: LeadSearchInput, key: string | u
     return result;
   }
 
+  await onProgress?.({ phase: "LOCATING", processedPages: 0, placeIds: [] });
   const centerResponse = await request({ textQuery: input.location, pageSize: 1, languageCode: "de" }, "places.location,places.displayName,places.formattedAddress");
   const centerPlace = centerResponse.places?.[0];
   if (!point(centerPlace?.location)) throw new PlacesError("googleLocation");
@@ -79,6 +81,7 @@ export async function searchGooglePlaces(input: LeadSearchInput, key: string | u
   const seen = new Set<string>();
   let nextPageToken: string | null = null;
   let partialError: PlacesErrorCode | null = null;
+  await onProgress?.({ phase: "SEARCHING", processedPages: 0, placeIds: [] });
 
   // Circle bias is followed by the user's radius filter, preserving Google's ordering.
   // Up to one location lookup and three business-search requests per explicit run.
@@ -89,7 +92,7 @@ export async function searchGooglePlaces(input: LeadSearchInput, key: string | u
         textQuery: input.industry, pageSize: Math.min(20, input.maxResults), languageCode: "de",
         locationBias: { circle: { center, radius: input.radiusKm * 1000 } },
         ...(nextPageToken ? { pageToken: nextPageToken } : {}),
-      }, RESULT_FIELDS);
+      }, includeContactDetails ? RESULT_FIELDS : "places.id,places.displayName,places.location,nextPageToken");
     } catch (error) {
       if (!(error instanceof PlacesError) || results.length === 0) throw error;
       partialError = error.code;
@@ -108,6 +111,7 @@ export async function searchGooglePlaces(input: LeadSearchInput, key: string | u
       if (results.length >= input.maxResults) break;
     }
     nextPageToken = text(data.nextPageToken);
+    await onProgress?.({ phase: "SEARCHING", processedPages: page + 1, placeIds: results.map((result) => result.id) });
     if (!nextPageToken || results.length >= input.maxResults) break;
   }
   return {
@@ -115,4 +119,40 @@ export async function searchGooglePlaces(input: LeadSearchInput, key: string | u
     resolvedLocation: text(centerPlace.formattedAddress) ?? text(centerPlace.displayName?.text) ?? input.location,
     resultLimit: input.maxResults > GOOGLE_MAX_RESULTS || Boolean(nextPageToken && results.length < input.maxResults),
   };
+}
+
+export async function loadGooglePlaceDetails(ids: string[], key: string | undefined, fetcher: Fetcher = fetch) {
+  if (!key?.trim()) throw new PlacesError("googleNotConfigured");
+  const results: PlaceResult[] = [];
+  let partialError: PlacesErrorCode | null = null;
+  let processedCount = 0;
+  const fields = "id,displayName,formattedAddress,websiteUri,nationalPhoneNumber,googleMapsUri,attributions";
+  // Batches of three, at most ten explicitly requested Places Details calls.
+  for (let offset = 0; offset < Math.min(ids.length, 10); offset += 3) {
+    const batch = await Promise.all(ids.slice(offset, Math.min(offset + 3, 10)).map(async (id) => {
+      try {
+        const response = await fetcher(`https://places.googleapis.com/v1/places/${encodeURIComponent(id)}`, {
+          method: "GET", cache: "no-store", signal: AbortSignal.timeout(10000),
+          headers: { "X-Goog-Api-Key": key!, "X-Goog-FieldMask": fields },
+        });
+        if (!response.ok) throw new PlacesError(response.status === 429 ? "googleQuota" : [401, 403].includes(response.status) ? "googleAccess" : "googleUnavailable");
+        const raw = await response.json() as RawPlace;
+        const name = text(raw?.displayName?.text);
+        if (!name || raw.id !== id) throw new PlacesError("googleResponse");
+        return { place: {
+          id, name, address: text(raw.formattedAddress), website: safePlacesUrl(raw.websiteUri), phone: text(raw.nationalPhoneNumber),
+          mapsUrl: safePlacesUrl(raw.googleMapsUri) ?? `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(name)}&query_place_id=${encodeURIComponent(id)}`,
+          attributions: Array.isArray(raw.attributions) ? raw.attributions.flatMap((a) => text(a?.provider) ? [{ name: text(a.provider)!, uri: safePlacesUrl(a.providerUri) }] : []) : [],
+        } satisfies PlaceResult, error: null };
+      } catch (error) { return { place: null, error: error instanceof PlacesError ? error.code : "googleUnavailable" as const }; }
+    }));
+    for (const item of batch) {
+      if (item.place) results.push(item.place);
+      if (item.error) partialError = item.error;
+    }
+    processedCount += batch.length;
+    if (partialError === "googleQuota" || partialError === "googleAccess") break;
+  }
+  if (results.length === 0 && partialError) throw new PlacesError(partialError);
+  return { results, partialError, processedCount };
 }

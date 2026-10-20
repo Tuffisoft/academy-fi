@@ -10,7 +10,7 @@ import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, Di
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { CampaignMenu } from "./campaign-menu";
 
-export function CampaignTable({ searches, isOwner, compact, onRun, running }: { searches: LeadSearchSummary[]; isOwner: boolean; compact: boolean; onRun: (id: string) => void; running: boolean }) {
+export function CampaignTable({ searches, isOwner, compact, onRun, onShow, running }: { searches: LeadSearchSummary[]; isOwner: boolean; compact: boolean; onRun: (id: string) => void; onShow: (id: string) => void; running: boolean }) {
   const t = useTranslations("leadResearch");
   const format = useFormatter();
   const [page, setPage] = useState(0);
@@ -51,7 +51,7 @@ export function CampaignTable({ searches, isOwner, compact, onRun, running }: { 
                 </dl>
               </DialogContent>
             </Dialog>
-            <CampaignMenu search={search} onRun={onRun} running={running} />
+            <CampaignMenu search={search} onRun={onRun} onShow={onShow} running={running} />
             </div>
           </TableCell>
         </TableRow>)}
