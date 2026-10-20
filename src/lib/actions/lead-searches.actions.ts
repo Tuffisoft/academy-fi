@@ -9,6 +9,7 @@ import { leadSearchMutableScope, leadSearchScope, parseLeadSearchInput } from "@
 import { loadGooglePlaceDetails, PlacesError } from "@/lib/lead-research/google-places";
 import { expireSearchJobs, processLeadSearchJob } from "@/lib/lead-research/search-jobs";
 import { SEARCH_JOB_TIMEOUT_MS } from "@/lib/lead-research/run-search-job";
+import { queueWebsiteAudits } from "@/lib/lead-research/audit-jobs";
 
 export async function runLeadSearchAction(id: unknown) {
   const user = await requireUser();
@@ -23,16 +24,17 @@ export async function runLeadSearchAction(id: unknown) {
   const admission = await prisma.$transaction(async (tx) => {
     // Serialize admissions across Vercel instances without holding a transaction during Google calls.
     await tx.$queryRaw`SELECT pg_advisory_xact_lock(20261020, 4)::text`;
+    if (await tx.websiteAudit.count({ where: { userId: search.userId, status: { in: ["QUEUED", "RUNNING"] } } })) return "auditing";
     const active = { status: { in: ["QUEUED", "RUNNING"] as ("QUEUED" | "RUNNING")[] }, startedAt: { gte: new Date(Date.now() - SEARCH_JOB_TIMEOUT_MS) } };
     if (await tx.leadSearch.count({ where: { ...active, userId: search.userId } }) > 0) return "busy";
     if (await tx.leadSearch.count({ where: active }) >= 3) return "full";
     const claim = await tx.leadSearch.updateMany({
       where: { id, ...leadSearchScope(user), updatedAt: search.updatedAt, status: { in: ["DRAFT", "FAILED", "COMPLETED", "CANCELLED"] } },
-      data: { status: "QUEUED", runId, startedAt: new Date(), finishedAt: null, phase: "QUEUED", processedPages: 0, googlePlaceIds: [], errorCode: null, resultLimit: false },
+      data: { status: "QUEUED", runId, analyzeWebsites: true, startedAt: new Date(), finishedAt: null, phase: "QUEUED", processedPages: 0, googlePlaceIds: [], errorCode: null, resultLimit: false },
     });
     return claim.count ? "accepted" : "busy";
   });
-  if (admission !== "accepted") return { success: false as const, error: admission === "full" ? "jobCapacity" as const : "googleBusy" as const };
+  if (admission !== "accepted") return { success: false as const, error: admission === "auditing" ? "auditBusy" as const : admission === "full" ? "jobCapacity" as const : "googleBusy" as const };
   after(async () => {
     try { await processLeadSearchJob(id, runId); }
     catch { console.error("Lead search background job interrupted", runId); }
@@ -57,6 +59,11 @@ export async function loadLeadSearchResultsAction(id: unknown, offset: unknown) 
   const ids = search.googlePlaceIds.slice(offset, offset + 10);
   if (!ids.length) return { success: true as const, results: [], partialError: null, resolvedLocation: search.location, resultLimit: search.resultLimit, nextOffset: offset, total: search.googlePlaceIds.length, runId: search.runId };
   try {
+    if (offset === 0) {
+      // Older results acquire their missing audits without another business search.
+      await queueWebsiteAudits(search.userId, search.googlePlaceIds);
+      revalidatePath("/[locale]/lead-research", "page");
+    }
     const result = await loadGooglePlaceDetails(ids, process.env.GOOGLE_PLACES_API_KEY);
     return { success: true as const, ...result, resolvedLocation: search.location, resultLimit: search.resultLimit, nextOffset: offset + result.processedCount, total: search.googlePlaceIds.length, runId: search.runId };
   } catch (error) {
@@ -72,7 +79,7 @@ export async function createLeadSearchAction(input: unknown): Promise<
   if (!data) return { success: false, error: "invalidInput" };
 
   try {
-    await prisma.leadSearch.create({ data: { ...data, userId: user.id, status: "DRAFT" } });
+    await prisma.leadSearch.create({ data: { ...data, analyzeWebsites: true, userId: user.id, status: "DRAFT" } });
   } catch {
     return { success: false, error: "saveError" };
   }
@@ -89,7 +96,7 @@ export async function updateLeadSearchAction(id: unknown, input: unknown): Promi
   if (!data || !where) return { success: false, error: "invalidInput" };
   try {
     // Ownership and inactive state are checked in the same query as the write.
-    const result = await prisma.leadSearch.updateMany({ where, data: { ...data, status: "DRAFT", googlePlaceIds: [], runId: null, startedAt: null, finishedAt: null, phase: null, processedPages: 0, errorCode: null, resultLimit: false } });
+    const result = await prisma.leadSearch.updateMany({ where, data: { ...data, analyzeWebsites: true, status: "DRAFT", googlePlaceIds: [], runId: null, startedAt: null, finishedAt: null, phase: null, processedPages: 0, errorCode: null, resultLimit: false } });
     if (result.count === 0) return { success: false, error: "notEditable" };
   } catch {
     return { success: false, error: "saveError" };

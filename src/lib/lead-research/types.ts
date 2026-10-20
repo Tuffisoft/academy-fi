@@ -7,10 +7,13 @@ export type SavedLeadSummary = {
   sourceSearchId: string | null;
   createdAt: string;
   authorName: string;
+  location: string | null;
+  industry: string | null;
 };
 
 export type LeadSearchSummary = {
   id: string;
+  userId: string;
   location: string;
   industry: string;
   radiusKm: number;

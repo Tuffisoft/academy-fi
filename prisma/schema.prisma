@@ -195,6 +195,7 @@ model User {
   sessions            Session[]
   leadSearches        LeadSearch[]
   savedLeads          SavedLead[]
+  websiteAudits       WebsiteAudit[]
 
   @@map("user")
 }
@@ -246,6 +247,26 @@ model SavedLead {
   @@unique([userId, placeId])
   @@index([userId, createdAt])
   @@index([sourceSearchId])
+}
+
+model WebsiteAudit {
+  id           String   @id @default(cuid())
+  userId       String
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  placeId      String   @db.VarChar(512)
+  status       String   @default("QUEUED") @db.VarChar(20)
+  runToken     String
+  qualityScore Int?
+  report       Json?
+  errorCode    String?  @db.VarChar(40)
+  startedAt    DateTime?
+  checkedAt    DateTime?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  @@unique([userId, placeId])
+  @@index([userId, status])
+  @@index([status, startedAt])
 }
 
 model Session {

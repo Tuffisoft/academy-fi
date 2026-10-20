@@ -412,6 +412,7 @@ export const ModelName = {
   User: 'User',
   LeadSearch: 'LeadSearch',
   SavedLead: 'SavedLead',
+  WebsiteAudit: 'WebsiteAudit',
   Session: 'Session',
   Account: 'Account',
   Verification: 'Verification',
@@ -438,7 +439,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "weeklyAssignment" | "assignmentChecklistItem" | "taskStage" | "reflection" | "mentorFeedback" | "discussionNote" | "department" | "departmentResource" | "idea" | "ideaNote" | "dailyPlan" | "dailyPlanStage" | "user" | "leadSearch" | "savedLead" | "session" | "account" | "verification" | "directConversation" | "chatMembership" | "chatMessage" | "friendship" | "chatEncryptionKey" | "groupConversation" | "groupMembership" | "groupMessage"
+    modelProps: "weeklyAssignment" | "assignmentChecklistItem" | "taskStage" | "reflection" | "mentorFeedback" | "discussionNote" | "department" | "departmentResource" | "idea" | "ideaNote" | "dailyPlan" | "dailyPlanStage" | "user" | "leadSearch" | "savedLead" | "websiteAudit" | "session" | "account" | "verification" | "directConversation" | "chatMembership" | "chatMessage" | "friendship" | "chatEncryptionKey" | "groupConversation" | "groupMembership" | "groupMessage"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -1552,6 +1553,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    WebsiteAudit: {
+      payload: Prisma.$WebsiteAuditPayload<ExtArgs>
+      fields: Prisma.WebsiteAuditFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.WebsiteAuditFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WebsiteAuditPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.WebsiteAuditFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WebsiteAuditPayload>
+        }
+        findFirst: {
+          args: Prisma.WebsiteAuditFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WebsiteAuditPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.WebsiteAuditFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WebsiteAuditPayload>
+        }
+        findMany: {
+          args: Prisma.WebsiteAuditFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WebsiteAuditPayload>[]
+        }
+        create: {
+          args: Prisma.WebsiteAuditCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WebsiteAuditPayload>
+        }
+        createMany: {
+          args: Prisma.WebsiteAuditCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.WebsiteAuditCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WebsiteAuditPayload>[]
+        }
+        delete: {
+          args: Prisma.WebsiteAuditDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WebsiteAuditPayload>
+        }
+        update: {
+          args: Prisma.WebsiteAuditUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WebsiteAuditPayload>
+        }
+        deleteMany: {
+          args: Prisma.WebsiteAuditDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.WebsiteAuditUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.WebsiteAuditUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WebsiteAuditPayload>[]
+        }
+        upsert: {
+          args: Prisma.WebsiteAuditUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WebsiteAuditPayload>
+        }
+        aggregate: {
+          args: Prisma.WebsiteAuditAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateWebsiteAudit>
+        }
+        groupBy: {
+          args: Prisma.WebsiteAuditGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.WebsiteAuditGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.WebsiteAuditCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.WebsiteAuditCountAggregateOutputType> | number
+        }
+      }
+    }
     Session: {
       payload: Prisma.$SessionPayload<ExtArgs>
       fields: Prisma.SessionFieldRefs
@@ -2618,6 +2693,24 @@ export const SavedLeadScalarFieldEnum = {
 export type SavedLeadScalarFieldEnum = (typeof SavedLeadScalarFieldEnum)[keyof typeof SavedLeadScalarFieldEnum]
 
 
+export const WebsiteAuditScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  placeId: 'placeId',
+  status: 'status',
+  runToken: 'runToken',
+  qualityScore: 'qualityScore',
+  report: 'report',
+  errorCode: 'errorCode',
+  startedAt: 'startedAt',
+  checkedAt: 'checkedAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type WebsiteAuditScalarFieldEnum = (typeof WebsiteAuditScalarFieldEnum)[keyof typeof WebsiteAuditScalarFieldEnum]
+
+
 export const SessionScalarFieldEnum = {
   id: 'id',
   expiresAt: 'expiresAt',
@@ -3119,6 +3212,7 @@ export type GlobalOmitConfig = {
   user?: Prisma.UserOmit
   leadSearch?: Prisma.LeadSearchOmit
   savedLead?: Prisma.SavedLeadOmit
+  websiteAudit?: Prisma.WebsiteAuditOmit
   session?: Prisma.SessionOmit
   account?: Prisma.AccountOmit
   verification?: Prisma.VerificationOmit

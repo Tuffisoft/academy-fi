@@ -42,3 +42,8 @@ next-env.d.ts
 
 # docs
 /docs
+
+# Generated Workflow routes and local durable execution state
+/src/app/.well-known/workflow/
+/.workflow-data/
+/.swc

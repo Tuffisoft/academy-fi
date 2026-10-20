@@ -66,6 +66,7 @@ export const ModelName = {
   User: 'User',
   LeadSearch: 'LeadSearch',
   SavedLead: 'SavedLead',
+  WebsiteAudit: 'WebsiteAudit',
   Session: 'Session',
   Account: 'Account',
   Verification: 'Verification',
@@ -306,6 +307,24 @@ export const SavedLeadScalarFieldEnum = {
 } as const
 
 export type SavedLeadScalarFieldEnum = (typeof SavedLeadScalarFieldEnum)[keyof typeof SavedLeadScalarFieldEnum]
+
+
+export const WebsiteAuditScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  placeId: 'placeId',
+  status: 'status',
+  runToken: 'runToken',
+  qualityScore: 'qualityScore',
+  report: 'report',
+  errorCode: 'errorCode',
+  startedAt: 'startedAt',
+  checkedAt: 'checkedAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type WebsiteAuditScalarFieldEnum = (typeof WebsiteAuditScalarFieldEnum)[keyof typeof WebsiteAuditScalarFieldEnum]
 
 
 export const SessionScalarFieldEnum = {

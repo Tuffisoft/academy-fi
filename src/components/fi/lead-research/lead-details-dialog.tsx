@@ -1,0 +1,151 @@
+"use client";
+
+import { useEffect, useRef, useState } from "react";
+import { useFormatter, useTranslations } from "next-intl";
+import { Building2, CheckCircle2, Gauge, Globe, Info, Monitor, Smartphone, TriangleAlert, XCircle } from "lucide-react";
+import type { PlaceResult } from "@/lib/lead-research/google-places";
+import type { AuditSummary } from "@/lib/lead-research/audit-types";
+import type { WebsiteReport } from "@/lib/lead-research/website-quality";
+import { getWebsiteReportAction } from "@/lib/actions/website-audits.actions";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { Skeleton } from "@/components/ui/skeleton";
+import { qualityStyles, qualityTone } from "./quality-presentation";
+
+export function AuditScore({ audit }: { audit?: AuditSummary }) {
+  const t = useTranslations("leadResearch");
+  const tone = qualityTone(audit?.status === "COMPLETED" ? audit.qualityScore : null);
+  return <Badge variant="outline" className={qualityStyles[tone].badge}>
+    {audit?.status === "COMPLETED" ? audit.qualityScore === null ? t("auditIncomplete") : `${audit.qualityScore}/100` : t(`auditStatuses.${audit?.status ?? "NOT_STARTED"}`)}
+  </Badge>;
+}
+
+export function LeadDetailsDialog({ place, audit, context }: { place: PlaceResult; audit?: AuditSummary; context?: { industry: string; location: string } }) {
+  const t = useTranslations("leadResearch");
+  const format = useFormatter();
+  const [open, setOpen] = useState(false);
+  const [retry, setRetry] = useState(0);
+  const [device, setDevice] = useState<"mobile" | "desktop">("mobile");
+  const key = JSON.stringify([audit?.id, audit?.checkedAt, retry]);
+  const [snapshot, setSnapshot] = useState<{ key: string; report: WebsiteReport | null; error: boolean } | null>(null);
+  const requests = useRef(new Map<string, ReturnType<typeof getWebsiteReportAction>>());
+  const auditId = audit?.id;
+  const completed = audit?.status === "COMPLETED";
+  useEffect(() => {
+    if (!open || !completed || !auditId) return;
+    let disposed = false;
+    void Promise.resolve().then(async () => {
+      if (disposed) return;
+      let request = requests.current.get(key);
+      if (!request) { request = getWebsiteReportAction(auditId); requests.current.set(key, request); }
+      try {
+        const result = await request;
+        if (!disposed) setSnapshot({ key, report: result.success ? result.report : null, error: !result.success || !result.report });
+      } catch {
+        requests.current.delete(key);
+        if (!disposed) setSnapshot({ key, report: null, error: true });
+      }
+    });
+    return () => { disposed = true; };
+  }, [open, completed, auditId, key]);
+  const report = snapshot?.key === key ? snapshot.report : null;
+  const error = snapshot?.key === key && snapshot.error;
+  const labels = { mobilePerformance: "auditMobilePerformance", desktopPerformance: "auditDesktopPerformance", seo: "auditSeo", accessibility: "auditAccessibility", bestPractices: "auditBestPractices" } as const;
+  const tone = qualityTone(completed ? audit?.qualityScore : null);
+  const style = qualityStyles[tone];
+  const data = report?.[device];
+  const detailRows = [[t("address"), place.address ?? t("notProvided")], [t("phone"), place.phone ?? t("notProvided")], [t("industry"), context?.industry ?? t("notProvided")], [t("location"), context?.location ?? t("notProvided")]];
+  return <Dialog open={open} onOpenChange={setOpen}>
+    <DialogTrigger render={<Button variant="outline" size="sm" aria-label={t("leadDetailsFor", { name: place.name })}>{t("leadDetails")}</Button>} />
+    <DialogContent className="flex max-h-[90dvh] flex-col gap-0 overflow-hidden p-0 sm:max-w-4xl">
+      <DialogHeader className="shrink-0 border-b px-5 py-5 pr-12 sm:px-6 sm:pr-12">
+        <DialogTitle className="wrap-anywhere text-xl">{place.name}</DialogTitle>
+        <DialogDescription>{t("auditDetailsDescription")}</DialogDescription>
+      </DialogHeader>
+      <div className="min-h-0 space-y-5 overflow-y-auto p-5 sm:p-6">
+        <Card className={style.surface}>
+          <CardContent className="space-y-3">
+            <div className="flex items-center justify-between gap-3">
+              <div className="min-w-0 space-y-2">
+                <h2 className="flex items-center gap-2 text-sm font-semibold"><Gauge className={`size-4 shrink-0 ${style.text}`} aria-hidden="true" />{t("auditQuality")}</h2>
+                {tone === "unknown" ? <AuditScore audit={audit} /> : <Badge variant="outline" className={style.badge}>{t(`auditRating.${tone}`)}</Badge>}
+              </div>
+              {tone !== "unknown" && <p className={`shrink-0 text-4xl font-semibold tabular-nums tracking-tight sm:text-5xl ${style.text}`}>{audit?.qualityScore}<span className="ml-1 text-base font-normal text-muted-foreground">/100</span></p>}
+            </div>
+            <p className="text-xs leading-relaxed text-muted-foreground">{t("auditScale")}</p>
+            {audit?.checkedAt && <p className="text-xs text-muted-foreground">{t("auditCheckedAt", { date: format.dateTime(new Date(audit.checkedAt), { dateStyle: "medium", timeStyle: "short", timeZone: "Europe/Berlin" }) })}</p>}
+          </CardContent>
+        </Card>
+
+        <Card size="sm">
+          <CardHeader><CardTitle className="flex items-center gap-2 text-base"><Building2 className="size-4 text-muted-foreground" aria-hidden="true" />{t("auditBusinessDetails")}</CardTitle></CardHeader>
+          <CardContent className="space-y-4">
+            <dl className="grid gap-x-6 gap-y-4 sm:grid-cols-2">{detailRows.map(([label, value]) => <div key={label} className="min-w-0"><dt className="mb-1 text-xs text-muted-foreground">{label}</dt><dd className="wrap-anywhere text-sm font-medium">{value}</dd></div>)}</dl>
+            <div className="flex flex-wrap gap-2 border-t pt-4">
+              {place.website && <Button nativeButton={false} variant="outline" size="sm" render={<a href={place.website} target="_blank" rel="noopener noreferrer" />}><Globe aria-hidden="true" />{t("openWebsite")}</Button>}
+              <Button nativeButton={false} variant="outline" size="sm" render={<a href={place.mapsUrl} target="_blank" rel="noopener noreferrer" />}>{t("maps")}</Button>
+            </div>
+            <p className="wrap-anywhere text-xs text-muted-foreground">{t("auditPlaceId")}: {place.id}</p>
+          </CardContent>
+        </Card>
+
+        {audit?.errorCode && <p role="alert" className="rounded-lg border border-destructive/25 bg-destructive/10 p-3 text-sm text-destructive">{t(audit.errorCode)}</p>}
+        {audit?.status === "NO_WEBSITE" && <p className="rounded-lg border bg-muted/30 p-3 text-sm">{t("auditNoWebsite")}</p>}
+        {(!audit || ["QUEUED", "RUNNING"].includes(audit.status)) && <p role="status" className="text-sm text-muted-foreground">{t(audit ? "auditAutomatic" : "auditLegacy")}</p>}
+        {completed && !report && !error && <div aria-label={t("auditReportLoading")} className="space-y-3"><div className="grid grid-cols-2 gap-3 sm:grid-cols-3">{[0, 1, 2, 3, 4].map((index) => <Skeleton key={index} className="h-24 w-full" />)}</div><Skeleton className="h-40 w-full" /></div>}
+        {error && <div className="space-y-2"><p role="alert" className="text-sm text-destructive">{t("auditReportError")}</p><Button variant="outline" size="sm" onClick={() => setRetry((value) => value + 1)}>{t("retryDetails")}</Button></div>}
+
+        {report && <>
+          <section aria-label={t("auditBreakdown")} className="space-y-3">
+            <div className="flex flex-wrap items-center justify-between gap-2"><h2 className="font-semibold">{t("auditBreakdown")}</h2><p className="text-xs text-muted-foreground">{t("auditColorLegend")}</p></div>
+            <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-5">{(Object.keys(labels) as (keyof typeof labels)[]).map((part) => {
+              const partTone = qualityTone(report.parts[part]);
+              const partStyle = qualityStyles[partTone];
+              return <Card key={part} size="sm" className={partStyle.surface}>
+                <CardHeader className="gap-1"><CardTitle className="text-xs leading-relaxed text-muted-foreground">{t(labels[part])}</CardTitle></CardHeader>
+                <CardContent className="space-y-1"><p className={`text-2xl font-semibold tabular-nums ${partStyle.text}`}>{report.parts[part] ?? "—"}<span className="ml-1 text-xs font-normal text-muted-foreground">/100</span></p><p className={`text-xs ${partStyle.text}`}>{t(`auditRating.${partTone}`)}</p></CardContent>
+              </Card>;
+            })}</div>
+          </section>
+
+          <section aria-label={t("auditReport")} className="space-y-3">
+            <div className="flex flex-wrap items-center justify-between gap-3">
+              <h2 className="font-semibold">{t("auditReport")}</h2>
+              <div className="flex gap-1 rounded-lg border bg-muted/40 p-1" role="group" aria-label={t("auditDeviceSelection")}>
+                {(["mobile", "desktop"] as const).map((value) => <Button key={value} variant={device === value ? "secondary" : "ghost"} size="sm" aria-pressed={device === value} onClick={() => setDevice(value)}>
+                  {value === "mobile" ? <Smartphone aria-hidden="true" /> : <Monitor aria-hidden="true" />}{t(value === "mobile" ? "auditMobileDevice" : "auditDesktopDevice")}
+                </Button>)}
+              </div>
+            </div>
+            {data && <Card>
+              <CardHeader><CardTitle className="flex flex-wrap items-center justify-between gap-2 text-base"><span>{t(device === "mobile" ? "auditMobile" : "auditDesktop")}</span><Badge variant="outline" className={qualityStyles[data.issues.length ? "medium" : "good"].badge}>{t("auditIssueCount", { count: data.issues.length })}</Badge></CardTitle></CardHeader>
+              <CardContent className="space-y-5">
+                <dl className="grid grid-cols-2 gap-3 sm:grid-cols-4">{Object.entries(data.metrics).map(([metric, value]) => <div key={metric} className="min-w-0 rounded-lg border bg-muted/30 p-3"><dt className="mb-2 text-xs leading-relaxed text-muted-foreground">{t(`auditMetrics.${metric}`)}</dt><dd className="text-lg font-semibold tabular-nums">{value === null ? "—" : format.number(value, { maximumFractionDigits: metric === "cls" ? 3 : 0 })}{metric !== "cls" && value !== null && <span className="ml-1 text-xs font-normal text-muted-foreground">ms</span>}</dd></div>)}</dl>
+                <div className="space-y-3"><h3 className="text-sm font-semibold">{t("auditChecksHeading")}</h3><div className="grid gap-2 sm:grid-cols-2">{data.checks.map((check) => {
+                  const checkTone = check.passed === null ? "unknown" : check.passed ? "good" : "poor";
+                  const Icon = check.passed === null ? Info : check.passed ? CheckCircle2 : XCircle;
+                  return <div key={check.id} className="flex items-center justify-between gap-3 rounded-lg border p-3 text-sm"><span className="flex min-w-0 items-center gap-2"><Icon className={`size-4 shrink-0 ${qualityStyles[checkTone].text}`} aria-hidden="true" />{t(`auditChecks.${check.id}`)}</span><Badge variant="outline" className={qualityStyles[checkTone].badge}>{t(check.passed === null ? "auditNotMeasured" : check.passed ? "auditPassed" : "auditFailed")}</Badge></div>;
+                })}<div className="flex items-center justify-between gap-3 rounded-lg border p-3 text-sm"><span>HTTPS</span><Badge variant="outline" className={qualityStyles[data.https ? "good" : "poor"].badge}>{t(data.https ? "yes" : "no")}</Badge></div></div></div>
+
+                <div className="space-y-3"><h3 className="text-sm font-semibold">{t("auditIssues")}</h3>
+                  {data.issues.length === 0 && <p className={`rounded-lg border p-3 text-sm ${qualityStyles.good.surface} ${qualityStyles.good.text}`}>{t("auditNoIssues")}</p>}
+                  {data.issues.map((issue) => <Card key={issue.id} size="sm" className="gap-2 border-l-4 border-l-yellow-500 bg-yellow-500/5">
+                    <CardHeader><CardTitle className="flex items-start gap-2 text-sm leading-relaxed"><TriangleAlert className="mt-0.5 size-4 shrink-0 text-yellow-700 dark:text-yellow-300" aria-hidden="true" /><span className="min-w-0 wrap-anywhere">{issue.title}</span></CardTitle></CardHeader>
+                    <CardContent className="space-y-2">{issue.value && <Badge variant="outline" className={qualityStyles.medium.badge}>{issue.value}</Badge>}<p className="wrap-anywhere whitespace-normal text-sm leading-relaxed text-muted-foreground">{issue.description.replace(/\[([^\]]+)\]\([^)]+\)/g, "$1")}</p></CardContent>
+                  </Card>)}
+                </div>
+                {data.warnings.map((warning, index) => <p key={index} className={`rounded-lg border p-3 text-sm ${qualityStyles.medium.surface} ${qualityStyles.medium.text}`}>{warning}</p>)}
+                <p className="text-xs text-muted-foreground">PageSpeed Insights · Lighthouse {data.lighthouseVersion ?? "—"}</p>
+              </CardContent>
+            </Card>}
+          </section>
+
+          <Card size="sm" className="bg-muted/30"><CardHeader><CardTitle className="flex items-center gap-2 text-sm"><Info className="size-4 text-muted-foreground" aria-hidden="true" />{t("auditMethod")}</CardTitle></CardHeader><CardContent className="space-y-3 text-xs leading-relaxed text-muted-foreground"><p>{t("auditFormula")}</p><p className="wrap-anywhere">{t("auditMeasuredUrl", { url: report.url })}</p><p>{t("auditLimitations")}</p></CardContent></Card>
+        </>}
+        <div className="border-t pt-3 text-xs text-muted-foreground"><p>{t("googleSource")} <span translate="no">Google Maps</span></p>{place.attributions.map((a, index) => <p key={index}>{a.uri ? <a href={a.uri} target="_blank" rel="noopener noreferrer" className="underline">{a.name}</a> : a.name}</p>)}</div>
+      </div>
+    </DialogContent>
+  </Dialog>;
+}

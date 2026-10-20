@@ -117,6 +117,11 @@ export type LeadSearch = Prisma.LeadSearchModel
  */
 export type SavedLead = Prisma.SavedLeadModel
 /**
+ * Model WebsiteAudit
+ * 
+ */
+export type WebsiteAudit = Prisma.WebsiteAuditModel
+/**
  * Model Session
  * 
  */

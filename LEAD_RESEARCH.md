@@ -1,4 +1,4 @@
-# Lead-Recherche – Stand nach Schritt 4
+# Lead-Recherche – Stand nach Schritt 5
 
 ## Verhalten
 
@@ -73,4 +73,63 @@ Die Tests in `tests/search-jobs.test.ts` prüfen unter anderem doppelte Worker-A
 
 Für gespeicherte Leads wurde zusätzlich eine vollständig zurückgerollte Datenbanktransaktion ausgeführt: erneutes Speichern ohne Dublette, eigene/Owner-Sichtbarkeit, verweigertes Entfernen fremder Einträge durch Praktikanten, Entfernen eigener Einträge und Erhalt nach Kampagnenlöschung. Es verbleiben keine Testdaten. Schema- und Typprüfung sowie alle 52 bestehenden Tests sind erfolgreich; ESLint meldet nur bestehende Warnungen außerhalb der Lead-Recherche. Eine Browserprüfung der neuen Oberfläche wurde hier nicht durchgeführt.
 
-Nächster Schritt: Website-Analyse.
+## Automatische Website-Prüfung
+
+Die aktuelle Nutzerentscheidung ersetzt den früher vorgeschlagenen Verbesserungsscore: **0–100 misst Website-Qualität, niedriger bedeutet schlechter.** Alle neuen Google-Treffer erhalten automatisch einen Prüfauftrag, unabhängig von einer manuellen Lead-Auswahl. Die bisher optionale Checkbox ist entfallen; auch ältere Kampagnen werden beim nächsten Start mit Website-Prüfung ausgeführt.
+
+Für ältere Treffer werden beim ersten Laden der Firmendaten fehlende Prüfaufträge ergänzt, ohne eine erneute Unternehmenssuche. Dabei werden vorhandene Berichte und fehlgeschlagene Prüfungen nicht automatisch erneut ausgeführt. Eine neue explizite Google-Suche prüft ihre Treffer erneut. Bereits wartende oder laufende Prüfungen desselben Nutzers und derselben Place-ID werden geteilt.
+
+Der Google-Suchlauf und seine Prüfaufträge werden atomar in der Datenbank sichtbar. Anschließend übernimmt Vercel Workflow SDK 5.2.2 die dauerhafte Verarbeitung in einzelnen Schritten. Maximal drei Website-Prüfungen laufen gleichzeitig, auch über mehrere Serverinstanzen hinweg; eine PostgreSQL-Advisory-Lock-Transaktion sichert die Zulassung. Je Prüfung: ein zusätzlicher Places-Details-Aufruf zur aktuellen Website-Auflösung und zwei PageSpeed-Insights-Aufrufe (Mobile und Desktop), beide mit 75 Sekunden Timeout. Websites ohne angegebene URL erhalten `NO_WEBSITE` ohne PageSpeed-Abruf. Der App-Server ruft keine beliebigen Unternehmens-URLs selbst ab.
+
+Alle vier Lighthouse-Kategorien werden angefordert. Der Qualitätsscore ist die gerundete gewichtete Summe:
+
+| Teilwert | Gewicht |
+| --- | ---: |
+| Mobile Ladeleistung | 40 % |
+| Desktop-Ladeleistung | 20 % |
+| SEO-Grundlagen, Mittelwert beider Geräte | 20 % |
+| Barrierefreiheit, Mittelwert beider Geräte | 10 % |
+| Technische Best Practices, Mittelwert beider Geräte | 10 % |
+
+Die Teilwerte sind gerundete Lighthouse-Kategorie-Scores von 0 bis 100. Fehlt ein Teilwert, bleibt der Gesamtscore NULL; verfügbare Messwerte bleiben im Teilbericht sichtbar. Ein Anbieterfehler, ein blockierter oder nicht erreichbarer Aufruf wird nicht als 0 Punkte ausgegeben. Mobile Messung bedeutet eine Lighthouse-Labormessung, keine vollständige manuelle Prüfung der Mobilfreundlichkeit. Die Automatik prüft die angegebene Einstiegsseite; sie ist kein vollständiger Crawl, kein KI-Designurteil und keine umfassende Sicherheits-, Rechts- oder Kontaktqualitätsprüfung.
+
+Die Tabellen zeigen Status und Qualitätsscore. „Lead-Details“ öffnet alle aktuell verfügbaren Firmendaten, Herkunftshinweise, Suchkontext (soweit noch vorhanden), Website-/Maps-Links sowie den gespeicherten Bericht mit Teilwerten, Formel, LCP/FCP/TBT/CLS, HTTPS, ausgewählten SEO-/Viewport-Prüfungen, bis zu 30 bewerteten Auffälligkeiten je Gerät, Anbieterwarnungen und Messzeitpunkt. Nicht mitgelieferte Messungen erscheinen als solche. Das Öffnen eines bestehenden Berichts löst keine erneute Website-Prüfung aus. Firmeninformationen werden weiterhin ausschließlich live angezeigt; der technische Bericht enthält die von PageSpeed gemeldete geprüfte Zielseite, aber keine Google-Firmennamen, Adressen oder Telefonnummern.
+
+Die Übersicht nutzt echte Durchschnitts- und Verteilungswerte: Qualität unter 40 = hohes, 40–69 = mittleres, ab 70 = geringes technisches Verbesserungspotenzial. Das ist keine Aussage über Kaufbereitschaft. Owner sehen alle Berichte, Praktikanten nur ihre eigenen. Gespeicherte Leads behalten ihren Bericht auch bei späterer Kampagnenlöschung.
+
+Prüfschritte werden nicht automatisch wiederholt (`maxRetries = 0`). Ein doppelter Zustellversuch kann dieselbe Prüfung nur einmal beanspruchen. Run-Tokens schützen gegen verspätete Ergebnisse. Unterbrochene laufende Prüfungen werden beim nächsten Statusabruf nach zwei Minuten als fehlgeschlagen sichtbar; länger als 90 Minuten wartende Aufträge ebenfalls. Fehler einzelner Websites stoppen nicht die übrigen Prüfungen. Solange für einen Kampagnen-Ersteller Prüfungen warten oder laufen, ist eine weitere Unternehmenssuche für diesen Ersteller gesperrt. Nach Abschluss des Google-Suchlaufs betrifft dessen bisheriger Abbruch-Button nicht die separaten Website-Prüfungen.
+
+### Einrichtung und Betrieb
+
+1. Im Google-Cloud-Projekt die **PageSpeed Insights API** aktivieren. Für regelmäßige automatische Aufrufe einen passenden serverseitigen Schlüssel als `PAGESPEED_API_KEY` hinterlegen; nicht als `NEXT_PUBLIC_` und nicht im Chat. Ohne Schlüssel versucht die Integration den von Google unterstützten anonymen Abruf, dessen Kontingent nicht garantiert ist. Der vorhandene Places-Schlüssel wird dafür nicht automatisch wiederverwendet.
+2. Entwicklungsserver nach der Änderung neu starten. Auf Vercel beide Schlüssel als Umgebungsvariablen hinterlegen und neu deployen. Fluid Compute aktivieren; Workflow übernimmt dort seine dauerhaften Fortsetzungen. Ein Deployment wurde durch diese Implementierung nicht ausgelöst.
+3. Lokal aktiviert `withWorkflow` die Workflow-Routen und den lokalen Ausführungszustand. Der bestehende Proxy-Matcher schließt Pfade mit Punkt bereits aus und erfasst `/.well-known/workflow/` nicht. Generierte Routen und lokale Workflow-Daten sind ignoriert.
+4. Nach Start einer Google-Suche läuft die Prüfung auch nach einem Browserwechsel weiter. Die Oberfläche fragt nur internen Status und Scores ab. Ein Bericht entsteht erst nach den tatsächlichen Anbieterantworten.
+
+Die zusätzliche Migration `20261021000000_add_website_audits` wurde gezielt angewendet und registriert, ohne bestehende Daten zu ändern. `WebsiteAudit` speichert pro Nutzer/Place-ID Status, Run-Token, Score, normalisierten technischen Bericht und Zeitpunkte. Datenbank-Constraints begrenzen Statuswerte und Scores. Die Registrierung wurde nach einer vorübergehend belegten Prisma-Migrationssperre erfolgreich wiederholt.
+
+### Prüfungen dieses Schritts
+
+Alle 60 Tests, Typprüfung, Prisma-Schema-Prüfung und ESLint für die geänderten Komponenten sind erfolgreich. Die acht neuen Tests prüfen Score-Richtung/Gewichte, fehlende Werte, URL-Begrenzung, beide Geräte und Kategorien, normalisierte Speicherdaten, Anbieterfehler ohne automatische Wiederholung, doppelte Worker und Websites ohne URL. Zusätzlich wurde eine vollständig zurückgerollte Datenbanktransaktion für Berichtsspeicherung, Nutzer-/Owner-Sichtbarkeit, doppelte Claims, alte Run-Tokens und die Kapazitätssperre ausgeführt.
+
+Der Produktionsbuild einschließlich der Workflow-Bündel ist erfolgreich. Der vorhandene Windows-SWC-Standardcache hatte ungeeignete Zugriffsrechte; für den Build wurde temporär der dokumentierte Cache-Override `SWC_NATIVE_BINDING_CACHE=C:\Users\Betz\.cache\academy-fi-swc` verwendet. Bestehende Berechtigungen wurden nicht geändert. Die neu hinzugekommene verwundbare Nanoid-Abhängigkeit von Workflow wurde innerhalb derselben Hauptversion auf eine gepatchte Version eingeschränkt; übrige bestehende Paketwarnungen wurden nicht durch pauschale Updates verändert.
+
+Ein lokaler Workflow wurde zusätzlich vollständig über den laufenden Entwicklungsserver gestartet und beendet. Er verwendete eine nicht existierende Prüf-ID und endete vor den Google-Providern; damit wurden Workflow-Start, Fortsetzung, Schritt-Aufruf und Abschluss ohne Google-Gebühren geprüft. Die temporäre Testroute wurde anschließend entfernt.
+
+Zum Prüfzeitpunkt war `PAGESPEED_API_KEY` noch nicht konfiguriert; der Nutzer hinterlegt ihn lokal. Daher wurden weder eine echte Massenprüfung noch ein Vercel-Live-Lauf durchgeführt. Die Provider-Tests verwenden simulierte Antworten und verursachen keine Google-Gebühren.
+
+Anbieterreferenzen: [PageSpeed API](https://developers.google.com/speed/docs/insights/v5/get-started), [PageSpeed-Parameter](https://developers.google.com/speed/docs/insights/v5/reference/pagespeedapi/runpagespeed), [Workflow mit Next.js](https://workflow-sdk.dev/docs/getting-started/next).
+
+### Echter Live-Test am 20. Oktober 2026
+
+Nach Hinterlegen des PageSpeed-Schlüssels und Serverneustart wurde die vorhandene einzelne Prüfung mit dem vorherigen Fehler `auditQuota` gezielt wiederholt. Der echte Worker erzeugte einen gespeicherten Bericht mit 85/100; der Bericht und die Firmendaten wurden anschließend im angemeldeten Browser verifiziert.
+
+Zusätzlich wurde über die Oberfläche eine temporäre Kampagne mit Geroda / Würzburger Karl-Straub-Haus / 20 km / einem Treffer angelegt und per Play-Button gestartet. Google fand den bestehenden gespeicherten Lead. Ohne manuellen Analysestart wurde der Bericht neu erstellt und gespeichert: 83/100, Mobile 63, Desktop 90, SEO 100, Barrierefreiheit 96 und Best Practices 98. Im bereits geöffneten Detailfenster wechselte „Wird geprüft“ automatisch zum vollständigen Bericht. Die Abweichung zwischen den zwei realen Messungen ist eine normale Eigenschaft der Labormessung.
+
+Die temporäre Kampagne und lokalen Diagnoseskripte wurden danach entfernt. Der zuvor gespeicherte Lead und sein neuester echter Bericht bleiben erhalten. Dies bestätigt den lokalen Ablauf mit echten Places-/PageSpeed-Antworten und Workflow-Fortsetzung, nicht eine Bereitstellung oder Prüfung auf Vercel.
+
+### Farbige Bewertungen und gegliederte Lead-Details
+
+Qualitätsbewertungen sind einheitlich eingefärbt: ab 70 grün („Gut“), 40–69 gelb („Mittel“), unter 40 rot („Schlecht“). Unbekannte oder fehlende Scores bleiben neutral. Diese Darstellung gilt für Tabellen-Badges, die Durchschnittsbewertung und alle Teilwerte im Bericht; Zahlen und Beschriftungen ergänzen die Farbe.
+
+Die Lead-Details zeigen zuerst eine hervorgehobene Gesamtbewertung, anschließend Firmendaten, farbige Teilwert-Karten und den Bericht. Mobile und Desktop sind über zwei Buttons umschaltbar. Technische Prüfungen markieren Bestanden/Auffällig/Nicht gemessen in Grün/Rot/Neutral, einzelne Auffälligkeiten stehen in gelb akzentuierten Karten. Bewertungsmethode und Grenzen stehen zusammen am Ende. Der Dialog hat einen festen Kopf und einen separat scrollenden Inhalt; die schmale Ansicht wurde ohne horizontalen Überlauf sowie mit funktionierender Geräteumschaltung geprüft. Typprüfung und ESLint für die geänderten Komponenten sind erfolgreich. Die Umgestaltung ändert weder Messwerte noch Gewichte und startet keine neue Website-Analyse.

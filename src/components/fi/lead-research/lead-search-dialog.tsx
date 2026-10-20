@@ -8,7 +8,6 @@ import { createLeadSearchAction, updateLeadSearchAction } from "@/lib/actions/le
 import type { LeadSearchSummary } from "@/lib/lead-research/types";
 import { isLeadSearchMutable, MAX_SEARCH_RESULTS } from "@/lib/lead-research/search-input";
 import { Button } from "@/components/ui/button";
-import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
@@ -41,7 +40,6 @@ export function LeadSearchDialog({ search, open: controlledOpen, onOpenChange, h
   const open = controlledOpen ?? internalOpen;
   const setOpen = onOpenChange ?? setInternalOpen;
   const [preview, setPreview] = useState<SearchPreview | null>(null);
-  const [analyzeWebsites, setAnalyzeWebsites] = useState(search?.analyzeWebsites ?? true);
   const [isPending, startTransition] = useTransition();
   const submitting = useRef(false);
   const [error, setError] = useState<string | null>(null);
@@ -54,7 +52,7 @@ export function LeadSearchDialog({ search, open: controlledOpen, onOpenChange, h
       radiusKm: Number(data.get("radiusKm")),
       industry: String(data.get("industry") ?? "").trim(),
       maxResults: Number(data.get("maxResults")),
-      analyzeWebsites,
+      analyzeWebsites: true,
     });
   }
 
@@ -74,7 +72,6 @@ export function LeadSearchDialog({ search, open: controlledOpen, onOpenChange, h
         toast.success(t(search ? "updateSuccess" : "saveSuccess"));
         setOpen(false);
         setPreview(null);
-        setAnalyzeWebsites(search?.analyzeWebsites ?? true);
       } catch {
         setError(t("saveError"));
       } finally {
@@ -91,7 +88,6 @@ export function LeadSearchDialog({ search, open: controlledOpen, onOpenChange, h
         setOpen(value);
         setPreview(null);
         setError(null);
-        setAnalyzeWebsites(search?.analyzeWebsites ?? true);
       }}
     >
       {!hideTrigger && <DialogTrigger
@@ -171,17 +167,7 @@ export function LeadSearchDialog({ search, open: controlledOpen, onOpenChange, h
           <p id="lead-result-help" className="text-xs text-muted-foreground">
             {t("resultHelp")}
           </p>
-          <div className="flex items-center gap-2">
-            <Checkbox
-              id="lead-analyze"
-              checked={analyzeWebsites}
-              onCheckedChange={(value) => {
-                setAnalyzeWebsites(value);
-                setPreview(null);
-              }}
-            />
-            <Label htmlFor="lead-analyze">{t("analyzeWebsites")}</Label>
-          </div>
+          <p className="text-sm text-muted-foreground">{t("auditAutomaticNotice")}</p>
           <p className="text-sm text-muted-foreground">{t("previewNotice")}</p>
           <Button type="submit" className="self-start">
             {t("previewButton")}

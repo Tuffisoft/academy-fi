@@ -121,7 +121,7 @@ export async function searchGooglePlaces(input: LeadSearchInput, key: string | u
   };
 }
 
-export async function loadGooglePlaceDetails(ids: string[], key: string | undefined, fetcher: Fetcher = fetch) {
+export async function loadGooglePlaceDetails(ids: string[], key: string | undefined, fetcher: Fetcher = fetch): Promise<{ results: PlaceResult[]; partialError: PlacesErrorCode | null; processedCount: number }> {
   if (!key?.trim()) throw new PlacesError("googleNotConfigured");
   const results: PlaceResult[] = [];
   let partialError: PlacesErrorCode | null = null;

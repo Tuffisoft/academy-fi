@@ -8,7 +8,7 @@ export async function getSavedLeads(): Promise<SavedLeadSummary[]> {
   const user = await requireUser();
   const leads = await prisma.savedLead.findMany({
     where: leadSearchScope(user), orderBy: [{ createdAt: "desc" }, { id: "desc" }],
-    select: { id: true, userId: true, placeId: true, sourceSearchId: true, createdAt: true, user: { select: { name: true } } },
+    select: { id: true, userId: true, placeId: true, sourceSearchId: true, createdAt: true, user: { select: { name: true } }, sourceSearch: { select: { location: true, industry: true } } },
   });
-  return leads.map(({ user: author, createdAt, ...lead }) => ({ ...lead, authorName: author.name, createdAt: createdAt.toISOString() }));
+  return leads.map(({ user: author, sourceSearch, createdAt, ...lead }) => ({ ...lead, authorName: author.name, location: sourceSearch?.location ?? null, industry: sourceSearch?.industry ?? null, createdAt: createdAt.toISOString() }));
 }

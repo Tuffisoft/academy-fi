@@ -11,8 +11,10 @@ import { Card, CardAction, CardContent, CardDescription, CardFooter, CardHeader,
 import { Skeleton } from "@/components/ui/skeleton";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { SaveLeadButton } from "./save-lead-button";
+import { AuditScore, LeadDetailsDialog } from "./lead-details-dialog";
+import type { AuditSummary } from "@/lib/lead-research/audit-types";
 
-export function SavedLeadsView({ leads, isOwner, enabled }: { leads: SavedLeadSummary[]; isOwner: boolean; enabled: boolean }) {
+export function SavedLeadsView({ leads, audits, isOwner, enabled }: { leads: SavedLeadSummary[]; audits: AuditSummary[]; isOwner: boolean; enabled: boolean }) {
   const t = useTranslations("leadResearch");
   const [page, setPage] = useState(0);
   const [retry, setRetry] = useState(0);
@@ -55,16 +57,18 @@ export function SavedLeadsView({ leads, isOwner, enabled }: { leads: SavedLeadSu
   const loading = rows.length > 0 && snapshot?.key !== requestKey;
   const places = new Map((snapshot?.key === requestKey ? snapshot.places : []).map((place) => [place.id, place]));
   const error = snapshot?.key === requestKey ? snapshot.error : null;
-  const columns = isOwner ? 6 : 5;
+  const columns = isOwner ? 8 : 7;
+  const auditByPlace = new Map(audits.map((audit) => [JSON.stringify([audit.userId, audit.placeId]), audit]));
   return <Card className="min-w-0">
     <CardHeader><CardTitle>{t("savedLeads")}</CardTitle><CardDescription>{t("savedLeadsDescription")}</CardDescription><CardAction><Badge variant="secondary">{t("leadCount", { count: leads.length })}</Badge></CardAction></CardHeader>
     <CardContent className="space-y-4">
       {error && <div className="flex flex-wrap items-center gap-3"><p role="alert" className="text-sm text-destructive">{t(error)}</p><Button variant="outline" size="sm" onClick={() => setRetry((value) => value + 1)}>{t("retryDetails")}</Button></div>}
       <Table>
-        <TableHeader><TableRow>{["company", "address", "website", "phone", ...(isOwner ? ["author"] : []), "selection"].map((key) => <TableHead key={key}>{t(key)}</TableHead>)}</TableRow></TableHeader>
+        <TableHeader><TableRow>{["company", "address", "website", "phone", ...(isOwner ? ["author"] : []), "auditQuality", "selection", "leadDetails"].map((key) => <TableHead key={key}>{t(key)}</TableHead>)}</TableRow></TableHeader>
         <TableBody>
           {rows.map((lead) => {
             const place = places.get(lead.placeId);
+            const audit = auditByPlace.get(JSON.stringify([lead.userId, lead.placeId]));
             return <TableRow key={lead.id}>
               <TableCell className="max-w-52 whitespace-normal">{loading ? <Skeleton className="h-5 w-32" /> : <>
                 <p className="wrap-anywhere font-medium">{place?.name ?? t("savedLeadUnavailable")}</p>
@@ -74,7 +78,9 @@ export function SavedLeadsView({ leads, isOwner, enabled }: { leads: SavedLeadSu
               <TableCell>{loading ? <Skeleton className="h-5 w-20" /> : place?.website ? <Button nativeButton={false} variant="link" size="sm" render={<a href={place.website} target="_blank" rel="noopener noreferrer" />}>{t("openWebsite")}</Button> : t("notProvided")}</TableCell>
               <TableCell>{loading ? <Skeleton className="h-5 w-24" /> : place?.phone ?? t("notProvided")}</TableCell>
               {isOwner && <TableCell>{lead.authorName}</TableCell>}
+              <TableCell><AuditScore audit={audit} /></TableCell>
               <TableCell><SaveLeadButton savedId={lead.id} placeId={lead.placeId} name={place?.name ?? t("savedLeads")} /></TableCell>
+              <TableCell>{loading ? <Skeleton className="h-8 w-24" /> : place ? <LeadDetailsDialog place={place} audit={audit} context={lead.location && lead.industry ? { location: lead.location, industry: lead.industry } : undefined} /> : t("notProvided")}</TableCell>
             </TableRow>;
           })}
           {rows.length === 0 && <TableRow><TableCell colSpan={columns} className="h-40 whitespace-normal text-center text-muted-foreground">{t("noSavedLeads")}</TableCell></TableRow>}

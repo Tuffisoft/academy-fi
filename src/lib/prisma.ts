@@ -9,6 +9,7 @@ function supportsCurrentSchema(client: PrismaClient | undefined): client is Pris
     client?.leadSearch?.fields?.googlePlaceIds &&
     client?.leadSearch?.fields?.runId &&
     typeof client?.savedLead?.findMany === "function" &&
+    typeof client?.websiteAudit?.findMany === "function" &&
     typeof client?.chatMembership?.findMany === "function" &&
     typeof client?.directConversation?.findMany === "function" &&
     typeof client?.friendship?.findMany === "function" &&

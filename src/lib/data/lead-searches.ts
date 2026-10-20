@@ -12,7 +12,7 @@ export async function getLeadSearches(): Promise<LeadSearchSummary[]> {
     where: leadSearchScope(user),
     orderBy: [{ createdAt: "desc" }, { id: "desc" }],
     select: {
-      id: true, location: true, industry: true, radiusKm: true, maxResults: true,
+      id: true, userId: true, location: true, industry: true, radiusKm: true, maxResults: true,
       analyzeWebsites: true, status: true, createdAt: true, googlePlaceIds: true,
       runId: true, startedAt: true, finishedAt: true, phase: true, processedPages: true, errorCode: true, resultLimit: true,
       user: { select: { name: true } },
