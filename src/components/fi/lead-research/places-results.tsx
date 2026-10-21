@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useTranslations } from "next-intl";
-import { ExternalLink } from "lucide-react";
+import { Bookmark, ExternalLink } from "lucide-react";
 import type { searchGooglePlaces } from "@/lib/lead-research/google-places";
 import type { SavedLeadSummary } from "@/lib/lead-research/types";
 import { SaveLeadButton } from "./save-lead-button";
@@ -35,15 +35,15 @@ export function PlacesResults({ result, pending, compact, searchId, savedLeads =
       <CardTitle>{t("leads")}</CardTitle>
       <CardAction><Badge variant="secondary">{t("leadCount", { count: result?.results.length ?? 0 })}</Badge></CardAction>
     </CardHeader>
-    <CardContent className="space-y-3">
+    <CardContent className="min-w-0 space-y-3">
       {result?.partialError && <p role="alert" className="text-sm text-destructive">{t("partialResults")} {t(result.partialError)}</p>}
       {!compact && <Input value={query} onChange={(event) => { setQuery(event.target.value); setPage(0); }} placeholder={t("searchLeads")} aria-label={t("searchLeads")} disabled={!result} />}
       <Table>
-        <TableHeader><TableRow>{["company", "address", "website", "phone", "auditQuality", "selection", "leadDetails"].map((key) => <TableHead key={key}>{t(key)}</TableHead>)}</TableRow></TableHeader>
+        <TableHeader><TableRow>{["company", "address", "website", "phone", "auditQuality", "selection", "leadDetails"].map((key) => <TableHead key={key} className={key === "selection" ? "w-12" : undefined}>{key === "selection" ? <><Bookmark className="size-4" aria-hidden="true" /><span className="sr-only">{t(key)}</span></> : t(key)}</TableHead>)}</TableRow></TableHeader>
         <TableBody>
           {rows.map((place) => <TableRow key={place.id}>
-            <TableCell className="max-w-52 whitespace-normal"><p className="wrap-anywhere font-medium">{place.name}</p>{place.attributions.map((a, index) => <p key={index} className="mt-1 text-xs text-muted-foreground">{a.uri ? <a href={a.uri} target="_blank" rel="noopener noreferrer" className="underline">{a.name}</a> : a.name}</p>)}</TableCell>
-            <TableCell className="max-w-56 whitespace-normal">{place.address ?? t("notProvided")}</TableCell>
+            <TableCell className="min-w-40 max-w-52 whitespace-normal"><p className="wrap-anywhere font-medium">{place.name}</p>{place.attributions.map((a, index) => <p key={index} className="mt-1 wrap-anywhere text-xs text-muted-foreground">{a.uri ? <a href={a.uri} target="_blank" rel="noopener noreferrer" className="underline">{a.name}</a> : a.name}</p>)}</TableCell>
+            <TableCell className="min-w-36 max-w-56 wrap-anywhere whitespace-normal">{place.address ?? t("notProvided")}</TableCell>
             <TableCell>{place.website ? <Button nativeButton={false} variant="link" size="sm" render={<a href={place.website} target="_blank" rel="noopener noreferrer" />}>{t("openWebsite")}<ExternalLink aria-hidden="true" /></Button> : t("notProvided")}</TableCell>
             <TableCell>{place.phone ?? t("notProvided")}</TableCell>
             <TableCell><AuditScore audit={auditsByPlace.get(place.id)} /></TableCell>

@@ -1,17 +1,19 @@
 import { isIP } from "node:net";
+import { normalizeWebsiteReport, type QualityParts, type QualityTopic } from "./website-rating";
+import { assessVisualDesign, screenshotData, type VisualDesign, type VisualOptions } from "./visual-design";
+export { calculateQuality, QUALITY_WEIGHTS, type QualityParts } from "./website-rating";
 
 export type QualityErrorCode = "auditUnavailable" | "auditTimeout" | "auditQuota" | "auditAccess" | "auditResponse" | "auditUnreachable" | "auditUnsafeUrl";
 export class QualityError extends Error {
   constructor(public readonly code: QualityErrorCode) { super(code); }
 }
-export const QUALITY_WEIGHTS = { mobilePerformance: 40, desktopPerformance: 20, seo: 20, accessibility: 10, bestPractices: 10 } as const;
-export type QualityParts = Record<keyof typeof QUALITY_WEIGHTS, number | null>;
 export type WebsiteReport = {
-  version: 1;
+  version: 1 | 2;
   checkedAt: string;
   url: string;
   qualityScore: number | null;
-  parts: QualityParts;
+  parts: QualityParts | { mobilePerformance: number | null; desktopPerformance: number | null; seo: number | null; accessibility: number | null; bestPractices: number | null };
+  visual?: VisualDesign;
   mobile: DeviceReport;
   desktop: DeviceReport;
 };
@@ -23,7 +25,7 @@ type DeviceReport = {
   https: boolean;
   metrics: { lcpMs: number | null; fcpMs: number | null; tbtMs: number | null; cls: number | null };
   checks: { id: string; passed: boolean | null }[];
-  issues: { id: string; title: string; description: string; value: string | null }[];
+  issues: { id: string; title: string; description: string; value: string | null; categories?: QualityTopic[] }[];
   warnings: string[];
   lighthouseVersion: string | null;
 };
@@ -48,17 +50,7 @@ export function publicWebsiteUrl(value: unknown): string | null {
   } catch { return null; }
 }
 
-export function calculateQuality(parts: QualityParts): number | null {
-  let total = 0;
-  for (const key of Object.keys(QUALITY_WEIGHTS) as (keyof QualityParts)[]) {
-    const value = parts[key];
-    if (value === null || !Number.isFinite(value) || value < 0 || value > 100) return null;
-    total += value * QUALITY_WEIGHTS[key] / 100;
-  }
-  return Math.round(total);
-}
-
-function parseDevice(data: unknown): { report: DeviceReport; url: string; checkedAt: string } {
+function parseDevice(data: unknown): { report: DeviceReport; url: string; checkedAt: string; screenshot: string | null } {
   const root = object(data);
   const lighthouse = object(root.lighthouseResult);
   if (object(lighthouse.runtimeError).code) throw new QualityError("auditUnreachable");
@@ -72,25 +64,29 @@ function parseDevice(data: unknown): { report: DeviceReport; url: string; checke
   const performance = getScore("performance");
   if (performance === null && Object.keys(categories).length === 0) throw new QualityError("auditResponse");
   const included = new Set<string>();
+  const membership = new Map<string, QualityTopic[]>();
   for (const key of ["performance", "seo", "accessibility", "best-practices"]) {
     const refs = object(categories[key]).auditRefs;
     if (Array.isArray(refs)) for (const ref of refs) {
       const item = object(ref);
-      if (typeof item.id === "string" && typeof item.weight === "number" && item.weight > 0) included.add(item.id);
+      if (typeof item.id === "string" && typeof item.weight === "number" && item.weight > 0) {
+        included.add(item.id);
+        membership.set(item.id, [...(membership.get(item.id) ?? []), key === "best-practices" ? "bestPractices" : key as QualityTopic]);
+      }
     }
   }
   const issues = [...included].flatMap((id) => {
     const audit = object(audits[id]);
     const title = text(audit.title, 500);
     return typeof audit.score === "number" && audit.score >= 0 && audit.score < 1 && title && ["numeric", "binary"].includes(String(audit.scoreDisplayMode))
-      ? [{ id, title, description: text(audit.description, 1500) ?? "", value: text(audit.displayValue, 200) }] : [];
+      ? [{ id, title, description: text(audit.description, 1500) ?? "", value: text(audit.displayValue, 200), categories: membership.get(id) }] : [];
   }).slice(0, 30);
   const metric = (id: string) => finite(object(audits[id]).numericValue);
   const checks = ["viewport", "document-title", "meta-description", "is-crawlable", "is-on-https"].map((id) => {
     const value = object(audits[id]).score;
     return { id, passed: value === 1 ? true : value === 0 ? false : null };
   });
-  return { url, checkedAt: new Date(checkedAt).toISOString(), report: {
+  return { url, checkedAt: new Date(checkedAt).toISOString(), screenshot: screenshotData(object(object(audits["final-screenshot"]).details).data), report: {
     performance, seo: getScore("seo"), accessibility: getScore("accessibility"), bestPractices: getScore("best-practices"),
     https: new URL(url).protocol === "https:",
     metrics: { lcpMs: metric("largest-contentful-paint"), fcpMs: metric("first-contentful-paint"), tbtMs: metric("total-blocking-time"), cls: metric("cumulative-layout-shift") },
@@ -100,7 +96,7 @@ function parseDevice(data: unknown): { report: DeviceReport; url: string; checke
 }
 
 type Fetcher = (url: string, init: RequestInit) => Promise<Response>;
-export async function inspectWebsite(website: string, key?: string, fetcher: Fetcher = fetch): Promise<WebsiteReport> {
+export async function inspectWebsite(website: string, key?: string, fetcher: Fetcher = fetch, visualOptions: VisualOptions = {}): Promise<WebsiteReport & { parts: QualityParts }> {
   const target = publicWebsiteUrl(website);
   if (!target) throw new QualityError("auditUnsafeUrl");
   async function run(strategy: "mobile" | "desktop") {
@@ -124,7 +120,7 @@ export async function inspectWebsite(website: string, key?: string, fetcher: Fet
   for (const item of results) if (item.status === "rejected") throw item.reason;
   const mobile = (results[0] as PromiseFulfilledResult<Awaited<ReturnType<typeof run>>>).value;
   const desktop = (results[1] as PromiseFulfilledResult<Awaited<ReturnType<typeof run>>>).value;
-  const average = (a: number | null, b: number | null) => a === null || b === null ? null : Math.round((a + b) / 2);
-  const parts: QualityParts = { mobilePerformance: mobile.report.performance, desktopPerformance: desktop.report.performance, seo: average(mobile.report.seo, desktop.report.seo), accessibility: average(mobile.report.accessibility, desktop.report.accessibility), bestPractices: average(mobile.report.bestPractices, desktop.report.bestPractices) };
-  return { version: 1, checkedAt: mobile.checkedAt, url: mobile.url, parts, qualityScore: calculateQuality(parts), mobile: mobile.report, desktop: desktop.report };
+  const visual = await assessVisualDesign(mobile.screenshot, visualOptions);
+  const parts: QualityParts = { performance: null, seo: null, accessibility: null, bestPractices: null, design: null };
+  return normalizeWebsiteReport({ version: 2, checkedAt: mobile.checkedAt, url: mobile.url, parts, qualityScore: null, mobile: mobile.report, desktop: desktop.report, visual });
 }

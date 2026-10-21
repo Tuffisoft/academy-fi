@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { useFormatter, useLocale, useTranslations } from "next-intl";
-import { Building2, CheckCircle2, Download, Gauge, Globe, Info, Monitor, Smartphone, TriangleAlert, XCircle } from "lucide-react";
+import { Building2, Download, Gauge, Globe } from "lucide-react";
 import type { PlaceResult } from "@/lib/lead-research/google-places";
 import type { AuditSummary } from "@/lib/lead-research/audit-types";
 import type { WebsiteReport } from "@/lib/lead-research/website-quality";
@@ -13,6 +13,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Skeleton } from "@/components/ui/skeleton";
 import { qualityStyles, qualityTone } from "./quality-presentation";
+import { WebsiteAuditOverview, WebsiteAuditResults } from "./website-audit-results";
 
 export function AuditScore({ audit }: { audit?: AuditSummary }) {
   const t = useTranslations("leadResearch");
@@ -30,7 +31,6 @@ export function LeadDetailsDialog({ place, audit, context }: { place: PlaceResul
   const [exportError, setExportError] = useState(false);
   const [open, setOpen] = useState(false);
   const [retry, setRetry] = useState(0);
-  const [device, setDevice] = useState<"mobile" | "desktop">("mobile");
   const key = JSON.stringify([audit?.id, audit?.checkedAt, retry]);
   const [snapshot, setSnapshot] = useState<{ key: string; report: WebsiteReport | null; error: boolean } | null>(null);
   const requests = useRef(new Map<string, ReturnType<typeof getWebsiteReportAction>>());
@@ -55,10 +55,8 @@ export function LeadDetailsDialog({ place, audit, context }: { place: PlaceResul
   }, [open, completed, auditId, key]);
   const report = snapshot?.key === key ? snapshot.report : null;
   const error = snapshot?.key === key && snapshot.error;
-  const labels = { mobilePerformance: "auditMobilePerformance", desktopPerformance: "auditDesktopPerformance", seo: "auditSeo", accessibility: "auditAccessibility", bestPractices: "auditBestPractices" } as const;
   const tone = qualityTone(completed ? audit?.qualityScore : null);
   const style = qualityStyles[tone];
-  const data = report?.[device];
   const detailRows = [[t("address"), place.address ?? t("notProvided")], [t("phone"), place.phone ?? t("notProvided")], [t("industry"), context?.industry ?? t("notProvided")], [t("location"), context?.location ?? t("notProvided")]];
   async function downloadPdf() {
     if (!auditId || exporting) return;
@@ -77,12 +75,12 @@ export function LeadDetailsDialog({ place, audit, context }: { place: PlaceResul
   }
   return <Dialog open={open} onOpenChange={setOpen}>
     <DialogTrigger render={<Button variant="outline" size="sm" aria-label={t("leadDetailsFor", { name: place.name })}>{t("leadDetails")}</Button>} />
-    <DialogContent className="flex max-h-[90dvh] flex-col gap-0 overflow-hidden p-0 sm:max-w-4xl">
+    <DialogContent className="flex max-h-[90dvh] flex-col gap-0 overflow-hidden p-0 sm:max-w-5xl">
       <DialogHeader className="shrink-0 border-b px-5 py-5 pr-12 sm:px-6 sm:pr-12">
         <DialogTitle className="wrap-anywhere text-xl">{place.name}</DialogTitle>
         <DialogDescription className="sr-only">{t("auditDetailsDescription")}</DialogDescription>
       </DialogHeader>
-      <div className="min-h-0 space-y-5 overflow-y-auto p-5 sm:p-6">
+      <div className="min-h-0 space-y-7 overflow-y-auto p-5 sm:p-8">
         <Card className={style.surface}>
           <CardContent className="space-y-3">
             <div className="flex items-center justify-between gap-3">
@@ -95,6 +93,8 @@ export function LeadDetailsDialog({ place, audit, context }: { place: PlaceResul
             {audit?.checkedAt && <p className="text-xs text-muted-foreground">{t("auditCheckedAt", { date: format.dateTime(new Date(audit.checkedAt), { dateStyle: "medium", timeStyle: "short", timeZone: "Europe/Berlin" }) })}</p>}
           </CardContent>
         </Card>
+
+        {report && <WebsiteAuditOverview report={report} />}
 
         <Card size="sm">
           <CardHeader><CardTitle className="flex items-center gap-2 text-base"><Building2 className="size-4 text-muted-foreground" aria-hidden="true" />{t("auditBusinessDetails")}</CardTitle></CardHeader>
@@ -118,49 +118,7 @@ export function LeadDetailsDialog({ place, audit, context }: { place: PlaceResul
             <Button variant="outline" disabled={exporting} aria-busy={exporting} onClick={downloadPdf}><Download aria-hidden="true" />{t(exporting ? "auditPdfPreparing" : "auditPdfDownload")}</Button>
             {exportError && <p role="alert" className="text-sm text-destructive">{t("auditPdfError")}</p>}
           </div>
-          <section aria-label={t("auditBreakdown")} className="space-y-3">
-            <h2 className="font-semibold">{t("auditBreakdown")}</h2>
-            <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-5">{(Object.keys(labels) as (keyof typeof labels)[]).map((part) => {
-              const partTone = qualityTone(report.parts[part]);
-              const partStyle = qualityStyles[partTone];
-              return <Card key={part} size="sm" className={partStyle.surface}>
-                <CardHeader className="gap-1"><CardTitle className="text-xs leading-relaxed text-muted-foreground">{t(labels[part])}</CardTitle></CardHeader>
-                <CardContent className="space-y-1"><p className={`text-2xl font-semibold tabular-nums ${partStyle.text}`}>{report.parts[part] ?? "—"}<span className="ml-1 text-xs font-normal text-muted-foreground">/100</span></p><p className={`text-xs ${partStyle.text}`}>{t(`auditRating.${partTone}`)}</p></CardContent>
-              </Card>;
-            })}</div>
-          </section>
-
-          <section aria-label={t("auditReport")} className="space-y-3">
-            <div className="flex flex-wrap items-center justify-between gap-3">
-              <h2 className="font-semibold">{t("auditReport")}</h2>
-              <div className="flex gap-1 rounded-lg border bg-muted/40 p-1" role="group" aria-label={t("auditDeviceSelection")}>
-                {(["mobile", "desktop"] as const).map((value) => <Button key={value} variant={device === value ? "secondary" : "ghost"} size="sm" aria-pressed={device === value} onClick={() => setDevice(value)}>
-                  {value === "mobile" ? <Smartphone aria-hidden="true" /> : <Monitor aria-hidden="true" />}{t(value === "mobile" ? "auditMobileDevice" : "auditDesktopDevice")}
-                </Button>)}
-              </div>
-            </div>
-            {data && <Card>
-              <CardHeader><CardTitle className="flex flex-wrap items-center justify-between gap-2 text-base"><span>{t(device === "mobile" ? "auditMobile" : "auditDesktop")}</span><Badge variant="outline" className={qualityStyles[data.issues.length ? "medium" : "good"].badge}>{t("auditIssueCount", { count: data.issues.length })}</Badge></CardTitle></CardHeader>
-              <CardContent className="space-y-5">
-                <dl className="grid grid-cols-2 gap-3 sm:grid-cols-4">{Object.entries(data.metrics).map(([metric, value]) => <div key={metric} className="min-w-0 rounded-lg border bg-muted/30 p-3"><dt className="mb-2 text-xs leading-relaxed text-muted-foreground">{t(`auditMetrics.${metric}`)}</dt><dd className="text-lg font-semibold tabular-nums">{value === null ? "—" : format.number(value, { maximumFractionDigits: metric === "cls" ? 3 : 0 })}{metric !== "cls" && value !== null && <span className="ml-1 text-xs font-normal text-muted-foreground">ms</span>}</dd></div>)}</dl>
-                <div className="space-y-3"><h3 className="text-sm font-semibold">{t("auditChecksHeading")}</h3><div className="grid gap-2 sm:grid-cols-2">{data.checks.map((check) => {
-                  const checkTone = check.passed === null ? "unknown" : check.passed ? "good" : "poor";
-                  const Icon = check.passed === null ? Info : check.passed ? CheckCircle2 : XCircle;
-                  return <div key={check.id} className="flex items-center justify-between gap-3 rounded-lg border p-3 text-sm"><span className="flex min-w-0 items-center gap-2"><Icon className={`size-4 shrink-0 ${qualityStyles[checkTone].text}`} aria-hidden="true" />{t(`auditChecks.${check.id}`)}</span><Badge variant="outline" className={qualityStyles[checkTone].badge}>{t(check.passed === null ? "auditNotMeasured" : check.passed ? "auditPassed" : "auditFailed")}</Badge></div>;
-                })}<div className="flex items-center justify-between gap-3 rounded-lg border p-3 text-sm"><span>HTTPS</span><Badge variant="outline" className={qualityStyles[data.https ? "good" : "poor"].badge}>{t(data.https ? "yes" : "no")}</Badge></div></div></div>
-
-                <div className="space-y-3"><h3 className="text-sm font-semibold">{t("auditIssues")}</h3>
-                  {data.issues.length === 0 && <p className={`rounded-lg border p-3 text-sm ${qualityStyles.good.surface} ${qualityStyles.good.text}`}>{t("auditNoIssues")}</p>}
-                  {data.issues.map((issue) => <Card key={issue.id} size="sm" className="gap-2 border-l-4 border-l-yellow-500 bg-yellow-500/5">
-                    <CardHeader><CardTitle className="flex items-start gap-2 text-sm leading-relaxed"><TriangleAlert className="mt-0.5 size-4 shrink-0 text-yellow-700 dark:text-yellow-300" aria-hidden="true" /><span className="min-w-0 wrap-anywhere">{issue.title}</span></CardTitle></CardHeader>
-                    <CardContent className="space-y-2">{issue.value && <Badge variant="outline" className={qualityStyles.medium.badge}>{issue.value}</Badge>}<p className="wrap-anywhere whitespace-normal text-sm leading-relaxed text-muted-foreground">{issue.description.replace(/\[([^\]]+)\]\([^)]+\)/g, "$1")}</p></CardContent>
-                  </Card>)}
-                </div>
-                {data.warnings.map((warning, index) => <p key={index} className={`rounded-lg border p-3 text-sm ${qualityStyles.medium.surface} ${qualityStyles.medium.text}`}>{warning}</p>)}
-                <p className="text-xs text-muted-foreground">PageSpeed Insights · Lighthouse {data.lighthouseVersion ?? "—"}</p>
-              </CardContent>
-            </Card>}
-          </section>
+          <WebsiteAuditResults report={report} />
 
           <p className="wrap-anywhere text-xs text-muted-foreground">{t("auditMeasuredUrl", { url: report.url })}</p>
         </>}

@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { useTranslations } from "next-intl";
+import { Bookmark } from "lucide-react";
 import type { PlaceResult } from "@/lib/lead-research/google-places";
 import type { SavedLeadSummary } from "@/lib/lead-research/types";
 import { loadSavedLeadDetailsAction } from "@/lib/actions/saved-leads.actions";
@@ -64,20 +65,20 @@ export function SavedLeadsView({ leads, audits, isOwner, enabled }: { leads: Sav
   const columns = isOwner ? 8 : 7;
   return <Card className="min-w-0">
     <CardHeader><CardTitle>{t("savedLeads")}</CardTitle><CardAction><Badge variant="secondary">{t("leadCount", { count: leads.length })}</Badge></CardAction></CardHeader>
-    <CardContent className="space-y-4">
+    <CardContent className="min-w-0 space-y-4">
       {error && <div className="flex flex-wrap items-center gap-3"><p role="alert" className="text-sm text-destructive">{t(error)}</p><Button variant="outline" size="sm" onClick={() => setRetry((value) => value + 1)}>{t("retryDetails")}</Button></div>}
       <Table>
-        <TableHeader><TableRow>{["company", "address", "website", "phone", ...(isOwner ? ["author"] : []), "auditQuality", "selection", "leadDetails"].map((key) => <TableHead key={key}>{t(key)}</TableHead>)}</TableRow></TableHeader>
+        <TableHeader><TableRow>{["company", "address", "website", "phone", ...(isOwner ? ["author"] : []), "auditQuality", "selection", "leadDetails"].map((key) => <TableHead key={key} className={key === "selection" ? "w-12" : undefined}>{key === "selection" ? <><Bookmark className="size-4" aria-hidden="true" /><span className="sr-only">{t(key)}</span></> : t(key)}</TableHead>)}</TableRow></TableHeader>
         <TableBody>
           {rows.map((lead) => {
             const place = places.get(lead.placeId);
             const audit = auditByPlace.get(JSON.stringify([lead.userId, lead.placeId]));
             return <TableRow key={lead.id}>
-              <TableCell className="max-w-52 whitespace-normal">{loading ? <Skeleton className="h-5 w-32" /> : <>
+              <TableCell className="min-w-40 max-w-52 whitespace-normal">{loading ? <Skeleton className="h-5 w-32" /> : <>
                 <p className="wrap-anywhere font-medium">{place?.name ?? t("savedLeadUnavailable")}</p>
                 {place?.attributions.map((a, index) => <p key={index} className="text-xs text-muted-foreground">{a.uri ? <a href={a.uri} className="underline" target="_blank" rel="noopener noreferrer">{a.name}</a> : a.name}</p>)}
               </>}</TableCell>
-              <TableCell className="max-w-52 whitespace-normal">{loading ? <Skeleton className="h-5 w-28" /> : place?.address ?? t("notProvided")}</TableCell>
+              <TableCell className="min-w-36 max-w-52 wrap-anywhere whitespace-normal">{loading ? <Skeleton className="h-5 w-28" /> : place?.address ?? t("notProvided")}</TableCell>
               <TableCell>{loading ? <Skeleton className="h-5 w-20" /> : place?.website ? <Button nativeButton={false} variant="link" size="sm" render={<a href={place.website} target="_blank" rel="noopener noreferrer" />}>{t("openWebsite")}</Button> : t("notProvided")}</TableCell>
               <TableCell>{loading ? <Skeleton className="h-5 w-24" /> : place?.phone ?? t("notProvided")}</TableCell>
               {isOwner && <TableCell>{lead.authorName}</TableCell>}

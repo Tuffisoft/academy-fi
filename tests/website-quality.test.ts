@@ -18,10 +18,10 @@ function payload(performance = 0.8) {
 }
 
 test("quality score increases with quality, follows published weights and never fabricates missing values", () => {
-  const best = { mobilePerformance: 100, desktopPerformance: 100, seo: 100, accessibility: 100, bestPractices: 100 };
+  const best = { performance: 100, design: 100, seo: 100, accessibility: 100, bestPractices: 100 };
   assert.equal(calculateQuality(best), 100);
-  assert.equal(calculateQuality({ ...best, mobilePerformance: 0 }), 60);
-  assert.equal(calculateQuality({ mobilePerformance: 0, desktopPerformance: 0, seo: 0, accessibility: 0, bestPractices: 0 }), 0);
+  assert.equal(calculateQuality({ ...best, performance: 0 }), 80);
+  assert.equal(calculateQuality({ performance: 0, design: 0, seo: 0, accessibility: 0, bestPractices: 0 }), 0);
   for (const value of [null, NaN, Infinity, -1, 101]) assert.equal(calculateQuality({ ...best, seo: value }), null);
 });
 
@@ -42,7 +42,9 @@ test("analysis requests both devices and four categories through a fixed endpoin
   });
   assert.equal(requests.length, 2);
   assert.deepEqual(requests.map((r) => r.searchParams.get("strategy")), ["mobile", "desktop"]);
-  assert.equal(report.qualityScore, 76);
+  assert.equal(report.qualityScore, null);
+  assert.equal(report.parts.performance, 50);
+  assert.equal(report.visual?.status, "not_configured");
   assert.equal(report.mobile.metrics.lcpMs, 2500);
   assert.equal(report.mobile.metrics.cls, null);
   assert.equal(report.mobile.issues.length, 1);

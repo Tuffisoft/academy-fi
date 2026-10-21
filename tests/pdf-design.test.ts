@@ -38,6 +38,7 @@ test("missing and zero measurements stay distinct; the view model does not mutat
   report.mobile.metrics.lcpMs = null;
   report.mobile.metrics.tbtMs = 0;
   report.parts.seo = null;
+  report.mobile.seo = null;
   report.qualityScore = null;
   const before = structuredClone(report);
   const model = pdfReportData(report, "de");

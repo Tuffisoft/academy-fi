@@ -16,7 +16,7 @@ export async function executeWebsiteAudit(placeId: string, store: AuditStore, pl
     const place = result.results.find((item) => item.id === placeId);
     if (!place) throw new QualityError("auditUnavailable");
     if (!place.website) { await store.complete(null); return "done"; }
-    const report = await inspect(place.website, pageSpeedKey);
+    const report = await inspect(place.website, pageSpeedKey, undefined, { apiKey: process.env.OPENAI_API_KEY, model: process.env.OPENAI_DESIGN_MODEL, active: store.active });
     if (await store.active()) await store.complete(report);
   } catch (error) {
     await store.fail(error instanceof QualityError || error instanceof PlacesError ? error.code : "auditUnavailable");

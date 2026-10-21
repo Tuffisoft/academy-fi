@@ -20,6 +20,26 @@ You can start editing the page by modifying `app/page.tsx`. The page auto-update
 
 This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
 
+## Website-Bewertung im Lead-Generator
+
+Neue Website-Prüfungen bewerten Ladezeit, SEO, Barrierefreiheit, Technik und Design & Benutzerführung zu je 20 %. Die ersten vier Themen verwenden die mobilen PageSpeed-Werte; Desktop bleibt separat in den Details. Ein Gesamtscore wird nur bei fünf vorhandenen Teilwerten berechnet. Bestehende Berichte werden beim Lesen entsprechend eingeordnet, ohne kostenpflichtige Prüfungen erneut zu starten.
+
+Die Übersicht zeigt Mobil und Desktop direkt mit einem separaten Technik-Score (gleich gewichteter Mittelwert der vier technischen Themen je Gerät). Dieser Gerätescore enthält keine KI-Designnote und verändert die Gewichtung des Gesamtscores nicht. Die genauen Befunde bleiben darunter aufklappbar.
+
+Für die automatische Designbewertung serverseitig in `.env` konfigurieren:
+
+```dotenv
+OPENAI_API_KEY=your-server-side-key
+# Optional; Standardmodell:
+OPENAI_DESIGN_MODEL=gpt-5.4-mini
+```
+
+Danach den Server neu starten. Der Schlüssel wird ausschließlich im Audit-Worker verwendet. Der mobile `final-screenshot` aus Lighthouse wird an die OpenAI Responses API übergeben (`store: false`); er wird nicht im Bericht gespeichert. Pro Prüfung erfolgt höchstens eine KI-Anfrage, ohne automatische Wiederholung. OpenAI-Nutzung wird separat über das konfigurierte API-Konto abgerechnet.
+
+Die KI beurteilt sichtbare Struktur, Lesbarkeit, Konsistenz und mobiles Layout. Unsichere, verdeckte oder fehlerhafte Screenshots erhalten keine Note. Fehlender Schlüssel, fehlender Screenshot und Anbieterfehler lassen die vier technischen Bewertungen bestehen und den Gesamtscore offen. KI-Einschätzungen sind keine Prüfung tatsächlicher Interaktionen oder der gesamten Website. PDF-Vorlagen erhalten zusätzlich `report.visual` und die fünf aktualisierten `report.partsRows`.
+
+API-Dokumentation: [Bildanalyse](https://developers.openai.com/api/docs/guides/images-vision), [strukturierte Ausgaben](https://developers.openai.com/api/docs/guides/structured-outputs).
+
 ## Learn More
 
 To learn more about Next.js, take a look at the following resources:

@@ -1,11 +1,13 @@
 import type { WebsiteReport } from "../website-quality";
+import { normalizeWebsiteReport, TOPIC_LABELS } from "../website-rating";
 import de from "../../../messages/de.json";
 import en from "../../../messages/en.json";
 
-export function pdfReportData(report: WebsiteReport, locale: "de" | "en") {
+export function pdfReportData(input: WebsiteReport, locale: "de" | "en") {
+  const report = normalizeWebsiteReport(input);
   const t = (locale === "de" ? de : en).leadResearch;
   const score = (value: number | null) => value === null ? t.auditNotMeasured : `${value}/100`;
-  const partLabels = { mobilePerformance: t.auditMobilePerformance, desktopPerformance: t.auditDesktopPerformance, seo: t.auditSeo, accessibility: t.auditAccessibility, bestPractices: t.auditBestPractices };
+  const partLabels = Object.fromEntries(Object.entries(TOPIC_LABELS).map(([key, label]) => [key, t[label]]));
   return {
     ...report,
     title: t.auditReport,
@@ -29,8 +31,9 @@ export function pdfReportData(report: WebsiteReport, locale: "de" | "en") {
 }
 
 export const sampleWebsiteReport: WebsiteReport = {
-  version: 1, url: "https://example.com/", checkedAt: "2026-10-21T09:00:00Z", qualityScore: 77,
-  parts: { mobilePerformance: 54, desktopPerformance: 94, seo: 92, accessibility: 81, bestPractices: 100 },
+  version: 2, url: "https://example.com/", checkedAt: "2026-10-21T09:00:00Z", qualityScore: 80,
+  parts: { performance: 54, design: 73, seo: 92, accessibility: 81, bestPractices: 100 },
+  visual: { status: "completed", score: 73, model: "Demo", criteria: { hierarchy: 70, readability: 80, consistency: 72, mobileLayout: 70 }, findings: [{ observation: "Die wichtigste Aktion geht im Kopfbereich unter.", recommendation: "Die Kontakt-Schaltfläche deutlicher hervorheben." }] },
   mobile: { performance: 54, seo: 92, accessibility: 81, bestPractices: 100, https: true, metrics: { lcpMs: 3800, fcpMs: 1900, tbtMs: 320, cls: 0.128 }, checks: [{ id: "viewport", passed: true }, { id: "meta-description", passed: false }], issues: [{ id: "render-blocking", title: "Render-blocking resources", description: "Some resources delay the first page render. Defer non-essential scripts and stylesheets to show the main content earlier.", value: "1,200 ms" }], warnings: [], lighthouseVersion: "13" },
   desktop: { performance: 94, seo: 92, accessibility: 81, bestPractices: 100, https: true, metrics: { lcpMs: 1200, fcpMs: 800, tbtMs: 40, cls: 0.015 }, checks: [{ id: "document-title", passed: true }, { id: "is-crawlable", passed: null }], issues: [], warnings: [], lighthouseVersion: "13" },
 };
