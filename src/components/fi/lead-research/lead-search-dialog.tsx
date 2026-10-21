@@ -101,7 +101,7 @@ export function LeadSearchDialog({ search, open: controlledOpen, onOpenChange, h
       <DialogContent className="max-h-[90dvh] overflow-y-auto sm:max-w-xl">
         <DialogHeader>
           <DialogTitle>{t(search ? "editSearch" : "newSearch")}</DialogTitle>
-          <DialogDescription>{t("formDescription")}</DialogDescription>
+          <DialogDescription className="sr-only">{t("formDescription")}</DialogDescription>
         </DialogHeader>
         <form
           onSubmit={handleSubmit}
@@ -159,16 +159,10 @@ export function LeadSearchDialog({ search, open: controlledOpen, onOpenChange, h
                 step={1}
                 max={MAX_SEARCH_RESULTS}
                 placeholder="100"
-                aria-describedby="lead-result-help"
                 required
               />
             </div>
           </div>
-          <p id="lead-result-help" className="text-xs text-muted-foreground">
-            {t("resultHelp")}
-          </p>
-          <p className="text-sm text-muted-foreground">{t("auditAutomaticNotice")}</p>
-          <p className="text-sm text-muted-foreground">{t("previewNotice")}</p>
           <Button type="submit" className="self-start">
             {t("previewButton")}
           </Button>

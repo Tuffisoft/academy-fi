@@ -8,7 +8,7 @@ import type { SavedLeadSummary } from "@/lib/lead-research/types";
 import { SaveLeadButton } from "./save-lead-button";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Card, CardAction, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardAction, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
@@ -33,13 +33,9 @@ export function PlacesResults({ result, pending, compact, searchId, savedLeads =
   return <Card className={compact ? "min-w-0 lg:col-span-2" : "min-w-0"}>
     <CardHeader>
       <CardTitle>{t("leads")}</CardTitle>
-      <CardDescription>{result ? t("resolvedLocation", { location: result.resolvedLocation }) : t("liveDescription")}</CardDescription>
       <CardAction><Badge variant="secondary">{t("leadCount", { count: result?.results.length ?? 0 })}</Badge></CardAction>
     </CardHeader>
     <CardContent className="space-y-3">
-      {result && <p className="text-xs text-muted-foreground">{t("liveNotice")}</p>}
-      {sorted && <p className="text-xs text-muted-foreground">{t("auditSortedHint")}</p>}
-      {result?.resultLimit && <p className="text-sm text-muted-foreground">{t("googleResultLimit")}</p>}
       {result?.partialError && <p role="alert" className="text-sm text-destructive">{t("partialResults")} {t(result.partialError)}</p>}
       {!compact && <Input value={query} onChange={(event) => { setQuery(event.target.value); setPage(0); }} placeholder={t("searchLeads")} aria-label={t("searchLeads")} disabled={!result} />}
       <Table>

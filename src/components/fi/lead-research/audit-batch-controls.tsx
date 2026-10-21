@@ -38,7 +38,6 @@ export function AuditBatchControls({ audits }: { audits: AuditSummary[] }) {
       {batch.some(audit => audit.status === "PAUSED") && <Button size="sm" variant="outline" disabled={pending} onClick={() => control(batch, "resume")}><Play aria-hidden="true" />{t("jobResume")}</Button>}
       <Button size="sm" variant="outline" disabled={pending} onClick={() => control(batch, "cancel")}><Square aria-hidden="true" />{t("jobCancel")}</Button>
     </div>)}
-    <p className="text-xs text-muted-foreground">{t("auditControlHint")}</p>
     {error && <p role="alert" className="text-sm text-destructive">{t("jobControlError")}</p>}
   </div>;
 }

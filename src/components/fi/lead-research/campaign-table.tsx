@@ -29,7 +29,6 @@ export function CampaignTable({ searches, isOwner, compact, onRun, onShow, runni
         {visible.length === 0 ? <TableRow><TableCell colSpan={isOwner ? 5 : 4} className="h-36 whitespace-normal text-center">
           <FolderSearch className="mx-auto mb-3 size-6 text-muted-foreground" aria-hidden="true" />
           <p className="font-medium">{t("noCampaigns")}</p>
-          <p className="mt-1 text-sm text-muted-foreground">{t("noCampaignsHint")}</p>
         </TableCell></TableRow> : visible.map((search) => <TableRow key={search.id}>
           <TableCell className="max-w-72 whitespace-normal"><p className="wrap-anywhere font-medium">{search.location}</p><p className="wrap-anywhere text-xs text-muted-foreground">{search.industry} · {t("radiusValue", { value: search.radiusKm })}</p></TableCell>
           <TableCell><Badge variant="secondary">{t(`statuses.${search.status}`)}</Badge>{search.status === "COMPLETED" && <p className="mt-1 text-xs text-muted-foreground">{t("leadCount", { count: search.resultCount })}</p>}</TableCell>
@@ -40,7 +39,7 @@ export function CampaignTable({ searches, isOwner, compact, onRun, onShow, runni
             <Dialog>
               <DialogTrigger render={<Button variant="outline" size="sm" aria-label={t("detailsFor", { location: search.location, industry: search.industry })}>{t("details")}</Button>} />
               <DialogContent className="max-h-[90dvh] overflow-y-auto sm:max-w-lg">
-                <DialogHeader><DialogTitle>{t("searchDetails")}</DialogTitle><DialogDescription>{t("savedNotice")}</DialogDescription></DialogHeader>
+                <DialogHeader><DialogTitle>{t("searchDetails")}</DialogTitle><DialogDescription className="sr-only">{t("savedNotice")}</DialogDescription></DialogHeader>
                 <dl className="grid gap-4 sm:grid-cols-2">
                   {[
                     [t("location"), search.location], [t("industry"), search.industry],

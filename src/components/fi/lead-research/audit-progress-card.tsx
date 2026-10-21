@@ -30,7 +30,7 @@ export function AuditProgressCard({ audits, searching }: { audits: AuditSummary[
       <div className="flex flex-wrap items-start justify-between gap-4">
         <div className="space-y-1">
           <h2 className="flex items-center gap-2 font-semibold"><Icon className={`size-4 text-primary ${active ? "animate-spin motion-reduce:animate-none" : ""}`} aria-hidden="true" />{t(searching ? "auditFindingCompanies" : progress?.paused ? "auditProgressPaused" : active ? "auditProgressTitle" : progress?.cancelled ? "auditProgressCancelled" : "auditProgressComplete")}</h2>
-          <p className="text-sm text-muted-foreground">{searching ? t("auditEstimatePreparing") : t("auditCompletedCount", { done: progress!.done, total: progress!.total })}</p>
+          {!searching && <p className="text-sm text-muted-foreground">{t("auditCompletedCount", { done: progress!.done, total: progress!.total })}</p>}
           {!searching && progress!.failed > 0 && <p className="text-xs text-destructive">{t("auditFailureCount", { count: progress!.failed })}</p>}
         </div>
         <div className="flex items-start gap-5 sm:gap-8">
@@ -39,7 +39,7 @@ export function AuditProgressCard({ audits, searching }: { audits: AuditSummary[
         </div>
       </div>
       <Progress value={percentage} aria-label={t("auditProgressPercent")} />
-      <div className="flex flex-wrap items-center justify-between gap-2 text-xs text-muted-foreground"><span>{active ? t("auditEstimateHint") : t("auditSortedHint")}</span><Badge variant="outline">{t("auditParallelCount", { count: MAX_PARALLEL_WEBSITE_AUDITS })}</Badge></div>
+      <Badge variant="outline">{t("auditParallelCount", { count: MAX_PARALLEL_WEBSITE_AUDITS })}</Badge>
       <AuditBatchControls audits={audits} />
     </CardContent>
   </Card>;

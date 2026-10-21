@@ -84,7 +84,7 @@ export function PdfDesignEditor() {
 
   return <section className="min-w-0 space-y-4" aria-label={t("pdfDesign")}>
     <div className="flex flex-wrap items-start justify-between gap-4">
-      <div><h2 className="flex items-center gap-2 text-lg font-semibold"><Code2 className="size-5" />{t("pdfEditorTitle")}</h2><p className="mt-1 max-w-2xl text-sm text-muted-foreground">{t("pdfEditorDescription")}</p></div>
+      <h2 className="flex items-center gap-2 text-lg font-semibold"><Code2 className="size-5" />{t("pdfEditorTitle")}</h2>
       <div className="flex flex-wrap gap-2">
         <Button variant="outline" disabled={saving} onClick={() => { setDesign({ ...defaultPdfDesign }); setMessage(null); setError(null); }}><RotateCcw />{t("pdfReset")}</Button>
         <Button variant="outline" disabled={!currentPreview || rendering || Boolean(previewError)} onClick={() => { if (!preview) return; const link = document.createElement("a"); link.href = preview.url; link.download = "pdfcn-design-preview.pdf"; link.click(); }}><Download />{t("pdfTestDownload")}</Button>
@@ -120,6 +120,6 @@ export function PdfDesignEditor() {
         {!preview && !previewError && <div className="flex h-[70vh] min-h-96 items-center justify-center text-sm text-muted-foreground">{t("pdfRendering")}</div>}
       </div>
     </div>
-    <details className="rounded-lg border p-4"><summary className="cursor-pointer text-sm font-medium">{t("pdfHelpTitle")}</summary><div className="mt-3 space-y-3 text-sm text-muted-foreground"><p>{t("pdfHelp")}</p><p className="break-words font-mono text-xs">Document · Page · View · Text · PdfHeading · PdfText · PdfCard · PdfSection · PdfBadge</p><p>{t("pdfDataHelp")}</p><p className="break-words font-mono text-xs">report.title · report.url · report.scoreLabel · report.checkedAtLabel · report.partsRows · report.devices · report.labels</p><p>{t("pdfSyntaxHelp")}</p></div></details>
+    <details className="rounded-lg border p-4"><summary className="cursor-pointer text-sm font-medium">{t("pdfHelpTitle")}</summary><div className="mt-3 space-y-3 text-sm text-muted-foreground"><p className="break-words font-mono text-xs">Document · Page · View · Text · PdfHeading · PdfText · PdfCard · PdfSection · PdfBadge</p><p className="break-words font-mono text-xs">report.title · report.url · report.scoreLabel · report.checkedAtLabel · report.partsRows · report.devices · report.labels</p></div></details>
   </section>;
 }

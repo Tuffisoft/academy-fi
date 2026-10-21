@@ -21,7 +21,6 @@ export default async function LeadResearchPage() {
         <BreadcrumbNav items={[{ label: t("title") }]} />
         <div>
           <h1 className="text-2xl font-semibold tracking-tight">{t("title")}</h1>
-          <p className="mt-1 text-sm text-muted-foreground">{t("description")}</p>
         </div>
         <LeadResearchWorkspace searches={searches} savedLeads={savedLeads} audits={audits} userId={user.id} isOwner={user.role === "OWNER"} googleConfigured={Boolean(process.env.GOOGLE_PLACES_API_KEY?.trim())} />
       </main>

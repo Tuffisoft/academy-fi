@@ -80,7 +80,7 @@ export function LeadDetailsDialog({ place, audit, context }: { place: PlaceResul
     <DialogContent className="flex max-h-[90dvh] flex-col gap-0 overflow-hidden p-0 sm:max-w-4xl">
       <DialogHeader className="shrink-0 border-b px-5 py-5 pr-12 sm:px-6 sm:pr-12">
         <DialogTitle className="wrap-anywhere text-xl">{place.name}</DialogTitle>
-        <DialogDescription>{t("auditDetailsDescription")}</DialogDescription>
+        <DialogDescription className="sr-only">{t("auditDetailsDescription")}</DialogDescription>
       </DialogHeader>
       <div className="min-h-0 space-y-5 overflow-y-auto p-5 sm:p-6">
         <Card className={style.surface}>
@@ -92,7 +92,6 @@ export function LeadDetailsDialog({ place, audit, context }: { place: PlaceResul
               </div>
               {tone !== "unknown" && <p className={`shrink-0 text-4xl font-semibold tabular-nums tracking-tight sm:text-5xl ${style.text}`}>{audit?.qualityScore}<span className="ml-1 text-base font-normal text-muted-foreground">/100</span></p>}
             </div>
-            <p className="text-xs leading-relaxed text-muted-foreground">{t("auditScale")}</p>
             {audit?.checkedAt && <p className="text-xs text-muted-foreground">{t("auditCheckedAt", { date: format.dateTime(new Date(audit.checkedAt), { dateStyle: "medium", timeStyle: "short", timeZone: "Europe/Berlin" }) })}</p>}
           </CardContent>
         </Card>
@@ -111,18 +110,16 @@ export function LeadDetailsDialog({ place, audit, context }: { place: PlaceResul
 
         {audit?.errorCode && <p role="alert" className="rounded-lg border border-destructive/25 bg-destructive/10 p-3 text-sm text-destructive">{t(audit.errorCode)}</p>}
         {audit?.status === "NO_WEBSITE" && <p className="rounded-lg border bg-muted/30 p-3 text-sm">{t("auditNoWebsite")}</p>}
-        {(!audit || ["QUEUED", "RUNNING"].includes(audit.status)) && <p role="status" className="text-sm text-muted-foreground">{t(audit ? "auditAutomatic" : "auditLegacy")}</p>}
         {completed && !report && !error && <div aria-label={t("auditReportLoading")} className="space-y-3"><div className="grid grid-cols-2 gap-3 sm:grid-cols-3">{[0, 1, 2, 3, 4].map((index) => <Skeleton key={index} className="h-24 w-full" />)}</div><Skeleton className="h-40 w-full" /></div>}
         {error && <div className="space-y-2"><p role="alert" className="text-sm text-destructive">{t("auditReportError")}</p><Button variant="outline" size="sm" onClick={() => setRetry((value) => value + 1)}>{t("retryDetails")}</Button></div>}
 
         {report && <>
           <div className="space-y-2">
             <Button variant="outline" disabled={exporting} aria-busy={exporting} onClick={downloadPdf}><Download aria-hidden="true" />{t(exporting ? "auditPdfPreparing" : "auditPdfDownload")}</Button>
-            <p className="text-xs text-muted-foreground">{t("auditPdfHint")}</p>
             {exportError && <p role="alert" className="text-sm text-destructive">{t("auditPdfError")}</p>}
           </div>
           <section aria-label={t("auditBreakdown")} className="space-y-3">
-            <div className="flex flex-wrap items-center justify-between gap-2"><h2 className="font-semibold">{t("auditBreakdown")}</h2><p className="text-xs text-muted-foreground">{t("auditColorLegend")}</p></div>
+            <h2 className="font-semibold">{t("auditBreakdown")}</h2>
             <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-5">{(Object.keys(labels) as (keyof typeof labels)[]).map((part) => {
               const partTone = qualityTone(report.parts[part]);
               const partStyle = qualityStyles[partTone];
@@ -165,7 +162,7 @@ export function LeadDetailsDialog({ place, audit, context }: { place: PlaceResul
             </Card>}
           </section>
 
-          <Card size="sm" className="bg-muted/30"><CardHeader><CardTitle className="flex items-center gap-2 text-sm"><Info className="size-4 text-muted-foreground" aria-hidden="true" />{t("auditMethod")}</CardTitle></CardHeader><CardContent className="space-y-3 text-xs leading-relaxed text-muted-foreground"><p>{t("auditFormula")}</p><p className="wrap-anywhere">{t("auditMeasuredUrl", { url: report.url })}</p><p>{t("auditLimitations")}</p></CardContent></Card>
+          <p className="wrap-anywhere text-xs text-muted-foreground">{t("auditMeasuredUrl", { url: report.url })}</p>
         </>}
         <div className="border-t pt-3 text-xs text-muted-foreground"><p>{t("googleSource")} <span translate="no">Google Maps</span></p>{place.attributions.map((a, index) => <p key={index}>{a.uri ? <a href={a.uri} target="_blank" rel="noopener noreferrer" className="underline">{a.name}</a> : a.name}</p>)}</div>
       </div>

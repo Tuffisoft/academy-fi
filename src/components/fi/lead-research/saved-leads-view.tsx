@@ -7,7 +7,7 @@ import type { SavedLeadSummary } from "@/lib/lead-research/types";
 import { loadSavedLeadDetailsAction } from "@/lib/actions/saved-leads.actions";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Card, CardAction, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardAction, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { SaveLeadButton } from "./save-lead-button";
@@ -63,9 +63,8 @@ export function SavedLeadsView({ leads, audits, isOwner, enabled }: { leads: Sav
   const error = snapshot?.key === requestKey ? snapshot.error : null;
   const columns = isOwner ? 8 : 7;
   return <Card className="min-w-0">
-    <CardHeader><CardTitle>{t("savedLeads")}</CardTitle><CardDescription>{t("savedLeadsDescription")}</CardDescription><CardAction><Badge variant="secondary">{t("leadCount", { count: leads.length })}</Badge></CardAction></CardHeader>
+    <CardHeader><CardTitle>{t("savedLeads")}</CardTitle><CardAction><Badge variant="secondary">{t("leadCount", { count: leads.length })}</Badge></CardAction></CardHeader>
     <CardContent className="space-y-4">
-      {sorted && <p className="text-xs text-muted-foreground">{t("auditSortedHint")}</p>}
       {error && <div className="flex flex-wrap items-center gap-3"><p role="alert" className="text-sm text-destructive">{t(error)}</p><Button variant="outline" size="sm" onClick={() => setRetry((value) => value + 1)}>{t("retryDetails")}</Button></div>}
       <Table>
         <TableHeader><TableRow>{["company", "address", "website", "phone", ...(isOwner ? ["author"] : []), "auditQuality", "selection", "leadDetails"].map((key) => <TableHead key={key}>{t(key)}</TableHead>)}</TableRow></TableHeader>
@@ -95,6 +94,6 @@ export function SavedLeadsView({ leads, audits, isOwner, enabled }: { leads: Sav
         <div className="flex gap-2"><Button variant="outline" size="sm" disabled={currentPage === 0} onClick={() => setPage(currentPage - 1)}>{t("previous")}</Button><Button variant="outline" size="sm" disabled={offset + 10 >= leads.length} onClick={() => setPage(currentPage + 1)}>{t("next")}</Button></div>
       </div>}
     </CardContent>
-    <CardFooter className="flex-wrap justify-between gap-2 text-xs text-muted-foreground"><span>{t("savedLiveNotice")}</span><span translate="no" className="whitespace-nowrap font-normal not-italic tracking-normal">Google Maps</span></CardFooter>
+    <CardFooter className="text-xs text-muted-foreground"><span translate="no" className="whitespace-nowrap font-normal not-italic tracking-normal">Google Maps</span></CardFooter>
   </Card>;
 }

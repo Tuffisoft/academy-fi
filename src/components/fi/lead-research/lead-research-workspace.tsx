@@ -6,7 +6,7 @@ import { useTranslations } from "next-intl";
 import { ArrowRight, BarChart3, Bookmark, Code2, FolderSearch, LayoutDashboard, Users } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Card, CardAction, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardAction, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { runLeadSearchAction } from "@/lib/actions/lead-searches.actions";
 import { PlacesResults } from "./places-results";
 import { LeadSearchDialog } from "./lead-search-dialog";
@@ -82,10 +82,6 @@ export function LeadResearchWorkspace({ searches: initialSearches, savedLeads, a
       </div>
 
       <div className={view === "pdfDesign" ? "contents" : "hidden"}>{pdfEditorOpened && <PdfDesignEditor />}</div>
-      <div className="flex flex-wrap items-center gap-2 text-xs text-muted-foreground">
-        <Badge variant="outline">{t("setupBadge")}</Badge>
-        <span>{t("setupHint")}</span>
-      </div>
       {!googleConfigured && <p role="status" className="text-sm text-muted-foreground">{t("googleNotConfigured")}</p>}
       {error && <p role="alert" className="text-sm text-destructive">{error}</p>}
       {detailsError && <p role="alert" className="text-sm text-destructive">{t(detailsError)}</p>}
@@ -96,17 +92,16 @@ export function LeadResearchWorkspace({ searches: initialSearches, savedLeads, a
       {(view === "overview" || view === "analytics") && (
         <div className="grid gap-4 sm:grid-cols-3">
           {[
-            { title: "totalLeads", value: String(searches.reduce((sum, search) => sum + search.resultCount, 0)), hint: "totalHint", icon: Users },
-            { title: "averageScore", value: averageScore, hint: "scoreHint", icon: BarChart3 },
-            { title: "totalCampaigns", value: String(searches.length), hint: "campaignHint", icon: FolderSearch },
-          ].map(({ title, value, hint, icon: Icon }) => (
+            { title: "totalLeads", value: String(searches.reduce((sum, search) => sum + search.resultCount, 0)), icon: Users },
+            { title: "averageScore", value: averageScore, icon: BarChart3 },
+            { title: "totalCampaigns", value: String(searches.length), icon: FolderSearch },
+          ].map(({ title, value, icon: Icon }) => (
             <Card key={title}>
               <CardHeader>
                 <CardDescription>{t(title)}</CardDescription>
                 <CardAction><Icon className="size-4 text-muted-foreground" aria-hidden="true" /></CardAction>
                 <CardTitle className={`text-3xl tabular-nums ${title === "averageScore" ? qualityStyles[qualityTone(scoredAudits.length ? Number(averageScore) : null)].text : ""}`}>{value}</CardTitle>
               </CardHeader>
-              <CardFooter className="text-xs text-muted-foreground">{t(hint)}</CardFooter>
             </Card>
           ))}
         </div>
@@ -116,11 +111,9 @@ export function LeadResearchWorkspace({ searches: initialSearches, savedLeads, a
         <Card>
           <CardHeader>
             <CardTitle>{t("campaigns")}</CardTitle>
-            <CardDescription>{t("campaignDescription")}</CardDescription>
             {view === "overview" && <CardAction><Button variant="ghost" size="sm" onClick={() => setView("campaigns")}>{t("viewAll")}<ArrowRight aria-hidden="true" /></Button></CardAction>}
           </CardHeader>
           <CardContent>
-            <p className="mb-3 text-xs text-muted-foreground">{isOwner ? t("ownerVisibility") : t("internVisibility")}</p>
             <CampaignTable key={searches.length} searches={searches} isOwner={isOwner} compact={view === "overview"} onRun={runSearch} onShow={showResults} running={pending} />
           </CardContent>
         </Card>
@@ -136,13 +129,11 @@ export function LeadResearchWorkspace({ searches: initialSearches, savedLeads, a
           {view !== "leads" && <Card>
             <CardHeader>
               <CardTitle>{t("distribution")}</CardTitle>
-              <CardDescription>{t("distributionDescription")}</CardDescription>
             </CardHeader>
             <CardContent className="flex flex-1 flex-col gap-6">
               {scoredAudits.length === 0 && <div className="flex min-h-36 flex-1 flex-col items-center justify-center rounded-lg border border-dashed bg-muted/30 px-4 py-6 text-center">
                 <BarChart3 className="mb-3 size-7 text-muted-foreground" aria-hidden="true" />
                 <p className="font-medium">{t("noAnalysis")}</p>
-                <p className="mt-1 text-xs text-muted-foreground">{t("noAnalysisHint")}</p>
               </div>}
               <div className="space-y-3">
                 {distribution.map(({ key, count }) => (
