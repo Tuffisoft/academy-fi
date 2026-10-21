@@ -4,6 +4,7 @@ import { revalidatePath } from "next/cache";
 import { after } from "next/server";
 import { randomUUID } from "node:crypto";
 import { prisma } from "@/lib/prisma";
+import { Prisma } from "@/generated/prisma/client";
 import { requireUser } from "@/lib/session";
 import { leadSearchMutableScope, leadSearchScope, parseLeadSearchInput } from "@/lib/lead-research/search-input";
 import { loadGooglePlaceDetails, PlacesError } from "@/lib/lead-research/google-places";
@@ -24,13 +25,13 @@ export async function runLeadSearchAction(id: unknown) {
   const admission = await prisma.$transaction(async (tx) => {
     // Serialize admissions across Vercel instances without holding a transaction during Google calls.
     await tx.$queryRaw`SELECT pg_advisory_xact_lock(20261020, 4)::text`;
-    if (await tx.websiteAudit.count({ where: { userId: search.userId, status: { in: ["QUEUED", "RUNNING"] } } })) return "auditing";
+    if (await tx.websiteAudit.count({ where: { userId: search.userId, status: { in: ["QUEUED", "RUNNING", "PAUSED"] } } })) return "auditing";
     const active = { status: { in: ["QUEUED", "RUNNING"] as ("QUEUED" | "RUNNING")[] }, startedAt: { gte: new Date(Date.now() - SEARCH_JOB_TIMEOUT_MS) } };
-    if (await tx.leadSearch.count({ where: { ...active, userId: search.userId } }) > 0) return "busy";
+    if (await tx.leadSearch.count({ where: { userId: search.userId, OR: [active, { status: "PAUSED" }] } }) > 0) return "busy";
     if (await tx.leadSearch.count({ where: active }) >= 3) return "full";
     const claim = await tx.leadSearch.updateMany({
       where: { id, ...leadSearchScope(user), updatedAt: search.updatedAt, status: { in: ["DRAFT", "FAILED", "COMPLETED", "CANCELLED"] } },
-      data: { status: "QUEUED", runId, analyzeWebsites: true, startedAt: new Date(), finishedAt: null, phase: "QUEUED", processedPages: 0, googlePlaceIds: [], errorCode: null, resultLimit: false },
+      data: { status: "QUEUED", runId, analyzeWebsites: true, startedAt: new Date(), finishedAt: null, phase: "QUEUED", processedPages: 0, googlePlaceIds: [], pauseRequested: false, checkpoint: Prisma.DbNull, errorCode: null, resultLimit: false },
     });
     return claim.count ? "accepted" : "busy";
   });
@@ -46,20 +47,56 @@ export async function runLeadSearchAction(id: unknown) {
 export async function cancelLeadSearchAction(id: unknown) {
   const user = await requireUser();
   if (typeof id !== "string" || !id || id.length > 128) return { success: false as const };
-  const result = await prisma.leadSearch.updateMany({ where: { id, ...leadSearchScope(user), status: { in: ["QUEUED", "RUNNING"] } }, data: { status: "CANCELLED", phase: "DONE", finishedAt: new Date() } });
+  const result = await prisma.leadSearch.updateMany({ where: { id, ...leadSearchScope(user), status: { in: ["QUEUED", "RUNNING", "PAUSED"] } }, data: { status: "CANCELLED", phase: "DONE", pauseRequested: false, finishedAt: new Date() } });
   revalidatePath("/[locale]/lead-research", "page");
   return { success: result.count > 0 };
+}
+
+export async function pauseLeadSearchAction(id: unknown) {
+  const user = await requireUser();
+  if (typeof id !== "string" || !id || id.length > 128) return { success: false as const };
+  const count = await prisma.$transaction(async tx => {
+    const scope = { id, ...leadSearchScope(user) };
+    const queued = await tx.leadSearch.updateMany({ where: { ...scope, status: "QUEUED" }, data: { status: "PAUSED", pauseRequested: false } });
+    const running = await tx.leadSearch.updateMany({ where: { ...scope, status: "RUNNING" }, data: { pauseRequested: true } });
+    return queued.count + running.count;
+  });
+  revalidatePath("/[locale]/lead-research", "page");
+  return { success: count > 0 };
+}
+
+export async function resumeLeadSearchAction(id: unknown) {
+  const user = await requireUser();
+  if (typeof id !== "string" || !id || id.length > 128) return { success: false as const };
+  if (!process.env.GOOGLE_PLACES_API_KEY?.trim()) return { success: false as const };
+  await expireSearchJobs(user);
+  const runId = randomUUID();
+  const accepted = await prisma.$transaction(async tx => {
+    await tx.$queryRaw`SELECT pg_advisory_xact_lock(20261020, 4)::text`;
+    const search = await tx.leadSearch.findFirst({ where: { id, ...leadSearchScope(user), status: "PAUSED" } });
+    if (!search) return false;
+    const active = { status: { in: ["QUEUED", "RUNNING"] as ("QUEUED" | "RUNNING")[] } };
+    if (await tx.leadSearch.count({ where: { ...active, userId: search.userId } }) || await tx.leadSearch.count({ where: active }) >= 3) return false;
+    const result = await tx.leadSearch.updateMany({ where: { id, ...leadSearchScope(user), status: "PAUSED", runId: search.runId }, data: { status: "QUEUED", runId, pauseRequested: false, startedAt: new Date(), finishedAt: null, errorCode: null } });
+    return result.count > 0;
+  });
+  if (accepted) after(async () => {
+    try { await processLeadSearchJob(id, runId); }
+    catch { console.error("Resumed lead search interrupted", runId); }
+  });
+  revalidatePath("/[locale]/lead-research", "page");
+  return { success: accepted };
 }
 
 export async function loadLeadSearchResultsAction(id: unknown, offset: unknown) {
   const user = await requireUser();
   if (typeof id !== "string" || !id || id.length > 128 || typeof offset !== "number" || !Number.isInteger(offset) || offset < 0 || offset > 60) return { success: false as const, error: "invalidInput" as const };
-  const search = await prisma.leadSearch.findFirst({ where: { id, ...leadSearchScope(user), status: { in: ["COMPLETED", "FAILED", "CANCELLED"] } } });
+  const search = await prisma.leadSearch.findFirst({ where: { id, ...leadSearchScope(user), status: { in: ["COMPLETED", "FAILED", "CANCELLED", "PAUSED"] } } });
   if (!search) return { success: false as const, error: "notEditable" as const };
   const ids = search.googlePlaceIds.slice(offset, offset + 10);
   if (!ids.length) return { success: true as const, results: [], partialError: null, resolvedLocation: search.location, resultLimit: search.resultLimit, nextOffset: offset, total: search.googlePlaceIds.length, runId: search.runId };
   try {
-    if (offset === 0) {
+    if (offset === 0 && search.status === "COMPLETED") {
       // Older results acquire their missing audits without another business search.
       await queueWebsiteAudits(search.userId, search.googlePlaceIds);
       revalidatePath("/[locale]/lead-research", "page");
@@ -96,7 +133,7 @@ export async function updateLeadSearchAction(id: unknown, input: unknown): Promi
   if (!data || !where) return { success: false, error: "invalidInput" };
   try {
     // Ownership and inactive state are checked in the same query as the write.
-    const result = await prisma.leadSearch.updateMany({ where, data: { ...data, analyzeWebsites: true, status: "DRAFT", googlePlaceIds: [], runId: null, startedAt: null, finishedAt: null, phase: null, processedPages: 0, errorCode: null, resultLimit: false } });
+    const result = await prisma.leadSearch.updateMany({ where, data: { ...data, analyzeWebsites: true, status: "DRAFT", googlePlaceIds: [], runId: null, startedAt: null, finishedAt: null, phase: null, processedPages: 0, pauseRequested: false, checkpoint: Prisma.DbNull, errorCode: null, resultLimit: false } });
     if (result.count === 0) return { success: false, error: "notEditable" };
   } catch {
     return { success: false, error: "saveError" };

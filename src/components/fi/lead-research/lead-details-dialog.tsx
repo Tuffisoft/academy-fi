@@ -1,8 +1,8 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { useFormatter, useTranslations } from "next-intl";
-import { Building2, CheckCircle2, Gauge, Globe, Info, Monitor, Smartphone, TriangleAlert, XCircle } from "lucide-react";
+import { useFormatter, useLocale, useTranslations } from "next-intl";
+import { Building2, CheckCircle2, Download, Gauge, Globe, Info, Monitor, Smartphone, TriangleAlert, XCircle } from "lucide-react";
 import type { PlaceResult } from "@/lib/lead-research/google-places";
 import type { AuditSummary } from "@/lib/lead-research/audit-types";
 import type { WebsiteReport } from "@/lib/lead-research/website-quality";
@@ -25,6 +25,9 @@ export function AuditScore({ audit }: { audit?: AuditSummary }) {
 export function LeadDetailsDialog({ place, audit, context }: { place: PlaceResult; audit?: AuditSummary; context?: { industry: string; location: string } }) {
   const t = useTranslations("leadResearch");
   const format = useFormatter();
+  const locale = useLocale();
+  const [exporting, setExporting] = useState(false);
+  const [exportError, setExportError] = useState(false);
   const [open, setOpen] = useState(false);
   const [retry, setRetry] = useState(0);
   const [device, setDevice] = useState<"mobile" | "desktop">("mobile");
@@ -57,6 +60,21 @@ export function LeadDetailsDialog({ place, audit, context }: { place: PlaceResul
   const style = qualityStyles[tone];
   const data = report?.[device];
   const detailRows = [[t("address"), place.address ?? t("notProvided")], [t("phone"), place.phone ?? t("notProvided")], [t("industry"), context?.industry ?? t("notProvided")], [t("location"), context?.location ?? t("notProvided")]];
+  async function downloadPdf() {
+    if (!auditId || exporting) return;
+    setExporting(true); setExportError(false);
+    try {
+      const response = await fetch(`/api/website-audits/${encodeURIComponent(auditId)}/pdf?locale=${encodeURIComponent(locale)}`, { cache: "no-store" });
+      if (!response.ok || !response.headers.get("content-type")?.includes("application/pdf")) throw new Error("pdf_unavailable");
+      const url = URL.createObjectURL(await response.blob());
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = response.headers.get("content-disposition")?.match(/filename="([^"]+)"/)?.[1] ?? "website-report.pdf";
+      document.body.appendChild(link); link.click(); link.remove();
+      window.setTimeout(() => URL.revokeObjectURL(url), 60_000);
+    } catch { setExportError(true); }
+    finally { setExporting(false); }
+  }
   return <Dialog open={open} onOpenChange={setOpen}>
     <DialogTrigger render={<Button variant="outline" size="sm" aria-label={t("leadDetailsFor", { name: place.name })}>{t("leadDetails")}</Button>} />
     <DialogContent className="flex max-h-[90dvh] flex-col gap-0 overflow-hidden p-0 sm:max-w-4xl">
@@ -98,6 +116,11 @@ export function LeadDetailsDialog({ place, audit, context }: { place: PlaceResul
         {error && <div className="space-y-2"><p role="alert" className="text-sm text-destructive">{t("auditReportError")}</p><Button variant="outline" size="sm" onClick={() => setRetry((value) => value + 1)}>{t("retryDetails")}</Button></div>}
 
         {report && <>
+          <div className="space-y-2">
+            <Button variant="outline" disabled={exporting} aria-busy={exporting} onClick={downloadPdf}><Download aria-hidden="true" />{t(exporting ? "auditPdfPreparing" : "auditPdfDownload")}</Button>
+            <p className="text-xs text-muted-foreground">{t("auditPdfHint")}</p>
+            {exportError && <p role="alert" className="text-sm text-destructive">{t("auditPdfError")}</p>}
+          </div>
           <section aria-label={t("auditBreakdown")} className="space-y-3">
             <div className="flex flex-wrap items-center justify-between gap-2"><h2 className="font-semibold">{t("auditBreakdown")}</h2><p className="text-xs text-muted-foreground">{t("auditColorLegend")}</p></div>
             <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-5">{(Object.keys(labels) as (keyof typeof labels)[]).map((part) => {

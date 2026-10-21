@@ -40,6 +40,7 @@ export type WebsiteAuditMinAggregateOutputType = {
   placeId: string | null
   status: string | null
   runToken: string | null
+  batchId: string | null
   qualityScore: number | null
   errorCode: string | null
   startedAt: Date | null
@@ -54,6 +55,7 @@ export type WebsiteAuditMaxAggregateOutputType = {
   placeId: string | null
   status: string | null
   runToken: string | null
+  batchId: string | null
   qualityScore: number | null
   errorCode: string | null
   startedAt: Date | null
@@ -68,6 +70,7 @@ export type WebsiteAuditCountAggregateOutputType = {
   placeId: number
   status: number
   runToken: number
+  batchId: number
   qualityScore: number
   report: number
   errorCode: number
@@ -93,6 +96,7 @@ export type WebsiteAuditMinAggregateInputType = {
   placeId?: true
   status?: true
   runToken?: true
+  batchId?: true
   qualityScore?: true
   errorCode?: true
   startedAt?: true
@@ -107,6 +111,7 @@ export type WebsiteAuditMaxAggregateInputType = {
   placeId?: true
   status?: true
   runToken?: true
+  batchId?: true
   qualityScore?: true
   errorCode?: true
   startedAt?: true
@@ -121,6 +126,7 @@ export type WebsiteAuditCountAggregateInputType = {
   placeId?: true
   status?: true
   runToken?: true
+  batchId?: true
   qualityScore?: true
   report?: true
   errorCode?: true
@@ -223,6 +229,7 @@ export type WebsiteAuditGroupByOutputType = {
   placeId: string
   status: string
   runToken: string
+  batchId: string | null
   qualityScore: number | null
   report: runtime.JsonValue | null
   errorCode: string | null
@@ -261,6 +268,7 @@ export type WebsiteAuditWhereInput = {
   placeId?: Prisma.StringFilter<"WebsiteAudit"> | string
   status?: Prisma.StringFilter<"WebsiteAudit"> | string
   runToken?: Prisma.StringFilter<"WebsiteAudit"> | string
+  batchId?: Prisma.StringNullableFilter<"WebsiteAudit"> | string | null
   qualityScore?: Prisma.IntNullableFilter<"WebsiteAudit"> | number | null
   report?: Prisma.JsonNullableFilter<"WebsiteAudit">
   errorCode?: Prisma.StringNullableFilter<"WebsiteAudit"> | string | null
@@ -277,6 +285,7 @@ export type WebsiteAuditOrderByWithRelationInput = {
   placeId?: Prisma.SortOrder
   status?: Prisma.SortOrder
   runToken?: Prisma.SortOrder
+  batchId?: Prisma.SortOrderInput | Prisma.SortOrder
   qualityScore?: Prisma.SortOrderInput | Prisma.SortOrder
   report?: Prisma.SortOrderInput | Prisma.SortOrder
   errorCode?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -297,6 +306,7 @@ export type WebsiteAuditWhereUniqueInput = Prisma.AtLeast<{
   placeId?: Prisma.StringFilter<"WebsiteAudit"> | string
   status?: Prisma.StringFilter<"WebsiteAudit"> | string
   runToken?: Prisma.StringFilter<"WebsiteAudit"> | string
+  batchId?: Prisma.StringNullableFilter<"WebsiteAudit"> | string | null
   qualityScore?: Prisma.IntNullableFilter<"WebsiteAudit"> | number | null
   report?: Prisma.JsonNullableFilter<"WebsiteAudit">
   errorCode?: Prisma.StringNullableFilter<"WebsiteAudit"> | string | null
@@ -313,6 +323,7 @@ export type WebsiteAuditOrderByWithAggregationInput = {
   placeId?: Prisma.SortOrder
   status?: Prisma.SortOrder
   runToken?: Prisma.SortOrder
+  batchId?: Prisma.SortOrderInput | Prisma.SortOrder
   qualityScore?: Prisma.SortOrderInput | Prisma.SortOrder
   report?: Prisma.SortOrderInput | Prisma.SortOrder
   errorCode?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -336,6 +347,7 @@ export type WebsiteAuditScalarWhereWithAggregatesInput = {
   placeId?: Prisma.StringWithAggregatesFilter<"WebsiteAudit"> | string
   status?: Prisma.StringWithAggregatesFilter<"WebsiteAudit"> | string
   runToken?: Prisma.StringWithAggregatesFilter<"WebsiteAudit"> | string
+  batchId?: Prisma.StringNullableWithAggregatesFilter<"WebsiteAudit"> | string | null
   qualityScore?: Prisma.IntNullableWithAggregatesFilter<"WebsiteAudit"> | number | null
   report?: Prisma.JsonNullableWithAggregatesFilter<"WebsiteAudit">
   errorCode?: Prisma.StringNullableWithAggregatesFilter<"WebsiteAudit"> | string | null
@@ -350,6 +362,7 @@ export type WebsiteAuditCreateInput = {
   placeId: string
   status?: string
   runToken: string
+  batchId?: string | null
   qualityScore?: number | null
   report?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   errorCode?: string | null
@@ -366,6 +379,7 @@ export type WebsiteAuditUncheckedCreateInput = {
   placeId: string
   status?: string
   runToken: string
+  batchId?: string | null
   qualityScore?: number | null
   report?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   errorCode?: string | null
@@ -380,6 +394,7 @@ export type WebsiteAuditUpdateInput = {
   placeId?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.StringFieldUpdateOperationsInput | string
   runToken?: Prisma.StringFieldUpdateOperationsInput | string
+  batchId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   qualityScore?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   report?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   errorCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -396,6 +411,7 @@ export type WebsiteAuditUncheckedUpdateInput = {
   placeId?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.StringFieldUpdateOperationsInput | string
   runToken?: Prisma.StringFieldUpdateOperationsInput | string
+  batchId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   qualityScore?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   report?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   errorCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -411,6 +427,7 @@ export type WebsiteAuditCreateManyInput = {
   placeId: string
   status?: string
   runToken: string
+  batchId?: string | null
   qualityScore?: number | null
   report?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   errorCode?: string | null
@@ -425,6 +442,7 @@ export type WebsiteAuditUpdateManyMutationInput = {
   placeId?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.StringFieldUpdateOperationsInput | string
   runToken?: Prisma.StringFieldUpdateOperationsInput | string
+  batchId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   qualityScore?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   report?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   errorCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -440,6 +458,7 @@ export type WebsiteAuditUncheckedUpdateManyInput = {
   placeId?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.StringFieldUpdateOperationsInput | string
   runToken?: Prisma.StringFieldUpdateOperationsInput | string
+  batchId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   qualityScore?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   report?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   errorCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -470,6 +489,7 @@ export type WebsiteAuditCountOrderByAggregateInput = {
   placeId?: Prisma.SortOrder
   status?: Prisma.SortOrder
   runToken?: Prisma.SortOrder
+  batchId?: Prisma.SortOrder
   qualityScore?: Prisma.SortOrder
   report?: Prisma.SortOrder
   errorCode?: Prisma.SortOrder
@@ -489,6 +509,7 @@ export type WebsiteAuditMaxOrderByAggregateInput = {
   placeId?: Prisma.SortOrder
   status?: Prisma.SortOrder
   runToken?: Prisma.SortOrder
+  batchId?: Prisma.SortOrder
   qualityScore?: Prisma.SortOrder
   errorCode?: Prisma.SortOrder
   startedAt?: Prisma.SortOrder
@@ -503,6 +524,7 @@ export type WebsiteAuditMinOrderByAggregateInput = {
   placeId?: Prisma.SortOrder
   status?: Prisma.SortOrder
   runToken?: Prisma.SortOrder
+  batchId?: Prisma.SortOrder
   qualityScore?: Prisma.SortOrder
   errorCode?: Prisma.SortOrder
   startedAt?: Prisma.SortOrder
@@ -562,6 +584,7 @@ export type WebsiteAuditCreateWithoutUserInput = {
   placeId: string
   status?: string
   runToken: string
+  batchId?: string | null
   qualityScore?: number | null
   report?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   errorCode?: string | null
@@ -576,6 +599,7 @@ export type WebsiteAuditUncheckedCreateWithoutUserInput = {
   placeId: string
   status?: string
   runToken: string
+  batchId?: string | null
   qualityScore?: number | null
   report?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   errorCode?: string | null
@@ -620,6 +644,7 @@ export type WebsiteAuditScalarWhereInput = {
   placeId?: Prisma.StringFilter<"WebsiteAudit"> | string
   status?: Prisma.StringFilter<"WebsiteAudit"> | string
   runToken?: Prisma.StringFilter<"WebsiteAudit"> | string
+  batchId?: Prisma.StringNullableFilter<"WebsiteAudit"> | string | null
   qualityScore?: Prisma.IntNullableFilter<"WebsiteAudit"> | number | null
   report?: Prisma.JsonNullableFilter<"WebsiteAudit">
   errorCode?: Prisma.StringNullableFilter<"WebsiteAudit"> | string | null
@@ -634,6 +659,7 @@ export type WebsiteAuditCreateManyUserInput = {
   placeId: string
   status?: string
   runToken: string
+  batchId?: string | null
   qualityScore?: number | null
   report?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   errorCode?: string | null
@@ -648,6 +674,7 @@ export type WebsiteAuditUpdateWithoutUserInput = {
   placeId?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.StringFieldUpdateOperationsInput | string
   runToken?: Prisma.StringFieldUpdateOperationsInput | string
+  batchId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   qualityScore?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   report?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   errorCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -662,6 +689,7 @@ export type WebsiteAuditUncheckedUpdateWithoutUserInput = {
   placeId?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.StringFieldUpdateOperationsInput | string
   runToken?: Prisma.StringFieldUpdateOperationsInput | string
+  batchId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   qualityScore?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   report?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   errorCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -676,6 +704,7 @@ export type WebsiteAuditUncheckedUpdateManyWithoutUserInput = {
   placeId?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.StringFieldUpdateOperationsInput | string
   runToken?: Prisma.StringFieldUpdateOperationsInput | string
+  batchId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   qualityScore?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   report?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   errorCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -693,6 +722,7 @@ export type WebsiteAuditSelect<ExtArgs extends runtime.Types.Extensions.Internal
   placeId?: boolean
   status?: boolean
   runToken?: boolean
+  batchId?: boolean
   qualityScore?: boolean
   report?: boolean
   errorCode?: boolean
@@ -709,6 +739,7 @@ export type WebsiteAuditSelectCreateManyAndReturn<ExtArgs extends runtime.Types.
   placeId?: boolean
   status?: boolean
   runToken?: boolean
+  batchId?: boolean
   qualityScore?: boolean
   report?: boolean
   errorCode?: boolean
@@ -725,6 +756,7 @@ export type WebsiteAuditSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.
   placeId?: boolean
   status?: boolean
   runToken?: boolean
+  batchId?: boolean
   qualityScore?: boolean
   report?: boolean
   errorCode?: boolean
@@ -741,6 +773,7 @@ export type WebsiteAuditSelectScalar = {
   placeId?: boolean
   status?: boolean
   runToken?: boolean
+  batchId?: boolean
   qualityScore?: boolean
   report?: boolean
   errorCode?: boolean
@@ -750,7 +783,7 @@ export type WebsiteAuditSelectScalar = {
   updatedAt?: boolean
 }
 
-export type WebsiteAuditOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "placeId" | "status" | "runToken" | "qualityScore" | "report" | "errorCode" | "startedAt" | "checkedAt" | "createdAt" | "updatedAt", ExtArgs["result"]["websiteAudit"]>
+export type WebsiteAuditOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "placeId" | "status" | "runToken" | "batchId" | "qualityScore" | "report" | "errorCode" | "startedAt" | "checkedAt" | "createdAt" | "updatedAt", ExtArgs["result"]["websiteAudit"]>
 export type WebsiteAuditInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }
@@ -772,6 +805,7 @@ export type $WebsiteAuditPayload<ExtArgs extends runtime.Types.Extensions.Intern
     placeId: string
     status: string
     runToken: string
+    batchId: string | null
     qualityScore: number | null
     report: runtime.JsonValue | null
     errorCode: string | null
@@ -1208,6 +1242,7 @@ export interface WebsiteAuditFieldRefs {
   readonly placeId: Prisma.FieldRef<"WebsiteAudit", 'String'>
   readonly status: Prisma.FieldRef<"WebsiteAudit", 'String'>
   readonly runToken: Prisma.FieldRef<"WebsiteAudit", 'String'>
+  readonly batchId: Prisma.FieldRef<"WebsiteAudit", 'String'>
   readonly qualityScore: Prisma.FieldRef<"WebsiteAudit", 'Int'>
   readonly report: Prisma.FieldRef<"WebsiteAudit", 'Json'>
   readonly errorCode: Prisma.FieldRef<"WebsiteAudit", 'String'>

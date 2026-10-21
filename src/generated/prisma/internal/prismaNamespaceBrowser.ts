@@ -67,6 +67,7 @@ export const ModelName = {
   LeadSearch: 'LeadSearch',
   SavedLead: 'SavedLead',
   WebsiteAudit: 'WebsiteAudit',
+  PdfReportDesign: 'PdfReportDesign',
   Session: 'Session',
   Account: 'Account',
   Verification: 'Verification',
@@ -289,6 +290,8 @@ export const LeadSearchScalarFieldEnum = {
   finishedAt: 'finishedAt',
   phase: 'phase',
   processedPages: 'processedPages',
+  pauseRequested: 'pauseRequested',
+  checkpoint: 'checkpoint',
   errorCode: 'errorCode',
   resultLimit: 'resultLimit',
   createdAt: 'createdAt',
@@ -315,6 +318,7 @@ export const WebsiteAuditScalarFieldEnum = {
   placeId: 'placeId',
   status: 'status',
   runToken: 'runToken',
+  batchId: 'batchId',
   qualityScore: 'qualityScore',
   report: 'report',
   errorCode: 'errorCode',
@@ -325,6 +329,17 @@ export const WebsiteAuditScalarFieldEnum = {
 } as const
 
 export type WebsiteAuditScalarFieldEnum = (typeof WebsiteAuditScalarFieldEnum)[keyof typeof WebsiteAuditScalarFieldEnum]
+
+
+export const PdfReportDesignScalarFieldEnum = {
+  userId: 'userId',
+  source: 'source',
+  theme: 'theme',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type PdfReportDesignScalarFieldEnum = (typeof PdfReportDesignScalarFieldEnum)[keyof typeof PdfReportDesignScalarFieldEnum]
 
 
 export const SessionScalarFieldEnum = {

@@ -14,7 +14,7 @@ export async function getLeadSearches(): Promise<LeadSearchSummary[]> {
     select: {
       id: true, userId: true, location: true, industry: true, radiusKm: true, maxResults: true,
       analyzeWebsites: true, status: true, createdAt: true, googlePlaceIds: true,
-      runId: true, startedAt: true, finishedAt: true, phase: true, processedPages: true, errorCode: true, resultLimit: true,
+      runId: true, startedAt: true, finishedAt: true, phase: true, processedPages: true, pauseRequested: true, errorCode: true, resultLimit: true,
       user: { select: { name: true } },
     },
   });

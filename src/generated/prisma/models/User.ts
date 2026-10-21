@@ -303,6 +303,7 @@ export type UserWhereInput = {
   leadSearches?: Prisma.LeadSearchListRelationFilter
   savedLeads?: Prisma.SavedLeadListRelationFilter
   websiteAudits?: Prisma.WebsiteAuditListRelationFilter
+  pdfReportDesign?: Prisma.XOR<Prisma.PdfReportDesignNullableScalarRelationFilter, Prisma.PdfReportDesignWhereInput> | null
 }
 
 export type UserOrderByWithRelationInput = {
@@ -342,6 +343,7 @@ export type UserOrderByWithRelationInput = {
   leadSearches?: Prisma.LeadSearchOrderByRelationAggregateInput
   savedLeads?: Prisma.SavedLeadOrderByRelationAggregateInput
   websiteAudits?: Prisma.WebsiteAuditOrderByRelationAggregateInput
+  pdfReportDesign?: Prisma.PdfReportDesignOrderByWithRelationInput
 }
 
 export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -384,6 +386,7 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   leadSearches?: Prisma.LeadSearchListRelationFilter
   savedLeads?: Prisma.SavedLeadListRelationFilter
   websiteAudits?: Prisma.WebsiteAuditListRelationFilter
+  pdfReportDesign?: Prisma.XOR<Prisma.PdfReportDesignNullableScalarRelationFilter, Prisma.PdfReportDesignWhereInput> | null
 }, "id" | "email">
 
 export type UserOrderByWithAggregationInput = {
@@ -463,6 +466,7 @@ export type UserCreateInput = {
   leadSearches?: Prisma.LeadSearchCreateNestedManyWithoutUserInput
   savedLeads?: Prisma.SavedLeadCreateNestedManyWithoutUserInput
   websiteAudits?: Prisma.WebsiteAuditCreateNestedManyWithoutUserInput
+  pdfReportDesign?: Prisma.PdfReportDesignCreateNestedOneWithoutUserInput
 }
 
 export type UserUncheckedCreateInput = {
@@ -502,6 +506,7 @@ export type UserUncheckedCreateInput = {
   leadSearches?: Prisma.LeadSearchUncheckedCreateNestedManyWithoutUserInput
   savedLeads?: Prisma.SavedLeadUncheckedCreateNestedManyWithoutUserInput
   websiteAudits?: Prisma.WebsiteAuditUncheckedCreateNestedManyWithoutUserInput
+  pdfReportDesign?: Prisma.PdfReportDesignUncheckedCreateNestedOneWithoutUserInput
 }
 
 export type UserUpdateInput = {
@@ -541,6 +546,7 @@ export type UserUpdateInput = {
   leadSearches?: Prisma.LeadSearchUpdateManyWithoutUserNestedInput
   savedLeads?: Prisma.SavedLeadUpdateManyWithoutUserNestedInput
   websiteAudits?: Prisma.WebsiteAuditUpdateManyWithoutUserNestedInput
+  pdfReportDesign?: Prisma.PdfReportDesignUpdateOneWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateInput = {
@@ -580,6 +586,7 @@ export type UserUncheckedUpdateInput = {
   leadSearches?: Prisma.LeadSearchUncheckedUpdateManyWithoutUserNestedInput
   savedLeads?: Prisma.SavedLeadUncheckedUpdateManyWithoutUserNestedInput
   websiteAudits?: Prisma.WebsiteAuditUncheckedUpdateManyWithoutUserNestedInput
+  pdfReportDesign?: Prisma.PdfReportDesignUncheckedUpdateOneWithoutUserNestedInput
 }
 
 export type UserCreateManyInput = {
@@ -874,6 +881,20 @@ export type UserUpdateOneRequiredWithoutWebsiteAuditsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutWebsiteAuditsInput, Prisma.UserUpdateWithoutWebsiteAuditsInput>, Prisma.UserUncheckedUpdateWithoutWebsiteAuditsInput>
 }
 
+export type UserCreateNestedOneWithoutPdfReportDesignInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutPdfReportDesignInput, Prisma.UserUncheckedCreateWithoutPdfReportDesignInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutPdfReportDesignInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutPdfReportDesignNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutPdfReportDesignInput, Prisma.UserUncheckedCreateWithoutPdfReportDesignInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutPdfReportDesignInput
+  upsert?: Prisma.UserUpsertWithoutPdfReportDesignInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutPdfReportDesignInput, Prisma.UserUpdateWithoutPdfReportDesignInput>, Prisma.UserUncheckedUpdateWithoutPdfReportDesignInput>
+}
+
 export type UserCreateNestedOneWithoutSessionsInput = {
   create?: Prisma.XOR<Prisma.UserCreateWithoutSessionsInput, Prisma.UserUncheckedCreateWithoutSessionsInput>
   connectOrCreate?: Prisma.UserCreateOrConnectWithoutSessionsInput
@@ -1064,6 +1085,7 @@ export type UserCreateWithoutAssignmentsCreatedInput = {
   leadSearches?: Prisma.LeadSearchCreateNestedManyWithoutUserInput
   savedLeads?: Prisma.SavedLeadCreateNestedManyWithoutUserInput
   websiteAudits?: Prisma.WebsiteAuditCreateNestedManyWithoutUserInput
+  pdfReportDesign?: Prisma.PdfReportDesignCreateNestedOneWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutAssignmentsCreatedInput = {
@@ -1102,6 +1124,7 @@ export type UserUncheckedCreateWithoutAssignmentsCreatedInput = {
   leadSearches?: Prisma.LeadSearchUncheckedCreateNestedManyWithoutUserInput
   savedLeads?: Prisma.SavedLeadUncheckedCreateNestedManyWithoutUserInput
   websiteAudits?: Prisma.WebsiteAuditUncheckedCreateNestedManyWithoutUserInput
+  pdfReportDesign?: Prisma.PdfReportDesignUncheckedCreateNestedOneWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutAssignmentsCreatedInput = {
@@ -1145,6 +1168,7 @@ export type UserCreateWithoutAssignmentsAsInternInput = {
   leadSearches?: Prisma.LeadSearchCreateNestedManyWithoutUserInput
   savedLeads?: Prisma.SavedLeadCreateNestedManyWithoutUserInput
   websiteAudits?: Prisma.WebsiteAuditCreateNestedManyWithoutUserInput
+  pdfReportDesign?: Prisma.PdfReportDesignCreateNestedOneWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutAssignmentsAsInternInput = {
@@ -1183,6 +1207,7 @@ export type UserUncheckedCreateWithoutAssignmentsAsInternInput = {
   leadSearches?: Prisma.LeadSearchUncheckedCreateNestedManyWithoutUserInput
   savedLeads?: Prisma.SavedLeadUncheckedCreateNestedManyWithoutUserInput
   websiteAudits?: Prisma.WebsiteAuditUncheckedCreateNestedManyWithoutUserInput
+  pdfReportDesign?: Prisma.PdfReportDesignUncheckedCreateNestedOneWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutAssignmentsAsInternInput = {
@@ -1237,6 +1262,7 @@ export type UserUpdateWithoutAssignmentsCreatedInput = {
   leadSearches?: Prisma.LeadSearchUpdateManyWithoutUserNestedInput
   savedLeads?: Prisma.SavedLeadUpdateManyWithoutUserNestedInput
   websiteAudits?: Prisma.WebsiteAuditUpdateManyWithoutUserNestedInput
+  pdfReportDesign?: Prisma.PdfReportDesignUpdateOneWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutAssignmentsCreatedInput = {
@@ -1275,6 +1301,7 @@ export type UserUncheckedUpdateWithoutAssignmentsCreatedInput = {
   leadSearches?: Prisma.LeadSearchUncheckedUpdateManyWithoutUserNestedInput
   savedLeads?: Prisma.SavedLeadUncheckedUpdateManyWithoutUserNestedInput
   websiteAudits?: Prisma.WebsiteAuditUncheckedUpdateManyWithoutUserNestedInput
+  pdfReportDesign?: Prisma.PdfReportDesignUncheckedUpdateOneWithoutUserNestedInput
 }
 
 export type UserUpsertWithoutAssignmentsAsInternInput = {
@@ -1324,6 +1351,7 @@ export type UserUpdateWithoutAssignmentsAsInternInput = {
   leadSearches?: Prisma.LeadSearchUpdateManyWithoutUserNestedInput
   savedLeads?: Prisma.SavedLeadUpdateManyWithoutUserNestedInput
   websiteAudits?: Prisma.WebsiteAuditUpdateManyWithoutUserNestedInput
+  pdfReportDesign?: Prisma.PdfReportDesignUpdateOneWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutAssignmentsAsInternInput = {
@@ -1362,6 +1390,7 @@ export type UserUncheckedUpdateWithoutAssignmentsAsInternInput = {
   leadSearches?: Prisma.LeadSearchUncheckedUpdateManyWithoutUserNestedInput
   savedLeads?: Prisma.SavedLeadUncheckedUpdateManyWithoutUserNestedInput
   websiteAudits?: Prisma.WebsiteAuditUncheckedUpdateManyWithoutUserNestedInput
+  pdfReportDesign?: Prisma.PdfReportDesignUncheckedUpdateOneWithoutUserNestedInput
 }
 
 export type UserCreateWithoutReflectionsInput = {
@@ -1400,6 +1429,7 @@ export type UserCreateWithoutReflectionsInput = {
   leadSearches?: Prisma.LeadSearchCreateNestedManyWithoutUserInput
   savedLeads?: Prisma.SavedLeadCreateNestedManyWithoutUserInput
   websiteAudits?: Prisma.WebsiteAuditCreateNestedManyWithoutUserInput
+  pdfReportDesign?: Prisma.PdfReportDesignCreateNestedOneWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutReflectionsInput = {
@@ -1438,6 +1468,7 @@ export type UserUncheckedCreateWithoutReflectionsInput = {
   leadSearches?: Prisma.LeadSearchUncheckedCreateNestedManyWithoutUserInput
   savedLeads?: Prisma.SavedLeadUncheckedCreateNestedManyWithoutUserInput
   websiteAudits?: Prisma.WebsiteAuditUncheckedCreateNestedManyWithoutUserInput
+  pdfReportDesign?: Prisma.PdfReportDesignUncheckedCreateNestedOneWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutReflectionsInput = {
@@ -1492,6 +1523,7 @@ export type UserUpdateWithoutReflectionsInput = {
   leadSearches?: Prisma.LeadSearchUpdateManyWithoutUserNestedInput
   savedLeads?: Prisma.SavedLeadUpdateManyWithoutUserNestedInput
   websiteAudits?: Prisma.WebsiteAuditUpdateManyWithoutUserNestedInput
+  pdfReportDesign?: Prisma.PdfReportDesignUpdateOneWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutReflectionsInput = {
@@ -1530,6 +1562,7 @@ export type UserUncheckedUpdateWithoutReflectionsInput = {
   leadSearches?: Prisma.LeadSearchUncheckedUpdateManyWithoutUserNestedInput
   savedLeads?: Prisma.SavedLeadUncheckedUpdateManyWithoutUserNestedInput
   websiteAudits?: Prisma.WebsiteAuditUncheckedUpdateManyWithoutUserNestedInput
+  pdfReportDesign?: Prisma.PdfReportDesignUncheckedUpdateOneWithoutUserNestedInput
 }
 
 export type UserCreateWithoutFeedbackAuthoredInput = {
@@ -1568,6 +1601,7 @@ export type UserCreateWithoutFeedbackAuthoredInput = {
   leadSearches?: Prisma.LeadSearchCreateNestedManyWithoutUserInput
   savedLeads?: Prisma.SavedLeadCreateNestedManyWithoutUserInput
   websiteAudits?: Prisma.WebsiteAuditCreateNestedManyWithoutUserInput
+  pdfReportDesign?: Prisma.PdfReportDesignCreateNestedOneWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutFeedbackAuthoredInput = {
@@ -1606,6 +1640,7 @@ export type UserUncheckedCreateWithoutFeedbackAuthoredInput = {
   leadSearches?: Prisma.LeadSearchUncheckedCreateNestedManyWithoutUserInput
   savedLeads?: Prisma.SavedLeadUncheckedCreateNestedManyWithoutUserInput
   websiteAudits?: Prisma.WebsiteAuditUncheckedCreateNestedManyWithoutUserInput
+  pdfReportDesign?: Prisma.PdfReportDesignUncheckedCreateNestedOneWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutFeedbackAuthoredInput = {
@@ -1660,6 +1695,7 @@ export type UserUpdateWithoutFeedbackAuthoredInput = {
   leadSearches?: Prisma.LeadSearchUpdateManyWithoutUserNestedInput
   savedLeads?: Prisma.SavedLeadUpdateManyWithoutUserNestedInput
   websiteAudits?: Prisma.WebsiteAuditUpdateManyWithoutUserNestedInput
+  pdfReportDesign?: Prisma.PdfReportDesignUpdateOneWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutFeedbackAuthoredInput = {
@@ -1698,6 +1734,7 @@ export type UserUncheckedUpdateWithoutFeedbackAuthoredInput = {
   leadSearches?: Prisma.LeadSearchUncheckedUpdateManyWithoutUserNestedInput
   savedLeads?: Prisma.SavedLeadUncheckedUpdateManyWithoutUserNestedInput
   websiteAudits?: Prisma.WebsiteAuditUncheckedUpdateManyWithoutUserNestedInput
+  pdfReportDesign?: Prisma.PdfReportDesignUncheckedUpdateOneWithoutUserNestedInput
 }
 
 export type UserCreateWithoutDiscussionNoteInput = {
@@ -1736,6 +1773,7 @@ export type UserCreateWithoutDiscussionNoteInput = {
   leadSearches?: Prisma.LeadSearchCreateNestedManyWithoutUserInput
   savedLeads?: Prisma.SavedLeadCreateNestedManyWithoutUserInput
   websiteAudits?: Prisma.WebsiteAuditCreateNestedManyWithoutUserInput
+  pdfReportDesign?: Prisma.PdfReportDesignCreateNestedOneWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutDiscussionNoteInput = {
@@ -1774,6 +1812,7 @@ export type UserUncheckedCreateWithoutDiscussionNoteInput = {
   leadSearches?: Prisma.LeadSearchUncheckedCreateNestedManyWithoutUserInput
   savedLeads?: Prisma.SavedLeadUncheckedCreateNestedManyWithoutUserInput
   websiteAudits?: Prisma.WebsiteAuditUncheckedCreateNestedManyWithoutUserInput
+  pdfReportDesign?: Prisma.PdfReportDesignUncheckedCreateNestedOneWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutDiscussionNoteInput = {
@@ -1828,6 +1867,7 @@ export type UserUpdateWithoutDiscussionNoteInput = {
   leadSearches?: Prisma.LeadSearchUpdateManyWithoutUserNestedInput
   savedLeads?: Prisma.SavedLeadUpdateManyWithoutUserNestedInput
   websiteAudits?: Prisma.WebsiteAuditUpdateManyWithoutUserNestedInput
+  pdfReportDesign?: Prisma.PdfReportDesignUpdateOneWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutDiscussionNoteInput = {
@@ -1866,6 +1906,7 @@ export type UserUncheckedUpdateWithoutDiscussionNoteInput = {
   leadSearches?: Prisma.LeadSearchUncheckedUpdateManyWithoutUserNestedInput
   savedLeads?: Prisma.SavedLeadUncheckedUpdateManyWithoutUserNestedInput
   websiteAudits?: Prisma.WebsiteAuditUncheckedUpdateManyWithoutUserNestedInput
+  pdfReportDesign?: Prisma.PdfReportDesignUncheckedUpdateOneWithoutUserNestedInput
 }
 
 export type UserCreateWithoutResourcesAddedInput = {
@@ -1904,6 +1945,7 @@ export type UserCreateWithoutResourcesAddedInput = {
   leadSearches?: Prisma.LeadSearchCreateNestedManyWithoutUserInput
   savedLeads?: Prisma.SavedLeadCreateNestedManyWithoutUserInput
   websiteAudits?: Prisma.WebsiteAuditCreateNestedManyWithoutUserInput
+  pdfReportDesign?: Prisma.PdfReportDesignCreateNestedOneWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutResourcesAddedInput = {
@@ -1942,6 +1984,7 @@ export type UserUncheckedCreateWithoutResourcesAddedInput = {
   leadSearches?: Prisma.LeadSearchUncheckedCreateNestedManyWithoutUserInput
   savedLeads?: Prisma.SavedLeadUncheckedCreateNestedManyWithoutUserInput
   websiteAudits?: Prisma.WebsiteAuditUncheckedCreateNestedManyWithoutUserInput
+  pdfReportDesign?: Prisma.PdfReportDesignUncheckedCreateNestedOneWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutResourcesAddedInput = {
@@ -1996,6 +2039,7 @@ export type UserUpdateWithoutResourcesAddedInput = {
   leadSearches?: Prisma.LeadSearchUpdateManyWithoutUserNestedInput
   savedLeads?: Prisma.SavedLeadUpdateManyWithoutUserNestedInput
   websiteAudits?: Prisma.WebsiteAuditUpdateManyWithoutUserNestedInput
+  pdfReportDesign?: Prisma.PdfReportDesignUpdateOneWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutResourcesAddedInput = {
@@ -2034,6 +2078,7 @@ export type UserUncheckedUpdateWithoutResourcesAddedInput = {
   leadSearches?: Prisma.LeadSearchUncheckedUpdateManyWithoutUserNestedInput
   savedLeads?: Prisma.SavedLeadUncheckedUpdateManyWithoutUserNestedInput
   websiteAudits?: Prisma.WebsiteAuditUncheckedUpdateManyWithoutUserNestedInput
+  pdfReportDesign?: Prisma.PdfReportDesignUncheckedUpdateOneWithoutUserNestedInput
 }
 
 export type UserCreateWithoutIdeasInput = {
@@ -2072,6 +2117,7 @@ export type UserCreateWithoutIdeasInput = {
   leadSearches?: Prisma.LeadSearchCreateNestedManyWithoutUserInput
   savedLeads?: Prisma.SavedLeadCreateNestedManyWithoutUserInput
   websiteAudits?: Prisma.WebsiteAuditCreateNestedManyWithoutUserInput
+  pdfReportDesign?: Prisma.PdfReportDesignCreateNestedOneWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutIdeasInput = {
@@ -2110,6 +2156,7 @@ export type UserUncheckedCreateWithoutIdeasInput = {
   leadSearches?: Prisma.LeadSearchUncheckedCreateNestedManyWithoutUserInput
   savedLeads?: Prisma.SavedLeadUncheckedCreateNestedManyWithoutUserInput
   websiteAudits?: Prisma.WebsiteAuditUncheckedCreateNestedManyWithoutUserInput
+  pdfReportDesign?: Prisma.PdfReportDesignUncheckedCreateNestedOneWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutIdeasInput = {
@@ -2164,6 +2211,7 @@ export type UserUpdateWithoutIdeasInput = {
   leadSearches?: Prisma.LeadSearchUpdateManyWithoutUserNestedInput
   savedLeads?: Prisma.SavedLeadUpdateManyWithoutUserNestedInput
   websiteAudits?: Prisma.WebsiteAuditUpdateManyWithoutUserNestedInput
+  pdfReportDesign?: Prisma.PdfReportDesignUpdateOneWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutIdeasInput = {
@@ -2202,6 +2250,7 @@ export type UserUncheckedUpdateWithoutIdeasInput = {
   leadSearches?: Prisma.LeadSearchUncheckedUpdateManyWithoutUserNestedInput
   savedLeads?: Prisma.SavedLeadUncheckedUpdateManyWithoutUserNestedInput
   websiteAudits?: Prisma.WebsiteAuditUncheckedUpdateManyWithoutUserNestedInput
+  pdfReportDesign?: Prisma.PdfReportDesignUncheckedUpdateOneWithoutUserNestedInput
 }
 
 export type UserCreateWithoutIdeaNotesInput = {
@@ -2240,6 +2289,7 @@ export type UserCreateWithoutIdeaNotesInput = {
   leadSearches?: Prisma.LeadSearchCreateNestedManyWithoutUserInput
   savedLeads?: Prisma.SavedLeadCreateNestedManyWithoutUserInput
   websiteAudits?: Prisma.WebsiteAuditCreateNestedManyWithoutUserInput
+  pdfReportDesign?: Prisma.PdfReportDesignCreateNestedOneWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutIdeaNotesInput = {
@@ -2278,6 +2328,7 @@ export type UserUncheckedCreateWithoutIdeaNotesInput = {
   leadSearches?: Prisma.LeadSearchUncheckedCreateNestedManyWithoutUserInput
   savedLeads?: Prisma.SavedLeadUncheckedCreateNestedManyWithoutUserInput
   websiteAudits?: Prisma.WebsiteAuditUncheckedCreateNestedManyWithoutUserInput
+  pdfReportDesign?: Prisma.PdfReportDesignUncheckedCreateNestedOneWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutIdeaNotesInput = {
@@ -2332,6 +2383,7 @@ export type UserUpdateWithoutIdeaNotesInput = {
   leadSearches?: Prisma.LeadSearchUpdateManyWithoutUserNestedInput
   savedLeads?: Prisma.SavedLeadUpdateManyWithoutUserNestedInput
   websiteAudits?: Prisma.WebsiteAuditUpdateManyWithoutUserNestedInput
+  pdfReportDesign?: Prisma.PdfReportDesignUpdateOneWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutIdeaNotesInput = {
@@ -2370,6 +2422,7 @@ export type UserUncheckedUpdateWithoutIdeaNotesInput = {
   leadSearches?: Prisma.LeadSearchUncheckedUpdateManyWithoutUserNestedInput
   savedLeads?: Prisma.SavedLeadUncheckedUpdateManyWithoutUserNestedInput
   websiteAudits?: Prisma.WebsiteAuditUncheckedUpdateManyWithoutUserNestedInput
+  pdfReportDesign?: Prisma.PdfReportDesignUncheckedUpdateOneWithoutUserNestedInput
 }
 
 export type UserCreateWithoutDailyPlansInput = {
@@ -2408,6 +2461,7 @@ export type UserCreateWithoutDailyPlansInput = {
   leadSearches?: Prisma.LeadSearchCreateNestedManyWithoutUserInput
   savedLeads?: Prisma.SavedLeadCreateNestedManyWithoutUserInput
   websiteAudits?: Prisma.WebsiteAuditCreateNestedManyWithoutUserInput
+  pdfReportDesign?: Prisma.PdfReportDesignCreateNestedOneWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutDailyPlansInput = {
@@ -2446,6 +2500,7 @@ export type UserUncheckedCreateWithoutDailyPlansInput = {
   leadSearches?: Prisma.LeadSearchUncheckedCreateNestedManyWithoutUserInput
   savedLeads?: Prisma.SavedLeadUncheckedCreateNestedManyWithoutUserInput
   websiteAudits?: Prisma.WebsiteAuditUncheckedCreateNestedManyWithoutUserInput
+  pdfReportDesign?: Prisma.PdfReportDesignUncheckedCreateNestedOneWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutDailyPlansInput = {
@@ -2500,6 +2555,7 @@ export type UserUpdateWithoutDailyPlansInput = {
   leadSearches?: Prisma.LeadSearchUpdateManyWithoutUserNestedInput
   savedLeads?: Prisma.SavedLeadUpdateManyWithoutUserNestedInput
   websiteAudits?: Prisma.WebsiteAuditUpdateManyWithoutUserNestedInput
+  pdfReportDesign?: Prisma.PdfReportDesignUpdateOneWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutDailyPlansInput = {
@@ -2538,6 +2594,7 @@ export type UserUncheckedUpdateWithoutDailyPlansInput = {
   leadSearches?: Prisma.LeadSearchUncheckedUpdateManyWithoutUserNestedInput
   savedLeads?: Prisma.SavedLeadUncheckedUpdateManyWithoutUserNestedInput
   websiteAudits?: Prisma.WebsiteAuditUncheckedUpdateManyWithoutUserNestedInput
+  pdfReportDesign?: Prisma.PdfReportDesignUncheckedUpdateOneWithoutUserNestedInput
 }
 
 export type UserCreateWithoutLeadSearchesInput = {
@@ -2576,6 +2633,7 @@ export type UserCreateWithoutLeadSearchesInput = {
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
   savedLeads?: Prisma.SavedLeadCreateNestedManyWithoutUserInput
   websiteAudits?: Prisma.WebsiteAuditCreateNestedManyWithoutUserInput
+  pdfReportDesign?: Prisma.PdfReportDesignCreateNestedOneWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutLeadSearchesInput = {
@@ -2614,6 +2672,7 @@ export type UserUncheckedCreateWithoutLeadSearchesInput = {
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
   savedLeads?: Prisma.SavedLeadUncheckedCreateNestedManyWithoutUserInput
   websiteAudits?: Prisma.WebsiteAuditUncheckedCreateNestedManyWithoutUserInput
+  pdfReportDesign?: Prisma.PdfReportDesignUncheckedCreateNestedOneWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutLeadSearchesInput = {
@@ -2668,6 +2727,7 @@ export type UserUpdateWithoutLeadSearchesInput = {
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
   savedLeads?: Prisma.SavedLeadUpdateManyWithoutUserNestedInput
   websiteAudits?: Prisma.WebsiteAuditUpdateManyWithoutUserNestedInput
+  pdfReportDesign?: Prisma.PdfReportDesignUpdateOneWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutLeadSearchesInput = {
@@ -2706,6 +2766,7 @@ export type UserUncheckedUpdateWithoutLeadSearchesInput = {
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
   savedLeads?: Prisma.SavedLeadUncheckedUpdateManyWithoutUserNestedInput
   websiteAudits?: Prisma.WebsiteAuditUncheckedUpdateManyWithoutUserNestedInput
+  pdfReportDesign?: Prisma.PdfReportDesignUncheckedUpdateOneWithoutUserNestedInput
 }
 
 export type UserCreateWithoutSavedLeadsInput = {
@@ -2744,6 +2805,7 @@ export type UserCreateWithoutSavedLeadsInput = {
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
   leadSearches?: Prisma.LeadSearchCreateNestedManyWithoutUserInput
   websiteAudits?: Prisma.WebsiteAuditCreateNestedManyWithoutUserInput
+  pdfReportDesign?: Prisma.PdfReportDesignCreateNestedOneWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutSavedLeadsInput = {
@@ -2782,6 +2844,7 @@ export type UserUncheckedCreateWithoutSavedLeadsInput = {
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
   leadSearches?: Prisma.LeadSearchUncheckedCreateNestedManyWithoutUserInput
   websiteAudits?: Prisma.WebsiteAuditUncheckedCreateNestedManyWithoutUserInput
+  pdfReportDesign?: Prisma.PdfReportDesignUncheckedCreateNestedOneWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutSavedLeadsInput = {
@@ -2836,6 +2899,7 @@ export type UserUpdateWithoutSavedLeadsInput = {
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
   leadSearches?: Prisma.LeadSearchUpdateManyWithoutUserNestedInput
   websiteAudits?: Prisma.WebsiteAuditUpdateManyWithoutUserNestedInput
+  pdfReportDesign?: Prisma.PdfReportDesignUpdateOneWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutSavedLeadsInput = {
@@ -2874,6 +2938,7 @@ export type UserUncheckedUpdateWithoutSavedLeadsInput = {
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
   leadSearches?: Prisma.LeadSearchUncheckedUpdateManyWithoutUserNestedInput
   websiteAudits?: Prisma.WebsiteAuditUncheckedUpdateManyWithoutUserNestedInput
+  pdfReportDesign?: Prisma.PdfReportDesignUncheckedUpdateOneWithoutUserNestedInput
 }
 
 export type UserCreateWithoutWebsiteAuditsInput = {
@@ -2912,6 +2977,7 @@ export type UserCreateWithoutWebsiteAuditsInput = {
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
   leadSearches?: Prisma.LeadSearchCreateNestedManyWithoutUserInput
   savedLeads?: Prisma.SavedLeadCreateNestedManyWithoutUserInput
+  pdfReportDesign?: Prisma.PdfReportDesignCreateNestedOneWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutWebsiteAuditsInput = {
@@ -2950,6 +3016,7 @@ export type UserUncheckedCreateWithoutWebsiteAuditsInput = {
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
   leadSearches?: Prisma.LeadSearchUncheckedCreateNestedManyWithoutUserInput
   savedLeads?: Prisma.SavedLeadUncheckedCreateNestedManyWithoutUserInput
+  pdfReportDesign?: Prisma.PdfReportDesignUncheckedCreateNestedOneWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutWebsiteAuditsInput = {
@@ -3004,6 +3071,7 @@ export type UserUpdateWithoutWebsiteAuditsInput = {
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
   leadSearches?: Prisma.LeadSearchUpdateManyWithoutUserNestedInput
   savedLeads?: Prisma.SavedLeadUpdateManyWithoutUserNestedInput
+  pdfReportDesign?: Prisma.PdfReportDesignUpdateOneWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutWebsiteAuditsInput = {
@@ -3042,6 +3110,179 @@ export type UserUncheckedUpdateWithoutWebsiteAuditsInput = {
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
   leadSearches?: Prisma.LeadSearchUncheckedUpdateManyWithoutUserNestedInput
   savedLeads?: Prisma.SavedLeadUncheckedUpdateManyWithoutUserNestedInput
+  pdfReportDesign?: Prisma.PdfReportDesignUncheckedUpdateOneWithoutUserNestedInput
+}
+
+export type UserCreateWithoutPdfReportDesignInput = {
+  id: string
+  name: string
+  email: string
+  emailVerified?: boolean
+  image?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  role?: string
+  banned?: boolean | null
+  banReason?: string | null
+  banExpires?: Date | string | null
+  locale?: string
+  secureLoginVersion?: number
+  dailyPlans?: Prisma.DailyPlanCreateNestedManyWithoutUserInput
+  resourcesAdded?: Prisma.DepartmentResourceCreateNestedManyWithoutCreatedByInput
+  discussionNote?: Prisma.DiscussionNoteCreateNestedOneWithoutUserInput
+  ideas?: Prisma.IdeaCreateNestedManyWithoutAuthorInput
+  ideaNotes?: Prisma.IdeaNoteCreateNestedManyWithoutAuthorInput
+  feedbackAuthored?: Prisma.MentorFeedbackCreateNestedManyWithoutAuthorInput
+  reflections?: Prisma.ReflectionCreateNestedManyWithoutInternInput
+  assignmentsCreated?: Prisma.WeeklyAssignmentCreateNestedManyWithoutCreatedByInput
+  assignmentsAsIntern?: Prisma.WeeklyAssignmentCreateNestedManyWithoutInternInput
+  friendshipsSent?: Prisma.FriendshipCreateNestedManyWithoutRequesterInput
+  friendshipsReceived?: Prisma.FriendshipCreateNestedManyWithoutRecipientInput
+  directChatsFirst?: Prisma.DirectConversationCreateNestedManyWithoutFirstUserInput
+  directChatsSecond?: Prisma.DirectConversationCreateNestedManyWithoutSecondUserInput
+  chatMemberships?: Prisma.ChatMembershipCreateNestedManyWithoutUserInput
+  chatMessages?: Prisma.ChatMessageCreateNestedManyWithoutSenderInput
+  groupMemberships?: Prisma.GroupMembershipCreateNestedManyWithoutUserInput
+  groupMessages?: Prisma.GroupMessageCreateNestedManyWithoutSenderInput
+  chatEncryptionKey?: Prisma.ChatEncryptionKeyCreateNestedOneWithoutUserInput
+  accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
+  leadSearches?: Prisma.LeadSearchCreateNestedManyWithoutUserInput
+  savedLeads?: Prisma.SavedLeadCreateNestedManyWithoutUserInput
+  websiteAudits?: Prisma.WebsiteAuditCreateNestedManyWithoutUserInput
+}
+
+export type UserUncheckedCreateWithoutPdfReportDesignInput = {
+  id: string
+  name: string
+  email: string
+  emailVerified?: boolean
+  image?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  role?: string
+  banned?: boolean | null
+  banReason?: string | null
+  banExpires?: Date | string | null
+  locale?: string
+  secureLoginVersion?: number
+  dailyPlans?: Prisma.DailyPlanUncheckedCreateNestedManyWithoutUserInput
+  resourcesAdded?: Prisma.DepartmentResourceUncheckedCreateNestedManyWithoutCreatedByInput
+  discussionNote?: Prisma.DiscussionNoteUncheckedCreateNestedOneWithoutUserInput
+  ideas?: Prisma.IdeaUncheckedCreateNestedManyWithoutAuthorInput
+  ideaNotes?: Prisma.IdeaNoteUncheckedCreateNestedManyWithoutAuthorInput
+  feedbackAuthored?: Prisma.MentorFeedbackUncheckedCreateNestedManyWithoutAuthorInput
+  reflections?: Prisma.ReflectionUncheckedCreateNestedManyWithoutInternInput
+  assignmentsCreated?: Prisma.WeeklyAssignmentUncheckedCreateNestedManyWithoutCreatedByInput
+  assignmentsAsIntern?: Prisma.WeeklyAssignmentUncheckedCreateNestedManyWithoutInternInput
+  friendshipsSent?: Prisma.FriendshipUncheckedCreateNestedManyWithoutRequesterInput
+  friendshipsReceived?: Prisma.FriendshipUncheckedCreateNestedManyWithoutRecipientInput
+  directChatsFirst?: Prisma.DirectConversationUncheckedCreateNestedManyWithoutFirstUserInput
+  directChatsSecond?: Prisma.DirectConversationUncheckedCreateNestedManyWithoutSecondUserInput
+  chatMemberships?: Prisma.ChatMembershipUncheckedCreateNestedManyWithoutUserInput
+  chatMessages?: Prisma.ChatMessageUncheckedCreateNestedManyWithoutSenderInput
+  groupMemberships?: Prisma.GroupMembershipUncheckedCreateNestedManyWithoutUserInput
+  groupMessages?: Prisma.GroupMessageUncheckedCreateNestedManyWithoutSenderInput
+  chatEncryptionKey?: Prisma.ChatEncryptionKeyUncheckedCreateNestedOneWithoutUserInput
+  accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
+  leadSearches?: Prisma.LeadSearchUncheckedCreateNestedManyWithoutUserInput
+  savedLeads?: Prisma.SavedLeadUncheckedCreateNestedManyWithoutUserInput
+  websiteAudits?: Prisma.WebsiteAuditUncheckedCreateNestedManyWithoutUserInput
+}
+
+export type UserCreateOrConnectWithoutPdfReportDesignInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutPdfReportDesignInput, Prisma.UserUncheckedCreateWithoutPdfReportDesignInput>
+}
+
+export type UserUpsertWithoutPdfReportDesignInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutPdfReportDesignInput, Prisma.UserUncheckedUpdateWithoutPdfReportDesignInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutPdfReportDesignInput, Prisma.UserUncheckedCreateWithoutPdfReportDesignInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutPdfReportDesignInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutPdfReportDesignInput, Prisma.UserUncheckedUpdateWithoutPdfReportDesignInput>
+}
+
+export type UserUpdateWithoutPdfReportDesignInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  role?: Prisma.StringFieldUpdateOperationsInput | string
+  banned?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  banReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  banExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  locale?: Prisma.StringFieldUpdateOperationsInput | string
+  secureLoginVersion?: Prisma.IntFieldUpdateOperationsInput | number
+  dailyPlans?: Prisma.DailyPlanUpdateManyWithoutUserNestedInput
+  resourcesAdded?: Prisma.DepartmentResourceUpdateManyWithoutCreatedByNestedInput
+  discussionNote?: Prisma.DiscussionNoteUpdateOneWithoutUserNestedInput
+  ideas?: Prisma.IdeaUpdateManyWithoutAuthorNestedInput
+  ideaNotes?: Prisma.IdeaNoteUpdateManyWithoutAuthorNestedInput
+  feedbackAuthored?: Prisma.MentorFeedbackUpdateManyWithoutAuthorNestedInput
+  reflections?: Prisma.ReflectionUpdateManyWithoutInternNestedInput
+  assignmentsCreated?: Prisma.WeeklyAssignmentUpdateManyWithoutCreatedByNestedInput
+  assignmentsAsIntern?: Prisma.WeeklyAssignmentUpdateManyWithoutInternNestedInput
+  friendshipsSent?: Prisma.FriendshipUpdateManyWithoutRequesterNestedInput
+  friendshipsReceived?: Prisma.FriendshipUpdateManyWithoutRecipientNestedInput
+  directChatsFirst?: Prisma.DirectConversationUpdateManyWithoutFirstUserNestedInput
+  directChatsSecond?: Prisma.DirectConversationUpdateManyWithoutSecondUserNestedInput
+  chatMemberships?: Prisma.ChatMembershipUpdateManyWithoutUserNestedInput
+  chatMessages?: Prisma.ChatMessageUpdateManyWithoutSenderNestedInput
+  groupMemberships?: Prisma.GroupMembershipUpdateManyWithoutUserNestedInput
+  groupMessages?: Prisma.GroupMessageUpdateManyWithoutSenderNestedInput
+  chatEncryptionKey?: Prisma.ChatEncryptionKeyUpdateOneWithoutUserNestedInput
+  accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
+  leadSearches?: Prisma.LeadSearchUpdateManyWithoutUserNestedInput
+  savedLeads?: Prisma.SavedLeadUpdateManyWithoutUserNestedInput
+  websiteAudits?: Prisma.WebsiteAuditUpdateManyWithoutUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutPdfReportDesignInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  role?: Prisma.StringFieldUpdateOperationsInput | string
+  banned?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  banReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  banExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  locale?: Prisma.StringFieldUpdateOperationsInput | string
+  secureLoginVersion?: Prisma.IntFieldUpdateOperationsInput | number
+  dailyPlans?: Prisma.DailyPlanUncheckedUpdateManyWithoutUserNestedInput
+  resourcesAdded?: Prisma.DepartmentResourceUncheckedUpdateManyWithoutCreatedByNestedInput
+  discussionNote?: Prisma.DiscussionNoteUncheckedUpdateOneWithoutUserNestedInput
+  ideas?: Prisma.IdeaUncheckedUpdateManyWithoutAuthorNestedInput
+  ideaNotes?: Prisma.IdeaNoteUncheckedUpdateManyWithoutAuthorNestedInput
+  feedbackAuthored?: Prisma.MentorFeedbackUncheckedUpdateManyWithoutAuthorNestedInput
+  reflections?: Prisma.ReflectionUncheckedUpdateManyWithoutInternNestedInput
+  assignmentsCreated?: Prisma.WeeklyAssignmentUncheckedUpdateManyWithoutCreatedByNestedInput
+  assignmentsAsIntern?: Prisma.WeeklyAssignmentUncheckedUpdateManyWithoutInternNestedInput
+  friendshipsSent?: Prisma.FriendshipUncheckedUpdateManyWithoutRequesterNestedInput
+  friendshipsReceived?: Prisma.FriendshipUncheckedUpdateManyWithoutRecipientNestedInput
+  directChatsFirst?: Prisma.DirectConversationUncheckedUpdateManyWithoutFirstUserNestedInput
+  directChatsSecond?: Prisma.DirectConversationUncheckedUpdateManyWithoutSecondUserNestedInput
+  chatMemberships?: Prisma.ChatMembershipUncheckedUpdateManyWithoutUserNestedInput
+  chatMessages?: Prisma.ChatMessageUncheckedUpdateManyWithoutSenderNestedInput
+  groupMemberships?: Prisma.GroupMembershipUncheckedUpdateManyWithoutUserNestedInput
+  groupMessages?: Prisma.GroupMessageUncheckedUpdateManyWithoutSenderNestedInput
+  chatEncryptionKey?: Prisma.ChatEncryptionKeyUncheckedUpdateOneWithoutUserNestedInput
+  accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
+  leadSearches?: Prisma.LeadSearchUncheckedUpdateManyWithoutUserNestedInput
+  savedLeads?: Prisma.SavedLeadUncheckedUpdateManyWithoutUserNestedInput
+  websiteAudits?: Prisma.WebsiteAuditUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutSessionsInput = {
@@ -3080,6 +3321,7 @@ export type UserCreateWithoutSessionsInput = {
   leadSearches?: Prisma.LeadSearchCreateNestedManyWithoutUserInput
   savedLeads?: Prisma.SavedLeadCreateNestedManyWithoutUserInput
   websiteAudits?: Prisma.WebsiteAuditCreateNestedManyWithoutUserInput
+  pdfReportDesign?: Prisma.PdfReportDesignCreateNestedOneWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutSessionsInput = {
@@ -3118,6 +3360,7 @@ export type UserUncheckedCreateWithoutSessionsInput = {
   leadSearches?: Prisma.LeadSearchUncheckedCreateNestedManyWithoutUserInput
   savedLeads?: Prisma.SavedLeadUncheckedCreateNestedManyWithoutUserInput
   websiteAudits?: Prisma.WebsiteAuditUncheckedCreateNestedManyWithoutUserInput
+  pdfReportDesign?: Prisma.PdfReportDesignUncheckedCreateNestedOneWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutSessionsInput = {
@@ -3172,6 +3415,7 @@ export type UserUpdateWithoutSessionsInput = {
   leadSearches?: Prisma.LeadSearchUpdateManyWithoutUserNestedInput
   savedLeads?: Prisma.SavedLeadUpdateManyWithoutUserNestedInput
   websiteAudits?: Prisma.WebsiteAuditUpdateManyWithoutUserNestedInput
+  pdfReportDesign?: Prisma.PdfReportDesignUpdateOneWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutSessionsInput = {
@@ -3210,6 +3454,7 @@ export type UserUncheckedUpdateWithoutSessionsInput = {
   leadSearches?: Prisma.LeadSearchUncheckedUpdateManyWithoutUserNestedInput
   savedLeads?: Prisma.SavedLeadUncheckedUpdateManyWithoutUserNestedInput
   websiteAudits?: Prisma.WebsiteAuditUncheckedUpdateManyWithoutUserNestedInput
+  pdfReportDesign?: Prisma.PdfReportDesignUncheckedUpdateOneWithoutUserNestedInput
 }
 
 export type UserCreateWithoutAccountsInput = {
@@ -3248,6 +3493,7 @@ export type UserCreateWithoutAccountsInput = {
   leadSearches?: Prisma.LeadSearchCreateNestedManyWithoutUserInput
   savedLeads?: Prisma.SavedLeadCreateNestedManyWithoutUserInput
   websiteAudits?: Prisma.WebsiteAuditCreateNestedManyWithoutUserInput
+  pdfReportDesign?: Prisma.PdfReportDesignCreateNestedOneWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutAccountsInput = {
@@ -3286,6 +3532,7 @@ export type UserUncheckedCreateWithoutAccountsInput = {
   leadSearches?: Prisma.LeadSearchUncheckedCreateNestedManyWithoutUserInput
   savedLeads?: Prisma.SavedLeadUncheckedCreateNestedManyWithoutUserInput
   websiteAudits?: Prisma.WebsiteAuditUncheckedCreateNestedManyWithoutUserInput
+  pdfReportDesign?: Prisma.PdfReportDesignUncheckedCreateNestedOneWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutAccountsInput = {
@@ -3340,6 +3587,7 @@ export type UserUpdateWithoutAccountsInput = {
   leadSearches?: Prisma.LeadSearchUpdateManyWithoutUserNestedInput
   savedLeads?: Prisma.SavedLeadUpdateManyWithoutUserNestedInput
   websiteAudits?: Prisma.WebsiteAuditUpdateManyWithoutUserNestedInput
+  pdfReportDesign?: Prisma.PdfReportDesignUpdateOneWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutAccountsInput = {
@@ -3378,6 +3626,7 @@ export type UserUncheckedUpdateWithoutAccountsInput = {
   leadSearches?: Prisma.LeadSearchUncheckedUpdateManyWithoutUserNestedInput
   savedLeads?: Prisma.SavedLeadUncheckedUpdateManyWithoutUserNestedInput
   websiteAudits?: Prisma.WebsiteAuditUncheckedUpdateManyWithoutUserNestedInput
+  pdfReportDesign?: Prisma.PdfReportDesignUncheckedUpdateOneWithoutUserNestedInput
 }
 
 export type UserCreateWithoutDirectChatsFirstInput = {
@@ -3416,6 +3665,7 @@ export type UserCreateWithoutDirectChatsFirstInput = {
   leadSearches?: Prisma.LeadSearchCreateNestedManyWithoutUserInput
   savedLeads?: Prisma.SavedLeadCreateNestedManyWithoutUserInput
   websiteAudits?: Prisma.WebsiteAuditCreateNestedManyWithoutUserInput
+  pdfReportDesign?: Prisma.PdfReportDesignCreateNestedOneWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutDirectChatsFirstInput = {
@@ -3454,6 +3704,7 @@ export type UserUncheckedCreateWithoutDirectChatsFirstInput = {
   leadSearches?: Prisma.LeadSearchUncheckedCreateNestedManyWithoutUserInput
   savedLeads?: Prisma.SavedLeadUncheckedCreateNestedManyWithoutUserInput
   websiteAudits?: Prisma.WebsiteAuditUncheckedCreateNestedManyWithoutUserInput
+  pdfReportDesign?: Prisma.PdfReportDesignUncheckedCreateNestedOneWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutDirectChatsFirstInput = {
@@ -3497,6 +3748,7 @@ export type UserCreateWithoutDirectChatsSecondInput = {
   leadSearches?: Prisma.LeadSearchCreateNestedManyWithoutUserInput
   savedLeads?: Prisma.SavedLeadCreateNestedManyWithoutUserInput
   websiteAudits?: Prisma.WebsiteAuditCreateNestedManyWithoutUserInput
+  pdfReportDesign?: Prisma.PdfReportDesignCreateNestedOneWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutDirectChatsSecondInput = {
@@ -3535,6 +3787,7 @@ export type UserUncheckedCreateWithoutDirectChatsSecondInput = {
   leadSearches?: Prisma.LeadSearchUncheckedCreateNestedManyWithoutUserInput
   savedLeads?: Prisma.SavedLeadUncheckedCreateNestedManyWithoutUserInput
   websiteAudits?: Prisma.WebsiteAuditUncheckedCreateNestedManyWithoutUserInput
+  pdfReportDesign?: Prisma.PdfReportDesignUncheckedCreateNestedOneWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutDirectChatsSecondInput = {
@@ -3589,6 +3842,7 @@ export type UserUpdateWithoutDirectChatsFirstInput = {
   leadSearches?: Prisma.LeadSearchUpdateManyWithoutUserNestedInput
   savedLeads?: Prisma.SavedLeadUpdateManyWithoutUserNestedInput
   websiteAudits?: Prisma.WebsiteAuditUpdateManyWithoutUserNestedInput
+  pdfReportDesign?: Prisma.PdfReportDesignUpdateOneWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutDirectChatsFirstInput = {
@@ -3627,6 +3881,7 @@ export type UserUncheckedUpdateWithoutDirectChatsFirstInput = {
   leadSearches?: Prisma.LeadSearchUncheckedUpdateManyWithoutUserNestedInput
   savedLeads?: Prisma.SavedLeadUncheckedUpdateManyWithoutUserNestedInput
   websiteAudits?: Prisma.WebsiteAuditUncheckedUpdateManyWithoutUserNestedInput
+  pdfReportDesign?: Prisma.PdfReportDesignUncheckedUpdateOneWithoutUserNestedInput
 }
 
 export type UserUpsertWithoutDirectChatsSecondInput = {
@@ -3676,6 +3931,7 @@ export type UserUpdateWithoutDirectChatsSecondInput = {
   leadSearches?: Prisma.LeadSearchUpdateManyWithoutUserNestedInput
   savedLeads?: Prisma.SavedLeadUpdateManyWithoutUserNestedInput
   websiteAudits?: Prisma.WebsiteAuditUpdateManyWithoutUserNestedInput
+  pdfReportDesign?: Prisma.PdfReportDesignUpdateOneWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutDirectChatsSecondInput = {
@@ -3714,6 +3970,7 @@ export type UserUncheckedUpdateWithoutDirectChatsSecondInput = {
   leadSearches?: Prisma.LeadSearchUncheckedUpdateManyWithoutUserNestedInput
   savedLeads?: Prisma.SavedLeadUncheckedUpdateManyWithoutUserNestedInput
   websiteAudits?: Prisma.WebsiteAuditUncheckedUpdateManyWithoutUserNestedInput
+  pdfReportDesign?: Prisma.PdfReportDesignUncheckedUpdateOneWithoutUserNestedInput
 }
 
 export type UserCreateWithoutChatMembershipsInput = {
@@ -3752,6 +4009,7 @@ export type UserCreateWithoutChatMembershipsInput = {
   leadSearches?: Prisma.LeadSearchCreateNestedManyWithoutUserInput
   savedLeads?: Prisma.SavedLeadCreateNestedManyWithoutUserInput
   websiteAudits?: Prisma.WebsiteAuditCreateNestedManyWithoutUserInput
+  pdfReportDesign?: Prisma.PdfReportDesignCreateNestedOneWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutChatMembershipsInput = {
@@ -3790,6 +4048,7 @@ export type UserUncheckedCreateWithoutChatMembershipsInput = {
   leadSearches?: Prisma.LeadSearchUncheckedCreateNestedManyWithoutUserInput
   savedLeads?: Prisma.SavedLeadUncheckedCreateNestedManyWithoutUserInput
   websiteAudits?: Prisma.WebsiteAuditUncheckedCreateNestedManyWithoutUserInput
+  pdfReportDesign?: Prisma.PdfReportDesignUncheckedCreateNestedOneWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutChatMembershipsInput = {
@@ -3844,6 +4103,7 @@ export type UserUpdateWithoutChatMembershipsInput = {
   leadSearches?: Prisma.LeadSearchUpdateManyWithoutUserNestedInput
   savedLeads?: Prisma.SavedLeadUpdateManyWithoutUserNestedInput
   websiteAudits?: Prisma.WebsiteAuditUpdateManyWithoutUserNestedInput
+  pdfReportDesign?: Prisma.PdfReportDesignUpdateOneWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutChatMembershipsInput = {
@@ -3882,6 +4142,7 @@ export type UserUncheckedUpdateWithoutChatMembershipsInput = {
   leadSearches?: Prisma.LeadSearchUncheckedUpdateManyWithoutUserNestedInput
   savedLeads?: Prisma.SavedLeadUncheckedUpdateManyWithoutUserNestedInput
   websiteAudits?: Prisma.WebsiteAuditUncheckedUpdateManyWithoutUserNestedInput
+  pdfReportDesign?: Prisma.PdfReportDesignUncheckedUpdateOneWithoutUserNestedInput
 }
 
 export type UserCreateWithoutChatMessagesInput = {
@@ -3920,6 +4181,7 @@ export type UserCreateWithoutChatMessagesInput = {
   leadSearches?: Prisma.LeadSearchCreateNestedManyWithoutUserInput
   savedLeads?: Prisma.SavedLeadCreateNestedManyWithoutUserInput
   websiteAudits?: Prisma.WebsiteAuditCreateNestedManyWithoutUserInput
+  pdfReportDesign?: Prisma.PdfReportDesignCreateNestedOneWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutChatMessagesInput = {
@@ -3958,6 +4220,7 @@ export type UserUncheckedCreateWithoutChatMessagesInput = {
   leadSearches?: Prisma.LeadSearchUncheckedCreateNestedManyWithoutUserInput
   savedLeads?: Prisma.SavedLeadUncheckedCreateNestedManyWithoutUserInput
   websiteAudits?: Prisma.WebsiteAuditUncheckedCreateNestedManyWithoutUserInput
+  pdfReportDesign?: Prisma.PdfReportDesignUncheckedCreateNestedOneWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutChatMessagesInput = {
@@ -4012,6 +4275,7 @@ export type UserUpdateWithoutChatMessagesInput = {
   leadSearches?: Prisma.LeadSearchUpdateManyWithoutUserNestedInput
   savedLeads?: Prisma.SavedLeadUpdateManyWithoutUserNestedInput
   websiteAudits?: Prisma.WebsiteAuditUpdateManyWithoutUserNestedInput
+  pdfReportDesign?: Prisma.PdfReportDesignUpdateOneWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutChatMessagesInput = {
@@ -4050,6 +4314,7 @@ export type UserUncheckedUpdateWithoutChatMessagesInput = {
   leadSearches?: Prisma.LeadSearchUncheckedUpdateManyWithoutUserNestedInput
   savedLeads?: Prisma.SavedLeadUncheckedUpdateManyWithoutUserNestedInput
   websiteAudits?: Prisma.WebsiteAuditUncheckedUpdateManyWithoutUserNestedInput
+  pdfReportDesign?: Prisma.PdfReportDesignUncheckedUpdateOneWithoutUserNestedInput
 }
 
 export type UserCreateWithoutFriendshipsSentInput = {
@@ -4088,6 +4353,7 @@ export type UserCreateWithoutFriendshipsSentInput = {
   leadSearches?: Prisma.LeadSearchCreateNestedManyWithoutUserInput
   savedLeads?: Prisma.SavedLeadCreateNestedManyWithoutUserInput
   websiteAudits?: Prisma.WebsiteAuditCreateNestedManyWithoutUserInput
+  pdfReportDesign?: Prisma.PdfReportDesignCreateNestedOneWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutFriendshipsSentInput = {
@@ -4126,6 +4392,7 @@ export type UserUncheckedCreateWithoutFriendshipsSentInput = {
   leadSearches?: Prisma.LeadSearchUncheckedCreateNestedManyWithoutUserInput
   savedLeads?: Prisma.SavedLeadUncheckedCreateNestedManyWithoutUserInput
   websiteAudits?: Prisma.WebsiteAuditUncheckedCreateNestedManyWithoutUserInput
+  pdfReportDesign?: Prisma.PdfReportDesignUncheckedCreateNestedOneWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutFriendshipsSentInput = {
@@ -4169,6 +4436,7 @@ export type UserCreateWithoutFriendshipsReceivedInput = {
   leadSearches?: Prisma.LeadSearchCreateNestedManyWithoutUserInput
   savedLeads?: Prisma.SavedLeadCreateNestedManyWithoutUserInput
   websiteAudits?: Prisma.WebsiteAuditCreateNestedManyWithoutUserInput
+  pdfReportDesign?: Prisma.PdfReportDesignCreateNestedOneWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutFriendshipsReceivedInput = {
@@ -4207,6 +4475,7 @@ export type UserUncheckedCreateWithoutFriendshipsReceivedInput = {
   leadSearches?: Prisma.LeadSearchUncheckedCreateNestedManyWithoutUserInput
   savedLeads?: Prisma.SavedLeadUncheckedCreateNestedManyWithoutUserInput
   websiteAudits?: Prisma.WebsiteAuditUncheckedCreateNestedManyWithoutUserInput
+  pdfReportDesign?: Prisma.PdfReportDesignUncheckedCreateNestedOneWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutFriendshipsReceivedInput = {
@@ -4261,6 +4530,7 @@ export type UserUpdateWithoutFriendshipsSentInput = {
   leadSearches?: Prisma.LeadSearchUpdateManyWithoutUserNestedInput
   savedLeads?: Prisma.SavedLeadUpdateManyWithoutUserNestedInput
   websiteAudits?: Prisma.WebsiteAuditUpdateManyWithoutUserNestedInput
+  pdfReportDesign?: Prisma.PdfReportDesignUpdateOneWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutFriendshipsSentInput = {
@@ -4299,6 +4569,7 @@ export type UserUncheckedUpdateWithoutFriendshipsSentInput = {
   leadSearches?: Prisma.LeadSearchUncheckedUpdateManyWithoutUserNestedInput
   savedLeads?: Prisma.SavedLeadUncheckedUpdateManyWithoutUserNestedInput
   websiteAudits?: Prisma.WebsiteAuditUncheckedUpdateManyWithoutUserNestedInput
+  pdfReportDesign?: Prisma.PdfReportDesignUncheckedUpdateOneWithoutUserNestedInput
 }
 
 export type UserUpsertWithoutFriendshipsReceivedInput = {
@@ -4348,6 +4619,7 @@ export type UserUpdateWithoutFriendshipsReceivedInput = {
   leadSearches?: Prisma.LeadSearchUpdateManyWithoutUserNestedInput
   savedLeads?: Prisma.SavedLeadUpdateManyWithoutUserNestedInput
   websiteAudits?: Prisma.WebsiteAuditUpdateManyWithoutUserNestedInput
+  pdfReportDesign?: Prisma.PdfReportDesignUpdateOneWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutFriendshipsReceivedInput = {
@@ -4386,6 +4658,7 @@ export type UserUncheckedUpdateWithoutFriendshipsReceivedInput = {
   leadSearches?: Prisma.LeadSearchUncheckedUpdateManyWithoutUserNestedInput
   savedLeads?: Prisma.SavedLeadUncheckedUpdateManyWithoutUserNestedInput
   websiteAudits?: Prisma.WebsiteAuditUncheckedUpdateManyWithoutUserNestedInput
+  pdfReportDesign?: Prisma.PdfReportDesignUncheckedUpdateOneWithoutUserNestedInput
 }
 
 export type UserCreateWithoutChatEncryptionKeyInput = {
@@ -4424,6 +4697,7 @@ export type UserCreateWithoutChatEncryptionKeyInput = {
   leadSearches?: Prisma.LeadSearchCreateNestedManyWithoutUserInput
   savedLeads?: Prisma.SavedLeadCreateNestedManyWithoutUserInput
   websiteAudits?: Prisma.WebsiteAuditCreateNestedManyWithoutUserInput
+  pdfReportDesign?: Prisma.PdfReportDesignCreateNestedOneWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutChatEncryptionKeyInput = {
@@ -4462,6 +4736,7 @@ export type UserUncheckedCreateWithoutChatEncryptionKeyInput = {
   leadSearches?: Prisma.LeadSearchUncheckedCreateNestedManyWithoutUserInput
   savedLeads?: Prisma.SavedLeadUncheckedCreateNestedManyWithoutUserInput
   websiteAudits?: Prisma.WebsiteAuditUncheckedCreateNestedManyWithoutUserInput
+  pdfReportDesign?: Prisma.PdfReportDesignUncheckedCreateNestedOneWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutChatEncryptionKeyInput = {
@@ -4516,6 +4791,7 @@ export type UserUpdateWithoutChatEncryptionKeyInput = {
   leadSearches?: Prisma.LeadSearchUpdateManyWithoutUserNestedInput
   savedLeads?: Prisma.SavedLeadUpdateManyWithoutUserNestedInput
   websiteAudits?: Prisma.WebsiteAuditUpdateManyWithoutUserNestedInput
+  pdfReportDesign?: Prisma.PdfReportDesignUpdateOneWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutChatEncryptionKeyInput = {
@@ -4554,6 +4830,7 @@ export type UserUncheckedUpdateWithoutChatEncryptionKeyInput = {
   leadSearches?: Prisma.LeadSearchUncheckedUpdateManyWithoutUserNestedInput
   savedLeads?: Prisma.SavedLeadUncheckedUpdateManyWithoutUserNestedInput
   websiteAudits?: Prisma.WebsiteAuditUncheckedUpdateManyWithoutUserNestedInput
+  pdfReportDesign?: Prisma.PdfReportDesignUncheckedUpdateOneWithoutUserNestedInput
 }
 
 export type UserCreateWithoutGroupMembershipsInput = {
@@ -4592,6 +4869,7 @@ export type UserCreateWithoutGroupMembershipsInput = {
   leadSearches?: Prisma.LeadSearchCreateNestedManyWithoutUserInput
   savedLeads?: Prisma.SavedLeadCreateNestedManyWithoutUserInput
   websiteAudits?: Prisma.WebsiteAuditCreateNestedManyWithoutUserInput
+  pdfReportDesign?: Prisma.PdfReportDesignCreateNestedOneWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutGroupMembershipsInput = {
@@ -4630,6 +4908,7 @@ export type UserUncheckedCreateWithoutGroupMembershipsInput = {
   leadSearches?: Prisma.LeadSearchUncheckedCreateNestedManyWithoutUserInput
   savedLeads?: Prisma.SavedLeadUncheckedCreateNestedManyWithoutUserInput
   websiteAudits?: Prisma.WebsiteAuditUncheckedCreateNestedManyWithoutUserInput
+  pdfReportDesign?: Prisma.PdfReportDesignUncheckedCreateNestedOneWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutGroupMembershipsInput = {
@@ -4684,6 +4963,7 @@ export type UserUpdateWithoutGroupMembershipsInput = {
   leadSearches?: Prisma.LeadSearchUpdateManyWithoutUserNestedInput
   savedLeads?: Prisma.SavedLeadUpdateManyWithoutUserNestedInput
   websiteAudits?: Prisma.WebsiteAuditUpdateManyWithoutUserNestedInput
+  pdfReportDesign?: Prisma.PdfReportDesignUpdateOneWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutGroupMembershipsInput = {
@@ -4722,6 +5002,7 @@ export type UserUncheckedUpdateWithoutGroupMembershipsInput = {
   leadSearches?: Prisma.LeadSearchUncheckedUpdateManyWithoutUserNestedInput
   savedLeads?: Prisma.SavedLeadUncheckedUpdateManyWithoutUserNestedInput
   websiteAudits?: Prisma.WebsiteAuditUncheckedUpdateManyWithoutUserNestedInput
+  pdfReportDesign?: Prisma.PdfReportDesignUncheckedUpdateOneWithoutUserNestedInput
 }
 
 export type UserCreateWithoutGroupMessagesInput = {
@@ -4760,6 +5041,7 @@ export type UserCreateWithoutGroupMessagesInput = {
   leadSearches?: Prisma.LeadSearchCreateNestedManyWithoutUserInput
   savedLeads?: Prisma.SavedLeadCreateNestedManyWithoutUserInput
   websiteAudits?: Prisma.WebsiteAuditCreateNestedManyWithoutUserInput
+  pdfReportDesign?: Prisma.PdfReportDesignCreateNestedOneWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutGroupMessagesInput = {
@@ -4798,6 +5080,7 @@ export type UserUncheckedCreateWithoutGroupMessagesInput = {
   leadSearches?: Prisma.LeadSearchUncheckedCreateNestedManyWithoutUserInput
   savedLeads?: Prisma.SavedLeadUncheckedCreateNestedManyWithoutUserInput
   websiteAudits?: Prisma.WebsiteAuditUncheckedCreateNestedManyWithoutUserInput
+  pdfReportDesign?: Prisma.PdfReportDesignUncheckedCreateNestedOneWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutGroupMessagesInput = {
@@ -4852,6 +5135,7 @@ export type UserUpdateWithoutGroupMessagesInput = {
   leadSearches?: Prisma.LeadSearchUpdateManyWithoutUserNestedInput
   savedLeads?: Prisma.SavedLeadUpdateManyWithoutUserNestedInput
   websiteAudits?: Prisma.WebsiteAuditUpdateManyWithoutUserNestedInput
+  pdfReportDesign?: Prisma.PdfReportDesignUpdateOneWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutGroupMessagesInput = {
@@ -4890,6 +5174,7 @@ export type UserUncheckedUpdateWithoutGroupMessagesInput = {
   leadSearches?: Prisma.LeadSearchUncheckedUpdateManyWithoutUserNestedInput
   savedLeads?: Prisma.SavedLeadUncheckedUpdateManyWithoutUserNestedInput
   websiteAudits?: Prisma.WebsiteAuditUncheckedUpdateManyWithoutUserNestedInput
+  pdfReportDesign?: Prisma.PdfReportDesignUncheckedUpdateOneWithoutUserNestedInput
 }
 
 
@@ -5140,6 +5425,7 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   leadSearches?: boolean | Prisma.User$leadSearchesArgs<ExtArgs>
   savedLeads?: boolean | Prisma.User$savedLeadsArgs<ExtArgs>
   websiteAudits?: boolean | Prisma.User$websiteAuditsArgs<ExtArgs>
+  pdfReportDesign?: boolean | Prisma.User$pdfReportDesignArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["user"]>
 
@@ -5216,6 +5502,7 @@ export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   leadSearches?: boolean | Prisma.User$leadSearchesArgs<ExtArgs>
   savedLeads?: boolean | Prisma.User$savedLeadsArgs<ExtArgs>
   websiteAudits?: boolean | Prisma.User$websiteAuditsArgs<ExtArgs>
+  pdfReportDesign?: boolean | Prisma.User$pdfReportDesignArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type UserIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
@@ -5247,6 +5534,7 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     leadSearches: Prisma.$LeadSearchPayload<ExtArgs>[]
     savedLeads: Prisma.$SavedLeadPayload<ExtArgs>[]
     websiteAudits: Prisma.$WebsiteAuditPayload<ExtArgs>[]
+    pdfReportDesign: Prisma.$PdfReportDesignPayload<ExtArgs> | null
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -5679,6 +5967,7 @@ export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Typ
   leadSearches<T extends Prisma.User$leadSearchesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$leadSearchesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$LeadSearchPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   savedLeads<T extends Prisma.User$savedLeadsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$savedLeadsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$SavedLeadPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   websiteAudits<T extends Prisma.User$websiteAuditsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$websiteAuditsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$WebsiteAuditPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  pdfReportDesign<T extends Prisma.User$pdfReportDesignArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$pdfReportDesignArgs<ExtArgs>>): Prisma.Prisma__PdfReportDesignClient<runtime.Types.Result.GetResult<Prisma.$PdfReportDesignPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -6653,6 +6942,25 @@ export type User$websiteAuditsArgs<ExtArgs extends runtime.Types.Extensions.Inte
   take?: number
   skip?: number
   distinct?: Prisma.WebsiteAuditScalarFieldEnum | Prisma.WebsiteAuditScalarFieldEnum[]
+}
+
+/**
+ * User.pdfReportDesign
+ */
+export type User$pdfReportDesignArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the PdfReportDesign
+   */
+  select?: Prisma.PdfReportDesignSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the PdfReportDesign
+   */
+  omit?: Prisma.PdfReportDesignOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.PdfReportDesignInclude<ExtArgs> | null
+  where?: Prisma.PdfReportDesignWhereInput
 }
 
 /**

@@ -1,8 +1,9 @@
 "use client";
 
 import { useRef, useState, useTransition } from "react";
+import dynamic from "next/dynamic";
 import { useTranslations } from "next-intl";
-import { ArrowRight, BarChart3, Bookmark, FolderSearch, LayoutDashboard, Users } from "lucide-react";
+import { ArrowRight, BarChart3, Bookmark, Code2, FolderSearch, LayoutDashboard, Users } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardAction, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
@@ -19,16 +20,18 @@ import type { AuditSummary } from "@/lib/lead-research/audit-types";
 import { qualityStyles, qualityTone } from "./quality-presentation";
 import { AuditProgressCard } from "./audit-progress-card";
 
-type View = "overview" | "campaigns" | "leads" | "savedLeads" | "analytics";
+const PdfDesignEditor = dynamic(() => import("./pdf-design-editor").then(module => module.PdfDesignEditor));
+type View = "overview" | "campaigns" | "leads" | "savedLeads" | "analytics" | "pdfDesign";
 
 export function LeadResearchWorkspace({ searches: initialSearches, savedLeads, audits: initialAudits, userId, isOwner, googleConfigured }: { searches: LeadSearchSummary[]; savedLeads: SavedLeadSummary[]; audits: AuditSummary[]; userId: string; isOwner: boolean; googleConfigured: boolean }) {
   const t = useTranslations("leadResearch");
   const { searches, audits, statusError } = useSearchProgress(initialSearches, initialAudits);
   const [view, setView] = useState<View>("overview");
+  const [pdfEditorOpened, setPdfEditorOpened] = useState(false);
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [pending, startTransition] = useTransition();
-  const selected = searches.find((search) => search.id === selectedId) ?? searches.find((search) => search.status === "RUNNING" || search.status === "QUEUED") ?? searches.find((search) => search.resultCount > 0);
+  const selected = searches.find((search) => search.id === selectedId) ?? searches.find((search) => ["RUNNING", "QUEUED", "PAUSED"].includes(search.status)) ?? searches.find((search) => search.resultCount > 0);
   const isSearching = selected?.status === "RUNNING" || selected?.status === "QUEUED";
   const { result, loading: loadingDetails, error: detailsError } = useLivePlaces(selected?.id, selected?.runId, selected?.resultCount ?? 0, view === "leads" && !isSearching && !pending);
   const submitting = useRef(false);
@@ -61,6 +64,7 @@ export function LeadResearchWorkspace({ searches: initialSearches, savedLeads, a
     { value: "leads", icon: Users },
     { value: "savedLeads", icon: Bookmark },
     { value: "analytics", icon: BarChart3 },
+    { value: "pdfDesign", icon: Code2 },
   ] as const;
 
   return (
@@ -69,7 +73,7 @@ export function LeadResearchWorkspace({ searches: initialSearches, savedLeads, a
       <div className="flex flex-wrap items-center justify-between gap-3 border-b pb-4">
         <nav aria-label={t("navigation")} className="flex flex-wrap gap-1">
           {navigation.map(({ value, icon: Icon }) => (
-            <Button key={value} variant={view === value ? "secondary" : "ghost"} aria-pressed={view === value} onClick={() => setView(value)}>
+            <Button key={value} variant={view === value ? "secondary" : "ghost"} aria-pressed={view === value} onClick={() => { if (value === "pdfDesign") setPdfEditorOpened(true); setView(value); }}>
               <Icon aria-hidden="true" />{t(value)}
             </Button>
           ))}
@@ -77,6 +81,7 @@ export function LeadResearchWorkspace({ searches: initialSearches, savedLeads, a
         <LeadSearchDialog />
       </div>
 
+      <div className={view === "pdfDesign" ? "contents" : "hidden"}>{pdfEditorOpened && <PdfDesignEditor />}</div>
       <div className="flex flex-wrap items-center gap-2 text-xs text-muted-foreground">
         <Badge variant="outline">{t("setupBadge")}</Badge>
         <span>{t("setupHint")}</span>
@@ -86,7 +91,7 @@ export function LeadResearchWorkspace({ searches: initialSearches, savedLeads, a
       {detailsError && <p role="alert" className="text-sm text-destructive">{t(detailsError)}</p>}
       {statusError && <p role="alert" className="text-sm text-destructive">{t("jobStatusError")}</p>}
       <div className={view === "savedLeads" ? "contents" : "hidden"}><SavedLeadsView leads={savedLeads} audits={audits} isOwner={isOwner} enabled={view === "savedLeads"} /></div>
-      {searches.filter((search) => search.status === "RUNNING" || search.status === "QUEUED" || search.id === selected?.id).map((search) => <SearchJobStatus key={search.id + search.runId} search={search} />)}
+      {searches.filter((search) => ["RUNNING", "QUEUED", "PAUSED"].includes(search.status) || search.id === selected?.id).map((search) => <SearchJobStatus key={search.id + search.runId} search={search} />)}
 
       {(view === "overview" || view === "analytics") && (
         <div className="grid gap-4 sm:grid-cols-3">

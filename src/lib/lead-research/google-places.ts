@@ -20,7 +20,9 @@ export const GOOGLE_MAX_RADIUS_KM = 50;
 const ENDPOINT = "https://places.googleapis.com/v1/places:searchText";
 const RESULT_FIELDS = "places.id,places.displayName,places.formattedAddress,places.location,places.websiteUri,places.nationalPhoneNumber,places.googleMapsUri,places.attributions,nextPageToken";
 type Fetcher = (url: string, init: RequestInit) => Promise<Response>;
-export type SearchProgress = { phase: "LOCATING" | "SEARCHING"; processedPages: number; placeIds: string[] };
+export type SearchCheckpoint = { center: Point; nextPageToken: string | null; done: boolean };
+export type SearchResume = { checkpoint: SearchCheckpoint | null; processedPages: number; placeIds: string[] };
+export type SearchProgress = { phase: "LOCATING" | "SEARCHING"; processedPages: number; placeIds: string[]; checkpoint?: SearchCheckpoint };
 type Point = { latitude: number; longitude: number };
 type RawPlace = {
   id?: unknown; displayName?: { text?: unknown }; formattedAddress?: unknown;
@@ -48,7 +50,7 @@ export function distanceKm(a: Point, b: Point) {
   return 6371.0088 * 2 * Math.asin(Math.sqrt(Math.min(1, Math.max(0, h))));
 }
 
-export async function searchGooglePlaces(input: LeadSearchInput, key: string | undefined, fetcher: Fetcher = fetch, onProgress?: (progress: SearchProgress) => Promise<void>, includeContactDetails = true) {
+export async function searchGooglePlaces(input: LeadSearchInput, key: string | undefined, fetcher: Fetcher = fetch, onProgress?: (progress: SearchProgress) => Promise<void>, includeContactDetails = true, resume?: SearchResume) {
   if (!key?.trim()) throw new PlacesError("googleNotConfigured");
   if (input.radiusKm > GOOGLE_MAX_RADIUS_KM) throw new PlacesError("googleRadius");
 
@@ -72,20 +74,26 @@ export async function searchGooglePlaces(input: LeadSearchInput, key: string | u
     return result;
   }
 
-  await onProgress?.({ phase: "LOCATING", processedPages: 0, placeIds: [] });
-  const centerResponse = await request({ textQuery: input.location, pageSize: 1, languageCode: "de" }, "places.location,places.displayName,places.formattedAddress");
-  const centerPlace = centerResponse.places?.[0];
-  if (!point(centerPlace?.location)) throw new PlacesError("googleLocation");
-  const center = centerPlace.location;
-  const results: PlaceResult[] = [];
-  const seen = new Set<string>();
-  let nextPageToken: string | null = null;
+  if (resume && includeContactDetails) throw new PlacesError("googleResponse");
+  let centerPlace: RawPlace | undefined;
+  let center = resume?.checkpoint?.center;
+  if (!center) {
+    await onProgress?.({ phase: "LOCATING", processedPages: 0, placeIds: [] });
+    const centerResponse = await request({ textQuery: input.location, pageSize: 1, languageCode: "de" }, "places.location,places.displayName,places.formattedAddress");
+    centerPlace = centerResponse.places?.[0];
+    if (!point(centerPlace?.location)) throw new PlacesError("googleLocation");
+    center = centerPlace.location;
+  }
+  const results: PlaceResult[] = (resume?.placeIds ?? []).map(id => ({ id, name: "", address: null, website: null, phone: null, mapsUrl: `https://www.google.com/maps/search/?api=1&query_place_id=${encodeURIComponent(id)}`, attributions: [] }));
+  const seen = new Set(results.map(result => result.id));
+  let nextPageToken: string | null = resume?.checkpoint?.nextPageToken ?? null;
+  const startPage = resume?.processedPages ?? 0;
   let partialError: PlacesErrorCode | null = null;
-  await onProgress?.({ phase: "SEARCHING", processedPages: 0, placeIds: [] });
+  await onProgress?.({ phase: "SEARCHING", processedPages: startPage, placeIds: results.map(result => result.id), checkpoint: { center, nextPageToken, done: resume?.checkpoint?.done ?? false } });
 
   // Circle bias is followed by the user's radius filter, preserving Google's ordering.
   // Up to one location lookup and three business-search requests per explicit run.
-  for (let page = 0; page < 3; page++) {
+  for (let page = startPage; page < 3 && !resume?.checkpoint?.done; page++) {
     let data: Awaited<ReturnType<typeof request>>;
     try {
       data = await request({
@@ -111,12 +119,12 @@ export async function searchGooglePlaces(input: LeadSearchInput, key: string | u
       if (results.length >= input.maxResults) break;
     }
     nextPageToken = text(data.nextPageToken);
-    await onProgress?.({ phase: "SEARCHING", processedPages: page + 1, placeIds: results.map((result) => result.id) });
+    await onProgress?.({ phase: "SEARCHING", processedPages: page + 1, placeIds: results.map((result) => result.id), checkpoint: { center, nextPageToken, done: !nextPageToken || results.length >= input.maxResults || page === 2 } });
     if (!nextPageToken || results.length >= input.maxResults) break;
   }
   return {
     results, partialError,
-    resolvedLocation: text(centerPlace.formattedAddress) ?? text(centerPlace.displayName?.text) ?? input.location,
+    resolvedLocation: text(centerPlace?.formattedAddress) ?? text(centerPlace?.displayName?.text) ?? input.location,
     resultLimit: input.maxResults > GOOGLE_MAX_RESULTS || Boolean(nextPageToken && results.length < input.maxResults),
   };
 }

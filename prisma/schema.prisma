@@ -196,6 +196,7 @@ model User {
   leadSearches        LeadSearch[]
   savedLeads          SavedLead[]
   websiteAudits       WebsiteAudit[]
+  pdfReportDesign     PdfReportDesign?
 
   @@map("user")
 }
@@ -207,6 +208,7 @@ enum LeadSearchStatus {
   COMPLETED
   FAILED
   CANCELLED
+  PAUSED
 }
 
 model LeadSearch {
@@ -226,6 +228,8 @@ model LeadSearch {
   finishedAt      DateTime?
   phase           String?          @db.VarChar(20)
   processedPages  Int              @default(0)
+  pauseRequested  Boolean          @default(false)
+  checkpoint      Json?
   errorCode       String?          @db.VarChar(40)
   resultLimit     Boolean          @default(false)
   createdAt       DateTime         @default(now())
@@ -256,6 +260,7 @@ model WebsiteAudit {
   placeId      String   @db.VarChar(512)
   status       String   @default("QUEUED") @db.VarChar(20)
   runToken     String
+  batchId      String?
   qualityScore Int?
   report       Json?
   errorCode    String?  @db.VarChar(40)
@@ -267,6 +272,16 @@ model WebsiteAudit {
   @@unique([userId, placeId])
   @@index([userId, status])
   @@index([status, startedAt])
+  @@index([userId, batchId])
+}
+
+model PdfReportDesign {
+  userId    String   @id
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  source    String   @db.Text
+  theme     String   @default("modern") @db.VarChar(20)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model Session {

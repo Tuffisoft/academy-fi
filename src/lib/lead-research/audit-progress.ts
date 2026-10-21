@@ -2,21 +2,23 @@ import type { AuditSummary } from "./audit-types";
 import { MAX_PARALLEL_WEBSITE_AUDITS } from "./audit-scheduling";
 
 export const auditIsActive = (audit: Pick<AuditSummary, "status">) => ["QUEUED", "RUNNING"].includes(audit.status);
+export const auditIsPending = (audit: Pick<AuditSummary, "status">) => ["QUEUED", "RUNNING", "PAUSED"].includes(audit.status);
 const batchKey = (audit: AuditSummary) => JSON.stringify([audit.userId, audit.batchId]);
 const timestamp = (value: string | null) => value ? Date.parse(value) : NaN;
 
 export function getAuditProgress(audits: readonly AuditSummary[], now: number | null) {
   if (!audits.length) return null;
-  const activeKeys = new Set(audits.filter(auditIsActive).map(batchKey));
+  const activeKeys = new Set(audits.filter(auditIsPending).map(batchKey));
   const latest = [...audits].sort((a, b) => timestamp(b.updatedAt) - timestamp(a.updatedAt))[0];
   const keys = activeKeys.size ? activeKeys : new Set([batchKey(latest)]);
   const batch = audits.filter((audit) => keys.has(batchKey(audit)));
-  const pending = batch.filter(auditIsActive);
+  const pending = batch.filter(auditIsPending);
+  const paused = pending.filter(audit => audit.status === "PAUSED").length;
   const done = batch.length - pending.length;
   const percentage = Math.floor(done / batch.length * 100);
   const failed = batch.filter((audit) => audit.status === "FAILED").length;
   let remainingSeconds: number | null = pending.length ? null : 0;
-  if (pending.length && now !== null) {
+  if (pending.length && !paused && now !== null) {
     const durations = audits.filter((audit) => audit.status === "COMPLETED").flatMap((audit) => {
       const duration = timestamp(audit.checkedAt) - timestamp(audit.startedAt);
       return duration >= 1000 && duration <= 120000 ? [duration] : [];
@@ -33,7 +35,7 @@ export function getAuditProgress(audits: readonly AuditSummary[], now: number | 
     }
     remainingSeconds = Math.ceil(Math.max(...slots) / 1000);
   }
-  return { total: batch.length, done, percentage, failed, active: pending.length > 0, remainingSeconds };
+  return { total: batch.length, done, percentage, failed, paused, cancelled: batch.filter(audit => audit.status === "CANCELLED").length, active: pending.some(auditIsActive), remainingSeconds };
 }
 
 export function formatRemainingTime(seconds: number) {

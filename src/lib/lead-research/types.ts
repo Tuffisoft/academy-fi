@@ -28,6 +28,7 @@ export type LeadSearchSummary = {
   finishedAt: string | null;
   phase: string | null;
   processedPages: number;
+  pauseRequested: boolean;
   errorCode: string | null;
   resultLimit: boolean;
 };

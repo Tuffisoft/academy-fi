@@ -52,6 +52,7 @@ export type LeadSearchMinAggregateOutputType = {
   finishedAt: Date | null
   phase: string | null
   processedPages: number | null
+  pauseRequested: boolean | null
   errorCode: string | null
   resultLimit: boolean | null
   createdAt: Date | null
@@ -72,6 +73,7 @@ export type LeadSearchMaxAggregateOutputType = {
   finishedAt: Date | null
   phase: string | null
   processedPages: number | null
+  pauseRequested: boolean | null
   errorCode: string | null
   resultLimit: boolean | null
   createdAt: Date | null
@@ -93,6 +95,8 @@ export type LeadSearchCountAggregateOutputType = {
   finishedAt: number
   phase: number
   processedPages: number
+  pauseRequested: number
+  checkpoint: number
   errorCode: number
   resultLimit: number
   createdAt: number
@@ -127,6 +131,7 @@ export type LeadSearchMinAggregateInputType = {
   finishedAt?: true
   phase?: true
   processedPages?: true
+  pauseRequested?: true
   errorCode?: true
   resultLimit?: true
   createdAt?: true
@@ -147,6 +152,7 @@ export type LeadSearchMaxAggregateInputType = {
   finishedAt?: true
   phase?: true
   processedPages?: true
+  pauseRequested?: true
   errorCode?: true
   resultLimit?: true
   createdAt?: true
@@ -168,6 +174,8 @@ export type LeadSearchCountAggregateInputType = {
   finishedAt?: true
   phase?: true
   processedPages?: true
+  pauseRequested?: true
+  checkpoint?: true
   errorCode?: true
   resultLimit?: true
   createdAt?: true
@@ -276,6 +284,8 @@ export type LeadSearchGroupByOutputType = {
   finishedAt: Date | null
   phase: string | null
   processedPages: number
+  pauseRequested: boolean
+  checkpoint: runtime.JsonValue | null
   errorCode: string | null
   resultLimit: boolean
   createdAt: Date
@@ -320,6 +330,8 @@ export type LeadSearchWhereInput = {
   finishedAt?: Prisma.DateTimeNullableFilter<"LeadSearch"> | Date | string | null
   phase?: Prisma.StringNullableFilter<"LeadSearch"> | string | null
   processedPages?: Prisma.IntFilter<"LeadSearch"> | number
+  pauseRequested?: Prisma.BoolFilter<"LeadSearch"> | boolean
+  checkpoint?: Prisma.JsonNullableFilter<"LeadSearch">
   errorCode?: Prisma.StringNullableFilter<"LeadSearch"> | string | null
   resultLimit?: Prisma.BoolFilter<"LeadSearch"> | boolean
   createdAt?: Prisma.DateTimeFilter<"LeadSearch"> | Date | string
@@ -343,6 +355,8 @@ export type LeadSearchOrderByWithRelationInput = {
   finishedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   phase?: Prisma.SortOrderInput | Prisma.SortOrder
   processedPages?: Prisma.SortOrder
+  pauseRequested?: Prisma.SortOrder
+  checkpoint?: Prisma.SortOrderInput | Prisma.SortOrder
   errorCode?: Prisma.SortOrderInput | Prisma.SortOrder
   resultLimit?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -369,6 +383,8 @@ export type LeadSearchWhereUniqueInput = Prisma.AtLeast<{
   finishedAt?: Prisma.DateTimeNullableFilter<"LeadSearch"> | Date | string | null
   phase?: Prisma.StringNullableFilter<"LeadSearch"> | string | null
   processedPages?: Prisma.IntFilter<"LeadSearch"> | number
+  pauseRequested?: Prisma.BoolFilter<"LeadSearch"> | boolean
+  checkpoint?: Prisma.JsonNullableFilter<"LeadSearch">
   errorCode?: Prisma.StringNullableFilter<"LeadSearch"> | string | null
   resultLimit?: Prisma.BoolFilter<"LeadSearch"> | boolean
   createdAt?: Prisma.DateTimeFilter<"LeadSearch"> | Date | string
@@ -392,6 +408,8 @@ export type LeadSearchOrderByWithAggregationInput = {
   finishedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   phase?: Prisma.SortOrderInput | Prisma.SortOrder
   processedPages?: Prisma.SortOrder
+  pauseRequested?: Prisma.SortOrder
+  checkpoint?: Prisma.SortOrderInput | Prisma.SortOrder
   errorCode?: Prisma.SortOrderInput | Prisma.SortOrder
   resultLimit?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -421,6 +439,8 @@ export type LeadSearchScalarWhereWithAggregatesInput = {
   finishedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"LeadSearch"> | Date | string | null
   phase?: Prisma.StringNullableWithAggregatesFilter<"LeadSearch"> | string | null
   processedPages?: Prisma.IntWithAggregatesFilter<"LeadSearch"> | number
+  pauseRequested?: Prisma.BoolWithAggregatesFilter<"LeadSearch"> | boolean
+  checkpoint?: Prisma.JsonNullableWithAggregatesFilter<"LeadSearch">
   errorCode?: Prisma.StringNullableWithAggregatesFilter<"LeadSearch"> | string | null
   resultLimit?: Prisma.BoolWithAggregatesFilter<"LeadSearch"> | boolean
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"LeadSearch"> | Date | string
@@ -441,6 +461,8 @@ export type LeadSearchCreateInput = {
   finishedAt?: Date | string | null
   phase?: string | null
   processedPages?: number
+  pauseRequested?: boolean
+  checkpoint?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   errorCode?: string | null
   resultLimit?: boolean
   createdAt?: Date | string
@@ -464,6 +486,8 @@ export type LeadSearchUncheckedCreateInput = {
   finishedAt?: Date | string | null
   phase?: string | null
   processedPages?: number
+  pauseRequested?: boolean
+  checkpoint?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   errorCode?: string | null
   resultLimit?: boolean
   createdAt?: Date | string
@@ -485,6 +509,8 @@ export type LeadSearchUpdateInput = {
   finishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   phase?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   processedPages?: Prisma.IntFieldUpdateOperationsInput | number
+  pauseRequested?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  checkpoint?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   errorCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   resultLimit?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -508,6 +534,8 @@ export type LeadSearchUncheckedUpdateInput = {
   finishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   phase?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   processedPages?: Prisma.IntFieldUpdateOperationsInput | number
+  pauseRequested?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  checkpoint?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   errorCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   resultLimit?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -530,6 +558,8 @@ export type LeadSearchCreateManyInput = {
   finishedAt?: Date | string | null
   phase?: string | null
   processedPages?: number
+  pauseRequested?: boolean
+  checkpoint?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   errorCode?: string | null
   resultLimit?: boolean
   createdAt?: Date | string
@@ -550,6 +580,8 @@ export type LeadSearchUpdateManyMutationInput = {
   finishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   phase?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   processedPages?: Prisma.IntFieldUpdateOperationsInput | number
+  pauseRequested?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  checkpoint?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   errorCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   resultLimit?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -571,6 +603,8 @@ export type LeadSearchUncheckedUpdateManyInput = {
   finishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   phase?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   processedPages?: Prisma.IntFieldUpdateOperationsInput | number
+  pauseRequested?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  checkpoint?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   errorCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   resultLimit?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -610,6 +644,8 @@ export type LeadSearchCountOrderByAggregateInput = {
   finishedAt?: Prisma.SortOrder
   phase?: Prisma.SortOrder
   processedPages?: Prisma.SortOrder
+  pauseRequested?: Prisma.SortOrder
+  checkpoint?: Prisma.SortOrder
   errorCode?: Prisma.SortOrder
   resultLimit?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -636,6 +672,7 @@ export type LeadSearchMaxOrderByAggregateInput = {
   finishedAt?: Prisma.SortOrder
   phase?: Prisma.SortOrder
   processedPages?: Prisma.SortOrder
+  pauseRequested?: Prisma.SortOrder
   errorCode?: Prisma.SortOrder
   resultLimit?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -656,6 +693,7 @@ export type LeadSearchMinOrderByAggregateInput = {
   finishedAt?: Prisma.SortOrder
   phase?: Prisma.SortOrder
   processedPages?: Prisma.SortOrder
+  pauseRequested?: Prisma.SortOrder
   errorCode?: Prisma.SortOrder
   resultLimit?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -766,6 +804,8 @@ export type LeadSearchCreateWithoutUserInput = {
   finishedAt?: Date | string | null
   phase?: string | null
   processedPages?: number
+  pauseRequested?: boolean
+  checkpoint?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   errorCode?: string | null
   resultLimit?: boolean
   createdAt?: Date | string
@@ -787,6 +827,8 @@ export type LeadSearchUncheckedCreateWithoutUserInput = {
   finishedAt?: Date | string | null
   phase?: string | null
   processedPages?: number
+  pauseRequested?: boolean
+  checkpoint?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   errorCode?: string | null
   resultLimit?: boolean
   createdAt?: Date | string
@@ -838,6 +880,8 @@ export type LeadSearchScalarWhereInput = {
   finishedAt?: Prisma.DateTimeNullableFilter<"LeadSearch"> | Date | string | null
   phase?: Prisma.StringNullableFilter<"LeadSearch"> | string | null
   processedPages?: Prisma.IntFilter<"LeadSearch"> | number
+  pauseRequested?: Prisma.BoolFilter<"LeadSearch"> | boolean
+  checkpoint?: Prisma.JsonNullableFilter<"LeadSearch">
   errorCode?: Prisma.StringNullableFilter<"LeadSearch"> | string | null
   resultLimit?: Prisma.BoolFilter<"LeadSearch"> | boolean
   createdAt?: Prisma.DateTimeFilter<"LeadSearch"> | Date | string
@@ -858,6 +902,8 @@ export type LeadSearchCreateWithoutSavedLeadsInput = {
   finishedAt?: Date | string | null
   phase?: string | null
   processedPages?: number
+  pauseRequested?: boolean
+  checkpoint?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   errorCode?: string | null
   resultLimit?: boolean
   createdAt?: Date | string
@@ -880,6 +926,8 @@ export type LeadSearchUncheckedCreateWithoutSavedLeadsInput = {
   finishedAt?: Date | string | null
   phase?: string | null
   processedPages?: number
+  pauseRequested?: boolean
+  checkpoint?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   errorCode?: string | null
   resultLimit?: boolean
   createdAt?: Date | string
@@ -916,6 +964,8 @@ export type LeadSearchUpdateWithoutSavedLeadsInput = {
   finishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   phase?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   processedPages?: Prisma.IntFieldUpdateOperationsInput | number
+  pauseRequested?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  checkpoint?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   errorCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   resultLimit?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -938,6 +988,8 @@ export type LeadSearchUncheckedUpdateWithoutSavedLeadsInput = {
   finishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   phase?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   processedPages?: Prisma.IntFieldUpdateOperationsInput | number
+  pauseRequested?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  checkpoint?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   errorCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   resultLimit?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -958,6 +1010,8 @@ export type LeadSearchCreateManyUserInput = {
   finishedAt?: Date | string | null
   phase?: string | null
   processedPages?: number
+  pauseRequested?: boolean
+  checkpoint?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   errorCode?: string | null
   resultLimit?: boolean
   createdAt?: Date | string
@@ -978,6 +1032,8 @@ export type LeadSearchUpdateWithoutUserInput = {
   finishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   phase?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   processedPages?: Prisma.IntFieldUpdateOperationsInput | number
+  pauseRequested?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  checkpoint?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   errorCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   resultLimit?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -999,6 +1055,8 @@ export type LeadSearchUncheckedUpdateWithoutUserInput = {
   finishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   phase?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   processedPages?: Prisma.IntFieldUpdateOperationsInput | number
+  pauseRequested?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  checkpoint?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   errorCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   resultLimit?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1020,6 +1078,8 @@ export type LeadSearchUncheckedUpdateManyWithoutUserInput = {
   finishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   phase?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   processedPages?: Prisma.IntFieldUpdateOperationsInput | number
+  pauseRequested?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  checkpoint?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   errorCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   resultLimit?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1072,6 +1132,8 @@ export type LeadSearchSelect<ExtArgs extends runtime.Types.Extensions.InternalAr
   finishedAt?: boolean
   phase?: boolean
   processedPages?: boolean
+  pauseRequested?: boolean
+  checkpoint?: boolean
   errorCode?: boolean
   resultLimit?: boolean
   createdAt?: boolean
@@ -1096,6 +1158,8 @@ export type LeadSearchSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Ex
   finishedAt?: boolean
   phase?: boolean
   processedPages?: boolean
+  pauseRequested?: boolean
+  checkpoint?: boolean
   errorCode?: boolean
   resultLimit?: boolean
   createdAt?: boolean
@@ -1118,6 +1182,8 @@ export type LeadSearchSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Ex
   finishedAt?: boolean
   phase?: boolean
   processedPages?: boolean
+  pauseRequested?: boolean
+  checkpoint?: boolean
   errorCode?: boolean
   resultLimit?: boolean
   createdAt?: boolean
@@ -1140,13 +1206,15 @@ export type LeadSearchSelectScalar = {
   finishedAt?: boolean
   phase?: boolean
   processedPages?: boolean
+  pauseRequested?: boolean
+  checkpoint?: boolean
   errorCode?: boolean
   resultLimit?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type LeadSearchOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "location" | "radiusKm" | "industry" | "maxResults" | "analyzeWebsites" | "status" | "googlePlaceIds" | "runId" | "startedAt" | "finishedAt" | "phase" | "processedPages" | "errorCode" | "resultLimit" | "createdAt" | "updatedAt", ExtArgs["result"]["leadSearch"]>
+export type LeadSearchOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "location" | "radiusKm" | "industry" | "maxResults" | "analyzeWebsites" | "status" | "googlePlaceIds" | "runId" | "startedAt" | "finishedAt" | "phase" | "processedPages" | "pauseRequested" | "checkpoint" | "errorCode" | "resultLimit" | "createdAt" | "updatedAt", ExtArgs["result"]["leadSearch"]>
 export type LeadSearchInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   savedLeads?: boolean | Prisma.LeadSearch$savedLeadsArgs<ExtArgs>
@@ -1180,6 +1248,8 @@ export type $LeadSearchPayload<ExtArgs extends runtime.Types.Extensions.Internal
     finishedAt: Date | null
     phase: string | null
     processedPages: number
+    pauseRequested: boolean
+    checkpoint: runtime.JsonValue | null
     errorCode: string | null
     resultLimit: boolean
     createdAt: Date
@@ -1623,6 +1693,8 @@ export interface LeadSearchFieldRefs {
   readonly finishedAt: Prisma.FieldRef<"LeadSearch", 'DateTime'>
   readonly phase: Prisma.FieldRef<"LeadSearch", 'String'>
   readonly processedPages: Prisma.FieldRef<"LeadSearch", 'Int'>
+  readonly pauseRequested: Prisma.FieldRef<"LeadSearch", 'Boolean'>
+  readonly checkpoint: Prisma.FieldRef<"LeadSearch", 'Json'>
   readonly errorCode: Prisma.FieldRef<"LeadSearch", 'String'>
   readonly resultLimit: Prisma.FieldRef<"LeadSearch", 'Boolean'>
   readonly createdAt: Prisma.FieldRef<"LeadSearch", 'DateTime'>

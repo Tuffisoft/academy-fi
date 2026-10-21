@@ -122,6 +122,11 @@ export type SavedLead = Prisma.SavedLeadModel
  */
 export type WebsiteAudit = Prisma.WebsiteAuditModel
 /**
+ * Model PdfReportDesign
+ * 
+ */
+export type PdfReportDesign = Prisma.PdfReportDesignModel
+/**
  * Model Session
  * 
  */

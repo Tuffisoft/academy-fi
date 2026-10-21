@@ -8,7 +8,7 @@ export function useSearchProgress(initial: LeadSearchSummary[], initialAudits: A
   const [snapshot, setSnapshot] = useState<{ source: LeadSearchSummary[]; searches: LeadSearchSummary[]; audits: AuditSummary[]; error: boolean } | null>(null);
   const searches = snapshot?.source === initial ? snapshot.searches : initial;
   const audits = snapshot?.source === initial ? snapshot.audits : initialAudits;
-  const active = searches.some((search) => search.status === "RUNNING" || search.status === "QUEUED") || audits.some((audit) => ["RUNNING", "QUEUED"].includes(audit.status));
+  const active = searches.some((search) => ["RUNNING", "QUEUED", "PAUSED"].includes(search.status)) || audits.some((audit) => ["RUNNING", "QUEUED", "PAUSED"].includes(audit.status));
 
   useEffect(() => {
     if (!active) return;
@@ -29,7 +29,7 @@ export function useSearchProgress(initial: LeadSearchSummary[], initialAudits: A
         const data = await response.json() as { searches: LeadSearchSummary[]; audits: AuditSummary[] };
         if (!Array.isArray(data.searches) || !Array.isArray(data.audits)) throw new Error("invalid status response");
         if (!disposed) setSnapshot({ source: initial, searches: data.searches, audits: data.audits, error: false });
-        again = data.searches.some((search) => search.status === "RUNNING" || search.status === "QUEUED") || data.audits.some((audit) => ["RUNNING", "QUEUED"].includes(audit.status));
+        again = data.searches.some((search) => ["RUNNING", "QUEUED", "PAUSED"].includes(search.status)) || data.audits.some((audit) => ["RUNNING", "QUEUED", "PAUSED"].includes(audit.status));
       } catch {
         if (!disposed) setSnapshot((current) => ({ source: initial, searches: current?.source === initial ? current.searches : initial, audits: current?.source === initial ? current.audits : initialAudits, error: true }));
         delay = 5000;

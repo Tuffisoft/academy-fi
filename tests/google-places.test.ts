@@ -21,8 +21,8 @@ test("background search reports actual pages and IDs without requesting contact 
   }, async (data) => { progress.push(data); }, false);
   assert.deepEqual(progress, [
     { phase: "LOCATING", processedPages: 0, placeIds: [] },
-    { phase: "SEARCHING", processedPages: 0, placeIds: [] },
-    { phase: "SEARCHING", processedPages: 1, placeIds: ["a"] },
+    { phase: "SEARCHING", processedPages: 0, placeIds: [], checkpoint: { center, nextPageToken: null, done: false } },
+    { phase: "SEARCHING", processedPages: 1, placeIds: ["a"], checkpoint: { center, nextPageToken: null, done: true } },
   ]);
 });
 

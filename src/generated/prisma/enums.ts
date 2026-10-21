@@ -15,7 +15,8 @@ export const LeadSearchStatus = {
   RUNNING: 'RUNNING',
   COMPLETED: 'COMPLETED',
   FAILED: 'FAILED',
-  CANCELLED: 'CANCELLED'
+  CANCELLED: 'CANCELLED',
+  PAUSED: 'PAUSED'
 } as const
 
 export type LeadSearchStatus = (typeof LeadSearchStatus)[keyof typeof LeadSearchStatus]

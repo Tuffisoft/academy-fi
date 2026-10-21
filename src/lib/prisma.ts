@@ -8,8 +8,11 @@ function supportsCurrentSchema(client: PrismaClient | undefined): client is Pris
     typeof client?.leadSearch?.findMany === "function" &&
     client?.leadSearch?.fields?.googlePlaceIds &&
     client?.leadSearch?.fields?.runId &&
+    client?.leadSearch?.fields?.checkpoint &&
     typeof client?.savedLead?.findMany === "function" &&
     typeof client?.websiteAudit?.findMany === "function" &&
+    client?.websiteAudit?.fields?.batchId &&
+    typeof client?.pdfReportDesign?.findUnique === "function" &&
     typeof client?.chatMembership?.findMany === "function" &&
     typeof client?.directConversation?.findMany === "function" &&
     typeof client?.friendship?.findMany === "function" &&

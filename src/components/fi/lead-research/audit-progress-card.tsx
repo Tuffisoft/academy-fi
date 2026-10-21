@@ -2,7 +2,8 @@
 
 import { useEffect, useState } from "react";
 import { useTranslations } from "next-intl";
-import { CheckCircle2, Clock3, LoaderCircle } from "lucide-react";
+import { CheckCircle2, Clock3, LoaderCircle, Pause, Square } from "lucide-react";
+import { AuditBatchControls } from "./audit-batch-controls";
 import type { AuditSummary } from "@/lib/lead-research/audit-types";
 import { formatRemainingTime, getAuditProgress } from "@/lib/lead-research/audit-progress";
 import { MAX_PARALLEL_WEBSITE_AUDITS } from "@/lib/lead-research/audit-scheduling";
@@ -21,14 +22,14 @@ export function AuditProgressCard({ audits, searching }: { audits: AuditSummary[
     return () => clearInterval(timer);
   }, [active]);
   if (!searching && !progress) return null;
-  const Icon = active ? LoaderCircle : CheckCircle2;
+  const Icon = active ? LoaderCircle : progress?.paused ? Pause : progress?.cancelled ? Square : CheckCircle2;
   const percentage = searching ? null : progress!.percentage;
   const remaining = searching || progress?.remainingSeconds == null ? null : formatRemainingTime(progress.remainingSeconds);
   return <Card className="border-primary/20 bg-primary/5">
     <CardContent className="space-y-4">
       <div className="flex flex-wrap items-start justify-between gap-4">
         <div className="space-y-1">
-          <h2 className="flex items-center gap-2 font-semibold"><Icon className={`size-4 text-primary ${active ? "animate-spin motion-reduce:animate-none" : ""}`} aria-hidden="true" />{t(searching ? "auditFindingCompanies" : active ? "auditProgressTitle" : "auditProgressComplete")}</h2>
+          <h2 className="flex items-center gap-2 font-semibold"><Icon className={`size-4 text-primary ${active ? "animate-spin motion-reduce:animate-none" : ""}`} aria-hidden="true" />{t(searching ? "auditFindingCompanies" : progress?.paused ? "auditProgressPaused" : active ? "auditProgressTitle" : progress?.cancelled ? "auditProgressCancelled" : "auditProgressComplete")}</h2>
           <p className="text-sm text-muted-foreground">{searching ? t("auditEstimatePreparing") : t("auditCompletedCount", { done: progress!.done, total: progress!.total })}</p>
           {!searching && progress!.failed > 0 && <p className="text-xs text-destructive">{t("auditFailureCount", { count: progress!.failed })}</p>}
         </div>
@@ -39,6 +40,7 @@ export function AuditProgressCard({ audits, searching }: { audits: AuditSummary[
       </div>
       <Progress value={percentage} aria-label={t("auditProgressPercent")} />
       <div className="flex flex-wrap items-center justify-between gap-2 text-xs text-muted-foreground"><span>{active ? t("auditEstimateHint") : t("auditSortedHint")}</span><Badge variant="outline">{t("auditParallelCount", { count: MAX_PARALLEL_WEBSITE_AUDITS })}</Badge></div>
+      <AuditBatchControls audits={audits} />
     </CardContent>
   </Card>;
 }

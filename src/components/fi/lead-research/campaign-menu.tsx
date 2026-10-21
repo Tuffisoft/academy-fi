@@ -15,7 +15,7 @@ export function CampaignMenu({ search, onRun, onShow, running }: { search: LeadS
   const [dialog, setDialog] = useState<"edit" | "delete" | null>(null);
 
   return <>
-    <Button variant="ghost" size="icon-sm" aria-label={t("runSearch")} title={t("runSearch")} disabled={running || search.status === "QUEUED" || search.status === "RUNNING"} onClick={() => onRun(search.id)}>
+    <Button variant="ghost" size="icon-sm" aria-label={t("runSearch")} title={t("runSearch")} disabled={running || ["QUEUED", "RUNNING", "PAUSED"].includes(search.status)} onClick={() => onRun(search.id)}>
       <Play aria-hidden="true" />
     </Button>
     <Button variant="ghost" size="icon-sm" aria-label={t("jobShowResults")} title={t("jobShowResults")} disabled={search.status === "QUEUED" || search.status === "RUNNING" || search.resultCount === 0} onClick={() => onShow(search.id)}>

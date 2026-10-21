@@ -413,6 +413,7 @@ export const ModelName = {
   LeadSearch: 'LeadSearch',
   SavedLead: 'SavedLead',
   WebsiteAudit: 'WebsiteAudit',
+  PdfReportDesign: 'PdfReportDesign',
   Session: 'Session',
   Account: 'Account',
   Verification: 'Verification',
@@ -439,7 +440,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "weeklyAssignment" | "assignmentChecklistItem" | "taskStage" | "reflection" | "mentorFeedback" | "discussionNote" | "department" | "departmentResource" | "idea" | "ideaNote" | "dailyPlan" | "dailyPlanStage" | "user" | "leadSearch" | "savedLead" | "websiteAudit" | "session" | "account" | "verification" | "directConversation" | "chatMembership" | "chatMessage" | "friendship" | "chatEncryptionKey" | "groupConversation" | "groupMembership" | "groupMessage"
+    modelProps: "weeklyAssignment" | "assignmentChecklistItem" | "taskStage" | "reflection" | "mentorFeedback" | "discussionNote" | "department" | "departmentResource" | "idea" | "ideaNote" | "dailyPlan" | "dailyPlanStage" | "user" | "leadSearch" | "savedLead" | "websiteAudit" | "pdfReportDesign" | "session" | "account" | "verification" | "directConversation" | "chatMembership" | "chatMessage" | "friendship" | "chatEncryptionKey" | "groupConversation" | "groupMembership" | "groupMessage"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -1627,6 +1628,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    PdfReportDesign: {
+      payload: Prisma.$PdfReportDesignPayload<ExtArgs>
+      fields: Prisma.PdfReportDesignFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.PdfReportDesignFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PdfReportDesignPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.PdfReportDesignFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PdfReportDesignPayload>
+        }
+        findFirst: {
+          args: Prisma.PdfReportDesignFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PdfReportDesignPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.PdfReportDesignFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PdfReportDesignPayload>
+        }
+        findMany: {
+          args: Prisma.PdfReportDesignFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PdfReportDesignPayload>[]
+        }
+        create: {
+          args: Prisma.PdfReportDesignCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PdfReportDesignPayload>
+        }
+        createMany: {
+          args: Prisma.PdfReportDesignCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.PdfReportDesignCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PdfReportDesignPayload>[]
+        }
+        delete: {
+          args: Prisma.PdfReportDesignDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PdfReportDesignPayload>
+        }
+        update: {
+          args: Prisma.PdfReportDesignUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PdfReportDesignPayload>
+        }
+        deleteMany: {
+          args: Prisma.PdfReportDesignDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.PdfReportDesignUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.PdfReportDesignUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PdfReportDesignPayload>[]
+        }
+        upsert: {
+          args: Prisma.PdfReportDesignUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PdfReportDesignPayload>
+        }
+        aggregate: {
+          args: Prisma.PdfReportDesignAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregatePdfReportDesign>
+        }
+        groupBy: {
+          args: Prisma.PdfReportDesignGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.PdfReportDesignGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.PdfReportDesignCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.PdfReportDesignCountAggregateOutputType> | number
+        }
+      }
+    }
     Session: {
       payload: Prisma.$SessionPayload<ExtArgs>
       fields: Prisma.SessionFieldRefs
@@ -2673,6 +2748,8 @@ export const LeadSearchScalarFieldEnum = {
   finishedAt: 'finishedAt',
   phase: 'phase',
   processedPages: 'processedPages',
+  pauseRequested: 'pauseRequested',
+  checkpoint: 'checkpoint',
   errorCode: 'errorCode',
   resultLimit: 'resultLimit',
   createdAt: 'createdAt',
@@ -2699,6 +2776,7 @@ export const WebsiteAuditScalarFieldEnum = {
   placeId: 'placeId',
   status: 'status',
   runToken: 'runToken',
+  batchId: 'batchId',
   qualityScore: 'qualityScore',
   report: 'report',
   errorCode: 'errorCode',
@@ -2709,6 +2787,17 @@ export const WebsiteAuditScalarFieldEnum = {
 } as const
 
 export type WebsiteAuditScalarFieldEnum = (typeof WebsiteAuditScalarFieldEnum)[keyof typeof WebsiteAuditScalarFieldEnum]
+
+
+export const PdfReportDesignScalarFieldEnum = {
+  userId: 'userId',
+  source: 'source',
+  theme: 'theme',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type PdfReportDesignScalarFieldEnum = (typeof PdfReportDesignScalarFieldEnum)[keyof typeof PdfReportDesignScalarFieldEnum]
 
 
 export const SessionScalarFieldEnum = {
@@ -3213,6 +3302,7 @@ export type GlobalOmitConfig = {
   leadSearch?: Prisma.LeadSearchOmit
   savedLead?: Prisma.SavedLeadOmit
   websiteAudit?: Prisma.WebsiteAuditOmit
+  pdfReportDesign?: Prisma.PdfReportDesignOmit
   session?: Prisma.SessionOmit
   account?: Prisma.AccountOmit
   verification?: Prisma.VerificationOmit
