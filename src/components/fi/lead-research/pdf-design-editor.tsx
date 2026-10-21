@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { useLocale, useTranslations } from "next-intl";
-import { Check, Code2, Copy, Download, Plus, Radio, RotateCcw, Save, Undo2 } from "lucide-react";
+import { ArrowUpRight, Check, Code2, Copy, Download, Loader2, Plus, Radio, RotateCcw, Save, Undo2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import dynamic from "next/dynamic";
 import { Input } from "@/components/ui/input";
@@ -10,6 +10,9 @@ import { activatePdfTemplateAction, getPdfDesignAction, savePdfDesignAction, sel
 import { defaultPdfDesign, type PdfDesign } from "@/lib/lead-research/pdf/design";
 
 const PdfSourceEditor = dynamic(() => import("./pdf-source-editor"), { ssr: false });
+
+const toolbarButton = "h-10 gap-2 rounded-xl px-3.5 text-sm font-medium shadow-xs transition-[background-color,border-color,box-shadow] duration-200 disabled:border-border/60 disabled:bg-muted/50 disabled:text-muted-foreground disabled:opacity-100";
+const secondaryButton = `${toolbarButton} border-border/80 bg-background/80 hover:border-foreground/25 hover:bg-muted hover:shadow-sm`;
 
 export function PdfDesignEditor() {
   const t = useTranslations("leadResearch");
@@ -133,14 +136,14 @@ export function PdfDesignEditor() {
   if (!loaded) return <div className="rounded-xl border p-6" role={loadFailed ? "alert" : "status"}>{t(loadFailed ? "pdfLoadError" : "pdfLoading")}{loadFailed && <Button className="ml-3" variant="outline" onClick={() => setRetry(value => value + 1)}>{t("retryDetails")}</Button>}</div>;
 
   return <section className="min-w-0 space-y-4" aria-label={t("pdfDesign")}>
-    <div className="flex flex-wrap items-start justify-between gap-4">
+    <div className="flex flex-wrap items-center justify-between gap-4">
       <h2 className="flex items-center gap-2 text-lg font-semibold"><Code2 className="size-5" />{t("pdfEditorTitle")}</h2>
-      <div className="flex flex-wrap gap-2">
-        <Button variant="outline" disabled={busy} onClick={() => { setTemplateId(null); setDesign({ ...design, name: "" }); setMessage(null); setError(null); }}><Plus />{t("pdfNewTemplate")}</Button>
-        {dirty && <Button variant="ghost" disabled={busy} onClick={() => { setDesign(saved); setTemplateId(savedTemplateId); setMessage(null); setError(null); }}><Undo2 />{t("pdfDiscardChanges")}</Button>}
-        <Button variant="outline" disabled={busy} onClick={() => { setDesign({ ...defaultPdfDesign, name: design.name }); setMessage(null); setError(null); }}><RotateCcw />{t("pdfReset")}</Button>
-        <Button variant="outline" disabled={!currentPreview || rendering || Boolean(previewError)} onClick={() => { if (!preview) return; const link = document.createElement("a"); link.href = preview.url; link.download = "pdfcn-design-preview.pdf"; link.click(); }}><Download />{t("pdfTestDownload")}</Button>
-        <Button disabled={busy || !dirty || !design.name?.trim()} onClick={save} aria-busy={saving}><Save />{t(saving ? "pdfSaving" : "pdfSave")}</Button>
+      <div className="flex w-full flex-wrap items-center gap-2 sm:w-auto">
+        <Button className={secondaryButton} variant="outline" disabled={busy} onClick={() => { setTemplateId(null); setDesign({ ...design, name: "" }); setMessage(null); setError(null); }}><Plus />{t("pdfNewTemplate")}</Button>
+        {dirty && <Button className={`${toolbarButton} shadow-none`} variant="ghost" disabled={busy} onClick={() => { setDesign(saved); setTemplateId(savedTemplateId); setMessage(null); setError(null); }}><Undo2 />{t("pdfDiscardChanges")}</Button>}
+        <Button className={`${toolbarButton} text-muted-foreground shadow-none hover:text-foreground`} variant="ghost" disabled={busy} onClick={() => { setDesign({ ...defaultPdfDesign, name: design.name }); setMessage(null); setError(null); }}><RotateCcw />{t("pdfReset")}</Button>
+        <Button className={secondaryButton} variant="outline" disabled={!currentPreview || rendering || Boolean(previewError)} onClick={() => { if (!preview) return; const link = document.createElement("a"); link.href = preview.url; link.download = "pdfcn-design-preview.pdf"; link.click(); }}><Download />{t("pdfTestDownload")}</Button>
+        <Button className={`${toolbarButton} border-primary/30 shadow-sm hover:shadow-md`} disabled={busy || !dirty || !design.name?.trim()} onClick={save} aria-busy={saving}>{saving ? <Loader2 className="animate-spin" /> : <Save />}{t(saving ? "pdfSaving" : "pdfSave")}</Button>
       </div>
     </div>
     <div className="flex flex-wrap items-center gap-3 rounded-lg border bg-muted/30 px-4 py-3">
@@ -156,16 +159,16 @@ export function PdfDesignEditor() {
         </select>
       </div>
       <span className="text-xs text-muted-foreground" role="status">{dirty ? t("pdfUnsaved") : t("pdfSavedState")}</span>
-      <Button variant={isLive ? "secondary" : "default"} disabled={busy || dirty || !templateId || isLive} onClick={activate} aria-busy={activating} title={dirty ? t("pdfSaveBeforeActivate") : undefined}>
-        {isLive ? <Check /> : <Radio />}{t(activating ? "pdfActivating" : isLive ? "pdfLiveDesign" : "pdfActivateDesign")}
+      <Button className={`${toolbarButton} border-emerald-600/25 bg-emerald-600/10 text-emerald-700 hover:border-emerald-600/50 hover:bg-emerald-600/15 dark:border-emerald-400/25 dark:bg-emerald-400/10 dark:text-emerald-300 dark:hover:bg-emerald-400/20 ${isLive ? "disabled:border-emerald-600/20 disabled:bg-emerald-600/10 disabled:text-emerald-700 dark:disabled:border-emerald-400/20 dark:disabled:bg-emerald-400/10 dark:disabled:text-emerald-300" : ""}`} variant="outline" disabled={busy || dirty || !templateId || isLive} onClick={activate} aria-busy={activating} title={dirty ? t("pdfSaveBeforeActivate") : undefined}>
+        {activating ? <Loader2 className="animate-spin" /> : isLive ? <Check /> : <Radio />}{t(activating ? "pdfActivating" : isLive ? "pdfLiveDesign" : "pdfActivateDesign")}
       </Button>
-      <a href="https://www.pdfcn.dev/docs/components/forme" target="_blank" rel="noopener noreferrer" className="ml-auto text-xs underline">{t("pdfDocumentation")}</a>
+      <a href="https://www.pdfcn.dev/docs/components/forme" target="_blank" rel="noopener noreferrer" className="ml-auto inline-flex min-h-10 items-center gap-1.5 rounded-lg px-2 text-xs font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring">{t("pdfDocumentation")}<ArrowUpRight className="size-3.5" /></a>
     </div>
     {message && <p role="status" className="text-sm text-green-700 dark:text-green-400">{message}</p>}
     {error && <p role="alert" className="text-sm text-destructive">{error}</p>}
     <div className="grid min-w-0 gap-4 xl:grid-cols-2">
       <div className="min-w-0 overflow-hidden rounded-xl border">
-        <div className="flex flex-wrap items-center justify-between gap-2 border-b bg-muted/40 px-4 py-3"><span className="text-sm font-medium">report.jsx</span><div className="flex items-center gap-2"><span role="status" className={`text-xs ${copyStatus === "error" ? "text-destructive" : "text-muted-foreground"}`}>{copyStatus === "error" ? t("pdfCopyError") : copyStatus === "copied" ? t("pdfCopied") : ""}</span><Button variant="ghost" size="sm" disabled={copyStatus === "copying"} onClick={copyCode}>{copyStatus === "copied" ? <Check /> : <Copy />}{t("pdfCopyCode")}</Button></div></div>
+        <div className="flex flex-wrap items-center justify-between gap-2 border-b bg-muted/40 px-4 py-3"><span className="text-sm font-medium">report.jsx</span><div className="flex items-center gap-2"><span role="status" className={`text-xs ${copyStatus === "error" ? "text-destructive" : "text-muted-foreground"}`}>{copyStatus === "error" ? t("pdfCopyError") : copyStatus === "copied" ? t("pdfCopied") : ""}</span><Button className="h-8 gap-2 rounded-lg border-border/70 bg-background/60 px-3 text-xs shadow-xs hover:bg-background disabled:opacity-60" variant="outline" size="sm" disabled={copyStatus === "copying"} onClick={copyCode}>{copyStatus === "copied" ? <Check className="text-emerald-600 dark:text-emerald-400" /> : <Copy />}{t("pdfCopyCode")}</Button></div></div>
         <PdfSourceEditor key={templateId ?? "new"} value={design.source} disabled={busy} label={t("pdfSourceLabel")} onChange={source => { setDesign(current => ({ ...current, source })); setMessage(null); }} />
       </div>
       <div className="min-w-0 overflow-hidden rounded-xl border bg-muted/20">

@@ -6,8 +6,6 @@ import { CheckCircle2, Clock3, LoaderCircle, Pause, Square } from "lucide-react"
 import { AuditBatchControls } from "./audit-batch-controls";
 import type { AuditSummary } from "@/lib/lead-research/audit-types";
 import { formatRemainingTime, getAuditProgress } from "@/lib/lead-research/audit-progress";
-import { MAX_PARALLEL_WEBSITE_AUDITS } from "@/lib/lead-research/audit-scheduling";
-import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 
@@ -34,12 +32,11 @@ export function AuditProgressCard({ audits, searching }: { audits: AuditSummary[
           {!searching && progress!.failed > 0 && <p className="text-xs text-destructive">{t("auditFailureCount", { count: progress!.failed })}</p>}
         </div>
         <div className="flex items-start gap-5 sm:gap-8">
-          <div className="space-y-1"><p className="text-xs text-muted-foreground">{t("auditProgressPercent")}</p><p className="text-2xl font-semibold tabular-nums">{percentage === null ? "—" : `${percentage} %`}</p></div>
-          <div className="space-y-1"><p className="flex items-center gap-1 text-xs text-muted-foreground"><Clock3 className="size-3" aria-hidden="true" />{t("auditTimeRemaining")}</p><p className="text-2xl font-semibold tabular-nums">{remaining === null ? "—:—" : remaining}</p><p className="text-xs text-muted-foreground">{t("auditMinutesSeconds")}</p></div>
+          <div className="space-y-1"><p className="text-xs text-muted-foreground">{t("auditProgressPercent")}</p><p className="flex h-8 items-center text-2xl font-semibold leading-none tabular-nums lining-nums">{percentage === null ? "—" : `${percentage} %`}</p></div>
+          <div className="grid grid-cols-[auto_1fr] items-center gap-x-1 gap-y-1"><Clock3 className="size-3 text-muted-foreground" aria-hidden="true" /><p className="text-xs text-muted-foreground">{t("auditTimeRemaining")}</p><p className="col-start-2 flex h-8 min-w-[7ch] items-center whitespace-nowrap text-2xl font-semibold leading-none tabular-nums lining-nums">{remaining === null ? "—:—" : remaining}</p></div>
         </div>
       </div>
       <Progress value={percentage} aria-label={t("auditProgressPercent")} />
-      <Badge variant="outline">{t("auditParallelCount", { count: MAX_PARALLEL_WEBSITE_AUDITS })}</Badge>
       <AuditBatchControls audits={audits} />
     </CardContent>
   </Card>;
