@@ -2,11 +2,19 @@ import assert from "node:assert/strict";
 import { test } from "node:test";
 import { createElement, type ComponentType } from "react";
 import { evaluatePdfJsx, PdfTemplateError } from "../src/lib/lead-research/pdf/evaluate-jsx";
-import { defaultPdfDesign, parsePdfDesign } from "../src/lib/lead-research/pdf/design";
+import { DEFAULT_PDF_DESIGN_NAME, defaultPdfDesign, parsePdfDesign } from "../src/lib/lead-research/pdf/design";
 import { pdfReportData, sampleWebsiteReport } from "../src/lib/lead-research/pdf/report-data";
 import { createWebsiteReportPdf, validatePdfNavigation } from "../src/lib/lead-research/pdf/render";
 
 const components = { Document: () => null, Text: () => null } as Record<string, ComponentType<never>>;
+
+test("PDF template names are normalized, bounded and backwards compatible", () => {
+  assert.equal(parsePdfDesign({ ...defaultPdfDesign, name: "  Kundenbericht · Studio Fi  " })?.name, "Kundenbericht · Studio Fi");
+  const { source, theme } = defaultPdfDesign;
+  assert.equal(parsePdfDesign({ source, theme })?.name, DEFAULT_PDF_DESIGN_NAME);
+  for (const name of ["", "   ", "a".repeat(101), "Zeile\nZwei", "Name\u0000", null, 42]) assert.equal(parsePdfDesign({ source, theme, name }), null);
+  assert.equal(parsePdfDesign({ source, theme, name: "a".repeat(100) })?.name?.length, 100);
+});
 
 test("JSX templates cannot invoke JavaScript, access prototypes, fetch resources or spread props", () => {
   for (const source of [

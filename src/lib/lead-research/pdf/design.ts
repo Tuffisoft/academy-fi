@@ -1,7 +1,9 @@
-export type PdfDesign = { source: string; theme: "modern" | "corporate" | "professional" };
+export type PdfDesign = { name?: string; source: string; theme: "modern" | "corporate" | "professional" };
+export const DEFAULT_PDF_DESIGN_NAME = "Website Insights";
 
 // Editable JSX: internal links use the bookmark on the destination's View/Text.
 export const defaultPdfDesign: PdfDesign = {
+  name: DEFAULT_PDF_DESIGN_NAME,
   theme: "modern",
   source: `<Document title={report.title} author="Studio Fi" style={{ fontFamily: "Helvetica", fontSize: 10, color: "#172033", lineHeight: 1.5 }}>
   <Page size="A4" margin={40}>
@@ -119,8 +121,9 @@ export const defaultPdfDesign: PdfDesign = {
 
 export function parsePdfDesign(input: unknown): PdfDesign | null {
   if (!input || typeof input !== "object") return null;
-  const { source, theme } = input as Record<string, unknown>;
+  const { source, theme, name = DEFAULT_PDF_DESIGN_NAME } = input as Record<string, unknown>;
+  if (typeof name !== "string" || !name.trim() || name.trim().length > 100 || /[\u0000-\u001f\u007f]/.test(name)) return null;
   if (typeof source !== "string" || !source.trim() || source.length > 60_000) return null;
   if (theme !== "modern" && theme !== "corporate" && theme !== "professional") return null;
-  return { source, theme };
+  return { name: name.trim(), source, theme };
 }

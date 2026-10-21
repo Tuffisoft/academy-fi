@@ -42,7 +42,15 @@ API-Dokumentation: [Bildanalyse](https://developers.openai.com/api/docs/guides/i
 
 ## PDF-Berichtsdesign
 
-Die Standardvorlage enthält ein anklickbares Inhaltsmenü auf der Titelseite, eigene Abschnitte für Mobil, Desktop, KI-Designbewertung und die Bewertungsmethode sowie Seitenzahlen. Die Links verwenden echte interne PDF-Sprungziele und bleiben bei zusätzlichen Seiten korrekt. Gespeicherte Kopien der ursprünglichen Standardvorlage erhalten die neue Gestaltung automatisch; eigene JSX-Vorlagen bleiben erhalten. Im Editor lässt sich die neue Vorlage über „Standard einsetzen“ übernehmen und speichern.
+Im PDF-Designer kann die gespeicherte Vorlage über „Vorlagenname“ benannt werden (1 bis 100 Zeichen). Der Name bleibt beim erneuten Öffnen und beim Einsetzen des Standarddesigns erhalten. Bestehende Vorlagen erhalten zunächst den Namen „Website Insights“.
+
+„Vorlage“ listet die eigenen gespeicherten Designs statt der PDFCN-Themes auf. „Neue Vorlage“ erstellt einen Entwurf aus dem aktuellen Design; nach Eingabe eines Namens legt „Vorlage speichern“ eine weitere Vorlage an. Speichern und Auswählen ändern nur die bearbeitete Vorlage. Erst „Als Live-Design setzen“ übernimmt eine gespeicherte Version für Kunden-PDFs. Auch Änderungen an der bereits aktiven Vorlage müssen ausdrücklich erneut aktiviert werden. Der bisherige Live-Stand bleibt bis dahin erhalten. Vor einem Wechsel müssen Änderungen gespeichert oder über „Änderungen verwerfen“ zurückgenommen werden. Die bisherige Vorlage wird mit ihrem Namen, JSX und Theme unverändert in die Vorlagenbibliothek übernommen; das Theme bleibt intern Bestandteil des Designs.
+
+„Code kopieren“ in der Kopfzeile von `report.jsx` kopiert den gesamten aktuellen Editorinhalt in die Zwischenablage, einschließlich ungespeicherter Änderungen.
+
+Der JSX-Editor verwendet lokal gebündeltes CodeMirror mit Syntaxfarben, Zeilennummern, Code-Faltung, Suche und automatischer Einrückung. Quellcode wird nicht an einen externen Editor-Dienst übertragen. Eine VS-Code-Erweiterung ist für diese Bearbeitung nicht erforderlich.
+
+Die Standardvorlage enthält ein anklickbares Inhaltsmenü auf der Titelseite, eigene Abschnitte für Mobil, Desktop, KI-Designbewertung und die Bewertungsmethode sowie Seitenzahlen. Die Links verwenden echte interne PDF-Sprungziele und bleiben bei zusätzlichen Seiten korrekt. Im Designer werden alte unveränderte Standardvorlagen mit der neuen Gestaltung geöffnet; der Live-Stand ändert sich erst durch ausdrückliches Aktivieren. Eigene JSX-Vorlagen bleiben erhalten. Im Editor lässt sich die neue Vorlage über „Standard einsetzen“ übernehmen und speichern.
 
 Eigene Sprunglinks lassen sich mit `href="#mobile"` auf `View`, `Text` oder `Link` anlegen. Das Ziel erhält `bookmark="mobile"` auf `View` oder `Text`. Sprungziele müssen eindeutig sein und tatsächlich existieren. Externe Links sind im Vorlageneditor nicht freigegeben. `Fixed position="footer"` unterstützt `{{pageNumber}}` und `{{totalPages}}`; Fixed-Elemente stehen vor dem Seiteninhalt, damit sie auch auf Fortsetzungsseiten erscheinen.
 

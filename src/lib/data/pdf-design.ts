@@ -1,12 +1,23 @@
 import "server-only";
 import { prisma } from "@/lib/prisma";
 import { defaultPdfDesign, parsePdfDesign } from "@/lib/lead-research/pdf/design";
-import { legacyPdfDesign } from "@/lib/lead-research/pdf/legacy-design";
+import { selectStoredPdfTemplate } from "@/lib/lead-research/pdf/template-library";
 
 export async function getPdfDesign(userId: string) {
-  const saved = await prisma.pdfReportDesign.findUnique({ where: { userId }, select: { source: true, theme: true } });
+  const saved = await prisma.pdfReportDesign.findUnique({ where: { userId }, select: { name: true, source: true, theme: true } });
   const design = parsePdfDesign(saved);
-  // Upgrade saved copies of the previous stock template, preserving custom JSX.
-  if (design?.source === legacyPdfDesign.source) return { ...defaultPdfDesign, theme: design.theme };
+  // Exports use the published snapshot, including when its library entry changes.
   return design ?? defaultPdfDesign;
+}
+
+export async function getPdfDesignerState(userId: string) {
+  const [liveDesign, active, templates] = await Promise.all([
+    getPdfDesign(userId),
+    prisma.pdfReportDesign.findUnique({ where: { userId }, select: { templateId: true } }),
+    prisma.pdfReportTemplate.findMany({ where: { userId }, select: { id: true, name: true }, orderBy: [{ updatedAt: "desc" }, { id: "asc" }] }),
+  ]);
+  const liveTemplateId = active?.templateId ?? null;
+  const templateId = templates.find(template => template.id === liveTemplateId)?.id ?? templates[0]?.id ?? null;
+  const selected = templateId ? await selectStoredPdfTemplate(prisma, userId, templateId) : null;
+  return { design: selected?.success ? selected.design : defaultPdfDesign, templateId, templates, liveDesign, liveTemplateId };
 }

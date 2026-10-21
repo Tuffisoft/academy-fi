@@ -68,6 +68,7 @@ export const ModelName = {
   SavedLead: 'SavedLead',
   WebsiteAudit: 'WebsiteAudit',
   PdfReportDesign: 'PdfReportDesign',
+  PdfReportTemplate: 'PdfReportTemplate',
   Session: 'Session',
   Account: 'Account',
   Verification: 'Verification',
@@ -333,13 +334,28 @@ export type WebsiteAuditScalarFieldEnum = (typeof WebsiteAuditScalarFieldEnum)[k
 
 export const PdfReportDesignScalarFieldEnum = {
   userId: 'userId',
+  name: 'name',
+  source: 'source',
+  theme: 'theme',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  templateId: 'templateId'
+} as const
+
+export type PdfReportDesignScalarFieldEnum = (typeof PdfReportDesignScalarFieldEnum)[keyof typeof PdfReportDesignScalarFieldEnum]
+
+
+export const PdfReportTemplateScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  name: 'name',
   source: 'source',
   theme: 'theme',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
 
-export type PdfReportDesignScalarFieldEnum = (typeof PdfReportDesignScalarFieldEnum)[keyof typeof PdfReportDesignScalarFieldEnum]
+export type PdfReportTemplateScalarFieldEnum = (typeof PdfReportTemplateScalarFieldEnum)[keyof typeof PdfReportTemplateScalarFieldEnum]
 
 
 export const SessionScalarFieldEnum = {

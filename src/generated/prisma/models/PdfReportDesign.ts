@@ -26,52 +26,64 @@ export type AggregatePdfReportDesign = {
 
 export type PdfReportDesignMinAggregateOutputType = {
   userId: string | null
+  name: string | null
   source: string | null
   theme: string | null
   createdAt: Date | null
   updatedAt: Date | null
+  templateId: string | null
 }
 
 export type PdfReportDesignMaxAggregateOutputType = {
   userId: string | null
+  name: string | null
   source: string | null
   theme: string | null
   createdAt: Date | null
   updatedAt: Date | null
+  templateId: string | null
 }
 
 export type PdfReportDesignCountAggregateOutputType = {
   userId: number
+  name: number
   source: number
   theme: number
   createdAt: number
   updatedAt: number
+  templateId: number
   _all: number
 }
 
 
 export type PdfReportDesignMinAggregateInputType = {
   userId?: true
+  name?: true
   source?: true
   theme?: true
   createdAt?: true
   updatedAt?: true
+  templateId?: true
 }
 
 export type PdfReportDesignMaxAggregateInputType = {
   userId?: true
+  name?: true
   source?: true
   theme?: true
   createdAt?: true
   updatedAt?: true
+  templateId?: true
 }
 
 export type PdfReportDesignCountAggregateInputType = {
   userId?: true
+  name?: true
   source?: true
   theme?: true
   createdAt?: true
   updatedAt?: true
+  templateId?: true
   _all?: true
 }
 
@@ -149,10 +161,12 @@ export type PdfReportDesignGroupByArgs<ExtArgs extends runtime.Types.Extensions.
 
 export type PdfReportDesignGroupByOutputType = {
   userId: string
+  name: string
   source: string
   theme: string
   createdAt: Date
   updatedAt: Date
+  templateId: string | null
   _count: PdfReportDesignCountAggregateOutputType | null
   _min: PdfReportDesignMinAggregateOutputType | null
   _max: PdfReportDesignMaxAggregateOutputType | null
@@ -178,20 +192,26 @@ export type PdfReportDesignWhereInput = {
   OR?: Prisma.PdfReportDesignWhereInput[]
   NOT?: Prisma.PdfReportDesignWhereInput | Prisma.PdfReportDesignWhereInput[]
   userId?: Prisma.StringFilter<"PdfReportDesign"> | string
+  name?: Prisma.StringFilter<"PdfReportDesign"> | string
   source?: Prisma.StringFilter<"PdfReportDesign"> | string
   theme?: Prisma.StringFilter<"PdfReportDesign"> | string
   createdAt?: Prisma.DateTimeFilter<"PdfReportDesign"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"PdfReportDesign"> | Date | string
+  templateId?: Prisma.StringNullableFilter<"PdfReportDesign"> | string | null
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
+  template?: Prisma.XOR<Prisma.PdfReportTemplateNullableScalarRelationFilter, Prisma.PdfReportTemplateWhereInput> | null
 }
 
 export type PdfReportDesignOrderByWithRelationInput = {
   userId?: Prisma.SortOrder
+  name?: Prisma.SortOrder
   source?: Prisma.SortOrder
   theme?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  templateId?: Prisma.SortOrderInput | Prisma.SortOrder
   user?: Prisma.UserOrderByWithRelationInput
+  template?: Prisma.PdfReportTemplateOrderByWithRelationInput
 }
 
 export type PdfReportDesignWhereUniqueInput = Prisma.AtLeast<{
@@ -199,19 +219,24 @@ export type PdfReportDesignWhereUniqueInput = Prisma.AtLeast<{
   AND?: Prisma.PdfReportDesignWhereInput | Prisma.PdfReportDesignWhereInput[]
   OR?: Prisma.PdfReportDesignWhereInput[]
   NOT?: Prisma.PdfReportDesignWhereInput | Prisma.PdfReportDesignWhereInput[]
+  name?: Prisma.StringFilter<"PdfReportDesign"> | string
   source?: Prisma.StringFilter<"PdfReportDesign"> | string
   theme?: Prisma.StringFilter<"PdfReportDesign"> | string
   createdAt?: Prisma.DateTimeFilter<"PdfReportDesign"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"PdfReportDesign"> | Date | string
+  templateId?: Prisma.StringNullableFilter<"PdfReportDesign"> | string | null
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
+  template?: Prisma.XOR<Prisma.PdfReportTemplateNullableScalarRelationFilter, Prisma.PdfReportTemplateWhereInput> | null
 }, "userId">
 
 export type PdfReportDesignOrderByWithAggregationInput = {
   userId?: Prisma.SortOrder
+  name?: Prisma.SortOrder
   source?: Prisma.SortOrder
   theme?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  templateId?: Prisma.SortOrderInput | Prisma.SortOrder
   _count?: Prisma.PdfReportDesignCountOrderByAggregateInput
   _max?: Prisma.PdfReportDesignMaxOrderByAggregateInput
   _min?: Prisma.PdfReportDesignMinOrderByAggregateInput
@@ -222,53 +247,66 @@ export type PdfReportDesignScalarWhereWithAggregatesInput = {
   OR?: Prisma.PdfReportDesignScalarWhereWithAggregatesInput[]
   NOT?: Prisma.PdfReportDesignScalarWhereWithAggregatesInput | Prisma.PdfReportDesignScalarWhereWithAggregatesInput[]
   userId?: Prisma.StringWithAggregatesFilter<"PdfReportDesign"> | string
+  name?: Prisma.StringWithAggregatesFilter<"PdfReportDesign"> | string
   source?: Prisma.StringWithAggregatesFilter<"PdfReportDesign"> | string
   theme?: Prisma.StringWithAggregatesFilter<"PdfReportDesign"> | string
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"PdfReportDesign"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"PdfReportDesign"> | Date | string
+  templateId?: Prisma.StringNullableWithAggregatesFilter<"PdfReportDesign"> | string | null
 }
 
 export type PdfReportDesignCreateInput = {
+  name?: string
   source: string
   theme?: string
   createdAt?: Date | string
   updatedAt?: Date | string
   user: Prisma.UserCreateNestedOneWithoutPdfReportDesignInput
+  template?: Prisma.PdfReportTemplateCreateNestedOneWithoutActiveDesignsInput
 }
 
 export type PdfReportDesignUncheckedCreateInput = {
   userId: string
+  name?: string
   source: string
   theme?: string
   createdAt?: Date | string
   updatedAt?: Date | string
+  templateId?: string | null
 }
 
 export type PdfReportDesignUpdateInput = {
+  name?: Prisma.StringFieldUpdateOperationsInput | string
   source?: Prisma.StringFieldUpdateOperationsInput | string
   theme?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   user?: Prisma.UserUpdateOneRequiredWithoutPdfReportDesignNestedInput
+  template?: Prisma.PdfReportTemplateUpdateOneWithoutActiveDesignsNestedInput
 }
 
 export type PdfReportDesignUncheckedUpdateInput = {
   userId?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
   source?: Prisma.StringFieldUpdateOperationsInput | string
   theme?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  templateId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type PdfReportDesignCreateManyInput = {
   userId: string
+  name?: string
   source: string
   theme?: string
   createdAt?: Date | string
   updatedAt?: Date | string
+  templateId?: string | null
 }
 
 export type PdfReportDesignUpdateManyMutationInput = {
+  name?: Prisma.StringFieldUpdateOperationsInput | string
   source?: Prisma.StringFieldUpdateOperationsInput | string
   theme?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -277,10 +315,12 @@ export type PdfReportDesignUpdateManyMutationInput = {
 
 export type PdfReportDesignUncheckedUpdateManyInput = {
   userId?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
   source?: Prisma.StringFieldUpdateOperationsInput | string
   theme?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  templateId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type PdfReportDesignNullableScalarRelationFilter = {
@@ -290,26 +330,42 @@ export type PdfReportDesignNullableScalarRelationFilter = {
 
 export type PdfReportDesignCountOrderByAggregateInput = {
   userId?: Prisma.SortOrder
+  name?: Prisma.SortOrder
   source?: Prisma.SortOrder
   theme?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  templateId?: Prisma.SortOrder
 }
 
 export type PdfReportDesignMaxOrderByAggregateInput = {
   userId?: Prisma.SortOrder
+  name?: Prisma.SortOrder
   source?: Prisma.SortOrder
   theme?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  templateId?: Prisma.SortOrder
 }
 
 export type PdfReportDesignMinOrderByAggregateInput = {
   userId?: Prisma.SortOrder
+  name?: Prisma.SortOrder
   source?: Prisma.SortOrder
   theme?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  templateId?: Prisma.SortOrder
+}
+
+export type PdfReportDesignListRelationFilter = {
+  every?: Prisma.PdfReportDesignWhereInput
+  some?: Prisma.PdfReportDesignWhereInput
+  none?: Prisma.PdfReportDesignWhereInput
+}
+
+export type PdfReportDesignOrderByRelationAggregateInput = {
+  _count?: Prisma.SortOrder
 }
 
 export type PdfReportDesignCreateNestedOneWithoutUserInput = {
@@ -344,18 +400,64 @@ export type PdfReportDesignUncheckedUpdateOneWithoutUserNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.PdfReportDesignUpdateToOneWithWhereWithoutUserInput, Prisma.PdfReportDesignUpdateWithoutUserInput>, Prisma.PdfReportDesignUncheckedUpdateWithoutUserInput>
 }
 
+export type PdfReportDesignCreateNestedManyWithoutTemplateInput = {
+  create?: Prisma.XOR<Prisma.PdfReportDesignCreateWithoutTemplateInput, Prisma.PdfReportDesignUncheckedCreateWithoutTemplateInput> | Prisma.PdfReportDesignCreateWithoutTemplateInput[] | Prisma.PdfReportDesignUncheckedCreateWithoutTemplateInput[]
+  connectOrCreate?: Prisma.PdfReportDesignCreateOrConnectWithoutTemplateInput | Prisma.PdfReportDesignCreateOrConnectWithoutTemplateInput[]
+  createMany?: Prisma.PdfReportDesignCreateManyTemplateInputEnvelope
+  connect?: Prisma.PdfReportDesignWhereUniqueInput | Prisma.PdfReportDesignWhereUniqueInput[]
+}
+
+export type PdfReportDesignUncheckedCreateNestedManyWithoutTemplateInput = {
+  create?: Prisma.XOR<Prisma.PdfReportDesignCreateWithoutTemplateInput, Prisma.PdfReportDesignUncheckedCreateWithoutTemplateInput> | Prisma.PdfReportDesignCreateWithoutTemplateInput[] | Prisma.PdfReportDesignUncheckedCreateWithoutTemplateInput[]
+  connectOrCreate?: Prisma.PdfReportDesignCreateOrConnectWithoutTemplateInput | Prisma.PdfReportDesignCreateOrConnectWithoutTemplateInput[]
+  createMany?: Prisma.PdfReportDesignCreateManyTemplateInputEnvelope
+  connect?: Prisma.PdfReportDesignWhereUniqueInput | Prisma.PdfReportDesignWhereUniqueInput[]
+}
+
+export type PdfReportDesignUpdateManyWithoutTemplateNestedInput = {
+  create?: Prisma.XOR<Prisma.PdfReportDesignCreateWithoutTemplateInput, Prisma.PdfReportDesignUncheckedCreateWithoutTemplateInput> | Prisma.PdfReportDesignCreateWithoutTemplateInput[] | Prisma.PdfReportDesignUncheckedCreateWithoutTemplateInput[]
+  connectOrCreate?: Prisma.PdfReportDesignCreateOrConnectWithoutTemplateInput | Prisma.PdfReportDesignCreateOrConnectWithoutTemplateInput[]
+  upsert?: Prisma.PdfReportDesignUpsertWithWhereUniqueWithoutTemplateInput | Prisma.PdfReportDesignUpsertWithWhereUniqueWithoutTemplateInput[]
+  createMany?: Prisma.PdfReportDesignCreateManyTemplateInputEnvelope
+  set?: Prisma.PdfReportDesignWhereUniqueInput | Prisma.PdfReportDesignWhereUniqueInput[]
+  disconnect?: Prisma.PdfReportDesignWhereUniqueInput | Prisma.PdfReportDesignWhereUniqueInput[]
+  delete?: Prisma.PdfReportDesignWhereUniqueInput | Prisma.PdfReportDesignWhereUniqueInput[]
+  connect?: Prisma.PdfReportDesignWhereUniqueInput | Prisma.PdfReportDesignWhereUniqueInput[]
+  update?: Prisma.PdfReportDesignUpdateWithWhereUniqueWithoutTemplateInput | Prisma.PdfReportDesignUpdateWithWhereUniqueWithoutTemplateInput[]
+  updateMany?: Prisma.PdfReportDesignUpdateManyWithWhereWithoutTemplateInput | Prisma.PdfReportDesignUpdateManyWithWhereWithoutTemplateInput[]
+  deleteMany?: Prisma.PdfReportDesignScalarWhereInput | Prisma.PdfReportDesignScalarWhereInput[]
+}
+
+export type PdfReportDesignUncheckedUpdateManyWithoutTemplateNestedInput = {
+  create?: Prisma.XOR<Prisma.PdfReportDesignCreateWithoutTemplateInput, Prisma.PdfReportDesignUncheckedCreateWithoutTemplateInput> | Prisma.PdfReportDesignCreateWithoutTemplateInput[] | Prisma.PdfReportDesignUncheckedCreateWithoutTemplateInput[]
+  connectOrCreate?: Prisma.PdfReportDesignCreateOrConnectWithoutTemplateInput | Prisma.PdfReportDesignCreateOrConnectWithoutTemplateInput[]
+  upsert?: Prisma.PdfReportDesignUpsertWithWhereUniqueWithoutTemplateInput | Prisma.PdfReportDesignUpsertWithWhereUniqueWithoutTemplateInput[]
+  createMany?: Prisma.PdfReportDesignCreateManyTemplateInputEnvelope
+  set?: Prisma.PdfReportDesignWhereUniqueInput | Prisma.PdfReportDesignWhereUniqueInput[]
+  disconnect?: Prisma.PdfReportDesignWhereUniqueInput | Prisma.PdfReportDesignWhereUniqueInput[]
+  delete?: Prisma.PdfReportDesignWhereUniqueInput | Prisma.PdfReportDesignWhereUniqueInput[]
+  connect?: Prisma.PdfReportDesignWhereUniqueInput | Prisma.PdfReportDesignWhereUniqueInput[]
+  update?: Prisma.PdfReportDesignUpdateWithWhereUniqueWithoutTemplateInput | Prisma.PdfReportDesignUpdateWithWhereUniqueWithoutTemplateInput[]
+  updateMany?: Prisma.PdfReportDesignUpdateManyWithWhereWithoutTemplateInput | Prisma.PdfReportDesignUpdateManyWithWhereWithoutTemplateInput[]
+  deleteMany?: Prisma.PdfReportDesignScalarWhereInput | Prisma.PdfReportDesignScalarWhereInput[]
+}
+
 export type PdfReportDesignCreateWithoutUserInput = {
+  name?: string
   source: string
   theme?: string
   createdAt?: Date | string
   updatedAt?: Date | string
+  template?: Prisma.PdfReportTemplateCreateNestedOneWithoutActiveDesignsInput
 }
 
 export type PdfReportDesignUncheckedCreateWithoutUserInput = {
+  name?: string
   source: string
   theme?: string
   createdAt?: Date | string
   updatedAt?: Date | string
+  templateId?: string | null
 }
 
 export type PdfReportDesignCreateOrConnectWithoutUserInput = {
@@ -375,13 +477,110 @@ export type PdfReportDesignUpdateToOneWithWhereWithoutUserInput = {
 }
 
 export type PdfReportDesignUpdateWithoutUserInput = {
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  source?: Prisma.StringFieldUpdateOperationsInput | string
+  theme?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  template?: Prisma.PdfReportTemplateUpdateOneWithoutActiveDesignsNestedInput
+}
+
+export type PdfReportDesignUncheckedUpdateWithoutUserInput = {
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  source?: Prisma.StringFieldUpdateOperationsInput | string
+  theme?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  templateId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+}
+
+export type PdfReportDesignCreateWithoutTemplateInput = {
+  name?: string
+  source: string
+  theme?: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  user: Prisma.UserCreateNestedOneWithoutPdfReportDesignInput
+}
+
+export type PdfReportDesignUncheckedCreateWithoutTemplateInput = {
+  userId: string
+  name?: string
+  source: string
+  theme?: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+}
+
+export type PdfReportDesignCreateOrConnectWithoutTemplateInput = {
+  where: Prisma.PdfReportDesignWhereUniqueInput
+  create: Prisma.XOR<Prisma.PdfReportDesignCreateWithoutTemplateInput, Prisma.PdfReportDesignUncheckedCreateWithoutTemplateInput>
+}
+
+export type PdfReportDesignCreateManyTemplateInputEnvelope = {
+  data: Prisma.PdfReportDesignCreateManyTemplateInput | Prisma.PdfReportDesignCreateManyTemplateInput[]
+  skipDuplicates?: boolean
+}
+
+export type PdfReportDesignUpsertWithWhereUniqueWithoutTemplateInput = {
+  where: Prisma.PdfReportDesignWhereUniqueInput
+  update: Prisma.XOR<Prisma.PdfReportDesignUpdateWithoutTemplateInput, Prisma.PdfReportDesignUncheckedUpdateWithoutTemplateInput>
+  create: Prisma.XOR<Prisma.PdfReportDesignCreateWithoutTemplateInput, Prisma.PdfReportDesignUncheckedCreateWithoutTemplateInput>
+}
+
+export type PdfReportDesignUpdateWithWhereUniqueWithoutTemplateInput = {
+  where: Prisma.PdfReportDesignWhereUniqueInput
+  data: Prisma.XOR<Prisma.PdfReportDesignUpdateWithoutTemplateInput, Prisma.PdfReportDesignUncheckedUpdateWithoutTemplateInput>
+}
+
+export type PdfReportDesignUpdateManyWithWhereWithoutTemplateInput = {
+  where: Prisma.PdfReportDesignScalarWhereInput
+  data: Prisma.XOR<Prisma.PdfReportDesignUpdateManyMutationInput, Prisma.PdfReportDesignUncheckedUpdateManyWithoutTemplateInput>
+}
+
+export type PdfReportDesignScalarWhereInput = {
+  AND?: Prisma.PdfReportDesignScalarWhereInput | Prisma.PdfReportDesignScalarWhereInput[]
+  OR?: Prisma.PdfReportDesignScalarWhereInput[]
+  NOT?: Prisma.PdfReportDesignScalarWhereInput | Prisma.PdfReportDesignScalarWhereInput[]
+  userId?: Prisma.StringFilter<"PdfReportDesign"> | string
+  name?: Prisma.StringFilter<"PdfReportDesign"> | string
+  source?: Prisma.StringFilter<"PdfReportDesign"> | string
+  theme?: Prisma.StringFilter<"PdfReportDesign"> | string
+  createdAt?: Prisma.DateTimeFilter<"PdfReportDesign"> | Date | string
+  updatedAt?: Prisma.DateTimeFilter<"PdfReportDesign"> | Date | string
+  templateId?: Prisma.StringNullableFilter<"PdfReportDesign"> | string | null
+}
+
+export type PdfReportDesignCreateManyTemplateInput = {
+  userId: string
+  name?: string
+  source: string
+  theme?: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+}
+
+export type PdfReportDesignUpdateWithoutTemplateInput = {
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  source?: Prisma.StringFieldUpdateOperationsInput | string
+  theme?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  user?: Prisma.UserUpdateOneRequiredWithoutPdfReportDesignNestedInput
+}
+
+export type PdfReportDesignUncheckedUpdateWithoutTemplateInput = {
+  userId?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
   source?: Prisma.StringFieldUpdateOperationsInput | string
   theme?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
-export type PdfReportDesignUncheckedUpdateWithoutUserInput = {
+export type PdfReportDesignUncheckedUpdateManyWithoutTemplateInput = {
+  userId?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
   source?: Prisma.StringFieldUpdateOperationsInput | string
   theme?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -392,61 +591,78 @@ export type PdfReportDesignUncheckedUpdateWithoutUserInput = {
 
 export type PdfReportDesignSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   userId?: boolean
+  name?: boolean
   source?: boolean
   theme?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  templateId?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  template?: boolean | Prisma.PdfReportDesign$templateArgs<ExtArgs>
 }, ExtArgs["result"]["pdfReportDesign"]>
 
 export type PdfReportDesignSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   userId?: boolean
+  name?: boolean
   source?: boolean
   theme?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  templateId?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  template?: boolean | Prisma.PdfReportDesign$templateArgs<ExtArgs>
 }, ExtArgs["result"]["pdfReportDesign"]>
 
 export type PdfReportDesignSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   userId?: boolean
+  name?: boolean
   source?: boolean
   theme?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  templateId?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  template?: boolean | Prisma.PdfReportDesign$templateArgs<ExtArgs>
 }, ExtArgs["result"]["pdfReportDesign"]>
 
 export type PdfReportDesignSelectScalar = {
   userId?: boolean
+  name?: boolean
   source?: boolean
   theme?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  templateId?: boolean
 }
 
-export type PdfReportDesignOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"userId" | "source" | "theme" | "createdAt" | "updatedAt", ExtArgs["result"]["pdfReportDesign"]>
+export type PdfReportDesignOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"userId" | "name" | "source" | "theme" | "createdAt" | "updatedAt" | "templateId", ExtArgs["result"]["pdfReportDesign"]>
 export type PdfReportDesignInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  template?: boolean | Prisma.PdfReportDesign$templateArgs<ExtArgs>
 }
 export type PdfReportDesignIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  template?: boolean | Prisma.PdfReportDesign$templateArgs<ExtArgs>
 }
 export type PdfReportDesignIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  template?: boolean | Prisma.PdfReportDesign$templateArgs<ExtArgs>
 }
 
 export type $PdfReportDesignPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "PdfReportDesign"
   objects: {
     user: Prisma.$UserPayload<ExtArgs>
+    template: Prisma.$PdfReportTemplatePayload<ExtArgs> | null
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     userId: string
+    name: string
     source: string
     theme: string
     createdAt: Date
     updatedAt: Date
+    templateId: string | null
   }, ExtArgs["result"]["pdfReportDesign"]>
   composites: {}
 }
@@ -842,6 +1058,7 @@ readonly fields: PdfReportDesignFieldRefs;
 export interface Prisma__PdfReportDesignClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
   user<T extends Prisma.UserDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UserDefaultArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  template<T extends Prisma.PdfReportDesign$templateArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.PdfReportDesign$templateArgs<ExtArgs>>): Prisma.Prisma__PdfReportTemplateClient<runtime.Types.Result.GetResult<Prisma.$PdfReportTemplatePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -872,10 +1089,12 @@ export interface Prisma__PdfReportDesignClient<T, Null = never, ExtArgs extends 
  */
 export interface PdfReportDesignFieldRefs {
   readonly userId: Prisma.FieldRef<"PdfReportDesign", 'String'>
+  readonly name: Prisma.FieldRef<"PdfReportDesign", 'String'>
   readonly source: Prisma.FieldRef<"PdfReportDesign", 'String'>
   readonly theme: Prisma.FieldRef<"PdfReportDesign", 'String'>
   readonly createdAt: Prisma.FieldRef<"PdfReportDesign", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"PdfReportDesign", 'DateTime'>
+  readonly templateId: Prisma.FieldRef<"PdfReportDesign", 'String'>
 }
     
 
@@ -1274,6 +1493,25 @@ export type PdfReportDesignDeleteManyArgs<ExtArgs extends runtime.Types.Extensio
    * Limit how many PdfReportDesigns to delete.
    */
   limit?: number
+}
+
+/**
+ * PdfReportDesign.template
+ */
+export type PdfReportDesign$templateArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the PdfReportTemplate
+   */
+  select?: Prisma.PdfReportTemplateSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the PdfReportTemplate
+   */
+  omit?: Prisma.PdfReportTemplateOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.PdfReportTemplateInclude<ExtArgs> | null
+  where?: Prisma.PdfReportTemplateWhereInput
 }
 
 /**

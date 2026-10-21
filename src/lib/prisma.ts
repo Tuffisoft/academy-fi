@@ -13,6 +13,9 @@ function supportsCurrentSchema(client: PrismaClient | undefined): client is Pris
     typeof client?.websiteAudit?.findMany === "function" &&
     client?.websiteAudit?.fields?.batchId &&
     typeof client?.pdfReportDesign?.findUnique === "function" &&
+    client?.pdfReportDesign?.fields?.name &&
+    client?.pdfReportDesign?.fields?.templateId &&
+    typeof client?.pdfReportTemplate?.findMany === "function" &&
     typeof client?.chatMembership?.findMany === "function" &&
     typeof client?.directConversation?.findMany === "function" &&
     typeof client?.friendship?.findMany === "function" &&

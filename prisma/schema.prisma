@@ -197,6 +197,7 @@ model User {
   savedLeads          SavedLead[]
   websiteAudits       WebsiteAudit[]
   pdfReportDesign     PdfReportDesign?
+  pdfReportTemplates  PdfReportTemplate[]
 
   @@map("user")
 }
@@ -278,10 +279,27 @@ model WebsiteAudit {
 model PdfReportDesign {
   userId    String   @id
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  name      String   @default("Website Insights") @db.VarChar(100)
   source    String   @db.Text
   theme     String   @default("modern") @db.VarChar(20)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  templateId String?
+  template PdfReportTemplate? @relation(fields: [templateId], references: [id], onDelete: SetNull)
+}
+
+model PdfReportTemplate {
+  id        String @id @default(cuid())
+  userId    String
+  user      User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  name      String @db.VarChar(100)
+  source    String @db.Text
+  theme     String @default("modern") @db.VarChar(20)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  activeDesigns PdfReportDesign[]
+
+  @@index([userId, updatedAt])
 }
 
 model Session {

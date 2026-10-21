@@ -414,6 +414,7 @@ export const ModelName = {
   SavedLead: 'SavedLead',
   WebsiteAudit: 'WebsiteAudit',
   PdfReportDesign: 'PdfReportDesign',
+  PdfReportTemplate: 'PdfReportTemplate',
   Session: 'Session',
   Account: 'Account',
   Verification: 'Verification',
@@ -440,7 +441,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "weeklyAssignment" | "assignmentChecklistItem" | "taskStage" | "reflection" | "mentorFeedback" | "discussionNote" | "department" | "departmentResource" | "idea" | "ideaNote" | "dailyPlan" | "dailyPlanStage" | "user" | "leadSearch" | "savedLead" | "websiteAudit" | "pdfReportDesign" | "session" | "account" | "verification" | "directConversation" | "chatMembership" | "chatMessage" | "friendship" | "chatEncryptionKey" | "groupConversation" | "groupMembership" | "groupMessage"
+    modelProps: "weeklyAssignment" | "assignmentChecklistItem" | "taskStage" | "reflection" | "mentorFeedback" | "discussionNote" | "department" | "departmentResource" | "idea" | "ideaNote" | "dailyPlan" | "dailyPlanStage" | "user" | "leadSearch" | "savedLead" | "websiteAudit" | "pdfReportDesign" | "pdfReportTemplate" | "session" | "account" | "verification" | "directConversation" | "chatMembership" | "chatMessage" | "friendship" | "chatEncryptionKey" | "groupConversation" | "groupMembership" | "groupMessage"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -1702,6 +1703,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    PdfReportTemplate: {
+      payload: Prisma.$PdfReportTemplatePayload<ExtArgs>
+      fields: Prisma.PdfReportTemplateFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.PdfReportTemplateFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PdfReportTemplatePayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.PdfReportTemplateFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PdfReportTemplatePayload>
+        }
+        findFirst: {
+          args: Prisma.PdfReportTemplateFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PdfReportTemplatePayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.PdfReportTemplateFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PdfReportTemplatePayload>
+        }
+        findMany: {
+          args: Prisma.PdfReportTemplateFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PdfReportTemplatePayload>[]
+        }
+        create: {
+          args: Prisma.PdfReportTemplateCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PdfReportTemplatePayload>
+        }
+        createMany: {
+          args: Prisma.PdfReportTemplateCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.PdfReportTemplateCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PdfReportTemplatePayload>[]
+        }
+        delete: {
+          args: Prisma.PdfReportTemplateDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PdfReportTemplatePayload>
+        }
+        update: {
+          args: Prisma.PdfReportTemplateUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PdfReportTemplatePayload>
+        }
+        deleteMany: {
+          args: Prisma.PdfReportTemplateDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.PdfReportTemplateUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.PdfReportTemplateUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PdfReportTemplatePayload>[]
+        }
+        upsert: {
+          args: Prisma.PdfReportTemplateUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PdfReportTemplatePayload>
+        }
+        aggregate: {
+          args: Prisma.PdfReportTemplateAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregatePdfReportTemplate>
+        }
+        groupBy: {
+          args: Prisma.PdfReportTemplateGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.PdfReportTemplateGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.PdfReportTemplateCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.PdfReportTemplateCountAggregateOutputType> | number
+        }
+      }
+    }
     Session: {
       payload: Prisma.$SessionPayload<ExtArgs>
       fields: Prisma.SessionFieldRefs
@@ -2791,13 +2866,28 @@ export type WebsiteAuditScalarFieldEnum = (typeof WebsiteAuditScalarFieldEnum)[k
 
 export const PdfReportDesignScalarFieldEnum = {
   userId: 'userId',
+  name: 'name',
+  source: 'source',
+  theme: 'theme',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  templateId: 'templateId'
+} as const
+
+export type PdfReportDesignScalarFieldEnum = (typeof PdfReportDesignScalarFieldEnum)[keyof typeof PdfReportDesignScalarFieldEnum]
+
+
+export const PdfReportTemplateScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  name: 'name',
   source: 'source',
   theme: 'theme',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
 
-export type PdfReportDesignScalarFieldEnum = (typeof PdfReportDesignScalarFieldEnum)[keyof typeof PdfReportDesignScalarFieldEnum]
+export type PdfReportTemplateScalarFieldEnum = (typeof PdfReportTemplateScalarFieldEnum)[keyof typeof PdfReportTemplateScalarFieldEnum]
 
 
 export const SessionScalarFieldEnum = {
@@ -3303,6 +3393,7 @@ export type GlobalOmitConfig = {
   savedLead?: Prisma.SavedLeadOmit
   websiteAudit?: Prisma.WebsiteAuditOmit
   pdfReportDesign?: Prisma.PdfReportDesignOmit
+  pdfReportTemplate?: Prisma.PdfReportTemplateOmit
   session?: Prisma.SessionOmit
   account?: Prisma.AccountOmit
   verification?: Prisma.VerificationOmit
