@@ -40,6 +40,12 @@ Die KI beurteilt sichtbare Struktur, Lesbarkeit, Konsistenz und mobiles Layout. 
 
 API-Dokumentation: [Bildanalyse](https://developers.openai.com/api/docs/guides/images-vision), [strukturierte Ausgaben](https://developers.openai.com/api/docs/guides/structured-outputs).
 
+## PDF-Berichtsdesign
+
+Die Standardvorlage enthält ein anklickbares Inhaltsmenü auf der Titelseite, eigene Abschnitte für Mobil, Desktop, KI-Designbewertung und die Bewertungsmethode sowie Seitenzahlen. Die Links verwenden echte interne PDF-Sprungziele und bleiben bei zusätzlichen Seiten korrekt. Gespeicherte Kopien der ursprünglichen Standardvorlage erhalten die neue Gestaltung automatisch; eigene JSX-Vorlagen bleiben erhalten. Im Editor lässt sich die neue Vorlage über „Standard einsetzen“ übernehmen und speichern.
+
+Eigene Sprunglinks lassen sich mit `href="#mobile"` auf `View`, `Text` oder `Link` anlegen. Das Ziel erhält `bookmark="mobile"` auf `View` oder `Text`. Sprungziele müssen eindeutig sein und tatsächlich existieren. Externe Links sind im Vorlageneditor nicht freigegeben. `Fixed position="footer"` unterstützt `{{pageNumber}}` und `{{totalPages}}`; Fixed-Elemente stehen vor dem Seiteninhalt, damit sie auch auf Fortsetzungsseiten erscheinen.
+
 ## Learn More
 
 To learn more about Next.js, take a look at the following resources:

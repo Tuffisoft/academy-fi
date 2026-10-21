@@ -4,7 +4,7 @@ import { createElement, type ComponentType } from "react";
 import { evaluatePdfJsx, PdfTemplateError } from "../src/lib/lead-research/pdf/evaluate-jsx";
 import { defaultPdfDesign, parsePdfDesign } from "../src/lib/lead-research/pdf/design";
 import { pdfReportData, sampleWebsiteReport } from "../src/lib/lead-research/pdf/report-data";
-import { createWebsiteReportPdf } from "../src/lib/lead-research/pdf/render";
+import { createWebsiteReportPdf, validatePdfNavigation } from "../src/lib/lead-research/pdf/render";
 
 const components = { Document: () => null, Text: () => null } as Record<string, ComponentType<never>>;
 
@@ -33,6 +33,16 @@ test("React-style mapping, inline styles and conditions preserve data and inline
   assert.deepEqual(children[1].props.children, ["SEO", ": ", "Missing"]);
 });
 
+test("PDF navigation accepts internal destinations and rejects unsafe links or missing targets", () => {
+  for (const href of ["https://example.com", "file:///secret", "javascript:alert(1)", "#bad name"]) {
+    assert.throws(() => evaluatePdfJsx(`<Document><Text href="${href}">Link</Text></Document>`, components, {}), PdfTemplateError);
+  }
+  assert.doesNotThrow(() => evaluatePdfJsx('<Document><Text href="#mobile">Mobil</Text><Text bookmark="mobile">Ziel</Text></Document>', components, {}));
+  assert.doesNotThrow(() => validatePdfNavigation({ children: [{ href: "#mobile" }, { bookmark: "mobile" }] }));
+  assert.throws(() => validatePdfNavigation({ href: "#missing" }), /Missing PDF bookmark/);
+  assert.throws(() => validatePdfNavigation([{ bookmark: "mobile" }, { bookmark: "mobile" }]), /Duplicate PDF bookmark/);
+});
+
 test("missing and zero measurements stay distinct; the view model does not mutate reports", () => {
   const report = structuredClone(sampleWebsiteReport);
   report.mobile.metrics.lcpMs = null;
@@ -56,5 +66,9 @@ test("official PDFCN components render valid PDFs using all three Forme themes",
     const bytes = await createWebsiteReportPdf(sampleWebsiteReport, { ...defaultPdfDesign, theme });
     assert.ok(bytes.length > 2000);
     assert.equal(Buffer.from(bytes).subarray(0, 5).toString(), "%PDF-");
+    const pdf = Buffer.from(bytes).toString("latin1");
+    // Four full-row menu links and four return links, emitted as real PDF GoTo actions.
+    assert.equal((pdf.match(/\/GoTo\b/g) ?? []).length, 8);
+    assert.equal(pdf.includes("/URI"), false);
   }
 });

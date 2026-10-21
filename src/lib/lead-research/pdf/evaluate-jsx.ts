@@ -101,10 +101,13 @@ export function evaluatePdfJsx(source: string, components: Record<string, Compon
         const name = opening.name.name;
         if (name === "Page" && ++pages > 100) fail("Too many pages.");
         const props: Scope = {};
-        const allowed = new Set(["key", "style", "title", "author", "subject", "size", "margin", "orientation", "variant", "level", "padding", "wrap", "gap", "color", "align", "weight", "children", "italic", "decoration", "transform", "noMargin", "tracking", "keepWithNext", "spacing", "background", "border", "accentColor", "noWrap"]);
+        const allowed = new Set(["key", "style", "title", "author", "subject", "size", "margin", "orientation", "variant", "level", "padding", "wrap", "gap", "color", "align", "weight", "children", "italic", "decoration", "transform", "noMargin", "tracking", "keepWithNext", "spacing", "background", "border", "accentColor", "noWrap", "href", "bookmark", "position"]);
         for (const attribute of opening.attributes) {
           if (attribute.type !== "JSXAttribute" || attribute.name.type !== "JSXIdentifier" || !allowed.has(attribute.name.name)) fail("Unsupported component property.");
           props[attribute.name.name] = attribute.value ? next(attribute.value) : true;
+          if (attribute.name.name === "href" && (typeof props.href !== "string" || !/^#[a-zA-Z][a-zA-Z0-9-]{0,63}$/.test(props.href))) fail("Use an internal PDF link, for example #mobile.");
+          if (attribute.name.name === "bookmark" && (typeof props.bookmark !== "string" || !/^[a-zA-Z][a-zA-Z0-9-]{0,63}$/.test(props.bookmark))) fail("Use a simple bookmark name, for example mobile.");
+          if (attribute.name.name === "position" && (name !== "Fixed" || !["header", "footer"].includes(String(props.position)))) fail("Use Fixed with header or footer.");
         }
         return createElement(components[name], props as never, ...node.children.map(child => next(child) as ReactNode));
       }

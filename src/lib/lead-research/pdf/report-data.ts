@@ -1,5 +1,5 @@
 import type { WebsiteReport } from "../website-quality";
-import { normalizeWebsiteReport, TOPIC_LABELS } from "../website-rating";
+import { calculateDeviceScore, normalizeWebsiteReport, TOPIC_LABELS } from "../website-rating";
 import de from "../../../messages/de.json";
 import en from "../../../messages/en.json";
 
@@ -7,23 +7,39 @@ export function pdfReportData(input: WebsiteReport, locale: "de" | "en") {
   const report = normalizeWebsiteReport(input);
   const t = (locale === "de" ? de : en).leadResearch;
   const score = (value: number | null) => value === null ? t.auditNotMeasured : `${value}/100`;
+  const color = (value: number | null) => value === null ? "#64748b" : value >= 70 ? "#047857" : value >= 40 ? "#a16207" : "#be123c";
   const partLabels = Object.fromEntries(Object.entries(TOPIC_LABELS).map(([key, label]) => [key, t[label]]));
   return {
     ...report,
     title: t.auditReport,
+    websiteLabel: new URL(report.url).hostname,
+    designSourceLabel: locale === "de" ? "MOBIL / KI" : "MOBILE / AI",
     scoreLabel: score(report.qualityScore),
+    scoreColor: color(report.qualityScore),
+    navigation: [
+      { id: "mobile", number: "01", label: t.auditMobileDevice }, { id: "desktop", number: "02", label: t.auditDesktopDevice },
+      { id: "design", number: "03", label: t.auditDesign }, { id: "method", number: "04", label: t.auditMethod },
+    ],
+    designScoreLabel: score(report.parts.design),
+    designScoreColor: color(report.parts.design),
+    designStatusLabel: report.visual?.status === "completed" ? "" : t.auditVisualStatuses[report.visual?.status ?? "not_evaluated"],
+    designCompleted: report.visual?.status === "completed",
+    designFindings: report.visual?.findings ?? [],
+    designCriteria: Object.entries(report.visual?.criteria ?? {}).map(([key, value]) => ({ key, label: t.auditVisualCriteria[key as keyof typeof t.auditVisualCriteria], value: score(value), color: color(value) })),
     checkedAtLabel: `${new Intl.DateTimeFormat(locale, { dateStyle: "long", timeStyle: "short", timeZone: "Europe/Berlin" }).format(new Date(report.checkedAt))} (Europe/Berlin)`,
-    partsRows: Object.entries(report.parts).map(([key, value]) => ({ key, label: partLabels[key as keyof typeof partLabels], value: score(value) })),
-    labels: { quality: t.auditQuality, breakdown: t.auditBreakdown, metrics: locale === "de" ? "Ladezeit & Stabilität" : "Loading & stability", checks: t.auditChecksHeading, issues: t.auditIssues, noIssues: t.auditNoIssues, scale: t.auditScale, method: t.auditMethod, formula: t.auditFormula, limitations: t.auditLimitations },
+    partsRows: Object.entries(report.parts).map(([key, value]) => ({ key, label: partLabels[key as keyof typeof partLabels], value: score(value), color: color(value) })),
+    labels: { contents: locale === "de" ? "In diesem Bericht" : "In this report", back: locale === "de" ? "Zur Übersicht" : "Back to overview", page: locale === "de" ? "Seite" : "Page", deviceScore: t.auditDeviceScore, design: t.auditDesign, designCriteria: t.auditDesignCriteria, recommendation: locale === "de" ? "Empfehlung" : "Recommendation", scope: locale === "de" ? "Umfang der Prüfung" : "Assessment scope", weighting: locale === "de" ? "Gewichtung" : "Weighting", quality: t.auditQuality, breakdown: t.auditBreakdown, metrics: locale === "de" ? "Ladezeit & Stabilität" : "Loading & stability", checks: t.auditChecksHeading, issues: t.auditIssues, noIssues: t.auditNoIssues, scale: t.auditScale, method: t.auditMethod, formula: t.auditFormula, limitations: t.auditLimitations },
     devices: (["mobile", "desktop"] as const).map(key => {
       const data = report[key];
       return {
         key, title: key === "mobile" ? t.auditMobile : t.auditDesktop,
+        number: key === "mobile" ? "01" : "02",
+        scoreLabel: score(calculateDeviceScore(data)), scoreColor: color(calculateDeviceScore(data)),
         provider: `PageSpeed Insights / Lighthouse ${data.lighthouseVersion ?? "-"}`,
-        scores: [{ key: "performance", label: locale === "de" ? "Ladeleistung" : "Performance", value: score(data.performance) }, { key: "seo", label: "SEO", value: score(data.seo) }, { key: "accessibility", label: locale === "de" ? "Barrierefreiheit" : "Accessibility", value: score(data.accessibility) }, { key: "bestPractices", label: "Best Practices", value: score(data.bestPractices) }],
+        scores: (["performance", "seo", "accessibility", "bestPractices"] as const).map(topic => ({ key: topic, label: t[TOPIC_LABELS[topic]], value: score(data[topic]), color: color(data[topic]) })),
         metrics: Object.entries(data.metrics).map(([key, value]) => ({ key, label: t.auditMetrics[key as keyof typeof t.auditMetrics], value: value === null ? t.auditNotMeasured : `${new Intl.NumberFormat(locale, { maximumFractionDigits: key === "cls" ? 3 : 0 }).format(value)}${key === "cls" ? "" : " ms"}` })),
         checks: [...data.checks.map(check => ({ key: check.id, label: t.auditChecks[check.id as keyof typeof t.auditChecks] ?? check.id, value: check.passed === null ? t.auditNotMeasured : check.passed ? t.auditPassed : t.auditFailed })), { key: "https", label: "HTTPS", value: data.https ? t.yes : t.no }],
-        issues: data.issues.map(issue => ({ ...issue, description: issue.description.replace(/\[([^\]]+)\]\([^)]+\)/g, "$1") })),
+        issues: data.issues.map(issue => ({ ...issue, title: t.auditSimpleIssues[issue.id as keyof typeof t.auditSimpleIssues] ?? issue.title, description: issue.description.replace(/\[([^\]]+)\]\([^)]+\)/g, "$1") })),
         warnings: data.warnings,
       };
     }),

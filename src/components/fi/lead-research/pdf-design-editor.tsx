@@ -120,6 +120,6 @@ export function PdfDesignEditor() {
         {!preview && !previewError && <div className="flex h-[70vh] min-h-96 items-center justify-center text-sm text-muted-foreground">{t("pdfRendering")}</div>}
       </div>
     </div>
-    <details className="rounded-lg border p-4"><summary className="cursor-pointer text-sm font-medium">{t("pdfHelpTitle")}</summary><div className="mt-3 space-y-3 text-sm text-muted-foreground"><p className="break-words font-mono text-xs">Document · Page · View · Text · PdfHeading · PdfText · PdfCard · PdfSection · PdfBadge</p><p className="break-words font-mono text-xs">report.title · report.url · report.scoreLabel · report.checkedAtLabel · report.partsRows · report.devices · report.labels</p></div></details>
+    <details className="rounded-lg border p-4"><summary className="cursor-pointer text-sm font-medium">{t("pdfHelpTitle")}</summary><div className="mt-3 space-y-3 text-sm text-muted-foreground"><p className="break-words font-mono text-xs">Document · Page · View · Text · Link · Fixed · PdfHeading · PdfText · PdfCard · PdfSection · PdfBadge</p><p className="break-words font-mono text-xs">report.title · report.url · report.scoreLabel · report.checkedAtLabel · report.partsRows · report.devices · report.labels</p></div></details>
   </section>;
 }
