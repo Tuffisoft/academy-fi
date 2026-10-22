@@ -292,6 +292,11 @@
   },
   "home": {
     "title": "Academy Fi",
+    "launcherTitle": "Where would you like to go?",
+    "dashboardTitle": "Dashboard",
+    "dashboardDescription": "Objectives, planning, learning, and presentation.",
+    "toolsTitle": "Tools",
+    "toolsDescription": "Ideas, lead research, and tools built by interns.",
     "presentationCardTitle": "Presentation",
     "presentationCardDescription": "The interactive day-one deck.",
     "learningCardTitle": "Learning",
@@ -306,6 +311,23 @@
     "dailyPlannerCardTitle": "Daily Planner",
     "dailyPlannerCardDescription": "Plan your day with a title and stages.",
     "openDailyPlanner": "Open Daily Planner"
+  },
+  "tools": {
+    "title": "Tools",
+    "description": "Ideas and practical tools built by the team.",
+    "availableTools": "Available tools",
+    "builtBy": "Built by",
+    "ideasTitle": "Idea Hub",
+    "ideasDescription": "Share ideas and build on suggestions from the team.",
+    "leadResearchTitle": "Lead Research",
+    "leadResearchDescription": "Find, organize, and evaluate potential leads.",
+    "calemTitle": "Calem",
+    "calemDescription": "Browse tools built by Calem.",
+    "adrianTitle": "Adrian",
+    "adrianDescription": "Browse tools built by Adrian.",
+    "builderPageTitle": "Tools by {builder}",
+    "emptyBuilderTitle": "No tools listed yet",
+    "emptyBuilderDescription": "Tools built by {builder} will appear here."
   },
   "dailyPlanner": {
     "title": "Daily Planner",

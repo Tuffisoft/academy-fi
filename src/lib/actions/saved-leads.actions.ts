@@ -17,7 +17,7 @@ export async function saveLeadAction(searchId: unknown, placeId: unknown) {
   try {
     await prisma.savedLead.upsert({ where: { userId_placeId: { userId: user.id, placeId } }, create: { userId: user.id, placeId, sourceSearchId: search.id }, update: {} });
   } catch { return { success: false as const, error: "savedLeadError" as const }; }
-  revalidatePath("/[locale]/lead-research", "page");
+  revalidatePath("/[locale]/tools/calem/lead-research", "page");
   return { success: true as const };
 }
 
@@ -28,7 +28,7 @@ export async function removeSavedLeadAction(id: unknown) {
     const result = await prisma.savedLead.deleteMany({ where: { id, ...leadSearchScope(user) } });
     if (!result.count) return { success: false as const, error: "notEditable" as const };
   } catch { return { success: false as const, error: "savedLeadError" as const }; }
-  revalidatePath("/[locale]/lead-research", "page");
+  revalidatePath("/[locale]/tools/calem/lead-research", "page");
   return { success: true as const };
 }
 
@@ -40,7 +40,7 @@ export async function loadSavedLeadDetailsAction(ids: unknown) {
   const lookup = new Map(leads.map((lead) => [lead.id, lead.placeId]));
   try {
     for (const ownerId of new Set(leads.map((lead) => lead.userId))) await queueWebsiteAudits(ownerId, leads.filter((lead) => lead.userId === ownerId).map((lead) => lead.placeId));
-    revalidatePath("/[locale]/lead-research", "page");
+    revalidatePath("/[locale]/tools/calem/lead-research", "page");
     const result = await loadGooglePlaceDetails([...new Set(ids.map((id) => lookup.get(id)!))], process.env.GOOGLE_PLACES_API_KEY);
     return { success: true as const, results: result.results, partialError: result.partialError };
   } catch (error) { return { success: false as const, error: error instanceof PlacesError ? error.code : "googleUnavailable" as const }; }

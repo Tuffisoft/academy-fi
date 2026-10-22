@@ -26,10 +26,10 @@ export async function controlWebsiteAuditsAction(userId: unknown, batchId: unkno
     catch {
       // Preserve resumability if durable dispatch fails. No provider request is retried.
       await prisma.websiteAudit.updateMany({ where: { ...scope, OR: jobs.map(job => ({ id: job.id, runToken: job.runToken })), status: "QUEUED" }, data: { status: "PAUSED" } });
-      revalidatePath("/[locale]/lead-research", "page");
+      revalidatePath("/[locale]/tools/calem/lead-research", "page");
       return { success: false as const };
     }
   }
-  revalidatePath("/[locale]/lead-research", "page");
+  revalidatePath("/[locale]/tools/calem/lead-research", "page");
   return { success: jobs.length > 0 };
 }

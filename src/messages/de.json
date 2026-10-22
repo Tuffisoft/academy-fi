@@ -317,6 +317,11 @@
   },
   "home": {
     "title": "Academy Fi",
+    "launcherTitle": "Wohin möchtest du?",
+    "dashboardTitle": "Dashboard",
+    "dashboardDescription": "Ziele, Planung, Lernen und Präsentation.",
+    "toolsTitle": "Tools",
+    "toolsDescription": "Ideen, Lead-Recherche und von Praktikanten entwickelte Tools.",
     "presentationCardTitle": "Präsentation",
     "presentationCardDescription": "Das interaktive Deck für den ersten Tag.",
     "learningCardTitle": "Lernen",
@@ -331,6 +336,23 @@
     "dailyPlannerCardTitle": "Tagesplaner",
     "dailyPlannerCardDescription": "Plane deinen Tag mit Titel und Etappen.",
     "openDailyPlanner": "Tagesplaner öffnen"
+  },
+  "tools": {
+    "title": "Tools",
+    "description": "Ideen und praktische Tools aus dem Team.",
+    "availableTools": "Verfügbare Tools",
+    "builtBy": "Entwickelt von",
+    "ideasTitle": "Ideen-Hub",
+    "ideasDescription": "Teile Ideen und entwickle die Vorschläge des Teams weiter.",
+    "leadResearchTitle": "Lead-Recherche",
+    "leadResearchDescription": "Finde, organisiere und bewerte potenzielle Leads.",
+    "calemTitle": "Calem",
+    "calemDescription": "Tools von Calem ansehen.",
+    "adrianTitle": "Adrian",
+    "adrianDescription": "Tools von Adrian ansehen.",
+    "builderPageTitle": "Tools von {builder}",
+    "emptyBuilderTitle": "Noch keine Tools aufgeführt",
+    "emptyBuilderDescription": "Tools von {builder} erscheinen hier."
   },
   "dailyPlanner": {
     "title": "Tagesplaner",

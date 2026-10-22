@@ -26,7 +26,9 @@ export function DashboardHeader({
   return (
     <header className="flex items-center justify-between border-b border-border px-6 py-4">
       <div className="flex items-center gap-2">
-        <span className="font-semibold">Academy Fi</span>
+        <Link href="/" className="font-semibold">
+          <span className="font-semibold">Academy Fi</span>
+        </Link>
         <Badge variant="secondary">{role}</Badge>
       </div>
       <div className="flex items-center gap-2">

@@ -40,7 +40,7 @@ export async function runLeadSearchAction(id: unknown) {
     try { await processLeadSearchJob(id, runId); }
     catch { console.error("Lead search background job interrupted", runId); }
   });
-  revalidatePath("/[locale]/lead-research", "page");
+  revalidatePath("/[locale]/tools/calem/lead-research", "page");
   return { success: true as const, runId };
 }
 
@@ -48,7 +48,7 @@ export async function cancelLeadSearchAction(id: unknown) {
   const user = await requireUser();
   if (typeof id !== "string" || !id || id.length > 128) return { success: false as const };
   const result = await prisma.leadSearch.updateMany({ where: { id, ...leadSearchScope(user), status: { in: ["QUEUED", "RUNNING", "PAUSED"] } }, data: { status: "CANCELLED", phase: "DONE", pauseRequested: false, finishedAt: new Date() } });
-  revalidatePath("/[locale]/lead-research", "page");
+  revalidatePath("/[locale]/tools/calem/lead-research", "page");
   return { success: result.count > 0 };
 }
 
@@ -61,7 +61,7 @@ export async function pauseLeadSearchAction(id: unknown) {
     const running = await tx.leadSearch.updateMany({ where: { ...scope, status: "RUNNING" }, data: { pauseRequested: true } });
     return queued.count + running.count;
   });
-  revalidatePath("/[locale]/lead-research", "page");
+  revalidatePath("/[locale]/tools/calem/lead-research", "page");
   return { success: count > 0 };
 }
 
@@ -84,7 +84,7 @@ export async function resumeLeadSearchAction(id: unknown) {
     try { await processLeadSearchJob(id, runId); }
     catch { console.error("Resumed lead search interrupted", runId); }
   });
-  revalidatePath("/[locale]/lead-research", "page");
+  revalidatePath("/[locale]/tools/calem/lead-research", "page");
   return { success: accepted };
 }
 
@@ -99,7 +99,7 @@ export async function loadLeadSearchResultsAction(id: unknown, offset: unknown) 
     if (offset === 0 && search.status === "COMPLETED") {
       // Older results acquire their missing audits without another business search.
       await queueWebsiteAudits(search.userId, search.googlePlaceIds);
-      revalidatePath("/[locale]/lead-research", "page");
+      revalidatePath("/[locale]/tools/calem/lead-research", "page");
     }
     const result = await loadGooglePlaceDetails(ids, process.env.GOOGLE_PLACES_API_KEY);
     return { success: true as const, ...result, resolvedLocation: search.location, resultLimit: search.resultLimit, nextOffset: offset + result.processedCount, total: search.googlePlaceIds.length, runId: search.runId };
@@ -120,7 +120,7 @@ export async function createLeadSearchAction(input: unknown): Promise<
   } catch {
     return { success: false, error: "saveError" };
   }
-  revalidatePath("/[locale]/lead-research", "page");
+  revalidatePath("/[locale]/tools/calem/lead-research", "page");
   return { success: true };
 }
 
@@ -138,7 +138,7 @@ export async function updateLeadSearchAction(id: unknown, input: unknown): Promi
   } catch {
     return { success: false, error: "saveError" };
   }
-  revalidatePath("/[locale]/lead-research", "page");
+  revalidatePath("/[locale]/tools/calem/lead-research", "page");
   return { success: true };
 }
 
@@ -154,6 +154,6 @@ export async function deleteLeadSearchAction(id: unknown): Promise<
   } catch {
     return { success: false, error: "deleteError" };
   }
-  revalidatePath("/[locale]/lead-research", "page");
+  revalidatePath("/[locale]/tools/calem/lead-research", "page");
   return { success: true };
 }

@@ -7,7 +7,7 @@ const nextConfig: NextConfig = {
   outputFileTracingIncludes: {
     "/api/pdf-design/*": ["./node_modules/@formepdf/core/pkg-node/**/*", "./assets/pdf/fonts/**/*"],
     "/api/website-audits/*/pdf": ["./node_modules/@formepdf/core/pkg-node/**/*", "./assets/pdf/fonts/**/*"],
-    "/[locale]/lead-research": ["./node_modules/@formepdf/core/pkg-node/**/*", "./assets/pdf/fonts/**/*"],
+    "/[locale]/tools/calem/lead-research": ["./node_modules/@formepdf/core/pkg-node/**/*", "./assets/pdf/fonts/**/*"],
   },
   images: {
     remotePatterns: [{ hostname: "picsum.photos" }, { hostname: "fastly.picsum.photos" }],
