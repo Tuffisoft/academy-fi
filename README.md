@@ -35,13 +35,9 @@ npm run check:build
 npm run check
 ```
 
-Verbindliche Vorgaben: [Qualitätsregeln](QUALITAETSREGELN.md), [aktueller Prüfungsstand und offene Lücken](QUALITAETSSTATUS.md), [Freigabecheckliste](FREIGABECHECKLISTE.md). Ein fehlgeschlagener Check bleibt sichtbar fehlgeschlagen; der Prüfungsstand dokumentiert bekannte Bestandsfehler.
+Arbeitsregeln, Prüfablauf und offene Blocker: [AGENTS.md](AGENTS.md). Abnahme: [Freigabecheckliste](FREIGABECHECKLISTE.md).
 
-`npm test` führt Unit-/Verhaltenstests aus, einschließlich der aus dem Git-Verlauf wiederhergestellten Prüfungen. `typecheck` erzeugt zuerst die Next.js-Routentypen, damit auch ein frischer Checkout geprüft werden kann. `check:build` ruft `npm run build` mit Dummy-Datenbank und isolierten Anbieterzugängen auf; auf Windows verwendet die Prüfung den ignorierten SWC-Cache unter `.swc/native`. `.env*`-Dateien werden nicht verändert. Der normale Deployment-Befehl bleibt `npm run build`.
-
-Echte Integrationstests gehören nicht zu `npm test`. Für `npm run test:integration` müssen `ACADEMYFI_DATABASE_TEST=1` und `CHAT_TEST_DATABASE_URL` im Prozess gesetzt sein; die separate Testdatenbank muss mit den vorhandenen Migrationen vorbereitet sein und darf keiner normalen Anwendungsdatenbank entsprechen. Für `npm run test:realtime` sind `ACADEMYFI_REALTIME_TEST=1` und `ABLY_TEST_API_KEY` aus einer separaten Test-App erforderlich. Fehlende Voraussetzungen führen zum Abbruch, nicht zu einem bestandenen oder still übersprungenen Test.
-
-GitHub Actions verwendet dieselben vier Einzelbefehle mit Node.js 24 und `npm ci` für Pull Requests und Pushes auf `master`. Der Workflow benötigt keine produktiven Secrets. Erforderliche Merge-Checks müssen zusätzlich im GitHub-Ruleset eingerichtet werden. Lokale und CI-Prüfungen ersetzen keine Geräte-, Datenbank- oder Betriebsabnahme des SaaS.
+`typecheck` erzeugt Next.js-Routentypen; `check:build` prüft den Produktionsbuild mit isolierten Dummy-Zugängen. Deployment weiterhin über `npm run build`. Integrationstests und GitHub-Merge-Schutz separat nach den Qualitätsregeln einrichten.
 
 Weitere Hinweise: [Chat-Integration](CHAT_INTEGRATION.md) und [Lead-Recherche](LEAD_RESEARCH.md). Lokale PDF-Vorschauen und Design-Backups unter `output/` werden für neue Dateien von Git ignoriert.
 

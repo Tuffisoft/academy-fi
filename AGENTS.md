@@ -1,9 +1,82 @@
-# Verbindliche Arbeitsregeln
+# AcademyFi: Arbeitsregeln, Qualität und Status
 
-- Vor Änderungen [QUALITAETSREGELN.md](QUALITAETSREGELN.md) und [QUALITAETSSTATUS.md](QUALITAETSSTATUS.md) lesen. Bei Stempelkarten-Arbeiten zusätzlich Lastenheft und Pflichtenheft im Repository-Hauptverzeichnis lesen. Ihre Muss-Anforderungen bleiben verbindlich.
-- Vor Implementierung Verhalten, Rollen, Erfolgs-/Fehlerfälle und betroffene Anforderungen klären. Nur aufgabenbezogene Änderungen vornehmen; Fachlogik gemeinsam serverseitig halten und Eingaben sowie Berechtigungen an Systemgrenzen prüfen.
-- Keine unbegründeten Typumgehungen, deaktivierten Prüfregeln, vorgetäuschten Erfolge oder Geheimnisse in Code/Logs. Bestehende Fehler nicht durch Entfernen von Tests oder Abschwächen von Erwartungen verdecken.
-- Node.js 24 und npm-Lockfile verwenden. Vor Abschluss `npm run lint`, `npm run typecheck`, `npm test` und `npm run check:build` ausführen; alternativ `npm run check`. Ergebnisse und offene Bestandslücken wahrheitsgemäß dokumentieren.
-- Integrationstests nur mit ausdrücklich getrennten Testzugängen nach Qualitätsregeln ausführen. Keine normalen `.env`-Zugänge für Datenbank-/Anbietertests verwenden; keine produktiven Migrationen oder Seeds zur Verifikation starten.
-- Jede Änderung braucht dokumentiertes Code-Review. Rollen, Buchungen, Billing, Löschung und Migrationen konkret vorbereiten und isoliert testen; vor Übernahme/Merge beziehungsweise produktiver Anwendung die ausdrückliche Freigabe des Auftraggebers nachweisen. Nicht bereits vor reversibler Vorbereitung erneut um Erlaubnis bitten.
-- Für Freigaben [FREIGABECHECKLISTE.md](FREIGABECHECKLISTE.md) verwenden. Implementierung, automatisierte Prüfung, Geräteabnahme und Produktionsfreigabe getrennt angeben. Offene Sicherheits-, Datenintegritäts- oder Muss-Anforderungsfehler blockieren die betroffene Freigabe.
+Version 1.1 · 22.10.2026. Vor Änderungen diese Datei lesen. Gilt projektweit; bestehende Fehler erlauben keine neuen. Bei Stempelkarten zusätzlich [Lastenheft](LASTENHEFT_STEMPELKARTEN.md) (Fachverhalten) und [Pflichtenheft](PFLICHTENHEFT_STEMPELKARTEN.md) (Technik) lesen. Deren Muss-Anforderungen bleiben vollständig verbindlich; Widersprüche vor Umsetzung klären und versionieren.
+
+## Verbindliche Regeln
+
+Regelverletzungen sperren die betroffene Übernahme, bis sie behoben oder zulässig ausdrücklich ausgenommen sind. Sicherheitsprobleme, Datenverlust, falsche Buchungen/Abrechnung und unerfüllte Muss-Anforderungen sperren die betroffene Produktfreigabe. Fehlende Nachweise bleiben offen. Reversible Vorbereitung, isolierte Tests und unbetroffene Arbeiten dürfen weitergehen.
+
+### Produkt
+
+- **Q-P-01:** Vor Implementierung Verhalten, erlaubte Rollen, Erfolgs-/Fehlerfälle und überprüfbare Kriterien beschreiben; beim SaaS LF-/T-/AK-Kennungen nennen.
+- **Q-P-02:** Schreiberfolg erst nach bestätigter Speicherung anzeigen. Bei unklarem Netzwerkergebnis dieselbe Vorgangskennung wiederverwenden; Verhalten und UI prüfen. Falsche Erfolgsanzeige sperrt Übernahme und Freigabe.
+- **Q-P-03:** Neue/wesentlich geänderte Kernoberflächen ab 360 CSS-Pixeln ohne horizontales Scrollen, per Tastatur, mit Fokus, Labels, verständlichen Fehlern und farbunabhängigen Statusangaben bedienen. Breite Tabellen dürfen in beschrifteten Bereichen scrollen. Mobile/Tastatur-Durchläufe sowie Lade-, Leer-, Fehler-/Erfolgszustände dokumentieren. Nicht bedienbare Kernabläufe blockieren.
+- **Q-P-04:** SaaS-Kernabläufe und E-Mails vollständig DE/EN einschließlich Fehlern prüfen; Sprache ändert keine Fachregel. Fehlender Nachweis sperrt Freigabe.
+- **Q-P-05:** Betroffene Academy-Abläufe durch begründete automatisierte und nötigenfalls manuelle Regression prüfen; neue Regressionen sperren Übernahme.
+- **Q-P-06:** Implementiert, automatisiert geprüft, auf Geräten abgenommen und produktiv freigegeben getrennt mit Stand/Belegen in einer ausgefüllten [Freigabecheckliste](FREIGABECHECKLISTE.md) ausweisen. Pilot/Teilpaket ist keine vollständige Abnahme.
+
+### Code und Sicherheit
+
+- **Q-C-01:** Gemeinsame serverseitige Fachservices für Seiten, APIs, Actions und Jobs; keine verbindliche Buchungs-, Tarif- oder Berechtigungslogik in der UI. Aufrufwege reviewen.
+- **Q-C-02:** Eingaben serverseitig validieren; Aktion und Ressourcenzugehörigkeit autorisieren. Clientrollen/versteckte Buttons gewähren keine Rechte. Fremde IDs, ungültige Eingaben, manipulierte Rollen und entzogene Rechte negativ testen. Unberechtigter Zugriff sperrt Übernahme/Freigabe.
+- **Q-C-03:** Strict Mode erhalten; neues any, Typumgehungen oder deaktivierte Regeln nur lokal konkret begründet. Unbekannte externe Daten eingrenzen. Keine Prüfregel zur Fehlerverdeckung abschalten; Typecheck und Review nachweisen.
+- **Q-C-04:** Nur aufgabenbezogen ändern, geeignete vorhandene Muster nutzen. Abhängigkeiten nach Nutzen, Kompatibilität, Lizenz und Wartbarkeit prüfen und im npm-Lockfile festhalten; kein beiläufiges Stack-Upgrade.
+- **Q-C-05:** Fehler gezielt behandeln/weitergeben; keine unbegründet leeren Catch-Blöcke, Scheinerfolge, Secrets in Repository/Browser oder sensiblen Rohdaten in Logs. Fehlerfälle und Ausgaben prüfen. Geheimnisoffenlegung sperrt auch Freigabe.
+- **Q-C-06:** Jede Änderung braucht dokumentiertes Menschen-/Agentenreview mit Prüfer, Stand, Befunden und Erledigung; Tests ersetzen kein Review.
+- **Q-C-07:** Rollen, Buchungen, Billing, Löschung und Migrationen konkret reversibel vorbereiten und isoliert testen. Ausdrückliche Auftraggeberfreigabe für Stand/Umfang vor Übernahme/Merge bzw. produktiver Anwendung nachweisen. Nicht erneut vor reversibler Vorbereitung um Erlaubnis bitten.
+- **Q-C-08:** Geschäftsregeländerungen zuerst beschreiben und beide Hefte, Testzuordnung und Versionshistorie konsistent pflegen. Technische Änderungen aktualisieren betroffene technische Vorgaben. Kennungen bleiben stabil und werden nicht umgewidmet.
+
+### Tests, SaaS und Betrieb
+
+- **Q-T-01:** Vor Abschluss alle vier Checks ausführen (siehe unten); neue Fehler sperren Übernahme. Fehlende Dateien, Skips oder nur gestartete Prozesse sind kein Erfolg.
+- **Q-T-02:** Verhalten/ Risiko statt pauschaler Coverage prüfen: Verhaltenstests für Fachregeln, Negativtests für Rechte, echte DB-Tests für Transaktionen, Constraints, Limits und Parallelität. Mocks belegen keine DB-Integrität; fehlende notwendige Nachweise sperren Freigabe.
+- **Q-T-03:** Keine produktiven Daten/Zugänge für Tests. Ausdrücklich getrennte Testumgebungen verwenden; fehlende/unsichere Konfiguration bricht ab und bleibt fehlgeschlagen/offen, kein Skip-Erfolg. Keine produktiven Migrationen/Seeds zur Verifikation.
+- **Q-S-01:** Academy, Unternehmen und Endkunden serverseitig trennen; fremde Mandanten/ Rollenmanipulation abweisen. Nachweis: LF-F-01–04, LF-N-01–02, T-01/T-02 einschließlich direkter API-/Action-Negativtests. Übernahme-/Freigabesperre bei Verletzung.
+- **Q-S-02:** DB ist Wahrheit: Stempel, Belohnung, Einlösung, Limits und Outbox atomar/idempotent; gleicher Schlüssel mit anderem Inhalt scheitert. T-10/T-11/T-13 mit mindestens 20 parallelen Wiederholungen und unabhängigen konkurrierenden Vorgängen nachweisen. Übernahme-/Freigabesperre bei Verletzung.
+- **Q-S-03:** Kartenidentität, unveränderliche Sammelbedingungen, Mitarbeiterbestätigung, Recovery, Tarifwechsel und Bestandskartenschutz gemäß Heften; Browserredirect ist kein Zahlungsnachweis. T-/AK-03–14 einschließlich Ablauf, Replay, Webhook-Reihenfolge und Grenzen nachweisen.
+- **Q-S-04:** Bestätigte Buchungen überstehen Provider-/Prozessausfälle. Wiederanlauf verliert keine Arbeit und überschreibt keinen neueren Stand. Walletstatus beschreibt Bereitstellung, keine garantierte Offline-Anzeige. T-05–07/T-15 mit realem iPhone/Android und Absturz-/Wiederanlauftests; Mocks ersetzen keine Geräteabnahme. Fehlender Nachweis sperrt Freigabe.
+- **Q-O-01:** Bei Betriebs-/Datenänderungen und Launch getrennte Umgebungen, kontrollierte Migrationen, Sicherung und erprobte Wiederherstellung samt Jobs/wirksamen Widerrufen nachweisen (T-18, Betriebsanleitung, Testprotokoll). Nach echten Buchungen kein pauschaler DB-Reset als Rollback. Fehlender Nachweis sperrt betroffene Betriebs-/Launchfreigabe.
+- **Q-O-02:** Vor Launch Monitoring/Alarmtests für Job-/Webhook-Rückstände, dauerhafte Fehler, Zahlungen und Zertifikate sowie Anbieter-, Länder- und Betriebsfreigaben gemäß Pflichtenheft nachweisen; keine Secrets in Protokollen.
+- **Q-O-03:** Antwortzeit, Walletverzögerung und Kosten mit Umgebung/Methode im Pilot messen. Feste Ziele erst danach ausdrücklich vereinbaren; keine unbelegten SLA-/Zustellzusagen veröffentlichen.
+
+### Mängel und Ausnahmen
+
+- Bestandslücken mit stabiler QL-ID, Status, Auswirkung, Verantwortlichkeit, Nachweis und Erledigungskriterium dokumentieren. Fehlgeschlagene Checks bleiben rot; neue Fehler sind keine Altlasten.
+- Keine Tests entfernen, unbegründet Erwartungen anpassen oder CI durch continue-on-error, || true bzw. pauschale Ausschlüsse grün machen.
+- Kleine Darstellungsfehler nur mit dokumentierter Auftraggeberentscheidung und Nachbesserungsaufgabe belassen; unbedienbare Kernabläufe zählen nicht dazu.
+- Befristete Ausnahmen brauchen Regel, Umfang, Grund, Risiko, Verantwortlichen, ausdrückliche Genehmigung und Ablauf/prüfbares Erledigungskriterium. Ein offener Eintrag ist keine Ausnahme; Muss-Anforderungen nur über das reguläre Änderungsverfahren ändern.
+
+## Prüfablauf
+
+Node.js 24, npm und versioniertes Lockfile nutzen. npm ci braucht DATABASE_URL: in reiner Prüfumgebung die Dummy-URL aus .github/workflows/quality.yml setzen. Installation generiert Prisma, migriert nicht.
+
+`npm run check` führt auch bei Einzelfehlern alle vier Schritte aus: `npm run lint`, `npm run typecheck`, `npm test`, `npm run check:build`. Alternativ alle vier einzeln ausführen. Neue Unit-Testdateien in die explizite npm-Testliste aufnehmen. Typecheck generiert Next.js-Routentypen. check:build ruft npm run build mit Dummy-DB/isolierten Providerwerten auf (Windows-SWC-Cache: .swc/native); Deployment weiter über npm run build. Isolation überschreibt lokale .env*-Werte im Kindprozess, nicht Dateien/Elternumgebung.
+
+Echte Integrationstests separat:
+
+- DB: entbehrliche separate, mit bestehenden Migrationen vorbereitete Neon/PostgreSQL-Testdatenbank; nur im Testprozess ACADEMYFI_DATABASE_TEST=1 und CHAT_TEST_DATABASE_URL setzen, dann `npm run test:integration`. Keine bekannte normale App-DB; keine automatische Migration/Seeds gegen unbekannte DBs.
+- Ably: separate Test-App, ACADEMYFI_REALTIME_TEST=1 und ABLY_TEST_API_KEY; `npm run test:realtime`. Keine normalen App-Zugänge. Ausführender bestätigt die Testzuordnung; URL-/Schlüsselvergleiche allein beweisen sie nicht.
+
+CI führt vier unabhängige Jobs für PRs und Pushes auf master ohne Produktionssecrets aus. Im GitHub-Ruleset müssen Quality (lint), Quality (typecheck), Quality (test) und Quality (check:build) verpflichtend sein; Workflow allein sperrt keinen Merge. Integration, Geräte- und Betriebsnachweise bleiben zusätzlich nötig. SaaS Release 1.0 braucht AK-01–18 und sämtliche externen Voraussetzungen. Freigaben mit eindeutiger Standkennung über die Checkliste dokumentieren.
+
+## Qualitätsstatus – 22.10.2026
+
+Keine Produktfreigabe, keine Ausnahme erteilt. SaaS in diesem Qualitätspaket nicht implementiert; keine Übernahme, kein Merge, Deployment oder produktive Migration durch den Agenten.
+
+Letzter ausgeführter Sammellauf vor dieser Zusammenführung: Node.js 24.16.0, Windows-Sandbox; Lint/Typecheck bestanden, Tests 89/92 bestanden, 3 bekannte Fehler, keine Skips; Build scheiterte am Turbopack-Unterprozess bei globals.css (Prozessende vor Verbindung). Gesamt Exit 1. Frühere Dokumentation meldet erfolgreichen Build außerhalb der Sandbox; das belegt keinen aktuellen Build. Echte DB-/Ably-Tests und entfernte CI nicht nachgewiesen. Nach Zusammenführung erneut npm run check ausgeführt: gleiches Ergebnis (Lint/Typecheck bestanden, drei bekannte Testfehler, gleicher Turbopack-Buildabbruch; Exit 1). Keine echten Integrationstests.
+
+| ID | Status, Verantwortung und Abschlusskriterium |
+| --- | --- |
+| QL-001 | Behoben (Umsetzung): 17 Testdateien aus 83552ef^ wiederhergestellt; 14 Unit-Dateien unverändert, 3 Integrationstests abgesichert, 4 Isolationstests ergänzt. |
+| QL-002 | Offen; sperrt Testcheck/betroffene Website-Bewertung. Produktverantwortlicher legt Gewichtung fest, Umsetzung harmonisiert Code/Dokumentation/Tests. README/Tests: 5×20 %, website-rating.ts: 30/10/10/20/30. Erwartet/aktuell: website-quality 80/70; visual-design 80/75 und 78/77. Keine Erwartungsänderung nur für Grün. |
+| QL-003 | Frühere SWC-Cachehürde durch .swc/native behoben (Umsetzung/Umgebung); aktueller Turbopack-Buildfehler offen. Abschluss: erfolgreicher isolierter Build mit Stand/Umgebung. |
+| QL-004 | Offen; betroffene Integrationsabnahme blockiert. Betreiber stellt getrennte vorbereitete DB/Ably-Test-App, Umsetzung protokolliert echte erfolgreiche Läufe. Fehlende Konfiguration wird verweigert; keine normalen Zugänge verwendet. |
+| QL-005 | Offen vor externer Registrierung (Umsetzung): Academy-Abgrenzung nicht vollständig belegt; Registrierung deaktiviert, Standardrolle INTERN, viele Zugänge nur requireUser. Kein Nachweis eines öffentlich ausnutzbaren Zugangs. Abschluss: explizite Academy-/Geschäfts-Guards und T-01/T-02. |
+| QL-006 | Offen (Repository-Admin): entfernte CI/Ruleset-Sperre fehlen als Nachweis; .nvmrc fehlt trotz Workflowverweis und älterer gegenteiliger Statusangabe. Abschluss: Node-Vorgabe korrigieren, erfolgreicher CI-Lauf, verpflichtende Checks/Review/Freigaben wie oben belegen. |
+| QL-007 | Offen (Umsetzung/Betreiber): vollständige SaaS-Freigabe gesperrt bis AK-01–18, Geräte-, Betriebs-, Anbieterfreigaben und ausgefüllte Checkliste vorliegen. |
+
+Reviewhistorie: Umsetzender Agent prüfte Qualitätspaket gegenüber 83552ef (Prüfscripte, CI, npm/Node, Tests, Isolation, Dokumentation); keine unabhängige menschliche Abnahme. Behoben: DB-Import erst nach Testkonfigurationsprüfung, separate Ably-App statt Skip, isolierte Providerwerte, Routentypgenerierung, Fortsetzung aller Checks. Älterer Hashnachweis ist wegen fehlender .nvmrc widersprüchlich und gilt nicht für diesen Stand.
+
+Dokumentationsreview durch Codex am 22.10.2026: uncommittierter Stand dieser Zusammenführung von AGENTS.md, Qualitätsregeln/-status und README-Verweisen. Alle Q-P-/Q-C-/Q-T-/Q-S-/Q-O- und QL-Kennungen erhalten; Wiederholungen/alte Prüflaufdetails verdichtet, aktuelle Blocker übernommen. Keine Fach-/Codeänderung. Befunde: fehlende .nvmrc, QL-002 und Buildproblem bleiben offen; Alle 31 Regel-/Lückenkennungen und neue Verweise lokal geprüft; keine alten Qualitätsdateiverweise gefunden, git diff --check bestanden. Bereits fehlende README-Ziele CHAT_INTEGRATION.md/LEAD_RESEARCH.md bleiben außerhalb dieser Zusammenführung offen.
+
+Versionen: 1.0 (22.10.2026) Qualitätsregeln eingeführt; 1.1 (22.10.2026) Regeln/Status in AGENTS.md verdichtet. Änderungen versionieren, Dokumente im Repository-Hauptverzeichnis halten (docs/ ignoriert).
