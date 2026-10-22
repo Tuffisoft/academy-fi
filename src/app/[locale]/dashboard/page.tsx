@@ -10,6 +10,7 @@ import { AdminDashboard } from "@/components/fi/dashboard/AdminDashboard";
 import { LearningCard } from "@/components/fi/dashboard/learning-card";
 import { DailyPlannerCard } from "@/components/fi/dashboard/daily-planner-card";
 import { IdeasCard } from "@/components/fi/dashboard/ideas-card";
+import { LeadResearchCard } from "@/components/fi/dashboard/lead-research-card";
 import { ObjectivesCard } from "@/components/fi/dashboard/objectives-card";
 import { PresentationCard } from "@/components/fi/dashboard/presentation-card";
 import { WeeklyObjectivesCard } from "@/components/fi/dashboard/weekly-objectives-card";
@@ -61,6 +62,7 @@ export default async function DashboardPage() {
             <AccountMenu email={user.email} />
           </CardContent>
         </Card>
+        <LeadResearchCard />
         {isOwner ? (
           <>
             <ObjectivesCard />

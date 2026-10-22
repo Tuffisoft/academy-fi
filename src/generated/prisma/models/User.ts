@@ -300,6 +300,11 @@ export type UserWhereInput = {
   chatEncryptionKey?: Prisma.XOR<Prisma.ChatEncryptionKeyNullableScalarRelationFilter, Prisma.ChatEncryptionKeyWhereInput> | null
   accounts?: Prisma.AccountListRelationFilter
   sessions?: Prisma.SessionListRelationFilter
+  leadSearches?: Prisma.LeadSearchListRelationFilter
+  savedLeads?: Prisma.SavedLeadListRelationFilter
+  websiteAudits?: Prisma.WebsiteAuditListRelationFilter
+  pdfReportDesign?: Prisma.XOR<Prisma.PdfReportDesignNullableScalarRelationFilter, Prisma.PdfReportDesignWhereInput> | null
+  pdfReportTemplates?: Prisma.PdfReportTemplateListRelationFilter
 }
 
 export type UserOrderByWithRelationInput = {
@@ -336,6 +341,11 @@ export type UserOrderByWithRelationInput = {
   chatEncryptionKey?: Prisma.ChatEncryptionKeyOrderByWithRelationInput
   accounts?: Prisma.AccountOrderByRelationAggregateInput
   sessions?: Prisma.SessionOrderByRelationAggregateInput
+  leadSearches?: Prisma.LeadSearchOrderByRelationAggregateInput
+  savedLeads?: Prisma.SavedLeadOrderByRelationAggregateInput
+  websiteAudits?: Prisma.WebsiteAuditOrderByRelationAggregateInput
+  pdfReportDesign?: Prisma.PdfReportDesignOrderByWithRelationInput
+  pdfReportTemplates?: Prisma.PdfReportTemplateOrderByRelationAggregateInput
 }
 
 export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -375,6 +385,11 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   chatEncryptionKey?: Prisma.XOR<Prisma.ChatEncryptionKeyNullableScalarRelationFilter, Prisma.ChatEncryptionKeyWhereInput> | null
   accounts?: Prisma.AccountListRelationFilter
   sessions?: Prisma.SessionListRelationFilter
+  leadSearches?: Prisma.LeadSearchListRelationFilter
+  savedLeads?: Prisma.SavedLeadListRelationFilter
+  websiteAudits?: Prisma.WebsiteAuditListRelationFilter
+  pdfReportDesign?: Prisma.XOR<Prisma.PdfReportDesignNullableScalarRelationFilter, Prisma.PdfReportDesignWhereInput> | null
+  pdfReportTemplates?: Prisma.PdfReportTemplateListRelationFilter
 }, "id" | "email">
 
 export type UserOrderByWithAggregationInput = {
@@ -451,6 +466,11 @@ export type UserCreateInput = {
   chatEncryptionKey?: Prisma.ChatEncryptionKeyCreateNestedOneWithoutUserInput
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
+  leadSearches?: Prisma.LeadSearchCreateNestedManyWithoutUserInput
+  savedLeads?: Prisma.SavedLeadCreateNestedManyWithoutUserInput
+  websiteAudits?: Prisma.WebsiteAuditCreateNestedManyWithoutUserInput
+  pdfReportDesign?: Prisma.PdfReportDesignCreateNestedOneWithoutUserInput
+  pdfReportTemplates?: Prisma.PdfReportTemplateCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateInput = {
@@ -487,6 +507,11 @@ export type UserUncheckedCreateInput = {
   chatEncryptionKey?: Prisma.ChatEncryptionKeyUncheckedCreateNestedOneWithoutUserInput
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
+  leadSearches?: Prisma.LeadSearchUncheckedCreateNestedManyWithoutUserInput
+  savedLeads?: Prisma.SavedLeadUncheckedCreateNestedManyWithoutUserInput
+  websiteAudits?: Prisma.WebsiteAuditUncheckedCreateNestedManyWithoutUserInput
+  pdfReportDesign?: Prisma.PdfReportDesignUncheckedCreateNestedOneWithoutUserInput
+  pdfReportTemplates?: Prisma.PdfReportTemplateUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserUpdateInput = {
@@ -523,6 +548,11 @@ export type UserUpdateInput = {
   chatEncryptionKey?: Prisma.ChatEncryptionKeyUpdateOneWithoutUserNestedInput
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
+  leadSearches?: Prisma.LeadSearchUpdateManyWithoutUserNestedInput
+  savedLeads?: Prisma.SavedLeadUpdateManyWithoutUserNestedInput
+  websiteAudits?: Prisma.WebsiteAuditUpdateManyWithoutUserNestedInput
+  pdfReportDesign?: Prisma.PdfReportDesignUpdateOneWithoutUserNestedInput
+  pdfReportTemplates?: Prisma.PdfReportTemplateUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateInput = {
@@ -559,6 +589,11 @@ export type UserUncheckedUpdateInput = {
   chatEncryptionKey?: Prisma.ChatEncryptionKeyUncheckedUpdateOneWithoutUserNestedInput
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
+  leadSearches?: Prisma.LeadSearchUncheckedUpdateManyWithoutUserNestedInput
+  savedLeads?: Prisma.SavedLeadUncheckedUpdateManyWithoutUserNestedInput
+  websiteAudits?: Prisma.WebsiteAuditUncheckedUpdateManyWithoutUserNestedInput
+  pdfReportDesign?: Prisma.PdfReportDesignUncheckedUpdateOneWithoutUserNestedInput
+  pdfReportTemplates?: Prisma.PdfReportTemplateUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateManyInput = {
@@ -811,6 +846,76 @@ export type NullableBoolFieldUpdateOperationsInput = {
   set?: boolean | null
 }
 
+export type UserCreateNestedOneWithoutLeadSearchesInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutLeadSearchesInput, Prisma.UserUncheckedCreateWithoutLeadSearchesInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutLeadSearchesInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutLeadSearchesNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutLeadSearchesInput, Prisma.UserUncheckedCreateWithoutLeadSearchesInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutLeadSearchesInput
+  upsert?: Prisma.UserUpsertWithoutLeadSearchesInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutLeadSearchesInput, Prisma.UserUpdateWithoutLeadSearchesInput>, Prisma.UserUncheckedUpdateWithoutLeadSearchesInput>
+}
+
+export type UserCreateNestedOneWithoutSavedLeadsInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutSavedLeadsInput, Prisma.UserUncheckedCreateWithoutSavedLeadsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutSavedLeadsInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutSavedLeadsNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutSavedLeadsInput, Prisma.UserUncheckedCreateWithoutSavedLeadsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutSavedLeadsInput
+  upsert?: Prisma.UserUpsertWithoutSavedLeadsInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutSavedLeadsInput, Prisma.UserUpdateWithoutSavedLeadsInput>, Prisma.UserUncheckedUpdateWithoutSavedLeadsInput>
+}
+
+export type UserCreateNestedOneWithoutWebsiteAuditsInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutWebsiteAuditsInput, Prisma.UserUncheckedCreateWithoutWebsiteAuditsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutWebsiteAuditsInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutWebsiteAuditsNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutWebsiteAuditsInput, Prisma.UserUncheckedCreateWithoutWebsiteAuditsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutWebsiteAuditsInput
+  upsert?: Prisma.UserUpsertWithoutWebsiteAuditsInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutWebsiteAuditsInput, Prisma.UserUpdateWithoutWebsiteAuditsInput>, Prisma.UserUncheckedUpdateWithoutWebsiteAuditsInput>
+}
+
+export type UserCreateNestedOneWithoutPdfReportDesignInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutPdfReportDesignInput, Prisma.UserUncheckedCreateWithoutPdfReportDesignInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutPdfReportDesignInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutPdfReportDesignNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutPdfReportDesignInput, Prisma.UserUncheckedCreateWithoutPdfReportDesignInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutPdfReportDesignInput
+  upsert?: Prisma.UserUpsertWithoutPdfReportDesignInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutPdfReportDesignInput, Prisma.UserUpdateWithoutPdfReportDesignInput>, Prisma.UserUncheckedUpdateWithoutPdfReportDesignInput>
+}
+
+export type UserCreateNestedOneWithoutPdfReportTemplatesInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutPdfReportTemplatesInput, Prisma.UserUncheckedCreateWithoutPdfReportTemplatesInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutPdfReportTemplatesInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutPdfReportTemplatesNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutPdfReportTemplatesInput, Prisma.UserUncheckedCreateWithoutPdfReportTemplatesInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutPdfReportTemplatesInput
+  upsert?: Prisma.UserUpsertWithoutPdfReportTemplatesInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutPdfReportTemplatesInput, Prisma.UserUpdateWithoutPdfReportTemplatesInput>, Prisma.UserUncheckedUpdateWithoutPdfReportTemplatesInput>
+}
+
 export type UserCreateNestedOneWithoutSessionsInput = {
   create?: Prisma.XOR<Prisma.UserCreateWithoutSessionsInput, Prisma.UserUncheckedCreateWithoutSessionsInput>
   connectOrCreate?: Prisma.UserCreateOrConnectWithoutSessionsInput
@@ -998,6 +1103,11 @@ export type UserCreateWithoutAssignmentsCreatedInput = {
   chatEncryptionKey?: Prisma.ChatEncryptionKeyCreateNestedOneWithoutUserInput
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
+  leadSearches?: Prisma.LeadSearchCreateNestedManyWithoutUserInput
+  savedLeads?: Prisma.SavedLeadCreateNestedManyWithoutUserInput
+  websiteAudits?: Prisma.WebsiteAuditCreateNestedManyWithoutUserInput
+  pdfReportDesign?: Prisma.PdfReportDesignCreateNestedOneWithoutUserInput
+  pdfReportTemplates?: Prisma.PdfReportTemplateCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutAssignmentsCreatedInput = {
@@ -1033,6 +1143,11 @@ export type UserUncheckedCreateWithoutAssignmentsCreatedInput = {
   chatEncryptionKey?: Prisma.ChatEncryptionKeyUncheckedCreateNestedOneWithoutUserInput
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
+  leadSearches?: Prisma.LeadSearchUncheckedCreateNestedManyWithoutUserInput
+  savedLeads?: Prisma.SavedLeadUncheckedCreateNestedManyWithoutUserInput
+  websiteAudits?: Prisma.WebsiteAuditUncheckedCreateNestedManyWithoutUserInput
+  pdfReportDesign?: Prisma.PdfReportDesignUncheckedCreateNestedOneWithoutUserInput
+  pdfReportTemplates?: Prisma.PdfReportTemplateUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutAssignmentsCreatedInput = {
@@ -1073,6 +1188,11 @@ export type UserCreateWithoutAssignmentsAsInternInput = {
   chatEncryptionKey?: Prisma.ChatEncryptionKeyCreateNestedOneWithoutUserInput
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
+  leadSearches?: Prisma.LeadSearchCreateNestedManyWithoutUserInput
+  savedLeads?: Prisma.SavedLeadCreateNestedManyWithoutUserInput
+  websiteAudits?: Prisma.WebsiteAuditCreateNestedManyWithoutUserInput
+  pdfReportDesign?: Prisma.PdfReportDesignCreateNestedOneWithoutUserInput
+  pdfReportTemplates?: Prisma.PdfReportTemplateCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutAssignmentsAsInternInput = {
@@ -1108,6 +1228,11 @@ export type UserUncheckedCreateWithoutAssignmentsAsInternInput = {
   chatEncryptionKey?: Prisma.ChatEncryptionKeyUncheckedCreateNestedOneWithoutUserInput
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
+  leadSearches?: Prisma.LeadSearchUncheckedCreateNestedManyWithoutUserInput
+  savedLeads?: Prisma.SavedLeadUncheckedCreateNestedManyWithoutUserInput
+  websiteAudits?: Prisma.WebsiteAuditUncheckedCreateNestedManyWithoutUserInput
+  pdfReportDesign?: Prisma.PdfReportDesignUncheckedCreateNestedOneWithoutUserInput
+  pdfReportTemplates?: Prisma.PdfReportTemplateUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutAssignmentsAsInternInput = {
@@ -1159,6 +1284,11 @@ export type UserUpdateWithoutAssignmentsCreatedInput = {
   chatEncryptionKey?: Prisma.ChatEncryptionKeyUpdateOneWithoutUserNestedInput
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
+  leadSearches?: Prisma.LeadSearchUpdateManyWithoutUserNestedInput
+  savedLeads?: Prisma.SavedLeadUpdateManyWithoutUserNestedInput
+  websiteAudits?: Prisma.WebsiteAuditUpdateManyWithoutUserNestedInput
+  pdfReportDesign?: Prisma.PdfReportDesignUpdateOneWithoutUserNestedInput
+  pdfReportTemplates?: Prisma.PdfReportTemplateUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutAssignmentsCreatedInput = {
@@ -1194,6 +1324,11 @@ export type UserUncheckedUpdateWithoutAssignmentsCreatedInput = {
   chatEncryptionKey?: Prisma.ChatEncryptionKeyUncheckedUpdateOneWithoutUserNestedInput
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
+  leadSearches?: Prisma.LeadSearchUncheckedUpdateManyWithoutUserNestedInput
+  savedLeads?: Prisma.SavedLeadUncheckedUpdateManyWithoutUserNestedInput
+  websiteAudits?: Prisma.WebsiteAuditUncheckedUpdateManyWithoutUserNestedInput
+  pdfReportDesign?: Prisma.PdfReportDesignUncheckedUpdateOneWithoutUserNestedInput
+  pdfReportTemplates?: Prisma.PdfReportTemplateUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserUpsertWithoutAssignmentsAsInternInput = {
@@ -1240,6 +1375,11 @@ export type UserUpdateWithoutAssignmentsAsInternInput = {
   chatEncryptionKey?: Prisma.ChatEncryptionKeyUpdateOneWithoutUserNestedInput
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
+  leadSearches?: Prisma.LeadSearchUpdateManyWithoutUserNestedInput
+  savedLeads?: Prisma.SavedLeadUpdateManyWithoutUserNestedInput
+  websiteAudits?: Prisma.WebsiteAuditUpdateManyWithoutUserNestedInput
+  pdfReportDesign?: Prisma.PdfReportDesignUpdateOneWithoutUserNestedInput
+  pdfReportTemplates?: Prisma.PdfReportTemplateUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutAssignmentsAsInternInput = {
@@ -1275,6 +1415,11 @@ export type UserUncheckedUpdateWithoutAssignmentsAsInternInput = {
   chatEncryptionKey?: Prisma.ChatEncryptionKeyUncheckedUpdateOneWithoutUserNestedInput
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
+  leadSearches?: Prisma.LeadSearchUncheckedUpdateManyWithoutUserNestedInput
+  savedLeads?: Prisma.SavedLeadUncheckedUpdateManyWithoutUserNestedInput
+  websiteAudits?: Prisma.WebsiteAuditUncheckedUpdateManyWithoutUserNestedInput
+  pdfReportDesign?: Prisma.PdfReportDesignUncheckedUpdateOneWithoutUserNestedInput
+  pdfReportTemplates?: Prisma.PdfReportTemplateUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutReflectionsInput = {
@@ -1310,6 +1455,11 @@ export type UserCreateWithoutReflectionsInput = {
   chatEncryptionKey?: Prisma.ChatEncryptionKeyCreateNestedOneWithoutUserInput
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
+  leadSearches?: Prisma.LeadSearchCreateNestedManyWithoutUserInput
+  savedLeads?: Prisma.SavedLeadCreateNestedManyWithoutUserInput
+  websiteAudits?: Prisma.WebsiteAuditCreateNestedManyWithoutUserInput
+  pdfReportDesign?: Prisma.PdfReportDesignCreateNestedOneWithoutUserInput
+  pdfReportTemplates?: Prisma.PdfReportTemplateCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutReflectionsInput = {
@@ -1345,6 +1495,11 @@ export type UserUncheckedCreateWithoutReflectionsInput = {
   chatEncryptionKey?: Prisma.ChatEncryptionKeyUncheckedCreateNestedOneWithoutUserInput
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
+  leadSearches?: Prisma.LeadSearchUncheckedCreateNestedManyWithoutUserInput
+  savedLeads?: Prisma.SavedLeadUncheckedCreateNestedManyWithoutUserInput
+  websiteAudits?: Prisma.WebsiteAuditUncheckedCreateNestedManyWithoutUserInput
+  pdfReportDesign?: Prisma.PdfReportDesignUncheckedCreateNestedOneWithoutUserInput
+  pdfReportTemplates?: Prisma.PdfReportTemplateUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutReflectionsInput = {
@@ -1396,6 +1551,11 @@ export type UserUpdateWithoutReflectionsInput = {
   chatEncryptionKey?: Prisma.ChatEncryptionKeyUpdateOneWithoutUserNestedInput
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
+  leadSearches?: Prisma.LeadSearchUpdateManyWithoutUserNestedInput
+  savedLeads?: Prisma.SavedLeadUpdateManyWithoutUserNestedInput
+  websiteAudits?: Prisma.WebsiteAuditUpdateManyWithoutUserNestedInput
+  pdfReportDesign?: Prisma.PdfReportDesignUpdateOneWithoutUserNestedInput
+  pdfReportTemplates?: Prisma.PdfReportTemplateUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutReflectionsInput = {
@@ -1431,6 +1591,11 @@ export type UserUncheckedUpdateWithoutReflectionsInput = {
   chatEncryptionKey?: Prisma.ChatEncryptionKeyUncheckedUpdateOneWithoutUserNestedInput
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
+  leadSearches?: Prisma.LeadSearchUncheckedUpdateManyWithoutUserNestedInput
+  savedLeads?: Prisma.SavedLeadUncheckedUpdateManyWithoutUserNestedInput
+  websiteAudits?: Prisma.WebsiteAuditUncheckedUpdateManyWithoutUserNestedInput
+  pdfReportDesign?: Prisma.PdfReportDesignUncheckedUpdateOneWithoutUserNestedInput
+  pdfReportTemplates?: Prisma.PdfReportTemplateUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutFeedbackAuthoredInput = {
@@ -1466,6 +1631,11 @@ export type UserCreateWithoutFeedbackAuthoredInput = {
   chatEncryptionKey?: Prisma.ChatEncryptionKeyCreateNestedOneWithoutUserInput
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
+  leadSearches?: Prisma.LeadSearchCreateNestedManyWithoutUserInput
+  savedLeads?: Prisma.SavedLeadCreateNestedManyWithoutUserInput
+  websiteAudits?: Prisma.WebsiteAuditCreateNestedManyWithoutUserInput
+  pdfReportDesign?: Prisma.PdfReportDesignCreateNestedOneWithoutUserInput
+  pdfReportTemplates?: Prisma.PdfReportTemplateCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutFeedbackAuthoredInput = {
@@ -1501,6 +1671,11 @@ export type UserUncheckedCreateWithoutFeedbackAuthoredInput = {
   chatEncryptionKey?: Prisma.ChatEncryptionKeyUncheckedCreateNestedOneWithoutUserInput
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
+  leadSearches?: Prisma.LeadSearchUncheckedCreateNestedManyWithoutUserInput
+  savedLeads?: Prisma.SavedLeadUncheckedCreateNestedManyWithoutUserInput
+  websiteAudits?: Prisma.WebsiteAuditUncheckedCreateNestedManyWithoutUserInput
+  pdfReportDesign?: Prisma.PdfReportDesignUncheckedCreateNestedOneWithoutUserInput
+  pdfReportTemplates?: Prisma.PdfReportTemplateUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutFeedbackAuthoredInput = {
@@ -1552,6 +1727,11 @@ export type UserUpdateWithoutFeedbackAuthoredInput = {
   chatEncryptionKey?: Prisma.ChatEncryptionKeyUpdateOneWithoutUserNestedInput
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
+  leadSearches?: Prisma.LeadSearchUpdateManyWithoutUserNestedInput
+  savedLeads?: Prisma.SavedLeadUpdateManyWithoutUserNestedInput
+  websiteAudits?: Prisma.WebsiteAuditUpdateManyWithoutUserNestedInput
+  pdfReportDesign?: Prisma.PdfReportDesignUpdateOneWithoutUserNestedInput
+  pdfReportTemplates?: Prisma.PdfReportTemplateUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutFeedbackAuthoredInput = {
@@ -1587,6 +1767,11 @@ export type UserUncheckedUpdateWithoutFeedbackAuthoredInput = {
   chatEncryptionKey?: Prisma.ChatEncryptionKeyUncheckedUpdateOneWithoutUserNestedInput
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
+  leadSearches?: Prisma.LeadSearchUncheckedUpdateManyWithoutUserNestedInput
+  savedLeads?: Prisma.SavedLeadUncheckedUpdateManyWithoutUserNestedInput
+  websiteAudits?: Prisma.WebsiteAuditUncheckedUpdateManyWithoutUserNestedInput
+  pdfReportDesign?: Prisma.PdfReportDesignUncheckedUpdateOneWithoutUserNestedInput
+  pdfReportTemplates?: Prisma.PdfReportTemplateUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutDiscussionNoteInput = {
@@ -1622,6 +1807,11 @@ export type UserCreateWithoutDiscussionNoteInput = {
   chatEncryptionKey?: Prisma.ChatEncryptionKeyCreateNestedOneWithoutUserInput
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
+  leadSearches?: Prisma.LeadSearchCreateNestedManyWithoutUserInput
+  savedLeads?: Prisma.SavedLeadCreateNestedManyWithoutUserInput
+  websiteAudits?: Prisma.WebsiteAuditCreateNestedManyWithoutUserInput
+  pdfReportDesign?: Prisma.PdfReportDesignCreateNestedOneWithoutUserInput
+  pdfReportTemplates?: Prisma.PdfReportTemplateCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutDiscussionNoteInput = {
@@ -1657,6 +1847,11 @@ export type UserUncheckedCreateWithoutDiscussionNoteInput = {
   chatEncryptionKey?: Prisma.ChatEncryptionKeyUncheckedCreateNestedOneWithoutUserInput
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
+  leadSearches?: Prisma.LeadSearchUncheckedCreateNestedManyWithoutUserInput
+  savedLeads?: Prisma.SavedLeadUncheckedCreateNestedManyWithoutUserInput
+  websiteAudits?: Prisma.WebsiteAuditUncheckedCreateNestedManyWithoutUserInput
+  pdfReportDesign?: Prisma.PdfReportDesignUncheckedCreateNestedOneWithoutUserInput
+  pdfReportTemplates?: Prisma.PdfReportTemplateUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutDiscussionNoteInput = {
@@ -1708,6 +1903,11 @@ export type UserUpdateWithoutDiscussionNoteInput = {
   chatEncryptionKey?: Prisma.ChatEncryptionKeyUpdateOneWithoutUserNestedInput
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
+  leadSearches?: Prisma.LeadSearchUpdateManyWithoutUserNestedInput
+  savedLeads?: Prisma.SavedLeadUpdateManyWithoutUserNestedInput
+  websiteAudits?: Prisma.WebsiteAuditUpdateManyWithoutUserNestedInput
+  pdfReportDesign?: Prisma.PdfReportDesignUpdateOneWithoutUserNestedInput
+  pdfReportTemplates?: Prisma.PdfReportTemplateUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutDiscussionNoteInput = {
@@ -1743,6 +1943,11 @@ export type UserUncheckedUpdateWithoutDiscussionNoteInput = {
   chatEncryptionKey?: Prisma.ChatEncryptionKeyUncheckedUpdateOneWithoutUserNestedInput
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
+  leadSearches?: Prisma.LeadSearchUncheckedUpdateManyWithoutUserNestedInput
+  savedLeads?: Prisma.SavedLeadUncheckedUpdateManyWithoutUserNestedInput
+  websiteAudits?: Prisma.WebsiteAuditUncheckedUpdateManyWithoutUserNestedInput
+  pdfReportDesign?: Prisma.PdfReportDesignUncheckedUpdateOneWithoutUserNestedInput
+  pdfReportTemplates?: Prisma.PdfReportTemplateUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutResourcesAddedInput = {
@@ -1778,6 +1983,11 @@ export type UserCreateWithoutResourcesAddedInput = {
   chatEncryptionKey?: Prisma.ChatEncryptionKeyCreateNestedOneWithoutUserInput
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
+  leadSearches?: Prisma.LeadSearchCreateNestedManyWithoutUserInput
+  savedLeads?: Prisma.SavedLeadCreateNestedManyWithoutUserInput
+  websiteAudits?: Prisma.WebsiteAuditCreateNestedManyWithoutUserInput
+  pdfReportDesign?: Prisma.PdfReportDesignCreateNestedOneWithoutUserInput
+  pdfReportTemplates?: Prisma.PdfReportTemplateCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutResourcesAddedInput = {
@@ -1813,6 +2023,11 @@ export type UserUncheckedCreateWithoutResourcesAddedInput = {
   chatEncryptionKey?: Prisma.ChatEncryptionKeyUncheckedCreateNestedOneWithoutUserInput
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
+  leadSearches?: Prisma.LeadSearchUncheckedCreateNestedManyWithoutUserInput
+  savedLeads?: Prisma.SavedLeadUncheckedCreateNestedManyWithoutUserInput
+  websiteAudits?: Prisma.WebsiteAuditUncheckedCreateNestedManyWithoutUserInput
+  pdfReportDesign?: Prisma.PdfReportDesignUncheckedCreateNestedOneWithoutUserInput
+  pdfReportTemplates?: Prisma.PdfReportTemplateUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutResourcesAddedInput = {
@@ -1864,6 +2079,11 @@ export type UserUpdateWithoutResourcesAddedInput = {
   chatEncryptionKey?: Prisma.ChatEncryptionKeyUpdateOneWithoutUserNestedInput
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
+  leadSearches?: Prisma.LeadSearchUpdateManyWithoutUserNestedInput
+  savedLeads?: Prisma.SavedLeadUpdateManyWithoutUserNestedInput
+  websiteAudits?: Prisma.WebsiteAuditUpdateManyWithoutUserNestedInput
+  pdfReportDesign?: Prisma.PdfReportDesignUpdateOneWithoutUserNestedInput
+  pdfReportTemplates?: Prisma.PdfReportTemplateUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutResourcesAddedInput = {
@@ -1899,6 +2119,11 @@ export type UserUncheckedUpdateWithoutResourcesAddedInput = {
   chatEncryptionKey?: Prisma.ChatEncryptionKeyUncheckedUpdateOneWithoutUserNestedInput
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
+  leadSearches?: Prisma.LeadSearchUncheckedUpdateManyWithoutUserNestedInput
+  savedLeads?: Prisma.SavedLeadUncheckedUpdateManyWithoutUserNestedInput
+  websiteAudits?: Prisma.WebsiteAuditUncheckedUpdateManyWithoutUserNestedInput
+  pdfReportDesign?: Prisma.PdfReportDesignUncheckedUpdateOneWithoutUserNestedInput
+  pdfReportTemplates?: Prisma.PdfReportTemplateUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutIdeasInput = {
@@ -1934,6 +2159,11 @@ export type UserCreateWithoutIdeasInput = {
   chatEncryptionKey?: Prisma.ChatEncryptionKeyCreateNestedOneWithoutUserInput
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
+  leadSearches?: Prisma.LeadSearchCreateNestedManyWithoutUserInput
+  savedLeads?: Prisma.SavedLeadCreateNestedManyWithoutUserInput
+  websiteAudits?: Prisma.WebsiteAuditCreateNestedManyWithoutUserInput
+  pdfReportDesign?: Prisma.PdfReportDesignCreateNestedOneWithoutUserInput
+  pdfReportTemplates?: Prisma.PdfReportTemplateCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutIdeasInput = {
@@ -1969,6 +2199,11 @@ export type UserUncheckedCreateWithoutIdeasInput = {
   chatEncryptionKey?: Prisma.ChatEncryptionKeyUncheckedCreateNestedOneWithoutUserInput
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
+  leadSearches?: Prisma.LeadSearchUncheckedCreateNestedManyWithoutUserInput
+  savedLeads?: Prisma.SavedLeadUncheckedCreateNestedManyWithoutUserInput
+  websiteAudits?: Prisma.WebsiteAuditUncheckedCreateNestedManyWithoutUserInput
+  pdfReportDesign?: Prisma.PdfReportDesignUncheckedCreateNestedOneWithoutUserInput
+  pdfReportTemplates?: Prisma.PdfReportTemplateUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutIdeasInput = {
@@ -2020,6 +2255,11 @@ export type UserUpdateWithoutIdeasInput = {
   chatEncryptionKey?: Prisma.ChatEncryptionKeyUpdateOneWithoutUserNestedInput
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
+  leadSearches?: Prisma.LeadSearchUpdateManyWithoutUserNestedInput
+  savedLeads?: Prisma.SavedLeadUpdateManyWithoutUserNestedInput
+  websiteAudits?: Prisma.WebsiteAuditUpdateManyWithoutUserNestedInput
+  pdfReportDesign?: Prisma.PdfReportDesignUpdateOneWithoutUserNestedInput
+  pdfReportTemplates?: Prisma.PdfReportTemplateUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutIdeasInput = {
@@ -2055,6 +2295,11 @@ export type UserUncheckedUpdateWithoutIdeasInput = {
   chatEncryptionKey?: Prisma.ChatEncryptionKeyUncheckedUpdateOneWithoutUserNestedInput
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
+  leadSearches?: Prisma.LeadSearchUncheckedUpdateManyWithoutUserNestedInput
+  savedLeads?: Prisma.SavedLeadUncheckedUpdateManyWithoutUserNestedInput
+  websiteAudits?: Prisma.WebsiteAuditUncheckedUpdateManyWithoutUserNestedInput
+  pdfReportDesign?: Prisma.PdfReportDesignUncheckedUpdateOneWithoutUserNestedInput
+  pdfReportTemplates?: Prisma.PdfReportTemplateUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutIdeaNotesInput = {
@@ -2090,6 +2335,11 @@ export type UserCreateWithoutIdeaNotesInput = {
   chatEncryptionKey?: Prisma.ChatEncryptionKeyCreateNestedOneWithoutUserInput
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
+  leadSearches?: Prisma.LeadSearchCreateNestedManyWithoutUserInput
+  savedLeads?: Prisma.SavedLeadCreateNestedManyWithoutUserInput
+  websiteAudits?: Prisma.WebsiteAuditCreateNestedManyWithoutUserInput
+  pdfReportDesign?: Prisma.PdfReportDesignCreateNestedOneWithoutUserInput
+  pdfReportTemplates?: Prisma.PdfReportTemplateCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutIdeaNotesInput = {
@@ -2125,6 +2375,11 @@ export type UserUncheckedCreateWithoutIdeaNotesInput = {
   chatEncryptionKey?: Prisma.ChatEncryptionKeyUncheckedCreateNestedOneWithoutUserInput
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
+  leadSearches?: Prisma.LeadSearchUncheckedCreateNestedManyWithoutUserInput
+  savedLeads?: Prisma.SavedLeadUncheckedCreateNestedManyWithoutUserInput
+  websiteAudits?: Prisma.WebsiteAuditUncheckedCreateNestedManyWithoutUserInput
+  pdfReportDesign?: Prisma.PdfReportDesignUncheckedCreateNestedOneWithoutUserInput
+  pdfReportTemplates?: Prisma.PdfReportTemplateUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutIdeaNotesInput = {
@@ -2176,6 +2431,11 @@ export type UserUpdateWithoutIdeaNotesInput = {
   chatEncryptionKey?: Prisma.ChatEncryptionKeyUpdateOneWithoutUserNestedInput
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
+  leadSearches?: Prisma.LeadSearchUpdateManyWithoutUserNestedInput
+  savedLeads?: Prisma.SavedLeadUpdateManyWithoutUserNestedInput
+  websiteAudits?: Prisma.WebsiteAuditUpdateManyWithoutUserNestedInput
+  pdfReportDesign?: Prisma.PdfReportDesignUpdateOneWithoutUserNestedInput
+  pdfReportTemplates?: Prisma.PdfReportTemplateUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutIdeaNotesInput = {
@@ -2211,6 +2471,11 @@ export type UserUncheckedUpdateWithoutIdeaNotesInput = {
   chatEncryptionKey?: Prisma.ChatEncryptionKeyUncheckedUpdateOneWithoutUserNestedInput
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
+  leadSearches?: Prisma.LeadSearchUncheckedUpdateManyWithoutUserNestedInput
+  savedLeads?: Prisma.SavedLeadUncheckedUpdateManyWithoutUserNestedInput
+  websiteAudits?: Prisma.WebsiteAuditUncheckedUpdateManyWithoutUserNestedInput
+  pdfReportDesign?: Prisma.PdfReportDesignUncheckedUpdateOneWithoutUserNestedInput
+  pdfReportTemplates?: Prisma.PdfReportTemplateUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutDailyPlansInput = {
@@ -2246,6 +2511,11 @@ export type UserCreateWithoutDailyPlansInput = {
   chatEncryptionKey?: Prisma.ChatEncryptionKeyCreateNestedOneWithoutUserInput
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
+  leadSearches?: Prisma.LeadSearchCreateNestedManyWithoutUserInput
+  savedLeads?: Prisma.SavedLeadCreateNestedManyWithoutUserInput
+  websiteAudits?: Prisma.WebsiteAuditCreateNestedManyWithoutUserInput
+  pdfReportDesign?: Prisma.PdfReportDesignCreateNestedOneWithoutUserInput
+  pdfReportTemplates?: Prisma.PdfReportTemplateCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutDailyPlansInput = {
@@ -2281,6 +2551,11 @@ export type UserUncheckedCreateWithoutDailyPlansInput = {
   chatEncryptionKey?: Prisma.ChatEncryptionKeyUncheckedCreateNestedOneWithoutUserInput
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
+  leadSearches?: Prisma.LeadSearchUncheckedCreateNestedManyWithoutUserInput
+  savedLeads?: Prisma.SavedLeadUncheckedCreateNestedManyWithoutUserInput
+  websiteAudits?: Prisma.WebsiteAuditUncheckedCreateNestedManyWithoutUserInput
+  pdfReportDesign?: Prisma.PdfReportDesignUncheckedCreateNestedOneWithoutUserInput
+  pdfReportTemplates?: Prisma.PdfReportTemplateUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutDailyPlansInput = {
@@ -2332,6 +2607,11 @@ export type UserUpdateWithoutDailyPlansInput = {
   chatEncryptionKey?: Prisma.ChatEncryptionKeyUpdateOneWithoutUserNestedInput
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
+  leadSearches?: Prisma.LeadSearchUpdateManyWithoutUserNestedInput
+  savedLeads?: Prisma.SavedLeadUpdateManyWithoutUserNestedInput
+  websiteAudits?: Prisma.WebsiteAuditUpdateManyWithoutUserNestedInput
+  pdfReportDesign?: Prisma.PdfReportDesignUpdateOneWithoutUserNestedInput
+  pdfReportTemplates?: Prisma.PdfReportTemplateUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutDailyPlansInput = {
@@ -2367,6 +2647,891 @@ export type UserUncheckedUpdateWithoutDailyPlansInput = {
   chatEncryptionKey?: Prisma.ChatEncryptionKeyUncheckedUpdateOneWithoutUserNestedInput
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
+  leadSearches?: Prisma.LeadSearchUncheckedUpdateManyWithoutUserNestedInput
+  savedLeads?: Prisma.SavedLeadUncheckedUpdateManyWithoutUserNestedInput
+  websiteAudits?: Prisma.WebsiteAuditUncheckedUpdateManyWithoutUserNestedInput
+  pdfReportDesign?: Prisma.PdfReportDesignUncheckedUpdateOneWithoutUserNestedInput
+  pdfReportTemplates?: Prisma.PdfReportTemplateUncheckedUpdateManyWithoutUserNestedInput
+}
+
+export type UserCreateWithoutLeadSearchesInput = {
+  id: string
+  name: string
+  email: string
+  emailVerified?: boolean
+  image?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  role?: string
+  banned?: boolean | null
+  banReason?: string | null
+  banExpires?: Date | string | null
+  locale?: string
+  secureLoginVersion?: number
+  dailyPlans?: Prisma.DailyPlanCreateNestedManyWithoutUserInput
+  resourcesAdded?: Prisma.DepartmentResourceCreateNestedManyWithoutCreatedByInput
+  discussionNote?: Prisma.DiscussionNoteCreateNestedOneWithoutUserInput
+  ideas?: Prisma.IdeaCreateNestedManyWithoutAuthorInput
+  ideaNotes?: Prisma.IdeaNoteCreateNestedManyWithoutAuthorInput
+  feedbackAuthored?: Prisma.MentorFeedbackCreateNestedManyWithoutAuthorInput
+  reflections?: Prisma.ReflectionCreateNestedManyWithoutInternInput
+  assignmentsCreated?: Prisma.WeeklyAssignmentCreateNestedManyWithoutCreatedByInput
+  assignmentsAsIntern?: Prisma.WeeklyAssignmentCreateNestedManyWithoutInternInput
+  friendshipsSent?: Prisma.FriendshipCreateNestedManyWithoutRequesterInput
+  friendshipsReceived?: Prisma.FriendshipCreateNestedManyWithoutRecipientInput
+  directChatsFirst?: Prisma.DirectConversationCreateNestedManyWithoutFirstUserInput
+  directChatsSecond?: Prisma.DirectConversationCreateNestedManyWithoutSecondUserInput
+  chatMemberships?: Prisma.ChatMembershipCreateNestedManyWithoutUserInput
+  chatMessages?: Prisma.ChatMessageCreateNestedManyWithoutSenderInput
+  groupMemberships?: Prisma.GroupMembershipCreateNestedManyWithoutUserInput
+  groupMessages?: Prisma.GroupMessageCreateNestedManyWithoutSenderInput
+  chatEncryptionKey?: Prisma.ChatEncryptionKeyCreateNestedOneWithoutUserInput
+  accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
+  savedLeads?: Prisma.SavedLeadCreateNestedManyWithoutUserInput
+  websiteAudits?: Prisma.WebsiteAuditCreateNestedManyWithoutUserInput
+  pdfReportDesign?: Prisma.PdfReportDesignCreateNestedOneWithoutUserInput
+  pdfReportTemplates?: Prisma.PdfReportTemplateCreateNestedManyWithoutUserInput
+}
+
+export type UserUncheckedCreateWithoutLeadSearchesInput = {
+  id: string
+  name: string
+  email: string
+  emailVerified?: boolean
+  image?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  role?: string
+  banned?: boolean | null
+  banReason?: string | null
+  banExpires?: Date | string | null
+  locale?: string
+  secureLoginVersion?: number
+  dailyPlans?: Prisma.DailyPlanUncheckedCreateNestedManyWithoutUserInput
+  resourcesAdded?: Prisma.DepartmentResourceUncheckedCreateNestedManyWithoutCreatedByInput
+  discussionNote?: Prisma.DiscussionNoteUncheckedCreateNestedOneWithoutUserInput
+  ideas?: Prisma.IdeaUncheckedCreateNestedManyWithoutAuthorInput
+  ideaNotes?: Prisma.IdeaNoteUncheckedCreateNestedManyWithoutAuthorInput
+  feedbackAuthored?: Prisma.MentorFeedbackUncheckedCreateNestedManyWithoutAuthorInput
+  reflections?: Prisma.ReflectionUncheckedCreateNestedManyWithoutInternInput
+  assignmentsCreated?: Prisma.WeeklyAssignmentUncheckedCreateNestedManyWithoutCreatedByInput
+  assignmentsAsIntern?: Prisma.WeeklyAssignmentUncheckedCreateNestedManyWithoutInternInput
+  friendshipsSent?: Prisma.FriendshipUncheckedCreateNestedManyWithoutRequesterInput
+  friendshipsReceived?: Prisma.FriendshipUncheckedCreateNestedManyWithoutRecipientInput
+  directChatsFirst?: Prisma.DirectConversationUncheckedCreateNestedManyWithoutFirstUserInput
+  directChatsSecond?: Prisma.DirectConversationUncheckedCreateNestedManyWithoutSecondUserInput
+  chatMemberships?: Prisma.ChatMembershipUncheckedCreateNestedManyWithoutUserInput
+  chatMessages?: Prisma.ChatMessageUncheckedCreateNestedManyWithoutSenderInput
+  groupMemberships?: Prisma.GroupMembershipUncheckedCreateNestedManyWithoutUserInput
+  groupMessages?: Prisma.GroupMessageUncheckedCreateNestedManyWithoutSenderInput
+  chatEncryptionKey?: Prisma.ChatEncryptionKeyUncheckedCreateNestedOneWithoutUserInput
+  accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
+  savedLeads?: Prisma.SavedLeadUncheckedCreateNestedManyWithoutUserInput
+  websiteAudits?: Prisma.WebsiteAuditUncheckedCreateNestedManyWithoutUserInput
+  pdfReportDesign?: Prisma.PdfReportDesignUncheckedCreateNestedOneWithoutUserInput
+  pdfReportTemplates?: Prisma.PdfReportTemplateUncheckedCreateNestedManyWithoutUserInput
+}
+
+export type UserCreateOrConnectWithoutLeadSearchesInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutLeadSearchesInput, Prisma.UserUncheckedCreateWithoutLeadSearchesInput>
+}
+
+export type UserUpsertWithoutLeadSearchesInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutLeadSearchesInput, Prisma.UserUncheckedUpdateWithoutLeadSearchesInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutLeadSearchesInput, Prisma.UserUncheckedCreateWithoutLeadSearchesInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutLeadSearchesInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutLeadSearchesInput, Prisma.UserUncheckedUpdateWithoutLeadSearchesInput>
+}
+
+export type UserUpdateWithoutLeadSearchesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  role?: Prisma.StringFieldUpdateOperationsInput | string
+  banned?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  banReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  banExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  locale?: Prisma.StringFieldUpdateOperationsInput | string
+  secureLoginVersion?: Prisma.IntFieldUpdateOperationsInput | number
+  dailyPlans?: Prisma.DailyPlanUpdateManyWithoutUserNestedInput
+  resourcesAdded?: Prisma.DepartmentResourceUpdateManyWithoutCreatedByNestedInput
+  discussionNote?: Prisma.DiscussionNoteUpdateOneWithoutUserNestedInput
+  ideas?: Prisma.IdeaUpdateManyWithoutAuthorNestedInput
+  ideaNotes?: Prisma.IdeaNoteUpdateManyWithoutAuthorNestedInput
+  feedbackAuthored?: Prisma.MentorFeedbackUpdateManyWithoutAuthorNestedInput
+  reflections?: Prisma.ReflectionUpdateManyWithoutInternNestedInput
+  assignmentsCreated?: Prisma.WeeklyAssignmentUpdateManyWithoutCreatedByNestedInput
+  assignmentsAsIntern?: Prisma.WeeklyAssignmentUpdateManyWithoutInternNestedInput
+  friendshipsSent?: Prisma.FriendshipUpdateManyWithoutRequesterNestedInput
+  friendshipsReceived?: Prisma.FriendshipUpdateManyWithoutRecipientNestedInput
+  directChatsFirst?: Prisma.DirectConversationUpdateManyWithoutFirstUserNestedInput
+  directChatsSecond?: Prisma.DirectConversationUpdateManyWithoutSecondUserNestedInput
+  chatMemberships?: Prisma.ChatMembershipUpdateManyWithoutUserNestedInput
+  chatMessages?: Prisma.ChatMessageUpdateManyWithoutSenderNestedInput
+  groupMemberships?: Prisma.GroupMembershipUpdateManyWithoutUserNestedInput
+  groupMessages?: Prisma.GroupMessageUpdateManyWithoutSenderNestedInput
+  chatEncryptionKey?: Prisma.ChatEncryptionKeyUpdateOneWithoutUserNestedInput
+  accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
+  savedLeads?: Prisma.SavedLeadUpdateManyWithoutUserNestedInput
+  websiteAudits?: Prisma.WebsiteAuditUpdateManyWithoutUserNestedInput
+  pdfReportDesign?: Prisma.PdfReportDesignUpdateOneWithoutUserNestedInput
+  pdfReportTemplates?: Prisma.PdfReportTemplateUpdateManyWithoutUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutLeadSearchesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  role?: Prisma.StringFieldUpdateOperationsInput | string
+  banned?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  banReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  banExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  locale?: Prisma.StringFieldUpdateOperationsInput | string
+  secureLoginVersion?: Prisma.IntFieldUpdateOperationsInput | number
+  dailyPlans?: Prisma.DailyPlanUncheckedUpdateManyWithoutUserNestedInput
+  resourcesAdded?: Prisma.DepartmentResourceUncheckedUpdateManyWithoutCreatedByNestedInput
+  discussionNote?: Prisma.DiscussionNoteUncheckedUpdateOneWithoutUserNestedInput
+  ideas?: Prisma.IdeaUncheckedUpdateManyWithoutAuthorNestedInput
+  ideaNotes?: Prisma.IdeaNoteUncheckedUpdateManyWithoutAuthorNestedInput
+  feedbackAuthored?: Prisma.MentorFeedbackUncheckedUpdateManyWithoutAuthorNestedInput
+  reflections?: Prisma.ReflectionUncheckedUpdateManyWithoutInternNestedInput
+  assignmentsCreated?: Prisma.WeeklyAssignmentUncheckedUpdateManyWithoutCreatedByNestedInput
+  assignmentsAsIntern?: Prisma.WeeklyAssignmentUncheckedUpdateManyWithoutInternNestedInput
+  friendshipsSent?: Prisma.FriendshipUncheckedUpdateManyWithoutRequesterNestedInput
+  friendshipsReceived?: Prisma.FriendshipUncheckedUpdateManyWithoutRecipientNestedInput
+  directChatsFirst?: Prisma.DirectConversationUncheckedUpdateManyWithoutFirstUserNestedInput
+  directChatsSecond?: Prisma.DirectConversationUncheckedUpdateManyWithoutSecondUserNestedInput
+  chatMemberships?: Prisma.ChatMembershipUncheckedUpdateManyWithoutUserNestedInput
+  chatMessages?: Prisma.ChatMessageUncheckedUpdateManyWithoutSenderNestedInput
+  groupMemberships?: Prisma.GroupMembershipUncheckedUpdateManyWithoutUserNestedInput
+  groupMessages?: Prisma.GroupMessageUncheckedUpdateManyWithoutSenderNestedInput
+  chatEncryptionKey?: Prisma.ChatEncryptionKeyUncheckedUpdateOneWithoutUserNestedInput
+  accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
+  savedLeads?: Prisma.SavedLeadUncheckedUpdateManyWithoutUserNestedInput
+  websiteAudits?: Prisma.WebsiteAuditUncheckedUpdateManyWithoutUserNestedInput
+  pdfReportDesign?: Prisma.PdfReportDesignUncheckedUpdateOneWithoutUserNestedInput
+  pdfReportTemplates?: Prisma.PdfReportTemplateUncheckedUpdateManyWithoutUserNestedInput
+}
+
+export type UserCreateWithoutSavedLeadsInput = {
+  id: string
+  name: string
+  email: string
+  emailVerified?: boolean
+  image?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  role?: string
+  banned?: boolean | null
+  banReason?: string | null
+  banExpires?: Date | string | null
+  locale?: string
+  secureLoginVersion?: number
+  dailyPlans?: Prisma.DailyPlanCreateNestedManyWithoutUserInput
+  resourcesAdded?: Prisma.DepartmentResourceCreateNestedManyWithoutCreatedByInput
+  discussionNote?: Prisma.DiscussionNoteCreateNestedOneWithoutUserInput
+  ideas?: Prisma.IdeaCreateNestedManyWithoutAuthorInput
+  ideaNotes?: Prisma.IdeaNoteCreateNestedManyWithoutAuthorInput
+  feedbackAuthored?: Prisma.MentorFeedbackCreateNestedManyWithoutAuthorInput
+  reflections?: Prisma.ReflectionCreateNestedManyWithoutInternInput
+  assignmentsCreated?: Prisma.WeeklyAssignmentCreateNestedManyWithoutCreatedByInput
+  assignmentsAsIntern?: Prisma.WeeklyAssignmentCreateNestedManyWithoutInternInput
+  friendshipsSent?: Prisma.FriendshipCreateNestedManyWithoutRequesterInput
+  friendshipsReceived?: Prisma.FriendshipCreateNestedManyWithoutRecipientInput
+  directChatsFirst?: Prisma.DirectConversationCreateNestedManyWithoutFirstUserInput
+  directChatsSecond?: Prisma.DirectConversationCreateNestedManyWithoutSecondUserInput
+  chatMemberships?: Prisma.ChatMembershipCreateNestedManyWithoutUserInput
+  chatMessages?: Prisma.ChatMessageCreateNestedManyWithoutSenderInput
+  groupMemberships?: Prisma.GroupMembershipCreateNestedManyWithoutUserInput
+  groupMessages?: Prisma.GroupMessageCreateNestedManyWithoutSenderInput
+  chatEncryptionKey?: Prisma.ChatEncryptionKeyCreateNestedOneWithoutUserInput
+  accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
+  leadSearches?: Prisma.LeadSearchCreateNestedManyWithoutUserInput
+  websiteAudits?: Prisma.WebsiteAuditCreateNestedManyWithoutUserInput
+  pdfReportDesign?: Prisma.PdfReportDesignCreateNestedOneWithoutUserInput
+  pdfReportTemplates?: Prisma.PdfReportTemplateCreateNestedManyWithoutUserInput
+}
+
+export type UserUncheckedCreateWithoutSavedLeadsInput = {
+  id: string
+  name: string
+  email: string
+  emailVerified?: boolean
+  image?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  role?: string
+  banned?: boolean | null
+  banReason?: string | null
+  banExpires?: Date | string | null
+  locale?: string
+  secureLoginVersion?: number
+  dailyPlans?: Prisma.DailyPlanUncheckedCreateNestedManyWithoutUserInput
+  resourcesAdded?: Prisma.DepartmentResourceUncheckedCreateNestedManyWithoutCreatedByInput
+  discussionNote?: Prisma.DiscussionNoteUncheckedCreateNestedOneWithoutUserInput
+  ideas?: Prisma.IdeaUncheckedCreateNestedManyWithoutAuthorInput
+  ideaNotes?: Prisma.IdeaNoteUncheckedCreateNestedManyWithoutAuthorInput
+  feedbackAuthored?: Prisma.MentorFeedbackUncheckedCreateNestedManyWithoutAuthorInput
+  reflections?: Prisma.ReflectionUncheckedCreateNestedManyWithoutInternInput
+  assignmentsCreated?: Prisma.WeeklyAssignmentUncheckedCreateNestedManyWithoutCreatedByInput
+  assignmentsAsIntern?: Prisma.WeeklyAssignmentUncheckedCreateNestedManyWithoutInternInput
+  friendshipsSent?: Prisma.FriendshipUncheckedCreateNestedManyWithoutRequesterInput
+  friendshipsReceived?: Prisma.FriendshipUncheckedCreateNestedManyWithoutRecipientInput
+  directChatsFirst?: Prisma.DirectConversationUncheckedCreateNestedManyWithoutFirstUserInput
+  directChatsSecond?: Prisma.DirectConversationUncheckedCreateNestedManyWithoutSecondUserInput
+  chatMemberships?: Prisma.ChatMembershipUncheckedCreateNestedManyWithoutUserInput
+  chatMessages?: Prisma.ChatMessageUncheckedCreateNestedManyWithoutSenderInput
+  groupMemberships?: Prisma.GroupMembershipUncheckedCreateNestedManyWithoutUserInput
+  groupMessages?: Prisma.GroupMessageUncheckedCreateNestedManyWithoutSenderInput
+  chatEncryptionKey?: Prisma.ChatEncryptionKeyUncheckedCreateNestedOneWithoutUserInput
+  accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
+  leadSearches?: Prisma.LeadSearchUncheckedCreateNestedManyWithoutUserInput
+  websiteAudits?: Prisma.WebsiteAuditUncheckedCreateNestedManyWithoutUserInput
+  pdfReportDesign?: Prisma.PdfReportDesignUncheckedCreateNestedOneWithoutUserInput
+  pdfReportTemplates?: Prisma.PdfReportTemplateUncheckedCreateNestedManyWithoutUserInput
+}
+
+export type UserCreateOrConnectWithoutSavedLeadsInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutSavedLeadsInput, Prisma.UserUncheckedCreateWithoutSavedLeadsInput>
+}
+
+export type UserUpsertWithoutSavedLeadsInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutSavedLeadsInput, Prisma.UserUncheckedUpdateWithoutSavedLeadsInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutSavedLeadsInput, Prisma.UserUncheckedCreateWithoutSavedLeadsInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutSavedLeadsInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutSavedLeadsInput, Prisma.UserUncheckedUpdateWithoutSavedLeadsInput>
+}
+
+export type UserUpdateWithoutSavedLeadsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  role?: Prisma.StringFieldUpdateOperationsInput | string
+  banned?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  banReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  banExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  locale?: Prisma.StringFieldUpdateOperationsInput | string
+  secureLoginVersion?: Prisma.IntFieldUpdateOperationsInput | number
+  dailyPlans?: Prisma.DailyPlanUpdateManyWithoutUserNestedInput
+  resourcesAdded?: Prisma.DepartmentResourceUpdateManyWithoutCreatedByNestedInput
+  discussionNote?: Prisma.DiscussionNoteUpdateOneWithoutUserNestedInput
+  ideas?: Prisma.IdeaUpdateManyWithoutAuthorNestedInput
+  ideaNotes?: Prisma.IdeaNoteUpdateManyWithoutAuthorNestedInput
+  feedbackAuthored?: Prisma.MentorFeedbackUpdateManyWithoutAuthorNestedInput
+  reflections?: Prisma.ReflectionUpdateManyWithoutInternNestedInput
+  assignmentsCreated?: Prisma.WeeklyAssignmentUpdateManyWithoutCreatedByNestedInput
+  assignmentsAsIntern?: Prisma.WeeklyAssignmentUpdateManyWithoutInternNestedInput
+  friendshipsSent?: Prisma.FriendshipUpdateManyWithoutRequesterNestedInput
+  friendshipsReceived?: Prisma.FriendshipUpdateManyWithoutRecipientNestedInput
+  directChatsFirst?: Prisma.DirectConversationUpdateManyWithoutFirstUserNestedInput
+  directChatsSecond?: Prisma.DirectConversationUpdateManyWithoutSecondUserNestedInput
+  chatMemberships?: Prisma.ChatMembershipUpdateManyWithoutUserNestedInput
+  chatMessages?: Prisma.ChatMessageUpdateManyWithoutSenderNestedInput
+  groupMemberships?: Prisma.GroupMembershipUpdateManyWithoutUserNestedInput
+  groupMessages?: Prisma.GroupMessageUpdateManyWithoutSenderNestedInput
+  chatEncryptionKey?: Prisma.ChatEncryptionKeyUpdateOneWithoutUserNestedInput
+  accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
+  leadSearches?: Prisma.LeadSearchUpdateManyWithoutUserNestedInput
+  websiteAudits?: Prisma.WebsiteAuditUpdateManyWithoutUserNestedInput
+  pdfReportDesign?: Prisma.PdfReportDesignUpdateOneWithoutUserNestedInput
+  pdfReportTemplates?: Prisma.PdfReportTemplateUpdateManyWithoutUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutSavedLeadsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  role?: Prisma.StringFieldUpdateOperationsInput | string
+  banned?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  banReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  banExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  locale?: Prisma.StringFieldUpdateOperationsInput | string
+  secureLoginVersion?: Prisma.IntFieldUpdateOperationsInput | number
+  dailyPlans?: Prisma.DailyPlanUncheckedUpdateManyWithoutUserNestedInput
+  resourcesAdded?: Prisma.DepartmentResourceUncheckedUpdateManyWithoutCreatedByNestedInput
+  discussionNote?: Prisma.DiscussionNoteUncheckedUpdateOneWithoutUserNestedInput
+  ideas?: Prisma.IdeaUncheckedUpdateManyWithoutAuthorNestedInput
+  ideaNotes?: Prisma.IdeaNoteUncheckedUpdateManyWithoutAuthorNestedInput
+  feedbackAuthored?: Prisma.MentorFeedbackUncheckedUpdateManyWithoutAuthorNestedInput
+  reflections?: Prisma.ReflectionUncheckedUpdateManyWithoutInternNestedInput
+  assignmentsCreated?: Prisma.WeeklyAssignmentUncheckedUpdateManyWithoutCreatedByNestedInput
+  assignmentsAsIntern?: Prisma.WeeklyAssignmentUncheckedUpdateManyWithoutInternNestedInput
+  friendshipsSent?: Prisma.FriendshipUncheckedUpdateManyWithoutRequesterNestedInput
+  friendshipsReceived?: Prisma.FriendshipUncheckedUpdateManyWithoutRecipientNestedInput
+  directChatsFirst?: Prisma.DirectConversationUncheckedUpdateManyWithoutFirstUserNestedInput
+  directChatsSecond?: Prisma.DirectConversationUncheckedUpdateManyWithoutSecondUserNestedInput
+  chatMemberships?: Prisma.ChatMembershipUncheckedUpdateManyWithoutUserNestedInput
+  chatMessages?: Prisma.ChatMessageUncheckedUpdateManyWithoutSenderNestedInput
+  groupMemberships?: Prisma.GroupMembershipUncheckedUpdateManyWithoutUserNestedInput
+  groupMessages?: Prisma.GroupMessageUncheckedUpdateManyWithoutSenderNestedInput
+  chatEncryptionKey?: Prisma.ChatEncryptionKeyUncheckedUpdateOneWithoutUserNestedInput
+  accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
+  leadSearches?: Prisma.LeadSearchUncheckedUpdateManyWithoutUserNestedInput
+  websiteAudits?: Prisma.WebsiteAuditUncheckedUpdateManyWithoutUserNestedInput
+  pdfReportDesign?: Prisma.PdfReportDesignUncheckedUpdateOneWithoutUserNestedInput
+  pdfReportTemplates?: Prisma.PdfReportTemplateUncheckedUpdateManyWithoutUserNestedInput
+}
+
+export type UserCreateWithoutWebsiteAuditsInput = {
+  id: string
+  name: string
+  email: string
+  emailVerified?: boolean
+  image?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  role?: string
+  banned?: boolean | null
+  banReason?: string | null
+  banExpires?: Date | string | null
+  locale?: string
+  secureLoginVersion?: number
+  dailyPlans?: Prisma.DailyPlanCreateNestedManyWithoutUserInput
+  resourcesAdded?: Prisma.DepartmentResourceCreateNestedManyWithoutCreatedByInput
+  discussionNote?: Prisma.DiscussionNoteCreateNestedOneWithoutUserInput
+  ideas?: Prisma.IdeaCreateNestedManyWithoutAuthorInput
+  ideaNotes?: Prisma.IdeaNoteCreateNestedManyWithoutAuthorInput
+  feedbackAuthored?: Prisma.MentorFeedbackCreateNestedManyWithoutAuthorInput
+  reflections?: Prisma.ReflectionCreateNestedManyWithoutInternInput
+  assignmentsCreated?: Prisma.WeeklyAssignmentCreateNestedManyWithoutCreatedByInput
+  assignmentsAsIntern?: Prisma.WeeklyAssignmentCreateNestedManyWithoutInternInput
+  friendshipsSent?: Prisma.FriendshipCreateNestedManyWithoutRequesterInput
+  friendshipsReceived?: Prisma.FriendshipCreateNestedManyWithoutRecipientInput
+  directChatsFirst?: Prisma.DirectConversationCreateNestedManyWithoutFirstUserInput
+  directChatsSecond?: Prisma.DirectConversationCreateNestedManyWithoutSecondUserInput
+  chatMemberships?: Prisma.ChatMembershipCreateNestedManyWithoutUserInput
+  chatMessages?: Prisma.ChatMessageCreateNestedManyWithoutSenderInput
+  groupMemberships?: Prisma.GroupMembershipCreateNestedManyWithoutUserInput
+  groupMessages?: Prisma.GroupMessageCreateNestedManyWithoutSenderInput
+  chatEncryptionKey?: Prisma.ChatEncryptionKeyCreateNestedOneWithoutUserInput
+  accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
+  leadSearches?: Prisma.LeadSearchCreateNestedManyWithoutUserInput
+  savedLeads?: Prisma.SavedLeadCreateNestedManyWithoutUserInput
+  pdfReportDesign?: Prisma.PdfReportDesignCreateNestedOneWithoutUserInput
+  pdfReportTemplates?: Prisma.PdfReportTemplateCreateNestedManyWithoutUserInput
+}
+
+export type UserUncheckedCreateWithoutWebsiteAuditsInput = {
+  id: string
+  name: string
+  email: string
+  emailVerified?: boolean
+  image?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  role?: string
+  banned?: boolean | null
+  banReason?: string | null
+  banExpires?: Date | string | null
+  locale?: string
+  secureLoginVersion?: number
+  dailyPlans?: Prisma.DailyPlanUncheckedCreateNestedManyWithoutUserInput
+  resourcesAdded?: Prisma.DepartmentResourceUncheckedCreateNestedManyWithoutCreatedByInput
+  discussionNote?: Prisma.DiscussionNoteUncheckedCreateNestedOneWithoutUserInput
+  ideas?: Prisma.IdeaUncheckedCreateNestedManyWithoutAuthorInput
+  ideaNotes?: Prisma.IdeaNoteUncheckedCreateNestedManyWithoutAuthorInput
+  feedbackAuthored?: Prisma.MentorFeedbackUncheckedCreateNestedManyWithoutAuthorInput
+  reflections?: Prisma.ReflectionUncheckedCreateNestedManyWithoutInternInput
+  assignmentsCreated?: Prisma.WeeklyAssignmentUncheckedCreateNestedManyWithoutCreatedByInput
+  assignmentsAsIntern?: Prisma.WeeklyAssignmentUncheckedCreateNestedManyWithoutInternInput
+  friendshipsSent?: Prisma.FriendshipUncheckedCreateNestedManyWithoutRequesterInput
+  friendshipsReceived?: Prisma.FriendshipUncheckedCreateNestedManyWithoutRecipientInput
+  directChatsFirst?: Prisma.DirectConversationUncheckedCreateNestedManyWithoutFirstUserInput
+  directChatsSecond?: Prisma.DirectConversationUncheckedCreateNestedManyWithoutSecondUserInput
+  chatMemberships?: Prisma.ChatMembershipUncheckedCreateNestedManyWithoutUserInput
+  chatMessages?: Prisma.ChatMessageUncheckedCreateNestedManyWithoutSenderInput
+  groupMemberships?: Prisma.GroupMembershipUncheckedCreateNestedManyWithoutUserInput
+  groupMessages?: Prisma.GroupMessageUncheckedCreateNestedManyWithoutSenderInput
+  chatEncryptionKey?: Prisma.ChatEncryptionKeyUncheckedCreateNestedOneWithoutUserInput
+  accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
+  leadSearches?: Prisma.LeadSearchUncheckedCreateNestedManyWithoutUserInput
+  savedLeads?: Prisma.SavedLeadUncheckedCreateNestedManyWithoutUserInput
+  pdfReportDesign?: Prisma.PdfReportDesignUncheckedCreateNestedOneWithoutUserInput
+  pdfReportTemplates?: Prisma.PdfReportTemplateUncheckedCreateNestedManyWithoutUserInput
+}
+
+export type UserCreateOrConnectWithoutWebsiteAuditsInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutWebsiteAuditsInput, Prisma.UserUncheckedCreateWithoutWebsiteAuditsInput>
+}
+
+export type UserUpsertWithoutWebsiteAuditsInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutWebsiteAuditsInput, Prisma.UserUncheckedUpdateWithoutWebsiteAuditsInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutWebsiteAuditsInput, Prisma.UserUncheckedCreateWithoutWebsiteAuditsInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutWebsiteAuditsInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutWebsiteAuditsInput, Prisma.UserUncheckedUpdateWithoutWebsiteAuditsInput>
+}
+
+export type UserUpdateWithoutWebsiteAuditsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  role?: Prisma.StringFieldUpdateOperationsInput | string
+  banned?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  banReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  banExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  locale?: Prisma.StringFieldUpdateOperationsInput | string
+  secureLoginVersion?: Prisma.IntFieldUpdateOperationsInput | number
+  dailyPlans?: Prisma.DailyPlanUpdateManyWithoutUserNestedInput
+  resourcesAdded?: Prisma.DepartmentResourceUpdateManyWithoutCreatedByNestedInput
+  discussionNote?: Prisma.DiscussionNoteUpdateOneWithoutUserNestedInput
+  ideas?: Prisma.IdeaUpdateManyWithoutAuthorNestedInput
+  ideaNotes?: Prisma.IdeaNoteUpdateManyWithoutAuthorNestedInput
+  feedbackAuthored?: Prisma.MentorFeedbackUpdateManyWithoutAuthorNestedInput
+  reflections?: Prisma.ReflectionUpdateManyWithoutInternNestedInput
+  assignmentsCreated?: Prisma.WeeklyAssignmentUpdateManyWithoutCreatedByNestedInput
+  assignmentsAsIntern?: Prisma.WeeklyAssignmentUpdateManyWithoutInternNestedInput
+  friendshipsSent?: Prisma.FriendshipUpdateManyWithoutRequesterNestedInput
+  friendshipsReceived?: Prisma.FriendshipUpdateManyWithoutRecipientNestedInput
+  directChatsFirst?: Prisma.DirectConversationUpdateManyWithoutFirstUserNestedInput
+  directChatsSecond?: Prisma.DirectConversationUpdateManyWithoutSecondUserNestedInput
+  chatMemberships?: Prisma.ChatMembershipUpdateManyWithoutUserNestedInput
+  chatMessages?: Prisma.ChatMessageUpdateManyWithoutSenderNestedInput
+  groupMemberships?: Prisma.GroupMembershipUpdateManyWithoutUserNestedInput
+  groupMessages?: Prisma.GroupMessageUpdateManyWithoutSenderNestedInput
+  chatEncryptionKey?: Prisma.ChatEncryptionKeyUpdateOneWithoutUserNestedInput
+  accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
+  leadSearches?: Prisma.LeadSearchUpdateManyWithoutUserNestedInput
+  savedLeads?: Prisma.SavedLeadUpdateManyWithoutUserNestedInput
+  pdfReportDesign?: Prisma.PdfReportDesignUpdateOneWithoutUserNestedInput
+  pdfReportTemplates?: Prisma.PdfReportTemplateUpdateManyWithoutUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutWebsiteAuditsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  role?: Prisma.StringFieldUpdateOperationsInput | string
+  banned?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  banReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  banExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  locale?: Prisma.StringFieldUpdateOperationsInput | string
+  secureLoginVersion?: Prisma.IntFieldUpdateOperationsInput | number
+  dailyPlans?: Prisma.DailyPlanUncheckedUpdateManyWithoutUserNestedInput
+  resourcesAdded?: Prisma.DepartmentResourceUncheckedUpdateManyWithoutCreatedByNestedInput
+  discussionNote?: Prisma.DiscussionNoteUncheckedUpdateOneWithoutUserNestedInput
+  ideas?: Prisma.IdeaUncheckedUpdateManyWithoutAuthorNestedInput
+  ideaNotes?: Prisma.IdeaNoteUncheckedUpdateManyWithoutAuthorNestedInput
+  feedbackAuthored?: Prisma.MentorFeedbackUncheckedUpdateManyWithoutAuthorNestedInput
+  reflections?: Prisma.ReflectionUncheckedUpdateManyWithoutInternNestedInput
+  assignmentsCreated?: Prisma.WeeklyAssignmentUncheckedUpdateManyWithoutCreatedByNestedInput
+  assignmentsAsIntern?: Prisma.WeeklyAssignmentUncheckedUpdateManyWithoutInternNestedInput
+  friendshipsSent?: Prisma.FriendshipUncheckedUpdateManyWithoutRequesterNestedInput
+  friendshipsReceived?: Prisma.FriendshipUncheckedUpdateManyWithoutRecipientNestedInput
+  directChatsFirst?: Prisma.DirectConversationUncheckedUpdateManyWithoutFirstUserNestedInput
+  directChatsSecond?: Prisma.DirectConversationUncheckedUpdateManyWithoutSecondUserNestedInput
+  chatMemberships?: Prisma.ChatMembershipUncheckedUpdateManyWithoutUserNestedInput
+  chatMessages?: Prisma.ChatMessageUncheckedUpdateManyWithoutSenderNestedInput
+  groupMemberships?: Prisma.GroupMembershipUncheckedUpdateManyWithoutUserNestedInput
+  groupMessages?: Prisma.GroupMessageUncheckedUpdateManyWithoutSenderNestedInput
+  chatEncryptionKey?: Prisma.ChatEncryptionKeyUncheckedUpdateOneWithoutUserNestedInput
+  accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
+  leadSearches?: Prisma.LeadSearchUncheckedUpdateManyWithoutUserNestedInput
+  savedLeads?: Prisma.SavedLeadUncheckedUpdateManyWithoutUserNestedInput
+  pdfReportDesign?: Prisma.PdfReportDesignUncheckedUpdateOneWithoutUserNestedInput
+  pdfReportTemplates?: Prisma.PdfReportTemplateUncheckedUpdateManyWithoutUserNestedInput
+}
+
+export type UserCreateWithoutPdfReportDesignInput = {
+  id: string
+  name: string
+  email: string
+  emailVerified?: boolean
+  image?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  role?: string
+  banned?: boolean | null
+  banReason?: string | null
+  banExpires?: Date | string | null
+  locale?: string
+  secureLoginVersion?: number
+  dailyPlans?: Prisma.DailyPlanCreateNestedManyWithoutUserInput
+  resourcesAdded?: Prisma.DepartmentResourceCreateNestedManyWithoutCreatedByInput
+  discussionNote?: Prisma.DiscussionNoteCreateNestedOneWithoutUserInput
+  ideas?: Prisma.IdeaCreateNestedManyWithoutAuthorInput
+  ideaNotes?: Prisma.IdeaNoteCreateNestedManyWithoutAuthorInput
+  feedbackAuthored?: Prisma.MentorFeedbackCreateNestedManyWithoutAuthorInput
+  reflections?: Prisma.ReflectionCreateNestedManyWithoutInternInput
+  assignmentsCreated?: Prisma.WeeklyAssignmentCreateNestedManyWithoutCreatedByInput
+  assignmentsAsIntern?: Prisma.WeeklyAssignmentCreateNestedManyWithoutInternInput
+  friendshipsSent?: Prisma.FriendshipCreateNestedManyWithoutRequesterInput
+  friendshipsReceived?: Prisma.FriendshipCreateNestedManyWithoutRecipientInput
+  directChatsFirst?: Prisma.DirectConversationCreateNestedManyWithoutFirstUserInput
+  directChatsSecond?: Prisma.DirectConversationCreateNestedManyWithoutSecondUserInput
+  chatMemberships?: Prisma.ChatMembershipCreateNestedManyWithoutUserInput
+  chatMessages?: Prisma.ChatMessageCreateNestedManyWithoutSenderInput
+  groupMemberships?: Prisma.GroupMembershipCreateNestedManyWithoutUserInput
+  groupMessages?: Prisma.GroupMessageCreateNestedManyWithoutSenderInput
+  chatEncryptionKey?: Prisma.ChatEncryptionKeyCreateNestedOneWithoutUserInput
+  accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
+  leadSearches?: Prisma.LeadSearchCreateNestedManyWithoutUserInput
+  savedLeads?: Prisma.SavedLeadCreateNestedManyWithoutUserInput
+  websiteAudits?: Prisma.WebsiteAuditCreateNestedManyWithoutUserInput
+  pdfReportTemplates?: Prisma.PdfReportTemplateCreateNestedManyWithoutUserInput
+}
+
+export type UserUncheckedCreateWithoutPdfReportDesignInput = {
+  id: string
+  name: string
+  email: string
+  emailVerified?: boolean
+  image?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  role?: string
+  banned?: boolean | null
+  banReason?: string | null
+  banExpires?: Date | string | null
+  locale?: string
+  secureLoginVersion?: number
+  dailyPlans?: Prisma.DailyPlanUncheckedCreateNestedManyWithoutUserInput
+  resourcesAdded?: Prisma.DepartmentResourceUncheckedCreateNestedManyWithoutCreatedByInput
+  discussionNote?: Prisma.DiscussionNoteUncheckedCreateNestedOneWithoutUserInput
+  ideas?: Prisma.IdeaUncheckedCreateNestedManyWithoutAuthorInput
+  ideaNotes?: Prisma.IdeaNoteUncheckedCreateNestedManyWithoutAuthorInput
+  feedbackAuthored?: Prisma.MentorFeedbackUncheckedCreateNestedManyWithoutAuthorInput
+  reflections?: Prisma.ReflectionUncheckedCreateNestedManyWithoutInternInput
+  assignmentsCreated?: Prisma.WeeklyAssignmentUncheckedCreateNestedManyWithoutCreatedByInput
+  assignmentsAsIntern?: Prisma.WeeklyAssignmentUncheckedCreateNestedManyWithoutInternInput
+  friendshipsSent?: Prisma.FriendshipUncheckedCreateNestedManyWithoutRequesterInput
+  friendshipsReceived?: Prisma.FriendshipUncheckedCreateNestedManyWithoutRecipientInput
+  directChatsFirst?: Prisma.DirectConversationUncheckedCreateNestedManyWithoutFirstUserInput
+  directChatsSecond?: Prisma.DirectConversationUncheckedCreateNestedManyWithoutSecondUserInput
+  chatMemberships?: Prisma.ChatMembershipUncheckedCreateNestedManyWithoutUserInput
+  chatMessages?: Prisma.ChatMessageUncheckedCreateNestedManyWithoutSenderInput
+  groupMemberships?: Prisma.GroupMembershipUncheckedCreateNestedManyWithoutUserInput
+  groupMessages?: Prisma.GroupMessageUncheckedCreateNestedManyWithoutSenderInput
+  chatEncryptionKey?: Prisma.ChatEncryptionKeyUncheckedCreateNestedOneWithoutUserInput
+  accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
+  leadSearches?: Prisma.LeadSearchUncheckedCreateNestedManyWithoutUserInput
+  savedLeads?: Prisma.SavedLeadUncheckedCreateNestedManyWithoutUserInput
+  websiteAudits?: Prisma.WebsiteAuditUncheckedCreateNestedManyWithoutUserInput
+  pdfReportTemplates?: Prisma.PdfReportTemplateUncheckedCreateNestedManyWithoutUserInput
+}
+
+export type UserCreateOrConnectWithoutPdfReportDesignInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutPdfReportDesignInput, Prisma.UserUncheckedCreateWithoutPdfReportDesignInput>
+}
+
+export type UserUpsertWithoutPdfReportDesignInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutPdfReportDesignInput, Prisma.UserUncheckedUpdateWithoutPdfReportDesignInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutPdfReportDesignInput, Prisma.UserUncheckedCreateWithoutPdfReportDesignInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutPdfReportDesignInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutPdfReportDesignInput, Prisma.UserUncheckedUpdateWithoutPdfReportDesignInput>
+}
+
+export type UserUpdateWithoutPdfReportDesignInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  role?: Prisma.StringFieldUpdateOperationsInput | string
+  banned?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  banReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  banExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  locale?: Prisma.StringFieldUpdateOperationsInput | string
+  secureLoginVersion?: Prisma.IntFieldUpdateOperationsInput | number
+  dailyPlans?: Prisma.DailyPlanUpdateManyWithoutUserNestedInput
+  resourcesAdded?: Prisma.DepartmentResourceUpdateManyWithoutCreatedByNestedInput
+  discussionNote?: Prisma.DiscussionNoteUpdateOneWithoutUserNestedInput
+  ideas?: Prisma.IdeaUpdateManyWithoutAuthorNestedInput
+  ideaNotes?: Prisma.IdeaNoteUpdateManyWithoutAuthorNestedInput
+  feedbackAuthored?: Prisma.MentorFeedbackUpdateManyWithoutAuthorNestedInput
+  reflections?: Prisma.ReflectionUpdateManyWithoutInternNestedInput
+  assignmentsCreated?: Prisma.WeeklyAssignmentUpdateManyWithoutCreatedByNestedInput
+  assignmentsAsIntern?: Prisma.WeeklyAssignmentUpdateManyWithoutInternNestedInput
+  friendshipsSent?: Prisma.FriendshipUpdateManyWithoutRequesterNestedInput
+  friendshipsReceived?: Prisma.FriendshipUpdateManyWithoutRecipientNestedInput
+  directChatsFirst?: Prisma.DirectConversationUpdateManyWithoutFirstUserNestedInput
+  directChatsSecond?: Prisma.DirectConversationUpdateManyWithoutSecondUserNestedInput
+  chatMemberships?: Prisma.ChatMembershipUpdateManyWithoutUserNestedInput
+  chatMessages?: Prisma.ChatMessageUpdateManyWithoutSenderNestedInput
+  groupMemberships?: Prisma.GroupMembershipUpdateManyWithoutUserNestedInput
+  groupMessages?: Prisma.GroupMessageUpdateManyWithoutSenderNestedInput
+  chatEncryptionKey?: Prisma.ChatEncryptionKeyUpdateOneWithoutUserNestedInput
+  accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
+  leadSearches?: Prisma.LeadSearchUpdateManyWithoutUserNestedInput
+  savedLeads?: Prisma.SavedLeadUpdateManyWithoutUserNestedInput
+  websiteAudits?: Prisma.WebsiteAuditUpdateManyWithoutUserNestedInput
+  pdfReportTemplates?: Prisma.PdfReportTemplateUpdateManyWithoutUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutPdfReportDesignInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  role?: Prisma.StringFieldUpdateOperationsInput | string
+  banned?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  banReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  banExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  locale?: Prisma.StringFieldUpdateOperationsInput | string
+  secureLoginVersion?: Prisma.IntFieldUpdateOperationsInput | number
+  dailyPlans?: Prisma.DailyPlanUncheckedUpdateManyWithoutUserNestedInput
+  resourcesAdded?: Prisma.DepartmentResourceUncheckedUpdateManyWithoutCreatedByNestedInput
+  discussionNote?: Prisma.DiscussionNoteUncheckedUpdateOneWithoutUserNestedInput
+  ideas?: Prisma.IdeaUncheckedUpdateManyWithoutAuthorNestedInput
+  ideaNotes?: Prisma.IdeaNoteUncheckedUpdateManyWithoutAuthorNestedInput
+  feedbackAuthored?: Prisma.MentorFeedbackUncheckedUpdateManyWithoutAuthorNestedInput
+  reflections?: Prisma.ReflectionUncheckedUpdateManyWithoutInternNestedInput
+  assignmentsCreated?: Prisma.WeeklyAssignmentUncheckedUpdateManyWithoutCreatedByNestedInput
+  assignmentsAsIntern?: Prisma.WeeklyAssignmentUncheckedUpdateManyWithoutInternNestedInput
+  friendshipsSent?: Prisma.FriendshipUncheckedUpdateManyWithoutRequesterNestedInput
+  friendshipsReceived?: Prisma.FriendshipUncheckedUpdateManyWithoutRecipientNestedInput
+  directChatsFirst?: Prisma.DirectConversationUncheckedUpdateManyWithoutFirstUserNestedInput
+  directChatsSecond?: Prisma.DirectConversationUncheckedUpdateManyWithoutSecondUserNestedInput
+  chatMemberships?: Prisma.ChatMembershipUncheckedUpdateManyWithoutUserNestedInput
+  chatMessages?: Prisma.ChatMessageUncheckedUpdateManyWithoutSenderNestedInput
+  groupMemberships?: Prisma.GroupMembershipUncheckedUpdateManyWithoutUserNestedInput
+  groupMessages?: Prisma.GroupMessageUncheckedUpdateManyWithoutSenderNestedInput
+  chatEncryptionKey?: Prisma.ChatEncryptionKeyUncheckedUpdateOneWithoutUserNestedInput
+  accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
+  leadSearches?: Prisma.LeadSearchUncheckedUpdateManyWithoutUserNestedInput
+  savedLeads?: Prisma.SavedLeadUncheckedUpdateManyWithoutUserNestedInput
+  websiteAudits?: Prisma.WebsiteAuditUncheckedUpdateManyWithoutUserNestedInput
+  pdfReportTemplates?: Prisma.PdfReportTemplateUncheckedUpdateManyWithoutUserNestedInput
+}
+
+export type UserCreateWithoutPdfReportTemplatesInput = {
+  id: string
+  name: string
+  email: string
+  emailVerified?: boolean
+  image?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  role?: string
+  banned?: boolean | null
+  banReason?: string | null
+  banExpires?: Date | string | null
+  locale?: string
+  secureLoginVersion?: number
+  dailyPlans?: Prisma.DailyPlanCreateNestedManyWithoutUserInput
+  resourcesAdded?: Prisma.DepartmentResourceCreateNestedManyWithoutCreatedByInput
+  discussionNote?: Prisma.DiscussionNoteCreateNestedOneWithoutUserInput
+  ideas?: Prisma.IdeaCreateNestedManyWithoutAuthorInput
+  ideaNotes?: Prisma.IdeaNoteCreateNestedManyWithoutAuthorInput
+  feedbackAuthored?: Prisma.MentorFeedbackCreateNestedManyWithoutAuthorInput
+  reflections?: Prisma.ReflectionCreateNestedManyWithoutInternInput
+  assignmentsCreated?: Prisma.WeeklyAssignmentCreateNestedManyWithoutCreatedByInput
+  assignmentsAsIntern?: Prisma.WeeklyAssignmentCreateNestedManyWithoutInternInput
+  friendshipsSent?: Prisma.FriendshipCreateNestedManyWithoutRequesterInput
+  friendshipsReceived?: Prisma.FriendshipCreateNestedManyWithoutRecipientInput
+  directChatsFirst?: Prisma.DirectConversationCreateNestedManyWithoutFirstUserInput
+  directChatsSecond?: Prisma.DirectConversationCreateNestedManyWithoutSecondUserInput
+  chatMemberships?: Prisma.ChatMembershipCreateNestedManyWithoutUserInput
+  chatMessages?: Prisma.ChatMessageCreateNestedManyWithoutSenderInput
+  groupMemberships?: Prisma.GroupMembershipCreateNestedManyWithoutUserInput
+  groupMessages?: Prisma.GroupMessageCreateNestedManyWithoutSenderInput
+  chatEncryptionKey?: Prisma.ChatEncryptionKeyCreateNestedOneWithoutUserInput
+  accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
+  leadSearches?: Prisma.LeadSearchCreateNestedManyWithoutUserInput
+  savedLeads?: Prisma.SavedLeadCreateNestedManyWithoutUserInput
+  websiteAudits?: Prisma.WebsiteAuditCreateNestedManyWithoutUserInput
+  pdfReportDesign?: Prisma.PdfReportDesignCreateNestedOneWithoutUserInput
+}
+
+export type UserUncheckedCreateWithoutPdfReportTemplatesInput = {
+  id: string
+  name: string
+  email: string
+  emailVerified?: boolean
+  image?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  role?: string
+  banned?: boolean | null
+  banReason?: string | null
+  banExpires?: Date | string | null
+  locale?: string
+  secureLoginVersion?: number
+  dailyPlans?: Prisma.DailyPlanUncheckedCreateNestedManyWithoutUserInput
+  resourcesAdded?: Prisma.DepartmentResourceUncheckedCreateNestedManyWithoutCreatedByInput
+  discussionNote?: Prisma.DiscussionNoteUncheckedCreateNestedOneWithoutUserInput
+  ideas?: Prisma.IdeaUncheckedCreateNestedManyWithoutAuthorInput
+  ideaNotes?: Prisma.IdeaNoteUncheckedCreateNestedManyWithoutAuthorInput
+  feedbackAuthored?: Prisma.MentorFeedbackUncheckedCreateNestedManyWithoutAuthorInput
+  reflections?: Prisma.ReflectionUncheckedCreateNestedManyWithoutInternInput
+  assignmentsCreated?: Prisma.WeeklyAssignmentUncheckedCreateNestedManyWithoutCreatedByInput
+  assignmentsAsIntern?: Prisma.WeeklyAssignmentUncheckedCreateNestedManyWithoutInternInput
+  friendshipsSent?: Prisma.FriendshipUncheckedCreateNestedManyWithoutRequesterInput
+  friendshipsReceived?: Prisma.FriendshipUncheckedCreateNestedManyWithoutRecipientInput
+  directChatsFirst?: Prisma.DirectConversationUncheckedCreateNestedManyWithoutFirstUserInput
+  directChatsSecond?: Prisma.DirectConversationUncheckedCreateNestedManyWithoutSecondUserInput
+  chatMemberships?: Prisma.ChatMembershipUncheckedCreateNestedManyWithoutUserInput
+  chatMessages?: Prisma.ChatMessageUncheckedCreateNestedManyWithoutSenderInput
+  groupMemberships?: Prisma.GroupMembershipUncheckedCreateNestedManyWithoutUserInput
+  groupMessages?: Prisma.GroupMessageUncheckedCreateNestedManyWithoutSenderInput
+  chatEncryptionKey?: Prisma.ChatEncryptionKeyUncheckedCreateNestedOneWithoutUserInput
+  accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
+  leadSearches?: Prisma.LeadSearchUncheckedCreateNestedManyWithoutUserInput
+  savedLeads?: Prisma.SavedLeadUncheckedCreateNestedManyWithoutUserInput
+  websiteAudits?: Prisma.WebsiteAuditUncheckedCreateNestedManyWithoutUserInput
+  pdfReportDesign?: Prisma.PdfReportDesignUncheckedCreateNestedOneWithoutUserInput
+}
+
+export type UserCreateOrConnectWithoutPdfReportTemplatesInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutPdfReportTemplatesInput, Prisma.UserUncheckedCreateWithoutPdfReportTemplatesInput>
+}
+
+export type UserUpsertWithoutPdfReportTemplatesInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutPdfReportTemplatesInput, Prisma.UserUncheckedUpdateWithoutPdfReportTemplatesInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutPdfReportTemplatesInput, Prisma.UserUncheckedCreateWithoutPdfReportTemplatesInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutPdfReportTemplatesInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutPdfReportTemplatesInput, Prisma.UserUncheckedUpdateWithoutPdfReportTemplatesInput>
+}
+
+export type UserUpdateWithoutPdfReportTemplatesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  role?: Prisma.StringFieldUpdateOperationsInput | string
+  banned?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  banReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  banExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  locale?: Prisma.StringFieldUpdateOperationsInput | string
+  secureLoginVersion?: Prisma.IntFieldUpdateOperationsInput | number
+  dailyPlans?: Prisma.DailyPlanUpdateManyWithoutUserNestedInput
+  resourcesAdded?: Prisma.DepartmentResourceUpdateManyWithoutCreatedByNestedInput
+  discussionNote?: Prisma.DiscussionNoteUpdateOneWithoutUserNestedInput
+  ideas?: Prisma.IdeaUpdateManyWithoutAuthorNestedInput
+  ideaNotes?: Prisma.IdeaNoteUpdateManyWithoutAuthorNestedInput
+  feedbackAuthored?: Prisma.MentorFeedbackUpdateManyWithoutAuthorNestedInput
+  reflections?: Prisma.ReflectionUpdateManyWithoutInternNestedInput
+  assignmentsCreated?: Prisma.WeeklyAssignmentUpdateManyWithoutCreatedByNestedInput
+  assignmentsAsIntern?: Prisma.WeeklyAssignmentUpdateManyWithoutInternNestedInput
+  friendshipsSent?: Prisma.FriendshipUpdateManyWithoutRequesterNestedInput
+  friendshipsReceived?: Prisma.FriendshipUpdateManyWithoutRecipientNestedInput
+  directChatsFirst?: Prisma.DirectConversationUpdateManyWithoutFirstUserNestedInput
+  directChatsSecond?: Prisma.DirectConversationUpdateManyWithoutSecondUserNestedInput
+  chatMemberships?: Prisma.ChatMembershipUpdateManyWithoutUserNestedInput
+  chatMessages?: Prisma.ChatMessageUpdateManyWithoutSenderNestedInput
+  groupMemberships?: Prisma.GroupMembershipUpdateManyWithoutUserNestedInput
+  groupMessages?: Prisma.GroupMessageUpdateManyWithoutSenderNestedInput
+  chatEncryptionKey?: Prisma.ChatEncryptionKeyUpdateOneWithoutUserNestedInput
+  accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
+  leadSearches?: Prisma.LeadSearchUpdateManyWithoutUserNestedInput
+  savedLeads?: Prisma.SavedLeadUpdateManyWithoutUserNestedInput
+  websiteAudits?: Prisma.WebsiteAuditUpdateManyWithoutUserNestedInput
+  pdfReportDesign?: Prisma.PdfReportDesignUpdateOneWithoutUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutPdfReportTemplatesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  role?: Prisma.StringFieldUpdateOperationsInput | string
+  banned?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  banReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  banExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  locale?: Prisma.StringFieldUpdateOperationsInput | string
+  secureLoginVersion?: Prisma.IntFieldUpdateOperationsInput | number
+  dailyPlans?: Prisma.DailyPlanUncheckedUpdateManyWithoutUserNestedInput
+  resourcesAdded?: Prisma.DepartmentResourceUncheckedUpdateManyWithoutCreatedByNestedInput
+  discussionNote?: Prisma.DiscussionNoteUncheckedUpdateOneWithoutUserNestedInput
+  ideas?: Prisma.IdeaUncheckedUpdateManyWithoutAuthorNestedInput
+  ideaNotes?: Prisma.IdeaNoteUncheckedUpdateManyWithoutAuthorNestedInput
+  feedbackAuthored?: Prisma.MentorFeedbackUncheckedUpdateManyWithoutAuthorNestedInput
+  reflections?: Prisma.ReflectionUncheckedUpdateManyWithoutInternNestedInput
+  assignmentsCreated?: Prisma.WeeklyAssignmentUncheckedUpdateManyWithoutCreatedByNestedInput
+  assignmentsAsIntern?: Prisma.WeeklyAssignmentUncheckedUpdateManyWithoutInternNestedInput
+  friendshipsSent?: Prisma.FriendshipUncheckedUpdateManyWithoutRequesterNestedInput
+  friendshipsReceived?: Prisma.FriendshipUncheckedUpdateManyWithoutRecipientNestedInput
+  directChatsFirst?: Prisma.DirectConversationUncheckedUpdateManyWithoutFirstUserNestedInput
+  directChatsSecond?: Prisma.DirectConversationUncheckedUpdateManyWithoutSecondUserNestedInput
+  chatMemberships?: Prisma.ChatMembershipUncheckedUpdateManyWithoutUserNestedInput
+  chatMessages?: Prisma.ChatMessageUncheckedUpdateManyWithoutSenderNestedInput
+  groupMemberships?: Prisma.GroupMembershipUncheckedUpdateManyWithoutUserNestedInput
+  groupMessages?: Prisma.GroupMessageUncheckedUpdateManyWithoutSenderNestedInput
+  chatEncryptionKey?: Prisma.ChatEncryptionKeyUncheckedUpdateOneWithoutUserNestedInput
+  accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
+  leadSearches?: Prisma.LeadSearchUncheckedUpdateManyWithoutUserNestedInput
+  savedLeads?: Prisma.SavedLeadUncheckedUpdateManyWithoutUserNestedInput
+  websiteAudits?: Prisma.WebsiteAuditUncheckedUpdateManyWithoutUserNestedInput
+  pdfReportDesign?: Prisma.PdfReportDesignUncheckedUpdateOneWithoutUserNestedInput
 }
 
 export type UserCreateWithoutSessionsInput = {
@@ -2402,6 +3567,11 @@ export type UserCreateWithoutSessionsInput = {
   groupMessages?: Prisma.GroupMessageCreateNestedManyWithoutSenderInput
   chatEncryptionKey?: Prisma.ChatEncryptionKeyCreateNestedOneWithoutUserInput
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
+  leadSearches?: Prisma.LeadSearchCreateNestedManyWithoutUserInput
+  savedLeads?: Prisma.SavedLeadCreateNestedManyWithoutUserInput
+  websiteAudits?: Prisma.WebsiteAuditCreateNestedManyWithoutUserInput
+  pdfReportDesign?: Prisma.PdfReportDesignCreateNestedOneWithoutUserInput
+  pdfReportTemplates?: Prisma.PdfReportTemplateCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutSessionsInput = {
@@ -2437,6 +3607,11 @@ export type UserUncheckedCreateWithoutSessionsInput = {
   groupMessages?: Prisma.GroupMessageUncheckedCreateNestedManyWithoutSenderInput
   chatEncryptionKey?: Prisma.ChatEncryptionKeyUncheckedCreateNestedOneWithoutUserInput
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
+  leadSearches?: Prisma.LeadSearchUncheckedCreateNestedManyWithoutUserInput
+  savedLeads?: Prisma.SavedLeadUncheckedCreateNestedManyWithoutUserInput
+  websiteAudits?: Prisma.WebsiteAuditUncheckedCreateNestedManyWithoutUserInput
+  pdfReportDesign?: Prisma.PdfReportDesignUncheckedCreateNestedOneWithoutUserInput
+  pdfReportTemplates?: Prisma.PdfReportTemplateUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutSessionsInput = {
@@ -2488,6 +3663,11 @@ export type UserUpdateWithoutSessionsInput = {
   groupMessages?: Prisma.GroupMessageUpdateManyWithoutSenderNestedInput
   chatEncryptionKey?: Prisma.ChatEncryptionKeyUpdateOneWithoutUserNestedInput
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
+  leadSearches?: Prisma.LeadSearchUpdateManyWithoutUserNestedInput
+  savedLeads?: Prisma.SavedLeadUpdateManyWithoutUserNestedInput
+  websiteAudits?: Prisma.WebsiteAuditUpdateManyWithoutUserNestedInput
+  pdfReportDesign?: Prisma.PdfReportDesignUpdateOneWithoutUserNestedInput
+  pdfReportTemplates?: Prisma.PdfReportTemplateUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutSessionsInput = {
@@ -2523,6 +3703,11 @@ export type UserUncheckedUpdateWithoutSessionsInput = {
   groupMessages?: Prisma.GroupMessageUncheckedUpdateManyWithoutSenderNestedInput
   chatEncryptionKey?: Prisma.ChatEncryptionKeyUncheckedUpdateOneWithoutUserNestedInput
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
+  leadSearches?: Prisma.LeadSearchUncheckedUpdateManyWithoutUserNestedInput
+  savedLeads?: Prisma.SavedLeadUncheckedUpdateManyWithoutUserNestedInput
+  websiteAudits?: Prisma.WebsiteAuditUncheckedUpdateManyWithoutUserNestedInput
+  pdfReportDesign?: Prisma.PdfReportDesignUncheckedUpdateOneWithoutUserNestedInput
+  pdfReportTemplates?: Prisma.PdfReportTemplateUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutAccountsInput = {
@@ -2558,6 +3743,11 @@ export type UserCreateWithoutAccountsInput = {
   groupMessages?: Prisma.GroupMessageCreateNestedManyWithoutSenderInput
   chatEncryptionKey?: Prisma.ChatEncryptionKeyCreateNestedOneWithoutUserInput
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
+  leadSearches?: Prisma.LeadSearchCreateNestedManyWithoutUserInput
+  savedLeads?: Prisma.SavedLeadCreateNestedManyWithoutUserInput
+  websiteAudits?: Prisma.WebsiteAuditCreateNestedManyWithoutUserInput
+  pdfReportDesign?: Prisma.PdfReportDesignCreateNestedOneWithoutUserInput
+  pdfReportTemplates?: Prisma.PdfReportTemplateCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutAccountsInput = {
@@ -2593,6 +3783,11 @@ export type UserUncheckedCreateWithoutAccountsInput = {
   groupMessages?: Prisma.GroupMessageUncheckedCreateNestedManyWithoutSenderInput
   chatEncryptionKey?: Prisma.ChatEncryptionKeyUncheckedCreateNestedOneWithoutUserInput
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
+  leadSearches?: Prisma.LeadSearchUncheckedCreateNestedManyWithoutUserInput
+  savedLeads?: Prisma.SavedLeadUncheckedCreateNestedManyWithoutUserInput
+  websiteAudits?: Prisma.WebsiteAuditUncheckedCreateNestedManyWithoutUserInput
+  pdfReportDesign?: Prisma.PdfReportDesignUncheckedCreateNestedOneWithoutUserInput
+  pdfReportTemplates?: Prisma.PdfReportTemplateUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutAccountsInput = {
@@ -2644,6 +3839,11 @@ export type UserUpdateWithoutAccountsInput = {
   groupMessages?: Prisma.GroupMessageUpdateManyWithoutSenderNestedInput
   chatEncryptionKey?: Prisma.ChatEncryptionKeyUpdateOneWithoutUserNestedInput
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
+  leadSearches?: Prisma.LeadSearchUpdateManyWithoutUserNestedInput
+  savedLeads?: Prisma.SavedLeadUpdateManyWithoutUserNestedInput
+  websiteAudits?: Prisma.WebsiteAuditUpdateManyWithoutUserNestedInput
+  pdfReportDesign?: Prisma.PdfReportDesignUpdateOneWithoutUserNestedInput
+  pdfReportTemplates?: Prisma.PdfReportTemplateUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutAccountsInput = {
@@ -2679,6 +3879,11 @@ export type UserUncheckedUpdateWithoutAccountsInput = {
   groupMessages?: Prisma.GroupMessageUncheckedUpdateManyWithoutSenderNestedInput
   chatEncryptionKey?: Prisma.ChatEncryptionKeyUncheckedUpdateOneWithoutUserNestedInput
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
+  leadSearches?: Prisma.LeadSearchUncheckedUpdateManyWithoutUserNestedInput
+  savedLeads?: Prisma.SavedLeadUncheckedUpdateManyWithoutUserNestedInput
+  websiteAudits?: Prisma.WebsiteAuditUncheckedUpdateManyWithoutUserNestedInput
+  pdfReportDesign?: Prisma.PdfReportDesignUncheckedUpdateOneWithoutUserNestedInput
+  pdfReportTemplates?: Prisma.PdfReportTemplateUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutDirectChatsFirstInput = {
@@ -2714,6 +3919,11 @@ export type UserCreateWithoutDirectChatsFirstInput = {
   chatEncryptionKey?: Prisma.ChatEncryptionKeyCreateNestedOneWithoutUserInput
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
+  leadSearches?: Prisma.LeadSearchCreateNestedManyWithoutUserInput
+  savedLeads?: Prisma.SavedLeadCreateNestedManyWithoutUserInput
+  websiteAudits?: Prisma.WebsiteAuditCreateNestedManyWithoutUserInput
+  pdfReportDesign?: Prisma.PdfReportDesignCreateNestedOneWithoutUserInput
+  pdfReportTemplates?: Prisma.PdfReportTemplateCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutDirectChatsFirstInput = {
@@ -2749,6 +3959,11 @@ export type UserUncheckedCreateWithoutDirectChatsFirstInput = {
   chatEncryptionKey?: Prisma.ChatEncryptionKeyUncheckedCreateNestedOneWithoutUserInput
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
+  leadSearches?: Prisma.LeadSearchUncheckedCreateNestedManyWithoutUserInput
+  savedLeads?: Prisma.SavedLeadUncheckedCreateNestedManyWithoutUserInput
+  websiteAudits?: Prisma.WebsiteAuditUncheckedCreateNestedManyWithoutUserInput
+  pdfReportDesign?: Prisma.PdfReportDesignUncheckedCreateNestedOneWithoutUserInput
+  pdfReportTemplates?: Prisma.PdfReportTemplateUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutDirectChatsFirstInput = {
@@ -2789,6 +4004,11 @@ export type UserCreateWithoutDirectChatsSecondInput = {
   chatEncryptionKey?: Prisma.ChatEncryptionKeyCreateNestedOneWithoutUserInput
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
+  leadSearches?: Prisma.LeadSearchCreateNestedManyWithoutUserInput
+  savedLeads?: Prisma.SavedLeadCreateNestedManyWithoutUserInput
+  websiteAudits?: Prisma.WebsiteAuditCreateNestedManyWithoutUserInput
+  pdfReportDesign?: Prisma.PdfReportDesignCreateNestedOneWithoutUserInput
+  pdfReportTemplates?: Prisma.PdfReportTemplateCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutDirectChatsSecondInput = {
@@ -2824,6 +4044,11 @@ export type UserUncheckedCreateWithoutDirectChatsSecondInput = {
   chatEncryptionKey?: Prisma.ChatEncryptionKeyUncheckedCreateNestedOneWithoutUserInput
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
+  leadSearches?: Prisma.LeadSearchUncheckedCreateNestedManyWithoutUserInput
+  savedLeads?: Prisma.SavedLeadUncheckedCreateNestedManyWithoutUserInput
+  websiteAudits?: Prisma.WebsiteAuditUncheckedCreateNestedManyWithoutUserInput
+  pdfReportDesign?: Prisma.PdfReportDesignUncheckedCreateNestedOneWithoutUserInput
+  pdfReportTemplates?: Prisma.PdfReportTemplateUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutDirectChatsSecondInput = {
@@ -2875,6 +4100,11 @@ export type UserUpdateWithoutDirectChatsFirstInput = {
   chatEncryptionKey?: Prisma.ChatEncryptionKeyUpdateOneWithoutUserNestedInput
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
+  leadSearches?: Prisma.LeadSearchUpdateManyWithoutUserNestedInput
+  savedLeads?: Prisma.SavedLeadUpdateManyWithoutUserNestedInput
+  websiteAudits?: Prisma.WebsiteAuditUpdateManyWithoutUserNestedInput
+  pdfReportDesign?: Prisma.PdfReportDesignUpdateOneWithoutUserNestedInput
+  pdfReportTemplates?: Prisma.PdfReportTemplateUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutDirectChatsFirstInput = {
@@ -2910,6 +4140,11 @@ export type UserUncheckedUpdateWithoutDirectChatsFirstInput = {
   chatEncryptionKey?: Prisma.ChatEncryptionKeyUncheckedUpdateOneWithoutUserNestedInput
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
+  leadSearches?: Prisma.LeadSearchUncheckedUpdateManyWithoutUserNestedInput
+  savedLeads?: Prisma.SavedLeadUncheckedUpdateManyWithoutUserNestedInput
+  websiteAudits?: Prisma.WebsiteAuditUncheckedUpdateManyWithoutUserNestedInput
+  pdfReportDesign?: Prisma.PdfReportDesignUncheckedUpdateOneWithoutUserNestedInput
+  pdfReportTemplates?: Prisma.PdfReportTemplateUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserUpsertWithoutDirectChatsSecondInput = {
@@ -2956,6 +4191,11 @@ export type UserUpdateWithoutDirectChatsSecondInput = {
   chatEncryptionKey?: Prisma.ChatEncryptionKeyUpdateOneWithoutUserNestedInput
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
+  leadSearches?: Prisma.LeadSearchUpdateManyWithoutUserNestedInput
+  savedLeads?: Prisma.SavedLeadUpdateManyWithoutUserNestedInput
+  websiteAudits?: Prisma.WebsiteAuditUpdateManyWithoutUserNestedInput
+  pdfReportDesign?: Prisma.PdfReportDesignUpdateOneWithoutUserNestedInput
+  pdfReportTemplates?: Prisma.PdfReportTemplateUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutDirectChatsSecondInput = {
@@ -2991,6 +4231,11 @@ export type UserUncheckedUpdateWithoutDirectChatsSecondInput = {
   chatEncryptionKey?: Prisma.ChatEncryptionKeyUncheckedUpdateOneWithoutUserNestedInput
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
+  leadSearches?: Prisma.LeadSearchUncheckedUpdateManyWithoutUserNestedInput
+  savedLeads?: Prisma.SavedLeadUncheckedUpdateManyWithoutUserNestedInput
+  websiteAudits?: Prisma.WebsiteAuditUncheckedUpdateManyWithoutUserNestedInput
+  pdfReportDesign?: Prisma.PdfReportDesignUncheckedUpdateOneWithoutUserNestedInput
+  pdfReportTemplates?: Prisma.PdfReportTemplateUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutChatMembershipsInput = {
@@ -3026,6 +4271,11 @@ export type UserCreateWithoutChatMembershipsInput = {
   chatEncryptionKey?: Prisma.ChatEncryptionKeyCreateNestedOneWithoutUserInput
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
+  leadSearches?: Prisma.LeadSearchCreateNestedManyWithoutUserInput
+  savedLeads?: Prisma.SavedLeadCreateNestedManyWithoutUserInput
+  websiteAudits?: Prisma.WebsiteAuditCreateNestedManyWithoutUserInput
+  pdfReportDesign?: Prisma.PdfReportDesignCreateNestedOneWithoutUserInput
+  pdfReportTemplates?: Prisma.PdfReportTemplateCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutChatMembershipsInput = {
@@ -3061,6 +4311,11 @@ export type UserUncheckedCreateWithoutChatMembershipsInput = {
   chatEncryptionKey?: Prisma.ChatEncryptionKeyUncheckedCreateNestedOneWithoutUserInput
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
+  leadSearches?: Prisma.LeadSearchUncheckedCreateNestedManyWithoutUserInput
+  savedLeads?: Prisma.SavedLeadUncheckedCreateNestedManyWithoutUserInput
+  websiteAudits?: Prisma.WebsiteAuditUncheckedCreateNestedManyWithoutUserInput
+  pdfReportDesign?: Prisma.PdfReportDesignUncheckedCreateNestedOneWithoutUserInput
+  pdfReportTemplates?: Prisma.PdfReportTemplateUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutChatMembershipsInput = {
@@ -3112,6 +4367,11 @@ export type UserUpdateWithoutChatMembershipsInput = {
   chatEncryptionKey?: Prisma.ChatEncryptionKeyUpdateOneWithoutUserNestedInput
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
+  leadSearches?: Prisma.LeadSearchUpdateManyWithoutUserNestedInput
+  savedLeads?: Prisma.SavedLeadUpdateManyWithoutUserNestedInput
+  websiteAudits?: Prisma.WebsiteAuditUpdateManyWithoutUserNestedInput
+  pdfReportDesign?: Prisma.PdfReportDesignUpdateOneWithoutUserNestedInput
+  pdfReportTemplates?: Prisma.PdfReportTemplateUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutChatMembershipsInput = {
@@ -3147,6 +4407,11 @@ export type UserUncheckedUpdateWithoutChatMembershipsInput = {
   chatEncryptionKey?: Prisma.ChatEncryptionKeyUncheckedUpdateOneWithoutUserNestedInput
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
+  leadSearches?: Prisma.LeadSearchUncheckedUpdateManyWithoutUserNestedInput
+  savedLeads?: Prisma.SavedLeadUncheckedUpdateManyWithoutUserNestedInput
+  websiteAudits?: Prisma.WebsiteAuditUncheckedUpdateManyWithoutUserNestedInput
+  pdfReportDesign?: Prisma.PdfReportDesignUncheckedUpdateOneWithoutUserNestedInput
+  pdfReportTemplates?: Prisma.PdfReportTemplateUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutChatMessagesInput = {
@@ -3182,6 +4447,11 @@ export type UserCreateWithoutChatMessagesInput = {
   chatEncryptionKey?: Prisma.ChatEncryptionKeyCreateNestedOneWithoutUserInput
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
+  leadSearches?: Prisma.LeadSearchCreateNestedManyWithoutUserInput
+  savedLeads?: Prisma.SavedLeadCreateNestedManyWithoutUserInput
+  websiteAudits?: Prisma.WebsiteAuditCreateNestedManyWithoutUserInput
+  pdfReportDesign?: Prisma.PdfReportDesignCreateNestedOneWithoutUserInput
+  pdfReportTemplates?: Prisma.PdfReportTemplateCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutChatMessagesInput = {
@@ -3217,6 +4487,11 @@ export type UserUncheckedCreateWithoutChatMessagesInput = {
   chatEncryptionKey?: Prisma.ChatEncryptionKeyUncheckedCreateNestedOneWithoutUserInput
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
+  leadSearches?: Prisma.LeadSearchUncheckedCreateNestedManyWithoutUserInput
+  savedLeads?: Prisma.SavedLeadUncheckedCreateNestedManyWithoutUserInput
+  websiteAudits?: Prisma.WebsiteAuditUncheckedCreateNestedManyWithoutUserInput
+  pdfReportDesign?: Prisma.PdfReportDesignUncheckedCreateNestedOneWithoutUserInput
+  pdfReportTemplates?: Prisma.PdfReportTemplateUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutChatMessagesInput = {
@@ -3268,6 +4543,11 @@ export type UserUpdateWithoutChatMessagesInput = {
   chatEncryptionKey?: Prisma.ChatEncryptionKeyUpdateOneWithoutUserNestedInput
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
+  leadSearches?: Prisma.LeadSearchUpdateManyWithoutUserNestedInput
+  savedLeads?: Prisma.SavedLeadUpdateManyWithoutUserNestedInput
+  websiteAudits?: Prisma.WebsiteAuditUpdateManyWithoutUserNestedInput
+  pdfReportDesign?: Prisma.PdfReportDesignUpdateOneWithoutUserNestedInput
+  pdfReportTemplates?: Prisma.PdfReportTemplateUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutChatMessagesInput = {
@@ -3303,6 +4583,11 @@ export type UserUncheckedUpdateWithoutChatMessagesInput = {
   chatEncryptionKey?: Prisma.ChatEncryptionKeyUncheckedUpdateOneWithoutUserNestedInput
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
+  leadSearches?: Prisma.LeadSearchUncheckedUpdateManyWithoutUserNestedInput
+  savedLeads?: Prisma.SavedLeadUncheckedUpdateManyWithoutUserNestedInput
+  websiteAudits?: Prisma.WebsiteAuditUncheckedUpdateManyWithoutUserNestedInput
+  pdfReportDesign?: Prisma.PdfReportDesignUncheckedUpdateOneWithoutUserNestedInput
+  pdfReportTemplates?: Prisma.PdfReportTemplateUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutFriendshipsSentInput = {
@@ -3338,6 +4623,11 @@ export type UserCreateWithoutFriendshipsSentInput = {
   chatEncryptionKey?: Prisma.ChatEncryptionKeyCreateNestedOneWithoutUserInput
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
+  leadSearches?: Prisma.LeadSearchCreateNestedManyWithoutUserInput
+  savedLeads?: Prisma.SavedLeadCreateNestedManyWithoutUserInput
+  websiteAudits?: Prisma.WebsiteAuditCreateNestedManyWithoutUserInput
+  pdfReportDesign?: Prisma.PdfReportDesignCreateNestedOneWithoutUserInput
+  pdfReportTemplates?: Prisma.PdfReportTemplateCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutFriendshipsSentInput = {
@@ -3373,6 +4663,11 @@ export type UserUncheckedCreateWithoutFriendshipsSentInput = {
   chatEncryptionKey?: Prisma.ChatEncryptionKeyUncheckedCreateNestedOneWithoutUserInput
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
+  leadSearches?: Prisma.LeadSearchUncheckedCreateNestedManyWithoutUserInput
+  savedLeads?: Prisma.SavedLeadUncheckedCreateNestedManyWithoutUserInput
+  websiteAudits?: Prisma.WebsiteAuditUncheckedCreateNestedManyWithoutUserInput
+  pdfReportDesign?: Prisma.PdfReportDesignUncheckedCreateNestedOneWithoutUserInput
+  pdfReportTemplates?: Prisma.PdfReportTemplateUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutFriendshipsSentInput = {
@@ -3413,6 +4708,11 @@ export type UserCreateWithoutFriendshipsReceivedInput = {
   chatEncryptionKey?: Prisma.ChatEncryptionKeyCreateNestedOneWithoutUserInput
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
+  leadSearches?: Prisma.LeadSearchCreateNestedManyWithoutUserInput
+  savedLeads?: Prisma.SavedLeadCreateNestedManyWithoutUserInput
+  websiteAudits?: Prisma.WebsiteAuditCreateNestedManyWithoutUserInput
+  pdfReportDesign?: Prisma.PdfReportDesignCreateNestedOneWithoutUserInput
+  pdfReportTemplates?: Prisma.PdfReportTemplateCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutFriendshipsReceivedInput = {
@@ -3448,6 +4748,11 @@ export type UserUncheckedCreateWithoutFriendshipsReceivedInput = {
   chatEncryptionKey?: Prisma.ChatEncryptionKeyUncheckedCreateNestedOneWithoutUserInput
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
+  leadSearches?: Prisma.LeadSearchUncheckedCreateNestedManyWithoutUserInput
+  savedLeads?: Prisma.SavedLeadUncheckedCreateNestedManyWithoutUserInput
+  websiteAudits?: Prisma.WebsiteAuditUncheckedCreateNestedManyWithoutUserInput
+  pdfReportDesign?: Prisma.PdfReportDesignUncheckedCreateNestedOneWithoutUserInput
+  pdfReportTemplates?: Prisma.PdfReportTemplateUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutFriendshipsReceivedInput = {
@@ -3499,6 +4804,11 @@ export type UserUpdateWithoutFriendshipsSentInput = {
   chatEncryptionKey?: Prisma.ChatEncryptionKeyUpdateOneWithoutUserNestedInput
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
+  leadSearches?: Prisma.LeadSearchUpdateManyWithoutUserNestedInput
+  savedLeads?: Prisma.SavedLeadUpdateManyWithoutUserNestedInput
+  websiteAudits?: Prisma.WebsiteAuditUpdateManyWithoutUserNestedInput
+  pdfReportDesign?: Prisma.PdfReportDesignUpdateOneWithoutUserNestedInput
+  pdfReportTemplates?: Prisma.PdfReportTemplateUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutFriendshipsSentInput = {
@@ -3534,6 +4844,11 @@ export type UserUncheckedUpdateWithoutFriendshipsSentInput = {
   chatEncryptionKey?: Prisma.ChatEncryptionKeyUncheckedUpdateOneWithoutUserNestedInput
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
+  leadSearches?: Prisma.LeadSearchUncheckedUpdateManyWithoutUserNestedInput
+  savedLeads?: Prisma.SavedLeadUncheckedUpdateManyWithoutUserNestedInput
+  websiteAudits?: Prisma.WebsiteAuditUncheckedUpdateManyWithoutUserNestedInput
+  pdfReportDesign?: Prisma.PdfReportDesignUncheckedUpdateOneWithoutUserNestedInput
+  pdfReportTemplates?: Prisma.PdfReportTemplateUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserUpsertWithoutFriendshipsReceivedInput = {
@@ -3580,6 +4895,11 @@ export type UserUpdateWithoutFriendshipsReceivedInput = {
   chatEncryptionKey?: Prisma.ChatEncryptionKeyUpdateOneWithoutUserNestedInput
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
+  leadSearches?: Prisma.LeadSearchUpdateManyWithoutUserNestedInput
+  savedLeads?: Prisma.SavedLeadUpdateManyWithoutUserNestedInput
+  websiteAudits?: Prisma.WebsiteAuditUpdateManyWithoutUserNestedInput
+  pdfReportDesign?: Prisma.PdfReportDesignUpdateOneWithoutUserNestedInput
+  pdfReportTemplates?: Prisma.PdfReportTemplateUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutFriendshipsReceivedInput = {
@@ -3615,6 +4935,11 @@ export type UserUncheckedUpdateWithoutFriendshipsReceivedInput = {
   chatEncryptionKey?: Prisma.ChatEncryptionKeyUncheckedUpdateOneWithoutUserNestedInput
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
+  leadSearches?: Prisma.LeadSearchUncheckedUpdateManyWithoutUserNestedInput
+  savedLeads?: Prisma.SavedLeadUncheckedUpdateManyWithoutUserNestedInput
+  websiteAudits?: Prisma.WebsiteAuditUncheckedUpdateManyWithoutUserNestedInput
+  pdfReportDesign?: Prisma.PdfReportDesignUncheckedUpdateOneWithoutUserNestedInput
+  pdfReportTemplates?: Prisma.PdfReportTemplateUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutChatEncryptionKeyInput = {
@@ -3650,6 +4975,11 @@ export type UserCreateWithoutChatEncryptionKeyInput = {
   groupMessages?: Prisma.GroupMessageCreateNestedManyWithoutSenderInput
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
+  leadSearches?: Prisma.LeadSearchCreateNestedManyWithoutUserInput
+  savedLeads?: Prisma.SavedLeadCreateNestedManyWithoutUserInput
+  websiteAudits?: Prisma.WebsiteAuditCreateNestedManyWithoutUserInput
+  pdfReportDesign?: Prisma.PdfReportDesignCreateNestedOneWithoutUserInput
+  pdfReportTemplates?: Prisma.PdfReportTemplateCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutChatEncryptionKeyInput = {
@@ -3685,6 +5015,11 @@ export type UserUncheckedCreateWithoutChatEncryptionKeyInput = {
   groupMessages?: Prisma.GroupMessageUncheckedCreateNestedManyWithoutSenderInput
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
+  leadSearches?: Prisma.LeadSearchUncheckedCreateNestedManyWithoutUserInput
+  savedLeads?: Prisma.SavedLeadUncheckedCreateNestedManyWithoutUserInput
+  websiteAudits?: Prisma.WebsiteAuditUncheckedCreateNestedManyWithoutUserInput
+  pdfReportDesign?: Prisma.PdfReportDesignUncheckedCreateNestedOneWithoutUserInput
+  pdfReportTemplates?: Prisma.PdfReportTemplateUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutChatEncryptionKeyInput = {
@@ -3736,6 +5071,11 @@ export type UserUpdateWithoutChatEncryptionKeyInput = {
   groupMessages?: Prisma.GroupMessageUpdateManyWithoutSenderNestedInput
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
+  leadSearches?: Prisma.LeadSearchUpdateManyWithoutUserNestedInput
+  savedLeads?: Prisma.SavedLeadUpdateManyWithoutUserNestedInput
+  websiteAudits?: Prisma.WebsiteAuditUpdateManyWithoutUserNestedInput
+  pdfReportDesign?: Prisma.PdfReportDesignUpdateOneWithoutUserNestedInput
+  pdfReportTemplates?: Prisma.PdfReportTemplateUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutChatEncryptionKeyInput = {
@@ -3771,6 +5111,11 @@ export type UserUncheckedUpdateWithoutChatEncryptionKeyInput = {
   groupMessages?: Prisma.GroupMessageUncheckedUpdateManyWithoutSenderNestedInput
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
+  leadSearches?: Prisma.LeadSearchUncheckedUpdateManyWithoutUserNestedInput
+  savedLeads?: Prisma.SavedLeadUncheckedUpdateManyWithoutUserNestedInput
+  websiteAudits?: Prisma.WebsiteAuditUncheckedUpdateManyWithoutUserNestedInput
+  pdfReportDesign?: Prisma.PdfReportDesignUncheckedUpdateOneWithoutUserNestedInput
+  pdfReportTemplates?: Prisma.PdfReportTemplateUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutGroupMembershipsInput = {
@@ -3806,6 +5151,11 @@ export type UserCreateWithoutGroupMembershipsInput = {
   chatEncryptionKey?: Prisma.ChatEncryptionKeyCreateNestedOneWithoutUserInput
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
+  leadSearches?: Prisma.LeadSearchCreateNestedManyWithoutUserInput
+  savedLeads?: Prisma.SavedLeadCreateNestedManyWithoutUserInput
+  websiteAudits?: Prisma.WebsiteAuditCreateNestedManyWithoutUserInput
+  pdfReportDesign?: Prisma.PdfReportDesignCreateNestedOneWithoutUserInput
+  pdfReportTemplates?: Prisma.PdfReportTemplateCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutGroupMembershipsInput = {
@@ -3841,6 +5191,11 @@ export type UserUncheckedCreateWithoutGroupMembershipsInput = {
   chatEncryptionKey?: Prisma.ChatEncryptionKeyUncheckedCreateNestedOneWithoutUserInput
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
+  leadSearches?: Prisma.LeadSearchUncheckedCreateNestedManyWithoutUserInput
+  savedLeads?: Prisma.SavedLeadUncheckedCreateNestedManyWithoutUserInput
+  websiteAudits?: Prisma.WebsiteAuditUncheckedCreateNestedManyWithoutUserInput
+  pdfReportDesign?: Prisma.PdfReportDesignUncheckedCreateNestedOneWithoutUserInput
+  pdfReportTemplates?: Prisma.PdfReportTemplateUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutGroupMembershipsInput = {
@@ -3892,6 +5247,11 @@ export type UserUpdateWithoutGroupMembershipsInput = {
   chatEncryptionKey?: Prisma.ChatEncryptionKeyUpdateOneWithoutUserNestedInput
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
+  leadSearches?: Prisma.LeadSearchUpdateManyWithoutUserNestedInput
+  savedLeads?: Prisma.SavedLeadUpdateManyWithoutUserNestedInput
+  websiteAudits?: Prisma.WebsiteAuditUpdateManyWithoutUserNestedInput
+  pdfReportDesign?: Prisma.PdfReportDesignUpdateOneWithoutUserNestedInput
+  pdfReportTemplates?: Prisma.PdfReportTemplateUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutGroupMembershipsInput = {
@@ -3927,6 +5287,11 @@ export type UserUncheckedUpdateWithoutGroupMembershipsInput = {
   chatEncryptionKey?: Prisma.ChatEncryptionKeyUncheckedUpdateOneWithoutUserNestedInput
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
+  leadSearches?: Prisma.LeadSearchUncheckedUpdateManyWithoutUserNestedInput
+  savedLeads?: Prisma.SavedLeadUncheckedUpdateManyWithoutUserNestedInput
+  websiteAudits?: Prisma.WebsiteAuditUncheckedUpdateManyWithoutUserNestedInput
+  pdfReportDesign?: Prisma.PdfReportDesignUncheckedUpdateOneWithoutUserNestedInput
+  pdfReportTemplates?: Prisma.PdfReportTemplateUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutGroupMessagesInput = {
@@ -3962,6 +5327,11 @@ export type UserCreateWithoutGroupMessagesInput = {
   chatEncryptionKey?: Prisma.ChatEncryptionKeyCreateNestedOneWithoutUserInput
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
+  leadSearches?: Prisma.LeadSearchCreateNestedManyWithoutUserInput
+  savedLeads?: Prisma.SavedLeadCreateNestedManyWithoutUserInput
+  websiteAudits?: Prisma.WebsiteAuditCreateNestedManyWithoutUserInput
+  pdfReportDesign?: Prisma.PdfReportDesignCreateNestedOneWithoutUserInput
+  pdfReportTemplates?: Prisma.PdfReportTemplateCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutGroupMessagesInput = {
@@ -3997,6 +5367,11 @@ export type UserUncheckedCreateWithoutGroupMessagesInput = {
   chatEncryptionKey?: Prisma.ChatEncryptionKeyUncheckedCreateNestedOneWithoutUserInput
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
+  leadSearches?: Prisma.LeadSearchUncheckedCreateNestedManyWithoutUserInput
+  savedLeads?: Prisma.SavedLeadUncheckedCreateNestedManyWithoutUserInput
+  websiteAudits?: Prisma.WebsiteAuditUncheckedCreateNestedManyWithoutUserInput
+  pdfReportDesign?: Prisma.PdfReportDesignUncheckedCreateNestedOneWithoutUserInput
+  pdfReportTemplates?: Prisma.PdfReportTemplateUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutGroupMessagesInput = {
@@ -4048,6 +5423,11 @@ export type UserUpdateWithoutGroupMessagesInput = {
   chatEncryptionKey?: Prisma.ChatEncryptionKeyUpdateOneWithoutUserNestedInput
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
+  leadSearches?: Prisma.LeadSearchUpdateManyWithoutUserNestedInput
+  savedLeads?: Prisma.SavedLeadUpdateManyWithoutUserNestedInput
+  websiteAudits?: Prisma.WebsiteAuditUpdateManyWithoutUserNestedInput
+  pdfReportDesign?: Prisma.PdfReportDesignUpdateOneWithoutUserNestedInput
+  pdfReportTemplates?: Prisma.PdfReportTemplateUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutGroupMessagesInput = {
@@ -4083,6 +5463,11 @@ export type UserUncheckedUpdateWithoutGroupMessagesInput = {
   chatEncryptionKey?: Prisma.ChatEncryptionKeyUncheckedUpdateOneWithoutUserNestedInput
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
+  leadSearches?: Prisma.LeadSearchUncheckedUpdateManyWithoutUserNestedInput
+  savedLeads?: Prisma.SavedLeadUncheckedUpdateManyWithoutUserNestedInput
+  websiteAudits?: Prisma.WebsiteAuditUncheckedUpdateManyWithoutUserNestedInput
+  pdfReportDesign?: Prisma.PdfReportDesignUncheckedUpdateOneWithoutUserNestedInput
+  pdfReportTemplates?: Prisma.PdfReportTemplateUncheckedUpdateManyWithoutUserNestedInput
 }
 
 
@@ -4109,6 +5494,10 @@ export type UserCountOutputType = {
   groupMessages: number
   accounts: number
   sessions: number
+  leadSearches: number
+  savedLeads: number
+  websiteAudits: number
+  pdfReportTemplates: number
 }
 
 export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -4130,6 +5519,10 @@ export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.I
   groupMessages?: boolean | UserCountOutputTypeCountGroupMessagesArgs
   accounts?: boolean | UserCountOutputTypeCountAccountsArgs
   sessions?: boolean | UserCountOutputTypeCountSessionsArgs
+  leadSearches?: boolean | UserCountOutputTypeCountLeadSearchesArgs
+  savedLeads?: boolean | UserCountOutputTypeCountSavedLeadsArgs
+  websiteAudits?: boolean | UserCountOutputTypeCountWebsiteAuditsArgs
+  pdfReportTemplates?: boolean | UserCountOutputTypeCountPdfReportTemplatesArgs
 }
 
 /**
@@ -4268,6 +5661,34 @@ export type UserCountOutputTypeCountSessionsArgs<ExtArgs extends runtime.Types.E
   where?: Prisma.SessionWhereInput
 }
 
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountLeadSearchesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.LeadSearchWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountSavedLeadsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.SavedLeadWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountWebsiteAuditsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.WebsiteAuditWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountPdfReportTemplatesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.PdfReportTemplateWhereInput
+}
+
 
 export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -4303,6 +5724,11 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   chatEncryptionKey?: boolean | Prisma.User$chatEncryptionKeyArgs<ExtArgs>
   accounts?: boolean | Prisma.User$accountsArgs<ExtArgs>
   sessions?: boolean | Prisma.User$sessionsArgs<ExtArgs>
+  leadSearches?: boolean | Prisma.User$leadSearchesArgs<ExtArgs>
+  savedLeads?: boolean | Prisma.User$savedLeadsArgs<ExtArgs>
+  websiteAudits?: boolean | Prisma.User$websiteAuditsArgs<ExtArgs>
+  pdfReportDesign?: boolean | Prisma.User$pdfReportDesignArgs<ExtArgs>
+  pdfReportTemplates?: boolean | Prisma.User$pdfReportTemplatesArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["user"]>
 
@@ -4376,6 +5802,11 @@ export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   chatEncryptionKey?: boolean | Prisma.User$chatEncryptionKeyArgs<ExtArgs>
   accounts?: boolean | Prisma.User$accountsArgs<ExtArgs>
   sessions?: boolean | Prisma.User$sessionsArgs<ExtArgs>
+  leadSearches?: boolean | Prisma.User$leadSearchesArgs<ExtArgs>
+  savedLeads?: boolean | Prisma.User$savedLeadsArgs<ExtArgs>
+  websiteAudits?: boolean | Prisma.User$websiteAuditsArgs<ExtArgs>
+  pdfReportDesign?: boolean | Prisma.User$pdfReportDesignArgs<ExtArgs>
+  pdfReportTemplates?: boolean | Prisma.User$pdfReportTemplatesArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type UserIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
@@ -4404,6 +5835,11 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     chatEncryptionKey: Prisma.$ChatEncryptionKeyPayload<ExtArgs> | null
     accounts: Prisma.$AccountPayload<ExtArgs>[]
     sessions: Prisma.$SessionPayload<ExtArgs>[]
+    leadSearches: Prisma.$LeadSearchPayload<ExtArgs>[]
+    savedLeads: Prisma.$SavedLeadPayload<ExtArgs>[]
+    websiteAudits: Prisma.$WebsiteAuditPayload<ExtArgs>[]
+    pdfReportDesign: Prisma.$PdfReportDesignPayload<ExtArgs> | null
+    pdfReportTemplates: Prisma.$PdfReportTemplatePayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -4833,6 +6269,11 @@ export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Typ
   chatEncryptionKey<T extends Prisma.User$chatEncryptionKeyArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$chatEncryptionKeyArgs<ExtArgs>>): Prisma.Prisma__ChatEncryptionKeyClient<runtime.Types.Result.GetResult<Prisma.$ChatEncryptionKeyPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   accounts<T extends Prisma.User$accountsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$accountsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AccountPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   sessions<T extends Prisma.User$sessionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$sessionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$SessionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  leadSearches<T extends Prisma.User$leadSearchesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$leadSearchesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$LeadSearchPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  savedLeads<T extends Prisma.User$savedLeadsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$savedLeadsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$SavedLeadPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  websiteAudits<T extends Prisma.User$websiteAuditsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$websiteAuditsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$WebsiteAuditPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  pdfReportDesign<T extends Prisma.User$pdfReportDesignArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$pdfReportDesignArgs<ExtArgs>>): Prisma.Prisma__PdfReportDesignClient<runtime.Types.Result.GetResult<Prisma.$PdfReportDesignPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  pdfReportTemplates<T extends Prisma.User$pdfReportTemplatesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$pdfReportTemplatesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PdfReportTemplatePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -5735,6 +7176,121 @@ export type User$sessionsArgs<ExtArgs extends runtime.Types.Extensions.InternalA
   take?: number
   skip?: number
   distinct?: Prisma.SessionScalarFieldEnum | Prisma.SessionScalarFieldEnum[]
+}
+
+/**
+ * User.leadSearches
+ */
+export type User$leadSearchesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the LeadSearch
+   */
+  select?: Prisma.LeadSearchSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the LeadSearch
+   */
+  omit?: Prisma.LeadSearchOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.LeadSearchInclude<ExtArgs> | null
+  where?: Prisma.LeadSearchWhereInput
+  orderBy?: Prisma.LeadSearchOrderByWithRelationInput | Prisma.LeadSearchOrderByWithRelationInput[]
+  cursor?: Prisma.LeadSearchWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.LeadSearchScalarFieldEnum | Prisma.LeadSearchScalarFieldEnum[]
+}
+
+/**
+ * User.savedLeads
+ */
+export type User$savedLeadsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the SavedLead
+   */
+  select?: Prisma.SavedLeadSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the SavedLead
+   */
+  omit?: Prisma.SavedLeadOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.SavedLeadInclude<ExtArgs> | null
+  where?: Prisma.SavedLeadWhereInput
+  orderBy?: Prisma.SavedLeadOrderByWithRelationInput | Prisma.SavedLeadOrderByWithRelationInput[]
+  cursor?: Prisma.SavedLeadWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.SavedLeadScalarFieldEnum | Prisma.SavedLeadScalarFieldEnum[]
+}
+
+/**
+ * User.websiteAudits
+ */
+export type User$websiteAuditsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the WebsiteAudit
+   */
+  select?: Prisma.WebsiteAuditSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the WebsiteAudit
+   */
+  omit?: Prisma.WebsiteAuditOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.WebsiteAuditInclude<ExtArgs> | null
+  where?: Prisma.WebsiteAuditWhereInput
+  orderBy?: Prisma.WebsiteAuditOrderByWithRelationInput | Prisma.WebsiteAuditOrderByWithRelationInput[]
+  cursor?: Prisma.WebsiteAuditWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.WebsiteAuditScalarFieldEnum | Prisma.WebsiteAuditScalarFieldEnum[]
+}
+
+/**
+ * User.pdfReportDesign
+ */
+export type User$pdfReportDesignArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the PdfReportDesign
+   */
+  select?: Prisma.PdfReportDesignSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the PdfReportDesign
+   */
+  omit?: Prisma.PdfReportDesignOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.PdfReportDesignInclude<ExtArgs> | null
+  where?: Prisma.PdfReportDesignWhereInput
+}
+
+/**
+ * User.pdfReportTemplates
+ */
+export type User$pdfReportTemplatesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the PdfReportTemplate
+   */
+  select?: Prisma.PdfReportTemplateSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the PdfReportTemplate
+   */
+  omit?: Prisma.PdfReportTemplateOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.PdfReportTemplateInclude<ExtArgs> | null
+  where?: Prisma.PdfReportTemplateWhereInput
+  orderBy?: Prisma.PdfReportTemplateOrderByWithRelationInput | Prisma.PdfReportTemplateOrderByWithRelationInput[]
+  cursor?: Prisma.PdfReportTemplateWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.PdfReportTemplateScalarFieldEnum | Prisma.PdfReportTemplateScalarFieldEnum[]
 }
 
 /**

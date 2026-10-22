@@ -64,6 +64,11 @@ export const ModelName = {
   DailyPlan: 'DailyPlan',
   DailyPlanStage: 'DailyPlanStage',
   User: 'User',
+  LeadSearch: 'LeadSearch',
+  SavedLead: 'SavedLead',
+  WebsiteAudit: 'WebsiteAudit',
+  PdfReportDesign: 'PdfReportDesign',
+  PdfReportTemplate: 'PdfReportTemplate',
   Session: 'Session',
   Account: 'Account',
   Verification: 'Verification',
@@ -269,6 +274,88 @@ export const UserScalarFieldEnum = {
 } as const
 
 export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
+
+
+export const LeadSearchScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  location: 'location',
+  radiusKm: 'radiusKm',
+  industry: 'industry',
+  maxResults: 'maxResults',
+  analyzeWebsites: 'analyzeWebsites',
+  status: 'status',
+  googlePlaceIds: 'googlePlaceIds',
+  runId: 'runId',
+  startedAt: 'startedAt',
+  finishedAt: 'finishedAt',
+  phase: 'phase',
+  processedPages: 'processedPages',
+  pauseRequested: 'pauseRequested',
+  checkpoint: 'checkpoint',
+  errorCode: 'errorCode',
+  resultLimit: 'resultLimit',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type LeadSearchScalarFieldEnum = (typeof LeadSearchScalarFieldEnum)[keyof typeof LeadSearchScalarFieldEnum]
+
+
+export const SavedLeadScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  placeId: 'placeId',
+  sourceSearchId: 'sourceSearchId',
+  createdAt: 'createdAt'
+} as const
+
+export type SavedLeadScalarFieldEnum = (typeof SavedLeadScalarFieldEnum)[keyof typeof SavedLeadScalarFieldEnum]
+
+
+export const WebsiteAuditScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  placeId: 'placeId',
+  status: 'status',
+  runToken: 'runToken',
+  batchId: 'batchId',
+  qualityScore: 'qualityScore',
+  report: 'report',
+  errorCode: 'errorCode',
+  startedAt: 'startedAt',
+  checkedAt: 'checkedAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type WebsiteAuditScalarFieldEnum = (typeof WebsiteAuditScalarFieldEnum)[keyof typeof WebsiteAuditScalarFieldEnum]
+
+
+export const PdfReportDesignScalarFieldEnum = {
+  userId: 'userId',
+  name: 'name',
+  source: 'source',
+  theme: 'theme',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  templateId: 'templateId'
+} as const
+
+export type PdfReportDesignScalarFieldEnum = (typeof PdfReportDesignScalarFieldEnum)[keyof typeof PdfReportDesignScalarFieldEnum]
+
+
+export const PdfReportTemplateScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  name: 'name',
+  source: 'source',
+  theme: 'theme',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type PdfReportTemplateScalarFieldEnum = (typeof PdfReportTemplateScalarFieldEnum)[keyof typeof PdfReportTemplateScalarFieldEnum]
 
 
 export const SessionScalarFieldEnum = {

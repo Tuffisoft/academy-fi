@@ -193,8 +193,113 @@ model User {
   chatEncryptionKey   ChatEncryptionKey?
   accounts            Account[]
   sessions            Session[]
+  leadSearches        LeadSearch[]
+  savedLeads          SavedLead[]
+  websiteAudits       WebsiteAudit[]
+  pdfReportDesign     PdfReportDesign?
+  pdfReportTemplates  PdfReportTemplate[]
 
   @@map("user")
+}
+
+enum LeadSearchStatus {
+  DRAFT
+  QUEUED
+  RUNNING
+  COMPLETED
+  FAILED
+  CANCELLED
+  PAUSED
+}
+
+model LeadSearch {
+  id              String           @id @default(cuid())
+  userId          String
+  user            User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  location        String           @db.VarChar(200)
+  radiusKm        Float
+  industry        String           @db.VarChar(200)
+  maxResults      Int
+  analyzeWebsites Boolean          @default(true)
+  status          LeadSearchStatus @default(DRAFT)
+  googlePlaceIds  String[]         @default([])
+  savedLeads      SavedLead[]
+  runId           String?
+  startedAt       DateTime?
+  finishedAt      DateTime?
+  phase           String?          @db.VarChar(20)
+  processedPages  Int              @default(0)
+  pauseRequested  Boolean          @default(false)
+  checkpoint      Json?
+  errorCode       String?          @db.VarChar(40)
+  resultLimit     Boolean          @default(false)
+  createdAt       DateTime         @default(now())
+  updatedAt       DateTime         @updatedAt
+
+  @@index([userId, createdAt])
+  @@index([createdAt])
+}
+
+model SavedLead {
+  id             String      @id @default(cuid())
+  userId         String
+  user           User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  placeId        String      @db.VarChar(512)
+  sourceSearchId String?
+  sourceSearch   LeadSearch? @relation(fields: [sourceSearchId], references: [id], onDelete: SetNull)
+  createdAt      DateTime    @default(now())
+
+  @@unique([userId, placeId])
+  @@index([userId, createdAt])
+  @@index([sourceSearchId])
+}
+
+model WebsiteAudit {
+  id           String   @id @default(cuid())
+  userId       String
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  placeId      String   @db.VarChar(512)
+  status       String   @default("QUEUED") @db.VarChar(20)
+  runToken     String
+  batchId      String?
+  qualityScore Int?
+  report       Json?
+  errorCode    String?  @db.VarChar(40)
+  startedAt    DateTime?
+  checkedAt    DateTime?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  @@unique([userId, placeId])
+  @@index([userId, status])
+  @@index([status, startedAt])
+  @@index([userId, batchId])
+}
+
+model PdfReportDesign {
+  userId    String   @id
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  name      String   @default("Website Insights") @db.VarChar(100)
+  source    String   @db.Text
+  theme     String   @default("modern") @db.VarChar(20)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  templateId String?
+  template PdfReportTemplate? @relation(fields: [templateId], references: [id], onDelete: SetNull)
+}
+
+model PdfReportTemplate {
+  id        String @id @default(cuid())
+  userId    String
+  user      User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  name      String @db.VarChar(100)
+  source    String @db.Text
+  theme     String @default("modern") @db.VarChar(20)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  activeDesigns PdfReportDesign[]
+
+  @@index([userId, updatedAt])
 }
 
 model Session {

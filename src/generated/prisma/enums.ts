@@ -9,6 +9,19 @@
 * 🟢 You can import this file directly.
 */
 
+export const LeadSearchStatus = {
+  DRAFT: 'DRAFT',
+  QUEUED: 'QUEUED',
+  RUNNING: 'RUNNING',
+  COMPLETED: 'COMPLETED',
+  FAILED: 'FAILED',
+  CANCELLED: 'CANCELLED',
+  PAUSED: 'PAUSED'
+} as const
+
+export type LeadSearchStatus = (typeof LeadSearchStatus)[keyof typeof LeadSearchStatus]
+
+
 export const Role = {
   OWNER: 'OWNER',
   INTERN: 'INTERN'

@@ -410,6 +410,11 @@ export const ModelName = {
   DailyPlan: 'DailyPlan',
   DailyPlanStage: 'DailyPlanStage',
   User: 'User',
+  LeadSearch: 'LeadSearch',
+  SavedLead: 'SavedLead',
+  WebsiteAudit: 'WebsiteAudit',
+  PdfReportDesign: 'PdfReportDesign',
+  PdfReportTemplate: 'PdfReportTemplate',
   Session: 'Session',
   Account: 'Account',
   Verification: 'Verification',
@@ -436,7 +441,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "weeklyAssignment" | "assignmentChecklistItem" | "taskStage" | "reflection" | "mentorFeedback" | "discussionNote" | "department" | "departmentResource" | "idea" | "ideaNote" | "dailyPlan" | "dailyPlanStage" | "user" | "session" | "account" | "verification" | "directConversation" | "chatMembership" | "chatMessage" | "friendship" | "chatEncryptionKey" | "groupConversation" | "groupMembership" | "groupMessage"
+    modelProps: "weeklyAssignment" | "assignmentChecklistItem" | "taskStage" | "reflection" | "mentorFeedback" | "discussionNote" | "department" | "departmentResource" | "idea" | "ideaNote" | "dailyPlan" | "dailyPlanStage" | "user" | "leadSearch" | "savedLead" | "websiteAudit" | "pdfReportDesign" | "pdfReportTemplate" | "session" | "account" | "verification" | "directConversation" | "chatMembership" | "chatMessage" | "friendship" | "chatEncryptionKey" | "groupConversation" | "groupMembership" | "groupMessage"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -1399,6 +1404,376 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         count: {
           args: Prisma.UserCountArgs<ExtArgs>
           result: runtime.Types.Utils.Optional<Prisma.UserCountAggregateOutputType> | number
+        }
+      }
+    }
+    LeadSearch: {
+      payload: Prisma.$LeadSearchPayload<ExtArgs>
+      fields: Prisma.LeadSearchFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.LeadSearchFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LeadSearchPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.LeadSearchFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LeadSearchPayload>
+        }
+        findFirst: {
+          args: Prisma.LeadSearchFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LeadSearchPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.LeadSearchFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LeadSearchPayload>
+        }
+        findMany: {
+          args: Prisma.LeadSearchFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LeadSearchPayload>[]
+        }
+        create: {
+          args: Prisma.LeadSearchCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LeadSearchPayload>
+        }
+        createMany: {
+          args: Prisma.LeadSearchCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.LeadSearchCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LeadSearchPayload>[]
+        }
+        delete: {
+          args: Prisma.LeadSearchDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LeadSearchPayload>
+        }
+        update: {
+          args: Prisma.LeadSearchUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LeadSearchPayload>
+        }
+        deleteMany: {
+          args: Prisma.LeadSearchDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.LeadSearchUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.LeadSearchUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LeadSearchPayload>[]
+        }
+        upsert: {
+          args: Prisma.LeadSearchUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LeadSearchPayload>
+        }
+        aggregate: {
+          args: Prisma.LeadSearchAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateLeadSearch>
+        }
+        groupBy: {
+          args: Prisma.LeadSearchGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.LeadSearchGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.LeadSearchCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.LeadSearchCountAggregateOutputType> | number
+        }
+      }
+    }
+    SavedLead: {
+      payload: Prisma.$SavedLeadPayload<ExtArgs>
+      fields: Prisma.SavedLeadFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.SavedLeadFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SavedLeadPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.SavedLeadFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SavedLeadPayload>
+        }
+        findFirst: {
+          args: Prisma.SavedLeadFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SavedLeadPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.SavedLeadFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SavedLeadPayload>
+        }
+        findMany: {
+          args: Prisma.SavedLeadFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SavedLeadPayload>[]
+        }
+        create: {
+          args: Prisma.SavedLeadCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SavedLeadPayload>
+        }
+        createMany: {
+          args: Prisma.SavedLeadCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.SavedLeadCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SavedLeadPayload>[]
+        }
+        delete: {
+          args: Prisma.SavedLeadDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SavedLeadPayload>
+        }
+        update: {
+          args: Prisma.SavedLeadUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SavedLeadPayload>
+        }
+        deleteMany: {
+          args: Prisma.SavedLeadDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.SavedLeadUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.SavedLeadUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SavedLeadPayload>[]
+        }
+        upsert: {
+          args: Prisma.SavedLeadUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SavedLeadPayload>
+        }
+        aggregate: {
+          args: Prisma.SavedLeadAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateSavedLead>
+        }
+        groupBy: {
+          args: Prisma.SavedLeadGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.SavedLeadGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.SavedLeadCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.SavedLeadCountAggregateOutputType> | number
+        }
+      }
+    }
+    WebsiteAudit: {
+      payload: Prisma.$WebsiteAuditPayload<ExtArgs>
+      fields: Prisma.WebsiteAuditFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.WebsiteAuditFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WebsiteAuditPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.WebsiteAuditFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WebsiteAuditPayload>
+        }
+        findFirst: {
+          args: Prisma.WebsiteAuditFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WebsiteAuditPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.WebsiteAuditFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WebsiteAuditPayload>
+        }
+        findMany: {
+          args: Prisma.WebsiteAuditFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WebsiteAuditPayload>[]
+        }
+        create: {
+          args: Prisma.WebsiteAuditCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WebsiteAuditPayload>
+        }
+        createMany: {
+          args: Prisma.WebsiteAuditCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.WebsiteAuditCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WebsiteAuditPayload>[]
+        }
+        delete: {
+          args: Prisma.WebsiteAuditDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WebsiteAuditPayload>
+        }
+        update: {
+          args: Prisma.WebsiteAuditUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WebsiteAuditPayload>
+        }
+        deleteMany: {
+          args: Prisma.WebsiteAuditDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.WebsiteAuditUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.WebsiteAuditUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WebsiteAuditPayload>[]
+        }
+        upsert: {
+          args: Prisma.WebsiteAuditUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WebsiteAuditPayload>
+        }
+        aggregate: {
+          args: Prisma.WebsiteAuditAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateWebsiteAudit>
+        }
+        groupBy: {
+          args: Prisma.WebsiteAuditGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.WebsiteAuditGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.WebsiteAuditCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.WebsiteAuditCountAggregateOutputType> | number
+        }
+      }
+    }
+    PdfReportDesign: {
+      payload: Prisma.$PdfReportDesignPayload<ExtArgs>
+      fields: Prisma.PdfReportDesignFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.PdfReportDesignFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PdfReportDesignPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.PdfReportDesignFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PdfReportDesignPayload>
+        }
+        findFirst: {
+          args: Prisma.PdfReportDesignFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PdfReportDesignPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.PdfReportDesignFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PdfReportDesignPayload>
+        }
+        findMany: {
+          args: Prisma.PdfReportDesignFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PdfReportDesignPayload>[]
+        }
+        create: {
+          args: Prisma.PdfReportDesignCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PdfReportDesignPayload>
+        }
+        createMany: {
+          args: Prisma.PdfReportDesignCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.PdfReportDesignCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PdfReportDesignPayload>[]
+        }
+        delete: {
+          args: Prisma.PdfReportDesignDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PdfReportDesignPayload>
+        }
+        update: {
+          args: Prisma.PdfReportDesignUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PdfReportDesignPayload>
+        }
+        deleteMany: {
+          args: Prisma.PdfReportDesignDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.PdfReportDesignUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.PdfReportDesignUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PdfReportDesignPayload>[]
+        }
+        upsert: {
+          args: Prisma.PdfReportDesignUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PdfReportDesignPayload>
+        }
+        aggregate: {
+          args: Prisma.PdfReportDesignAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregatePdfReportDesign>
+        }
+        groupBy: {
+          args: Prisma.PdfReportDesignGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.PdfReportDesignGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.PdfReportDesignCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.PdfReportDesignCountAggregateOutputType> | number
+        }
+      }
+    }
+    PdfReportTemplate: {
+      payload: Prisma.$PdfReportTemplatePayload<ExtArgs>
+      fields: Prisma.PdfReportTemplateFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.PdfReportTemplateFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PdfReportTemplatePayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.PdfReportTemplateFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PdfReportTemplatePayload>
+        }
+        findFirst: {
+          args: Prisma.PdfReportTemplateFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PdfReportTemplatePayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.PdfReportTemplateFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PdfReportTemplatePayload>
+        }
+        findMany: {
+          args: Prisma.PdfReportTemplateFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PdfReportTemplatePayload>[]
+        }
+        create: {
+          args: Prisma.PdfReportTemplateCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PdfReportTemplatePayload>
+        }
+        createMany: {
+          args: Prisma.PdfReportTemplateCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.PdfReportTemplateCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PdfReportTemplatePayload>[]
+        }
+        delete: {
+          args: Prisma.PdfReportTemplateDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PdfReportTemplatePayload>
+        }
+        update: {
+          args: Prisma.PdfReportTemplateUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PdfReportTemplatePayload>
+        }
+        deleteMany: {
+          args: Prisma.PdfReportTemplateDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.PdfReportTemplateUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.PdfReportTemplateUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PdfReportTemplatePayload>[]
+        }
+        upsert: {
+          args: Prisma.PdfReportTemplateUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PdfReportTemplatePayload>
+        }
+        aggregate: {
+          args: Prisma.PdfReportTemplateAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregatePdfReportTemplate>
+        }
+        groupBy: {
+          args: Prisma.PdfReportTemplateGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.PdfReportTemplateGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.PdfReportTemplateCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.PdfReportTemplateCountAggregateOutputType> | number
         }
       }
     }
@@ -2433,6 +2808,88 @@ export const UserScalarFieldEnum = {
 export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
 
 
+export const LeadSearchScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  location: 'location',
+  radiusKm: 'radiusKm',
+  industry: 'industry',
+  maxResults: 'maxResults',
+  analyzeWebsites: 'analyzeWebsites',
+  status: 'status',
+  googlePlaceIds: 'googlePlaceIds',
+  runId: 'runId',
+  startedAt: 'startedAt',
+  finishedAt: 'finishedAt',
+  phase: 'phase',
+  processedPages: 'processedPages',
+  pauseRequested: 'pauseRequested',
+  checkpoint: 'checkpoint',
+  errorCode: 'errorCode',
+  resultLimit: 'resultLimit',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type LeadSearchScalarFieldEnum = (typeof LeadSearchScalarFieldEnum)[keyof typeof LeadSearchScalarFieldEnum]
+
+
+export const SavedLeadScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  placeId: 'placeId',
+  sourceSearchId: 'sourceSearchId',
+  createdAt: 'createdAt'
+} as const
+
+export type SavedLeadScalarFieldEnum = (typeof SavedLeadScalarFieldEnum)[keyof typeof SavedLeadScalarFieldEnum]
+
+
+export const WebsiteAuditScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  placeId: 'placeId',
+  status: 'status',
+  runToken: 'runToken',
+  batchId: 'batchId',
+  qualityScore: 'qualityScore',
+  report: 'report',
+  errorCode: 'errorCode',
+  startedAt: 'startedAt',
+  checkedAt: 'checkedAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type WebsiteAuditScalarFieldEnum = (typeof WebsiteAuditScalarFieldEnum)[keyof typeof WebsiteAuditScalarFieldEnum]
+
+
+export const PdfReportDesignScalarFieldEnum = {
+  userId: 'userId',
+  name: 'name',
+  source: 'source',
+  theme: 'theme',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  templateId: 'templateId'
+} as const
+
+export type PdfReportDesignScalarFieldEnum = (typeof PdfReportDesignScalarFieldEnum)[keyof typeof PdfReportDesignScalarFieldEnum]
+
+
+export const PdfReportTemplateScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  name: 'name',
+  source: 'source',
+  theme: 'theme',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type PdfReportTemplateScalarFieldEnum = (typeof PdfReportTemplateScalarFieldEnum)[keyof typeof PdfReportTemplateScalarFieldEnum]
+
+
 export const SessionScalarFieldEnum = {
   id: 'id',
   expiresAt: 'expiresAt',
@@ -2686,6 +3143,34 @@ export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel,
 
 
 /**
+ * Reference to a field of type 'Float'
+ */
+export type FloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float'>
+    
+
+
+/**
+ * Reference to a field of type 'Float[]'
+ */
+export type ListFloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float[]'>
+    
+
+
+/**
+ * Reference to a field of type 'LeadSearchStatus'
+ */
+export type EnumLeadSearchStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'LeadSearchStatus'>
+    
+
+
+/**
+ * Reference to a field of type 'LeadSearchStatus[]'
+ */
+export type ListEnumLeadSearchStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'LeadSearchStatus[]'>
+    
+
+
+/**
  * Reference to a field of type 'Json'
  */
 export type JsonFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Json'>
@@ -2738,20 +3223,6 @@ export type EnumGroupMemberStatusFieldRefInput<$PrismaModel> = FieldRefInputType
  * Reference to a field of type 'GroupMemberStatus[]'
  */
 export type ListEnumGroupMemberStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'GroupMemberStatus[]'>
-    
-
-
-/**
- * Reference to a field of type 'Float'
- */
-export type FloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float'>
-    
-
-
-/**
- * Reference to a field of type 'Float[]'
- */
-export type ListFloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float[]'>
     
 
 /**
@@ -2918,6 +3389,11 @@ export type GlobalOmitConfig = {
   dailyPlan?: Prisma.DailyPlanOmit
   dailyPlanStage?: Prisma.DailyPlanStageOmit
   user?: Prisma.UserOmit
+  leadSearch?: Prisma.LeadSearchOmit
+  savedLead?: Prisma.SavedLeadOmit
+  websiteAudit?: Prisma.WebsiteAuditOmit
+  pdfReportDesign?: Prisma.PdfReportDesignOmit
+  pdfReportTemplate?: Prisma.PdfReportTemplateOmit
   session?: Prisma.SessionOmit
   account?: Prisma.AccountOmit
   verification?: Prisma.VerificationOmit

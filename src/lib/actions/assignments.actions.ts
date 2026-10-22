@@ -200,7 +200,7 @@ export async function deleteTaskStageAction(stageId: string) {
   await prisma.taskStage.delete({ where: { id: stageId } });
 }
 export async function deleteChecklistItemAction(itemId: string) {
-  const user = await requireRole(Role.OWNER);
+  await requireRole(Role.OWNER);
 
   const item = await prisma.assignmentChecklistItem.findUnique({
     where: { id: itemId },
@@ -215,7 +215,7 @@ export async function deleteChecklistItemAction(itemId: string) {
 }
 
 export async function updateChecklistItemAction(itemId: string, label: string) {
-  const user = await requireRole(Role.OWNER);
+  await requireRole(Role.OWNER);
 
   const item = await prisma.assignmentChecklistItem.findUnique({
     where: { id: itemId },
@@ -239,7 +239,7 @@ export async function updateAssignmentAction(
     acceptanceCriteria?: string;
   },
 ) {
-  const user = await requireRole(Role.OWNER);
+  await requireRole(Role.OWNER);
 
   const assignment = await prisma.weeklyAssignment.findUnique({
     where: { id: assignmentId },
@@ -256,7 +256,7 @@ export async function updateAssignmentAction(
 }
 
 export async function deleteAssignmentAction(assignmentId: string) {
-  const user = await requireRole(Role.OWNER);
+  await requireRole(Role.OWNER);
 
   const assignment = await prisma.weeklyAssignment.findUnique({
     where: { id: assignmentId },

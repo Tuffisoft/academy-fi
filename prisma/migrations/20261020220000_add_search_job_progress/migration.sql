@@ -1,0 +1,8 @@
+ALTER TABLE "LeadSearch"
+  ADD COLUMN "runId" TEXT,
+  ADD COLUMN "startedAt" TIMESTAMP(3),
+  ADD COLUMN "finishedAt" TIMESTAMP(3),
+  ADD COLUMN "phase" VARCHAR(20),
+  ADD COLUMN "processedPages" INTEGER NOT NULL DEFAULT 0,
+  ADD COLUMN "errorCode" VARCHAR(40),
+  ADD COLUMN "resultLimit" BOOLEAN NOT NULL DEFAULT false;

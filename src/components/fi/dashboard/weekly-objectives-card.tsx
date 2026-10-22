@@ -37,15 +37,6 @@ type ChecklistItem = {
   stages: TaskStage[];
 };
 
-type Assignment = {
-  id: string;
-  focus: string;
-  description?: string;
-  acceptanceCriteria?: string;
-  weekOf: Date;
-  checklistItems: ChecklistItem[];
-} | null;
-
 export function WeeklyObjectivesCard({
   assignments,
 }: {

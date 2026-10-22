@@ -107,6 +107,31 @@ export type DailyPlanStage = Prisma.DailyPlanStageModel
  */
 export type User = Prisma.UserModel
 /**
+ * Model LeadSearch
+ * 
+ */
+export type LeadSearch = Prisma.LeadSearchModel
+/**
+ * Model SavedLead
+ * 
+ */
+export type SavedLead = Prisma.SavedLeadModel
+/**
+ * Model WebsiteAudit
+ * 
+ */
+export type WebsiteAudit = Prisma.WebsiteAuditModel
+/**
+ * Model PdfReportDesign
+ * 
+ */
+export type PdfReportDesign = Prisma.PdfReportDesignModel
+/**
+ * Model PdfReportTemplate
+ * 
+ */
+export type PdfReportTemplate = Prisma.PdfReportTemplateModel
+/**
  * Model Session
  * 
  */

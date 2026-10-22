@@ -1,4 +1,4 @@
-import { getTranslations, getLocale } from "next-intl/server";
+import { getTranslations } from "next-intl/server";
 import { FileText } from "lucide-react";
 import { getDepartments } from "@/lib/data/departments";
 import {
@@ -16,9 +16,8 @@ import { DeleteDepartmentButton } from "@/components/fi/learning/delete-departme
 import { DeleteResourceButton } from "@/components/fi/learning/delete-resource-button";
 
 export async function ManageDepartments() {
-  const [t, locale, departments] = await Promise.all([
+  const [t, departments] = await Promise.all([
     getTranslations("departments"),
-    getLocale(),
     getDepartments(),
   ]);
 

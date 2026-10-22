@@ -1,0 +1,1 @@
+ALTER TABLE "LeadSearch" ADD COLUMN "googlePlaceIds" TEXT[] NOT NULL DEFAULT ARRAY[]::TEXT[];

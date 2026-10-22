@@ -1,36 +1,72 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Academy Fi
 
-## Getting Started
+Interne Plattform für Lernen, Aufgaben, Tagesplanung, Ideen, Chat und Lead-Recherche.
 
-First, run the development server:
+## Lokal starten
+
+Voraussetzungen: Node.js, npm und eine konfigurierte PostgreSQL-/Neon-Datenbank. Zugangsdaten stehen lokal in `.env`.
 
 ```bash
+npm ci
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Die Anwendung läuft unter http://localhost:3000 mit deutschen und englischen Routen. Prisma Client wird bei der Installation und vor dem Entwicklungsstart automatisch generiert. Datenbankmigrationen werden dabei nicht angewendet.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Projektstruktur
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- `src/app`: Seiten und API-Routen
+- `src/components`: Oberfläche, nach Funktionen gegliedert
+- `src/lib`: Serverlogik, Datenzugriff und gemeinsame Hilfsfunktionen
+- `src/messages` und `src/i18n`: Übersetzungen und Sprachrouting
+- `prisma`: Datenbankschema und Migrationen
+- `db`: Seed und Seed-Konfiguration
+- `tests`: automatisierte Prüfungen
+- `assets/pdf`: eingebundene PDF-Schriftarten
 
-## Learn More
+## Prüfungen
 
-To learn more about Next.js, take a look at the following resources:
+```bash
+npm run lint
+npm run typecheck
+npm test
+npm run build
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Integrationstests (`tests/*.integration.test.ts`) gehören nicht zu `npm test` und benötigen die jeweils in den Dateien beschriebene Umgebung.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Weitere Hinweise: [Chat-Integration](CHAT_INTEGRATION.md) und [Lead-Recherche](LEAD_RESEARCH.md). Lokale PDF-Vorschauen und Design-Backups unter `output/` werden für neue Dateien von Git ignoriert.
 
-## Deploy on Vercel
+## Website-Bewertung im Lead-Generator
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Neue Website-Prüfungen bewerten Ladezeit, SEO, Barrierefreiheit, Technik und Design & Benutzerführung zu je 20 %. Die ersten vier Themen verwenden die mobilen PageSpeed-Werte; Desktop bleibt separat in den Details. Ein Gesamtscore wird nur bei fünf vorhandenen Teilwerten berechnet. Bestehende Berichte werden beim Lesen entsprechend eingeordnet, ohne kostenpflichtige Prüfungen erneut zu starten.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Die Übersicht zeigt Mobil und Desktop direkt mit einem separaten Technik-Score (gleich gewichteter Mittelwert der vier technischen Themen je Gerät). Dieser Gerätescore enthält keine KI-Designnote und verändert die Gewichtung des Gesamtscores nicht. Die genauen Befunde bleiben darunter aufklappbar.
+
+Für die automatische Designbewertung serverseitig in `.env` konfigurieren:
+
+```dotenv
+OPENAI_API_KEY=your-server-side-key
+# Optional; Standardmodell:
+OPENAI_DESIGN_MODEL=gpt-5.4-mini
+```
+
+Danach den Server neu starten. Der Schlüssel wird ausschließlich im Audit-Worker verwendet. Der mobile `final-screenshot` aus Lighthouse wird an die OpenAI Responses API übergeben (`store: false`); er wird nicht im Bericht gespeichert. Pro Prüfung erfolgt höchstens eine KI-Anfrage, ohne automatische Wiederholung. OpenAI-Nutzung wird separat über das konfigurierte API-Konto abgerechnet.
+
+Die KI beurteilt sichtbare Struktur, Lesbarkeit, Konsistenz und mobiles Layout. Unsichere, verdeckte oder fehlerhafte Screenshots erhalten keine Note. Fehlender Schlüssel, fehlender Screenshot und Anbieterfehler lassen die vier technischen Bewertungen bestehen und den Gesamtscore offen. KI-Einschätzungen sind keine Prüfung tatsächlicher Interaktionen oder der gesamten Website. PDF-Vorlagen erhalten zusätzlich `report.visual` und die fünf aktualisierten `report.partsRows`.
+
+API-Dokumentation: [Bildanalyse](https://developers.openai.com/api/docs/guides/images-vision), [strukturierte Ausgaben](https://developers.openai.com/api/docs/guides/structured-outputs).
+
+## PDF-Berichtsdesign
+
+Im PDF-Designer kann die gespeicherte Vorlage über „Vorlagenname“ benannt werden (1 bis 100 Zeichen). Der Name bleibt beim erneuten Öffnen und beim Einsetzen des Standarddesigns erhalten. Bestehende Vorlagen erhalten zunächst den Namen „Website Insights“.
+
+„Vorlage“ listet die eigenen gespeicherten Designs statt der PDFCN-Themes auf. „Neue Vorlage“ erstellt einen Entwurf aus dem aktuellen Design; nach Eingabe eines Namens legt „Vorlage speichern“ eine weitere Vorlage an. Speichern und Auswählen ändern nur die bearbeitete Vorlage. Erst „Als Live-Design setzen“ übernimmt eine gespeicherte Version für Kunden-PDFs. Auch Änderungen an der bereits aktiven Vorlage müssen ausdrücklich erneut aktiviert werden. Der bisherige Live-Stand bleibt bis dahin erhalten. Vor einem Wechsel müssen Änderungen gespeichert oder über „Änderungen verwerfen“ zurückgenommen werden. Die bisherige Vorlage wird mit ihrem Namen, JSX und Theme unverändert in die Vorlagenbibliothek übernommen; das Theme bleibt intern Bestandteil des Designs.
+
+„Code kopieren“ in der Kopfzeile von `report.jsx` kopiert den gesamten aktuellen Editorinhalt in die Zwischenablage, einschließlich ungespeicherter Änderungen.
+
+Der JSX-Editor verwendet lokal gebündeltes CodeMirror mit Syntaxfarben, Zeilennummern, Code-Faltung, Suche und automatischer Einrückung. Quellcode wird nicht an einen externen Editor-Dienst übertragen. Eine VS-Code-Erweiterung ist für diese Bearbeitung nicht erforderlich.
+
+Die Standardvorlage enthält ein anklickbares Inhaltsmenü auf der Titelseite, eigene Abschnitte für Mobil, Desktop, KI-Designbewertung und die Bewertungsmethode sowie Seitenzahlen. Die Links verwenden echte interne PDF-Sprungziele und bleiben bei zusätzlichen Seiten korrekt. Im Designer werden alte unveränderte Standardvorlagen mit der neuen Gestaltung geöffnet; der Live-Stand ändert sich erst durch ausdrückliches Aktivieren. Eigene JSX-Vorlagen bleiben erhalten. Im Editor lässt sich die neue Vorlage über „Standard einsetzen“ übernehmen und speichern.
+
+Eigene Sprunglinks lassen sich mit `href="#mobile"` auf `View`, `Text` oder `Link` anlegen. Das Ziel erhält `bookmark="mobile"` auf `View` oder `Text`. Sprungziele müssen eindeutig sein und tatsächlich existieren. Externe Links sind im Vorlageneditor nicht freigegeben. `Fixed position="footer"` unterstützt `{{pageNumber}}` und `{{totalPages}}`; Fixed-Elemente stehen vor dem Seiteninhalt, damit sie auch auf Fortsetzungsseiten erscheinen.
