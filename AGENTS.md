@@ -1,0 +1,9 @@
+# Verbindliche Arbeitsregeln
+
+- Vor Änderungen [QUALITAETSREGELN.md](QUALITAETSREGELN.md) und [QUALITAETSSTATUS.md](QUALITAETSSTATUS.md) lesen. Bei Stempelkarten-Arbeiten zusätzlich Lastenheft und Pflichtenheft im Repository-Hauptverzeichnis lesen. Ihre Muss-Anforderungen bleiben verbindlich.
+- Vor Implementierung Verhalten, Rollen, Erfolgs-/Fehlerfälle und betroffene Anforderungen klären. Nur aufgabenbezogene Änderungen vornehmen; Fachlogik gemeinsam serverseitig halten und Eingaben sowie Berechtigungen an Systemgrenzen prüfen.
+- Keine unbegründeten Typumgehungen, deaktivierten Prüfregeln, vorgetäuschten Erfolge oder Geheimnisse in Code/Logs. Bestehende Fehler nicht durch Entfernen von Tests oder Abschwächen von Erwartungen verdecken.
+- Node.js 24 und npm-Lockfile verwenden. Vor Abschluss `npm run lint`, `npm run typecheck`, `npm test` und `npm run check:build` ausführen; alternativ `npm run check`. Ergebnisse und offene Bestandslücken wahrheitsgemäß dokumentieren.
+- Integrationstests nur mit ausdrücklich getrennten Testzugängen nach Qualitätsregeln ausführen. Keine normalen `.env`-Zugänge für Datenbank-/Anbietertests verwenden; keine produktiven Migrationen oder Seeds zur Verifikation starten.
+- Jede Änderung braucht dokumentiertes Code-Review. Rollen, Buchungen, Billing, Löschung und Migrationen konkret vorbereiten und isoliert testen; vor Übernahme/Merge beziehungsweise produktiver Anwendung die ausdrückliche Freigabe des Auftraggebers nachweisen. Nicht bereits vor reversibler Vorbereitung erneut um Erlaubnis bitten.
+- Für Freigaben [FREIGABECHECKLISTE.md](FREIGABECHECKLISTE.md) verwenden. Implementierung, automatisierte Prüfung, Geräteabnahme und Produktionsfreigabe getrennt angeben. Offene Sicherheits-, Datenintegritäts- oder Muss-Anforderungsfehler blockieren die betroffene Freigabe.

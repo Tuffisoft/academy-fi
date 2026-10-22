@@ -1,0 +1,41 @@
+name: Quality
+
+on:
+  pull_request:
+  push:
+    branches: [master]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: quality-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  quality:
+    name: Quality (${{ matrix.check }})
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      matrix:
+        check: [lint, typecheck, test, 'check:build']
+    env:
+      # Prisma generate needs a syntactically valid URL, never a live database.
+      DATABASE_URL: postgresql://quality:quality@127.0.0.1:5432/academyfi_quality
+      DATABASE_ENV: test
+      BETTER_AUTH_SECRET: quality-check-placeholder-not-a-production-secret
+      BETTER_AUTH_URL: http://localhost:3000
+      NEXT_TELEMETRY_DISABLED: '1'
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v7
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - run: npm ci
+      - run: npm run ${{ matrix.check }}
