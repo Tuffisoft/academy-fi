@@ -1,6 +1,6 @@
 # Freigabecheckliste – Vorlage
 
-Für jede konkrete Freigabe als eigene Datei im Repository-Hauptverzeichnis kopieren, beispielsweise `FREIGABE_<kennung>.md`. Diese leere Vorlage ist kein Abnahmebeleg. Nicht anwendbare Punkte benötigen eine Begründung; fehlende Voraussetzungen gelten als offen.
+Für jede konkrete Freigabe als eigene Datei im Repository-Hauptverzeichnis kopieren, beispielsweise `FREIGABE_<kennung>.md`. Diese leere Vorlage ist kein Abnahmebeleg. Version 1.1 · 22.10.2026: Prüfweg/Nachweisreferenzen und frühe Restore-Planung ergänzt. Nicht anwendbare Punkte benötigen eine Begründung; fehlende Voraussetzungen gelten als offen.
 
 ## Stand und Gegenstand
 
@@ -9,16 +9,22 @@ Für jede konkrete Freigabe als eigene Datei im Repository-Hauptverzeichnis kopi
 | Änderung / Release / Teilpaket | OFFEN |
 | Commit-SHA; bei uncommittiertem Stand zusätzlich Patch-/Dateihash | OFFEN |
 | Umgebung und Datum | OFFEN |
+| Prüfweg: Software / reine Dokumentation (Q-T-01); Begründung | OFFEN |
+| Paketabhängigkeiten / externe Voraussetzungen / Blocker | OFFEN |
 | Verantwortliche Person | OFFEN |
 | Betroffene Anforderungen / Regeln | OFFEN |
 | Verhalten, erlaubte Rollen, Erfolgs-/Fehlerfälle | OFFEN |
 | Betroffene Academy-Abläufe / Regressionsauswahl | OFFEN |
+
+Prüfläufe nur einmal im zugehörigen Standnachweis führen; hier präzise verlinken statt kopieren. Relevante Folgeänderungen erfordern erneute Prüfungen. Reine Dokumentation: vier Softwarechecks begründet nicht anwendbar, Dokumentationsprüfung/Review weiterhin verpflichtend; keine Software-/Produktfreigabe ableiten.
 
 ## Getrennte Nachweise
 
 | Zustand | Status: offen / bestanden / nicht anwendbar | Beleg und gegebenenfalls Begründung |
 | --- | --- | --- |
 | Implementiert gemäß beschriebenem Verhalten | offen | |
+| Dokumentationsprüfung: Umfang, Links/Anker, Struktur, Kennungen, Konsistenz, Diff | offen | |
+| Vor erster Migration: Sicherungs-/Restore-/Job-/Widerrufsplan und Zuständigkeit | offen | |
 | `npm run lint` | offen | |
 | `npm run typecheck` | offen | |
 | `npm test` einschließlich Anzahl bestanden/fehlgeschlagen/übersprungen | offen | |

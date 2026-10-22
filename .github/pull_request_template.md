@@ -4,12 +4,12 @@ Problem und Ergebnis; erlaubte Rollen, Erfolgs-/Fehlerfälle. Beim SaaS betroffe
 
 ## Validierung
 
-- [ ] Lint, Typecheck, `npm test` und `npm run check:build` bestanden; Belege verlinkt.
+- [ ] Prüfweg nach AGENTS.md begründet: Softwarechecks bestanden oder reine Dokumentation (Struktur, Links/Anker, Kennungen, Konsistenz, Diff) geprüft; standbezogene Belege verlinkt.
 - [ ] Relevante Negativ-/Integrationsprüfungen und Academy-Regression nachgewiesen.
 - [ ] Bei UI-Änderungen mobile Bedienung, Tastatur und relevante Sprachen geprüft.
 - [ ] Offene Bestandslücken und neue Mängel mit Auswirkung und Erledigungskriterium dokumentiert.
 
-Nicht anwendbare Punkte begründen. Übersprungene oder fehlende Prüfungen sind kein Erfolg.
+Paketabhängigkeiten und externe Blocker nennen; zentrale QL-/Prüfnachweise referenzieren. Nicht anwendbare Punkte begründen. Übersprungene oder fehlende Prüfungen sind kein Erfolg.
 
 ## Code-Review und Freigabe
 

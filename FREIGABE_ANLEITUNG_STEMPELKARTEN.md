@@ -1,27 +1,28 @@
-# Prüf-/Freigabenachweis: Entwicklungsanleitung
+# Änderungsnachweis: Stempelkarten-Regeln und Entwicklungsplan
 
-Version 1.1 · 22.10.2026 · Basis: 198ea2d128a198ef5f864f3bba4976af6422ef93.
-Gegenstand: nur [Entwicklungsanleitung](ENTWICKLUNGSANLEITUNG_STEMPELKARTEN.md) und dieser Nachweis; keine Software-, Rollen-, Datenmodell- oder Paketversionsänderung. Kürzungsauftrag des Nutzers; keine Produktfreigabe.
+Version 1.2 · 22.10.2026 · Softwarebasis `7dcf63d8fdf0ffe680bdfbd43ad0a05d5523ea2c`. Auftrag: vorgeschlagene Prozessverbesserungen umsetzen, Muss-Anforderungen erhalten. Autor/Prüfer: Codex, Selbstreview; keine unabhängige menschliche Abnahme. Dokumentstand: SHA-256 `1073251260559f23901c743813202b1f7332992029de58319010a3634109c7df` über die sieben übrigen oben genannten Dateien, sortiert nach Pfad, je Pfad + NUL + UTF-8-Inhalt (LF) + NUL; dieser Nachweis selbst ausgenommen.
 
-Anleitungsstand: uncommittiert, SHA-256 (Dateibytes): `4e934a829b96ba7486fe71d58f760b006b36bf15867cdb08c2bf984c50ca27b2`.
-Autor/Prüfer: Codex; dokumentiertes Selbstreview, keine unabhängige menschliche Abnahme.
-Regeln: Q-P-01/06, Q-C-04/06, Q-T-01 und unveränderte LF-/T-/AK-Zuordnung.
+## Umfang und Entscheidung
 
-## Prüfung und Ergebnis
+Nur Markdown: AGENTS.md, Entwicklungsanleitung, Archiv, Freigabecheckliste, Pflichtenheft, README, PR-Vorlage und dieser Nachweis. Keine Laufzeit-/Rollen-/Schema-/Paketänderung. Q-T-01 nach Nutzerauftrag präzisiert; zur Einführung dennoch alle vier Softwarechecks ausgeführt (siehe unten). Keine Migration/Seeds/Produktionszugänge oder Geräte-/Integrationstests. Dokumentationsabschluss ist keine Software-/Produktfreigabe; zentrale Blocker [QL-002–007](AGENTS.md#qualitätsstatus--22102026) bleiben offen. Alle 28 Softwarepakete offen.
 
-28 offene Versionspakete: v0.0.1, v0.0.2, v0.1.0–v0.25.0, v1.0.0. Kein Paket abgeschlossen. Kürzung: allgemeine Pflichten zentralisiert, Auftrag verkürzt, einzelne Formulierungen gestrafft. Paketüberschriften, LF-/T-/AK-Kennungen, nummerierte Schritte und Checklisten bleiben erhalten. Kommentarhistorie/Einzelauftrag/Modulversionierung und Freigabeschranken gelten unverändert. Struktur-/Linkprüfung bestanden; alle 28 Paketüberschriften, paketlokalen LF-/T-/AK-Kennungen sowie Schritt-/Checklistenanzahlen mit Ausgangsdatei abgeglichen. Veralteten internen A.3-Verweis auf A.1 korrigiert. git diff --check bestanden. Aktueller Sammellauf (Windows-Sandbox, Node.js 24.16.0): Lint/Typecheck bestanden; 89/92 Tests bestanden, drei bekannte Fehler, keine Skips; gleicher Turbopack-Buildabbruch. Gesamt Exit 1. Keine echten Integrations-/Gerätetests für die Dokumentationsänderung ausgeführt.
+Umgesetzt: technische Paketmatrix mit getrennten externen Gates; Auswahl bearbeitbarer Pakete ohne automatische Folgeaufträge; sichtbares Register plus vollständiges Archiv statt Kommentare; standbezogene zentrale Prüfnachweise; begrenzter Dokumentationsprüfweg; Restore-/Job-/Widerrufsplanung vor erster Migration. Fachregeln/Preise/LF-/T-/AK-Kennungen und Geräte-/Produktionsgates unverändert. Frühere Auskommentier-Vorgabe durch diesen ausdrücklichen Änderungsauftrag ersetzt.
 
-Historischer Lauf vor Kürzung: Windows-Sandbox, Node.js 24.16.0; npm run check Exit 1. Lint/Typecheck bestanden, Tests 89/92 bestanden (3 Fehler, keine Skips: QL-002), Buildabbruch bei globals.css durch Turbopack-Unterprozess vor Verbindung (QL-003). Kein aktueller Nachweis durch diesen alten Lauf. Keine Migration/Seeds oder normalen Providerzugänge verwendet. DB-/Providerintegration, Geräte/UI/DE-/EN-Abnahme für reine Dokumentation nicht anwendbar; für Softwarepakete weiterhin offen. AK-01–18 nicht abgenommen.
+## Review und Prüfungen
 
-## Bewertung und Verbesserungsbedarf
+Geprüfter Umfang/Stand: oben bezeichnete Markdown-Dateien gegen Ausgangsstand dieses Auftrags. Prüfpunkte: Paketinhalt/Anforderungskennungen erhalten, Matrix ohne Zyklen und mit allen Paketen, Archiv noch leer, keine Abschlüsse erfunden, alte Prozessvorgaben konsistent ersetzt, Links/Anker und Markdown/Diff korrekt. Bestanden: 8 Markdown-Dateien, 19 lokale Links/Anker, vollständige zyklusfreie Paketmatrix; alle 28 Paketüberschriften, paketlokalen LF-/T-/AK-Kennungen sowie Schritt-/Checklistenanzahlen erhalten. Alle 31 Q-/QL-IDs und die vollständige Pflichtenheft-Testmatrix erhalten; Archiv leer, keine Abschlüsse erfunden. git diff --check und direkte Leerzeichenprüfung neuer Dateien bestanden. Reviewbefunde erledigt: Google-Pakettext an unabhängige Vorbereitung angepasst, interne Verweise aktualisiert, veraltete Testbestandsaussage durch zentrale Statusreferenz ersetzt. Fach-/Sicherheitsanforderungen und Freigabegates unverändert; Prozessänderungen ausdrücklich vom Nutzer beauftragt.
 
-- Beibehalten: ein Paket pro Auftrag, zusammengehörige UI/Backend-Arbeit, isolierte Tests, eindeutige Freigabegrenzen und stabile Anforderungszuordnung. Das begrenzt Umfang und verhindert unbelegte Erledigtmeldungen.
-- Abhängigkeiten: Reihenfolge ist verbindlich, aber keine explizite Paketmatrix. Eine spätere Matrix könnte technische Voraussetzungen von Geräte-/Betreiberfreigaben trennen; dafür Abschlussregeln bewusst anpassen statt still umgehen.
-- Kommentararchiv: blendet erledigte Pakete nur in Vorschauen aus; im Quelltext kosten sie weiter Tokens und erschweren automatische Statusermittlung. Bei wachsender Historie ein sichtbares Statusregister und separates Archiv erwägen. Bestehende Vorgabe zum Auskommentieren bleibt bis zu einer Änderung verbindlich.
-- Nachweise: Ergebnisse pro Softwarestand führen und nach relevanten Folgeänderungen gezielt erneuern. Wiederholte Ergebnislisten in mehreren Dokumenten veralten; zentrale QL-Einträge nur referenzieren.
-- Prüfaufwand: Vollständiger Softwarecheck auch bei reiner Markdown-Änderung ist teuer. Eine ausdrücklich geregelte Dokumentationsprüfung könnte Aufwand senken; Q-T-01 bleibt bis zu einer Regeländerung verbindlich.
-- Frühe Betriebsrisiken: Zugänge/Geräte ab v0.0.1 vorbereiten; Buchungen bereits mit atomarer Outbox entwickeln. Restore-/Widerrufsgrenzen vor erster Migration spezifizieren, ausführliche Betriebsabnahme bleibt v0.24.0. Keine neue Produktanforderung oder vorgezogene Implementierung beschlossen.
+## Letzter Softwarelauf
 
-Entscheidung: Dokumentationsbearbeitung, keine Übernahme-/Produktfreigabe oder Ausnahme. Allgemeiner Softwarecheck bleibt bis zu erfolgreichen Nachweisen gesperrt; QL-002/003 und externe Voraussetzungen bleiben offen. Alle Softwareversionen starten weiterhin bei v0.0.1.
+Einführungsprüflauf am 22.10.2026, Windows-Sandbox/Node.js 24.16.0, Softwarestand wie oben (nur Markdown geändert), npm run check:
 
-Version 1.0: Anleitung/Nachweis erstellt. Version 1.1: redundante Regeln und Nachweisdetails gekürzt; fachlicher Paketumfang unverändert.
+| Check | Ergebnis |
+| --- | --- |
+| Lint | bestanden |
+| Typecheck | bestanden, Routentypen generiert |
+| Tests | fehlgeschlagen: 89/92 bestanden, 3 bekannte Fehler, 0 Skips (QL-002) |
+| Isolierter Build | fehlgeschlagen: Turbopack-Unterprozess bei globals.css vor Verbindung beendet (QL-003) |
+
+Gesamt Exit 1. Kein erfolgreicher Gesamtcheck oder Software-/Produktfreigabe. Nach dem Lauf nur Dokumentationsbefunde/Nachweise korrigiert; Dokumentationsprüfung erneuert. Frühere Läufe nur historisch im Git-Verlauf; keine doppelten aktuellen Ergebnislisten.
+
+Historie: 1.0 Anleitung erstellt; 1.1 gekürzt; 1.2 (22.10.2026) Prozessverbesserungen umgesetzt, Nachweise zentralisiert. Frühere Prüfläufe sind im Git-Verlauf historisch, nicht als aktueller Erfolg wiederverwendbar.

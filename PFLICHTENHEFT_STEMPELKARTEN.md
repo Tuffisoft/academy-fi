@@ -3,7 +3,7 @@
 | Dokumentmerkmal | Wert |
 | --- | --- |
 | Projekt | Stempelkarten als SaaS-Modul der Academy Fi |
-| Version | 1.0 |
+| Version | 1.1 |
 | Datum | 22.10.2026 |
 | Status | Technische Umsetzungsspezifikation; keine Bestätigung einer bereits erfolgten Implementierung |
 | Fachliche Grundlage | [Lastenheft Version 1.0](LASTENHEFT_STEMPELKARTEN.md) |
@@ -414,7 +414,7 @@ Secrets stehen weder im Repository noch im Browserbundle oder in beispielhaften 
 
 ### 12.2 Migration und Kompatibilität
 
-1. Bestehende Benutzerrollen, Auth-Flows und Academy-Einstiegspunkte erfassen; Sicherung und Referenzprüfungen anlegen.
+1. Bestehende Benutzerrollen, Auth-Flows und Academy-Einstiegspunkte erfassen; vor erster Migration Sicherungs-/Restoreziel, Job-Wiederanlauf und Wiederanwendung wirksamer Widerrufe/Löschungen mit Zuständigkeiten spezifizieren; Sicherung und Referenzprüfungen anlegen.
 2. Additive Migration für neue Modelle, Rollen, Indizes und Integritätsregeln erstellen; an einer getrennten Datenbank mit repräsentativem Bestand prüfen.
 3. Prisma-Client und vorhandene Entwicklungsprüfung des Client-Schemas um die neuen Modelle ergänzen. Bestehende Tabellen werden nicht umgedeutet oder geleert.
 4. Explizite Academy-Guards ausrollen und mit einem externen Testkonto gegen direkte API-/Action-Aufrufe prüfen.
@@ -446,7 +446,7 @@ Anbieterzugänge und Veröffentlichungsfreigaben werden parallel zu P1 vorbereit
 - Anbieter-Tests verwenden Stripe-Testmodus, Google-Testzugänge und Apple-Testpässe auf echten Geräten. Mocks ersetzen nicht die Geräteabnahme.
 - Manuelle Durchläufe dokumentieren iOS/Safari und Android/Chrome einschließlich Wallet-Speicherung, Kameraberechtigung, Mobilansicht, Deutsch und Englisch.
 
-Im aktuellen Checkout verweist `npm test` auf nicht vorhandene Dateien unter `tests`. Das ist ein vorhandener Prüfungsrückstand, kein erfolgreicher Testlauf. Für die Umsetzung werden eigenständig ausführbare Loyalty-Unit- und Datenbank-Integrationstests samt npm-Skripten ergänzt. Vor einer vollständigen Freigabe wird der bestehende Testbefehl nachvollziehbar repariert beziehungsweise der Bestand wiederhergestellt; fehlende Dateien werden nicht stillschweigend als bestandene Regression gewertet.
+Aktueller Test-/Mängelstand: [AGENTS.md](AGENTS.md). Loyalty-Unit- und DB-Tests mit getrennten npm-Einstiegen ergänzen; fehlende Dateien/Prüfungen sind kein Regressionserfolg. Für reine Dokumentation gilt Q-T-01; Software-/Produktabnahme bleibt unverändert. Paketabhängigkeiten und Status: [Entwicklungsanleitung](ENTWICKLUNGSANLEITUNG_STEMPELKARTEN.md).
 
 ### 13.2 Testfälle und Rückverfolgbarkeit
 
@@ -488,3 +488,5 @@ Zur späteren Umsetzung gehören Anwendungscode, additive Prisma-Migrationen, au
 Das Lastenheft und dieses Pflichtenheft liegen direkt im Repository-Hauptverzeichnis und können gemeinsam versioniert werden; das vorhandene Verzeichnis `docs` wird derzeit durch Git ignoriert. Dieses Dokument allein implementiert noch keine Software und verändert keine produktiven Daten.
 
 Änderungen an Geschäftsregeln werden zuerst mit betroffenen `LF-F-`-/`LF-N-`-Kennungen beschrieben und in beiden Dokumenten konsistent fortgeschrieben. Rein technische Anpassungen aktualisieren mindestens die betroffenen Abschnitte, Testzuordnungen und Versionshistorie. Anbieterzugänge, rechtliche Aufbewahrungsprofile und die konkrete Länderliste bleiben ausdrücklich zu erfüllende Betriebsvoraussetzungen; sie sind nicht als bereits vorhanden angenommen.
+
+Version 1.1 · 22.10.2026: frühe Restore-Planung, Verweise auf Paketregister und zentrale Nachweise, veralteten Testbestand berichtigt. LF-/T-/AK-Anforderungen unverändert.

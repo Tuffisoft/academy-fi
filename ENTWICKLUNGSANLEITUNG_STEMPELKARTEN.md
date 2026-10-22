@@ -1,42 +1,33 @@
 # Entwicklungsanleitung: Stempelkarten-SaaS
 
-Version 1.1 · 22.10.2026 · Basis: 198ea2d. Ziel: vollständig abgenommenes Modul v1.0.0.
+Version 1.2 · 22.10.2026 · Basis: 198ea2d. Ziel: vollständig abgenommenes Modul v1.0.0.
 28 Pakete; nächste offene Version: **v0.0.1**; abgeschlossen: **keine**. Diese Anleitung implementiert keine Software.
 
 ## A. Arbeitsablauf und Abschluss
 
 Vor jedem Auftrag [AGENTS.md](AGENTS.md), [Lastenheft](LASTENHEFT_STEMPELKARTEN.md), [Pflichtenheft](PFLICHTENHEFT_STEMPELKARTEN.md) und relevante Versionsnachweise lesen. Muss-Anforderungen/Freigaberegeln gelten unverändert.
 
-1. Genau eine beauftragte Version bearbeiten; ohne Auswahl die nächste offene. Abhängigkeiten und tatsächlichen Git-/Test-/Änderungsstand prüfen, vorhandene Arbeit erhalten. Versionen bauen in Dokumentreihenfolge aufeinander auf; eine Überschrift ersetzt keinen Abschlussnachweis.
+1. Genau eine beauftragte Version bearbeiten; technische Abhängigkeiten nach Register und tatsächlichen Git-/Test-/Änderungsstand prüfen, vorhandene Arbeit erhalten. Ohne Auswahl die kleinste technisch bearbeitbare offene Version wählen; Blocker der übersprungenen Versionen benennen. Eine Überschrift ersetzt keinen Nachweis.
 2. Verhalten, Rollen, Erfolgs-/Fehlerfälle und LF-/T-/AK-Bezug vor Implementierung im Versionsnachweis festhalten. Nur dieses Paket mit zusammengehöriger UI, DE/EN, Autorisierung, Fachservice und Datenhaltung liefern. Notwendige Vorarbeit begrenzen/begründen; spätere Pakete nicht vorziehen.
-3. Fachtests, erforderliche echte Integrationstests und alle vier Checks nach AGENTS.md ausführen. Neue Unit-Dateien in die npm-Testliste, Loyalty-DB-Tests in einen getrennten Einstieg aufnehmen; Chat-Integration führt sie nicht automatisch aus. Keine produktiven Daten, Migrationen, Seeds, Testzahlungen oder Providerdaten zur Verifikation.
+3. Prüfweg nach AGENTS.md wählen: Softwarepakete mit Fach-/Integrationstests und vier Checks; reine Dokumentation mit begründeter Dokumentationsprüfung. Neue Unit-Dateien in die npm-Testliste, Loyalty-DB-Tests in einen getrennten Einstieg aufnehmen; Chat-Integration führt sie nicht automatisch aus. Keine produktiven Daten, Migrationen, Seeds, Testzahlungen oder Providerdaten zur Verifikation.
 4. Betroffene Academy-Regression, DE/EN, mobile Bedienung ab 360 CSS-Pixeln, Tastatur und Zustandsanzeigen belegen oder Nichtanwendbarkeit begründen. Code/Ergebnis reviewen; Prüfer, Stand, Befunde/Erledigung dokumentieren. Selbstreview kennzeichnen.
 5. Je Version eine ausgefüllte [Freigabecheckliste](FREIGABECHECKLISTE.md) als FREIGABE_STEMPELKARTEN_<VERSION>.md im Hauptverzeichnis führen: Verhalten, Stand (Commit bzw. Datei-/Patchhash), Umsetzung, Prüfungen, Review, Ausnahmen und Freigabeumfang. Implementierung, Automatik-, Geräte- und Produktionsabnahme getrennt halten. Erforderliche Q-C-07-Freigabe am konkreten Stand erst nach reversibler Vorbereitung/isolierten Tests vor Übernahme bzw. produktiver Anwendung einholen oder passende Autorisierung belegen.
 6. Abschluss nur bei implementiertem Umfang, geprüften Erfolgs-/Fehler-/Berechtigungsfällen, erfüllten lokalen Checklisten und allgemeinen Regeln. Keine neuen ungelösten Mängel, verdeckten Regelumgehungen oder für diesen Umfang fehlenden Freigaben. Altfehler bleiben als QL sichtbar; rote Checks werden durch Dokumentation nicht grün. Nötige zulässige Ausnahmen brauchen konkrete Genehmigung. Bei Blockern nur belegte Teilschritte abhaken, Version offen halten. Unbetroffene Vorbereitung nur im beauftragten Paket fortsetzen.
-7. Vollständig abgeschlossenen Versionsblock gemäß A.1 auskommentieren und Kopf aktualisieren; Ergebnis/Restriktionen berichten. Keine nächste Version oder Veröffentlichung automatisch starten.
+7. Vollständig abgeschlossenen Versionsblock gemäß A.1 archivieren und Register/Kopf aktualisieren; Ergebnis/Restriktionen berichten. Keine nächste Version oder Veröffentlichung automatisch starten.
 
 Modulversionen sind unabhängig von package.json und Academy-/Dokumentversionen: v0.0.1/v0.0.2 bereinigen die Basis, Funktionen erhöhen Minor, konkrete Korrekturen Patch (z. B. v0.7.1). Keine Nummern wiederverwenden/umnummerieren, globale Paketversion automatisch ändern oder Arbeit für eine Versionsnummer erfinden.
 
-### A.1 Abschlussformat
+### A.1 Status und Archiv
 
-Vollständigen Block samt Überschrift, Zuordnung, Schritten und erledigter Checkliste erhalten und in einen HTML-Kommentar einschließen:
+Register unten ist die einzige Paketstatusliste; Versionsnachweise enthalten die vier getrennten Abnahmestände. Status: offen, in Arbeit, blockiert, abgeschlossen. Blockierte Pakete nennen im Nachweis Grund, Verantwortlichen und Auflösungskriterium. Fehlende Geräte-/Providerbelege sperren den betreffenden Abschluss, nicht unabhängige Vorbereitung. Eine technische Voraussetzung muss im benötigten Umfang implementiert und automatisiert belegt sein, einschließlich nötiger echter DB-/Providertests. Offene Geräte-/Produktionsfreigaben bleiben offen; benötigt das Folgepaket diesen Beleg, bleibt es blockiert. Übernahmefreigaben nach Q-C-07 bleiben erforderlich.
 
-```markdown
-<!-- ABGESCHLOSSEN: <VERSION>
-Datum: <Abschlussdatum>
-Nachweis: FREIGABE_STEMPELKARTEN_<VERSION>.md
-Stand: <Commit bzw. Datei-/Patchhash>
-Freigabeumfang: <z. B. Entwicklung>
+Bei vollständigem Abschluss: gesamten bisherigen Block mit Zuordnung, Schritten und erledigten Checklisten unverändert nach [Archiv](ARCHIV_STEMPELKARTEN.md) verschieben; dort Datum, geprüften Stand, Nachweis und Freigabeumfang ergänzen. Erst nach Abgleich des vollständigen Inhalts aus der aktiven Anleitung entfernen. Keine HTML-Kommentare als Archiv; kein Inhalt geht verloren. Registereintrag bleibt mit Archivanker und Versionsnachweis sichtbar. Offene/teilweise erledigte Blöcke bleiben hier; nur belegte Teilschritte abhaken. Archiv nur für betroffene Historie lesen.
 
-<Vollständiger bisheriger Versionsblock>
--->
-```
-
-Kommentargrenzen auf eigene Zeilen; keine Verschachtelung. Offene/teilweise erledigte Versionen bleiben sichtbar. Ermittlung offener Pakete muss Kommentare und Codebeispiel ausnehmen; Suche nach „## v“ allein reicht nicht. Kopf mit letzter abgeschlossener/nächster offener Version und Nachweis aktualisieren; nach v1.0.0: „Keine; vereinbarter Umfang abgeschlossen“. Grundlagen A und Auftrag B bleiben sichtbar.
+Register/Kopf gemeinsam aktualisieren: letzte abgeschlossene/nächste offene Version mit Nachweis; nach v1.0.0 „Keine; vereinbarter Umfang abgeschlossen“. Eine Entwicklungsversion oder Reihenfolge außerhalb der Nummern ist keine vollständige Produktfreigabe. Nummern bleiben unverändert.
 
 ### A.2 Ausgangslücken und externe Voraussetzungen
 
-Vor v0.0.1 QL-002–007 aus AGENTS.md neu prüfen; alte Läufe nicht als aktuell übernehmen. Veraltete Pflichtenheft-Aussage über fehlende Tests mit wiederhergestelltem Bestand abgleichen. Apple-Zertifikate, Google-Issuer/Freigabe, separate Test-DB, Stripe-Testzugang, E-Mail-Absender, Geräte und Betreiberzuständigkeiten ab v0.0.1 vorbereiten. Fehlende Live-Freigaben sind kein Entwicklungsabschluss und sperren nicht automatisch unbetroffene Vorbereitung. Keine vorgezogene Wallet-/Billing-Implementierung.
+Vor v0.0.1 QL-002–007 aus AGENTS.md neu prüfen; alte Läufe nicht als aktuell übernehmen. Apple-Zertifikate, Google-Issuer/Freigabe, separate Test-DB, Stripe-Testzugang, E-Mail-Absender, Geräte und Betreiberzuständigkeiten ab v0.0.1 vorbereiten. Fehlende Live-Freigaben sind kein Entwicklungsabschluss und sperren nicht automatisch unbetroffene Vorbereitung. Keine vorgezogene Wallet-/Billing-Implementierung.
 
 ## B. Auftrag an den Coding-Agenten
 
@@ -44,19 +35,54 @@ Vor v0.0.1 QL-002–007 aus AGENTS.md neu prüfen; alte Läufe nicht als aktuell
 Bearbeite nur <VERSION> aus ENTWICKLUNGSANLEITUNG_STEMPELKARTEN.md nach Abschnitt A.
 Prüfe Bestand/Abhängigkeiten, dokumentiere Verhalten und Anforderungen, liefere
 zusammengehörige UI/Backend/Tests und einen ausgefüllten Versionsnachweis.
-Kommentiere den vollständigen Block nur bei belegtem Abschluss nach A.1 aus;
+Archiviere den vollständigen Block nur bei belegtem Abschluss nach A.1;
 sonst dokumentiere Teilschritte/Blocker. Aktualisiere den Kopf entsprechend.
 Starte keine Folgeversion und veröffentliche nichts automatisch.
 ```
 
+## C. Statusregister und Abhängigkeiten
+
+Direkte technische Voraussetzungen; weitere folgen transitiv. Reihenfolge ist Standardplanung, keine zusätzliche Abhängigkeit. Getrennte Test-DB ist für jede Daten-/Transaktionsprüfung nötig; Provider/Geräte nur für betroffene Tests. Externe Gates siehe Tabelle; fachliche Abschlussbelege bleiben in lokalen Checklisten verbindlich. Live-/Länder-/Betriebsfreigaben insgesamt spätestens v1.0.0. Alle Paketnachweise sind noch offen.
+
+| Version | Technisch vorausgesetzt | Externe Abschlussvoraussetzung | Status |
+| --- | --- | --- | --- |
+| v0.0.1 | – | Zugänge/Geräte/Zuständigkeiten erfasst | offen |
+| v0.0.2 | v0.0.1 | – | offen |
+| v0.1.0 | v0.0.2 | – | offen |
+| v0.2.0 | v0.1.0 | E-Mail-Testzugang | offen |
+| v0.3.0 | v0.2.0 | E-Mail-Testzugang | offen |
+| v0.4.0 | v0.3.0 | – | offen |
+| v0.5.0 | v0.4.0 | – | offen |
+| v0.6.0 | v0.5.0 | – | offen |
+| v0.7.0 | v0.6.0 | – | offen |
+| v0.8.0 | v0.7.0 | – | offen |
+| v0.9.0 | v0.8.0 | – | offen |
+| v0.10.0 | v0.9.0 | – | offen |
+| v0.11.0 | v0.7.0, v0.10.0 | Apple-Testzugang, echtes iPhone | offen |
+| v0.12.0 | v0.11.0 | Apple-Testzugang, echtes iPhone | offen |
+| v0.13.0 | v0.7.0, v0.10.0 | Google-Testzugang, echtes Android | offen |
+| v0.14.0 | v0.12.0, v0.13.0 | Beide Wallet-Testzugänge/Geräte | offen |
+| v0.15.0 | v0.9.0, v0.10.0 | – | offen |
+| v0.16.0 | v0.15.0 | – | offen |
+| v0.17.0 | v0.7.0 | Recovery-Schlüssel, E-Mail-Testzugang | offen |
+| v0.18.0 | v0.17.0, v0.14.0 | Beide Geräte, E-Mail-Testzugang | offen |
+| v0.19.0 | v0.3.0, v0.10.0 | Stripe-Testmodus, freigegebene Länder | offen |
+| v0.20.0 | v0.19.0 | Stripe-Testmodus | offen |
+| v0.21.0 | v0.9.0, v0.20.0 | – | offen |
+| v0.22.0 | v0.4.0, v0.14.0, v0.20.0 | – | offen |
+| v0.23.0 | v0.18.0, v0.20.0, v0.22.0 | – | offen |
+| v0.24.0 | v0.14.0, v0.16.0, v0.23.0 | Getrenntes Restoreziel, Alarmkanal/Betreiber | offen |
+| v0.25.0 | Alle v0.0.1–v0.24.0 abgeschlossen | Pilotunternehmen, beide Geräte | offen |
+| v1.0.0 | v0.25.0 abgeschlossen | Alle Live-Freigaben, Auftraggeber | offen |
+
 ## v0.0.1 – Ausgangsstand und belastbare Qualitätsbasis
 
-**Ergebnis:** Der Agent kann künftige Versionen auf einem nachvollziehbaren Stand bearbeiten. **Zuordnung:** LF-N-08, LF-N-10; T-18 / AK-18 anteilig; Pflichtenheft 12–13. **Voraussetzung:** Keine abgeschlossene Modulversion erforderlich.
+**Ergebnis:** Der Agent kann künftige Versionen auf einem nachvollziehbaren Stand bearbeiten. **Zuordnung:** LF-N-08, LF-N-10; T-18 / AK-18 anteilig; Pflichtenheft 12–13. **Voraussetzung:** Register C.
 
 1. Repository, Regeln, Tests und QL-Einträge erfassen; vier Checks ausführen, neue/alte Fehler unterscheiden.
 2. Bestätigte Prüfprobleme beheben, insbesondere Node 24 und CI-Verweise; keine Fachregel für grüne Tests ändern.
 3. QL-002: Produktentscheidung zur Gewichtung vorbereiten und nötigenfalls einholen; keine Gewichtung eigenmächtig wählen.
-4. Separate Loyalty-Testumgebung/-einstiege vorbereiten; unbekannte DBs nicht migrieren. Fehlende Zugänge/Freigaben mit Zuständigkeit erfassen.
+4. Separate Loyalty-Testumgebung/-einstiege vorbereiten; unbekannte DBs nicht migrieren. Vor erster Migration Sicherung, Restore-Ziel, Job-Wiederanlauf und erneute Widerrufe/Löschungen mit Zuständigkeit spezifizieren; fehlende Zugänge/Freigaben erfassen.
 5. Veraltete Bestandsaussagen gezielt/versioniert berichtigen; Produktanforderungen erhalten. Checks, Review und offene QL-Punkte dokumentieren.
 
 - [ ] Bestandsprüfungen und Zuständigkeiten sind aktuell; offene Entscheidungen werden nicht als erledigt geführt.
@@ -65,7 +91,7 @@ Starte keine Folgeversion und veröffentliche nichts automatisch.
 
 ## v0.0.2 – Interne Academy-Zugriffe ausdrücklich absichern
 
-**Ergebnis:** Ein zukünftiges Geschäftskonto erhält durch Anmeldung keine internen Academy-Rechte. **Zuordnung:** LF-F-01, LF-N-01, LF-N-02; T-01, T-02, T-18 / AK-01, AK-02, AK-18 anteilig; Pflichtenheft 3. **Voraussetzung:** v0.0.1.
+**Ergebnis:** Ein zukünftiges Geschäftskonto erhält durch Anmeldung keine internen Academy-Rechte. **Zuordnung:** LF-F-01, LF-N-01, LF-N-02; T-01, T-02, T-18 / AK-01, AK-02, AK-18 anteilig; Pflichtenheft 3. **Voraussetzung:** Register C.
 
 1. Alle bisherigen Sitzungsprüfungen und internen Einstiegspunkte erfassen, einschließlich Actions, Chat/Realtime, Datenlisten, PDF-APIs und Upload-Middleware.
 2. Ausdrückliche interne Guards für `OWNER`/`INTERN` und einen gesonderten Plattform-Owner-Guard einführen. Allgemeine Anmeldung darf keine Academy-Zulassung mehr bedeuten.
@@ -80,7 +106,7 @@ Starte keine Folgeversion und veröffentliche nichts automatisch.
 **Ergebnis:** Unternehmen und Mitgliedschaften sind sicher voneinander getrennt. **Zuordnung:** LF-F-03, LF-F-21, LF-N-01, LF-N-03; T-02, T-13, T-18 / AK-02, AK-13, AK-18 anteilig; Pflichtenheft 3–4, 10.1.
 
 1. Additive Modelle für Unternehmen, Mitgliedschaft, Audit und lokalen Free-Berechtigungsstand samt globaler Rolle `CUSTOMER` vorbereiten; vorhandene Rollen nicht umdeuten.
-2. Migration reversibel vorbereiten und ausschließlich auf freigegebenem separatem Testbestand anwenden; zusammengesetzte Ressourcen-/Mandantenzuordnungen prüfen.
+2. Migrations-/Restoreplan aus v0.0.1 prüfen; Migration reversibel vorbereiten und ausschließlich auf freigegebenem separatem Testbestand anwenden; zusammengesetzte Ressourcen-/Mandantenzuordnungen prüfen.
 3. Unternehmens-Guards und getrennten internen Administrationskontext als gemeinsame Services bereitstellen. Tarifprofile zentral definieren; keine unbezahlte öffentliche Freischaltung.
 4. Eine minimale interne Unternehmensdetailansicht anbinden; fremde Kennungen, entzogene Mitgliedschaft und atomare Platzprüfung mit echten DB-Tests prüfen.
 
@@ -225,7 +251,7 @@ Starte keine Folgeversion und veröffentliche nichts automatisch.
 
 1. Google-Testissuer, Dienstkonto, API-Zugriff und Modell für Kundenbranding prüfen; Produktionsfreigabe gesondert festhalten.
 2. Loyalty Class je Programm und Object je Karte mit stabilen Kennungen anlegen; Wiederholung nach unklarem Anbieterergebnis sicher behandeln.
-3. Offiziellen Google-Button und signierten Ausgabelink über die berechtigte Kundensitzung bereitstellen; dieselbe Karte parallel zu Apple verwenden.
+3. Offiziellen Google-Button und signierten Ausgabelink über die berechtigte Kundensitzung bereitstellen; dieselbe Kartenidentität wie Web und Apple vorsehen; gemeinsame Geräteabnahme in v0.14.0.
 4. Reale Speicherung, erneute Ausgabe, fremde Sitzung, fehlende Zugänge und wiederholten Anbieterrequest prüfen.
 
 - [ ] Google-Ausgabe belegt keinen zweiten Kartenplatz und zeigt den bestätigten Datenbankstand.
@@ -389,8 +415,12 @@ Starte keine Folgeversion und veröffentliche nichts automatisch.
 3. Betreiber-/Rechtsgrundlagen, Aufbewahrung, Datenschutz, Rücknahmeplan und priorisierten Supportweg mit tatsächlichen Zuständigkeiten bestätigen.
 4. Die vorgeschriebene ausdrückliche Auftraggeberfreigabe für diesen Stand und den Produktionsumfang einholen. Ohne sie Registrierung und Livezahlungen nicht öffentlich aktivieren.
 5. Nur im genehmigten Umfang ausrollen, kontrollierten Produktions-Smoke-Test ohne künstliche Kundenbuchungen durchführen und Monitoring sowie Supportübergabe protokollieren.
-6. Bei erfolgreicher vollständiger Abnahme den Versionsnachweis finalisieren, diesen Abschnitt nach A.1 auskommentieren und den Dokumentkopf auf „Keine offenen Versionen im vereinbarten Umfang“ setzen.
+6. Bei erfolgreicher vollständiger Abnahme den Versionsnachweis finalisieren, diesen Abschnitt nach A.1 archivieren und den Dokumentkopf auf „Keine offenen Versionen im vereinbarten Umfang“ setzen.
 
 - [ ] Alle Muss-Anforderungen und externen Voraussetzungen sind belegt; keine offene Sicherheits-, Buchungs-, Abrechnungs- oder Datenverlustlücke.
 - [ ] Ausdrückliche Freigabe und tatsächlicher Betriebszustand stimmen überein; Pilotfreigabe wird nicht als Produktionsfreigabe verwendet.
-- [ ] Erledigte Versionsblöcke bleiben vollständig im Quelltext.
+- [ ] Erledigte Versionsblöcke bleiben vollständig im verlinkten Archiv.
+
+## Änderungshistorie
+
+Versionen: 1.0 Anleitung; 1.1 gekürzt; 1.2 (22.10.2026) Register/Abhängigkeiten, echtes Archiv, zentrale Nachweise und frühe Restore-Planung; Modul-/Produktumfang unverändert.
