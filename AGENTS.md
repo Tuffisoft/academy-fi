@@ -57,6 +57,7 @@ Regelverletzungen sperren die betroffene Übernahme, bis sie behoben oder zuläs
 Echte Integrationstests separat:
 
 - DB: entbehrliche separate, mit bestehenden Migrationen vorbereitete Neon/PostgreSQL-Testdatenbank; nur im Testprozess ACADEMYFI_DATABASE_TEST=1 und CHAT_TEST_DATABASE_URL setzen, dann `npm run test:integration`. Keine bekannte normale App-DB; keine automatische Migration/Seeds gegen unbekannte DBs.
+- Stempelkarten separat: LOYALTY_TEST_DATABASE_URL und ACADEMYFI_DATABASE_TEST=1 nur im Testprozess, dann `npm run test:loyalty:integration -- tests/loyalty/<name>.integration.test.ts`. Gleiche DB-Sicherheitsregeln; kein Fallback auf Chat-/App-DB. Noch keine Loyalty-DB-Fachtests vorhanden.
 - Ably: separate Test-App, ACADEMYFI_REALTIME_TEST=1 und ABLY_TEST_API_KEY; `npm run test:realtime`. Keine normalen App-Zugänge. Ausführender bestätigt die Testzuordnung; URL-/Schlüsselvergleiche allein beweisen sie nicht.
 
 CI führt vier unabhängige Jobs für PRs und Pushes auf master ohne Produktionssecrets aus. Im GitHub-Ruleset müssen Quality (lint), Quality (typecheck), Quality (test) und Quality (check:build) verpflichtend sein; Workflow allein sperrt keinen Merge. Integration, Geräte- und Betriebsnachweise bleiben zusätzlich nötig. SaaS Release 1.0 braucht AK-01–18 und sämtliche externen Voraussetzungen. Freigaben mit eindeutiger Standkennung über die Checkliste dokumentieren.

@@ -1,10 +1,43 @@
 import assert from "node:assert/strict";
 import test from "node:test";
+import { spawnSync } from "node:child_process";
 import {
   databaseIntegrationEnvironment,
   isolatedEnvironment,
   realtimeIntegrationEnvironment,
 } from "../scripts/quality-environment.mjs";
+
+test("Loyalty DB entry refuses empty, foreign and unconfigured test runs before database access", () => {
+  for (const files of [[], ["tests/chats.integration.test.ts"], ["tests/loyalty/../../chats.integration.test.ts"], ["tests/loyalty/cards.integration.test.ts"]]) {
+    const result = spawnSync(process.execPath, ["scripts/check.mjs", "loyalty-integration", ...files], {
+      env: { ...process.env, ACADEMYFI_DATABASE_TEST: "", CHAT_TEST_DATABASE_URL: "", LOYALTY_TEST_DATABASE_URL: "" },
+      encoding: "utf8",
+    });
+    assert.equal(result.status, 1);
+    assert.match(result.stderr, files[0] === "tests/loyalty/cards.integration.test.ts" ? /Datenbanktests benötigen/ : /Loyalty-Testliste/);
+  }
+});
+
+test("Loyalty configuration requires its own URL and rejects ordinary databases", () => {
+  const variable = "LOYALTY_TEST_DATABASE_URL";
+  const testUrl = "postgresql://test:test@db.example/loyalty_test";
+  const source = { ACADEMYFI_DATABASE_TEST: "1", LOYALTY_TEST_DATABASE_URL: testUrl, CHAT_TEST_DATABASE_URL: "postgresql://chat:chat@db.example/chat_test" };
+  for (const invalid of [
+    { ...source, ACADEMYFI_DATABASE_TEST: "" },
+    { ...source, LOYALTY_TEST_DATABASE_URL: "" },
+    { ...source, LOYALTY_TEST_DATABASE_URL: "https://db.example/test" },
+    { ...source, DATABASE_URL: "postgres://other:pass@DB.EXAMPLE:5432/loyalty_test" },
+  ]) assert.throws(() => databaseIntegrationEnvironment(invalid, [], variable));
+  assert.throws(() => databaseIntegrationEnvironment(source, [{ DATABASE_URL: testUrl }], variable));
+  const env = databaseIntegrationEnvironment(source, [], variable);
+  assert.equal(env.DATABASE_URL, testUrl);
+  assert.equal(env.LOYALTY_TEST_DATABASE_URL, testUrl);
+  assert.equal(env.CHAT_TEST_DATABASE_URL, "");
+  assert.equal(isolatedEnvironment(source, []).LOYALTY_TEST_DATABASE_URL, "");
+  const chat = databaseIntegrationEnvironment(source, []);
+  assert.equal(chat.DATABASE_URL, source.CHAT_TEST_DATABASE_URL);
+  assert.equal(chat.LOYALTY_TEST_DATABASE_URL, "");
+});
 
 test("unit/build checks replace local and inherited provider credentials without changing the parent", () => {
   const source = { PATH: "/tools", DATABASE_URL: "postgresql://app:secret@db.example/app", ABLY_API_KEY: "app.key:secret", OPENAI_API_KEY: "live-key" };

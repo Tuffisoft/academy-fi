@@ -76,3 +76,9 @@ Der JSX-Editor verwendet lokal gebündeltes CodeMirror mit Syntaxfarben, Zeilenn
 Die Standardvorlage enthält ein anklickbares Inhaltsmenü auf der Titelseite, eigene Abschnitte für Mobil, Desktop, KI-Designbewertung und die Bewertungsmethode sowie Seitenzahlen. Die Links verwenden echte interne PDF-Sprungziele und bleiben bei zusätzlichen Seiten korrekt. Im Designer werden alte unveränderte Standardvorlagen mit der neuen Gestaltung geöffnet; der Live-Stand ändert sich erst durch ausdrückliches Aktivieren. Eigene JSX-Vorlagen bleiben erhalten. Im Editor lässt sich die neue Vorlage über „Standard einsetzen“ übernehmen und speichern.
 
 Eigene Sprunglinks lassen sich mit `href="#mobile"` auf `View`, `Text` oder `Link` anlegen. Das Ziel erhält `bookmark="mobile"` auf `View` oder `Text`. Sprungziele müssen eindeutig sein und tatsächlich existieren. Externe Links sind im Vorlageneditor nicht freigegeben. `Fixed position="footer"` unterstützt `{{pageNumber}}` und `{{totalPages}}`; Fixed-Elemente stehen vor dem Seiteninhalt, damit sie auch auf Fortsetzungsseiten erscheinen.
+
+## Loyalty-DB-Prüfungen vorbereiten
+
+`npm run test:loyalty:integration -- tests/loyalty/<name>.integration.test.ts` ist der getrennte Einstieg für künftige Stempelkarten-DB-Tests. Die Dateiliste ist explizit; ohne Dateien, bei fremden/fehlenden Dateien oder fehlender Testkonfiguration endet der Befehl mit Fehler. Derzeit sind noch keine Loyalty-DB-Fachtests implementiert; der Einstieg ist kein Abnahmebeleg.
+
+Nur im Testprozess `ACADEMYFI_DATABASE_TEST=1` und `LOYALTY_TEST_DATABASE_URL` auf eine vom Betreiber ausdrücklich bestätigte separate, entbehrliche und mit bestehenden Migrationen vorbereitete Testdatenbank setzen. Normale App-DBs werden verweigert. Keine automatische Migration oder Seeds. Das ersetzt weder die Betreiberbestätigung noch echte Transaktions-/Parallelitätstests. Der Chat-Testeinstieg bleibt separat.

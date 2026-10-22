@@ -48,6 +48,11 @@ try {
     ], databaseIntegrationEnvironment());
   } else if (mode === "realtime") {
     process.exitCode = tests(["tests/realtime.integration.test.ts"], realtimeIntegrationEnvironment());
+  } else if (mode === "loyalty-integration") {
+    if (!files.length || files.some((file) => !/^tests\/loyalty\/[\w-]+\.integration\.test\.ts$/.test(file))) {
+      throw new Error("Loyalty-Testliste fehlt oder ist ungültig. Explizite Dateien tests/loyalty/<name>.integration.test.ts übergeben; noch keine Loyalty-DB-Abnahme vorhanden.");
+    }
+    process.exitCode = tests(files, databaseIntegrationEnvironment(process.env, undefined, "LOYALTY_TEST_DATABASE_URL"));
   } else if (mode === "all") {
     const failed = [];
     for (const script of ["lint", "typecheck", "test", "check:build"]) {

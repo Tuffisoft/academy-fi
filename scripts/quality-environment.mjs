@@ -27,7 +27,7 @@ export function isolatedEnvironment(source = process.env, configurations = local
     "ABLY_API_KEY", "ABLY_TEST_API_KEY", "RESEND_KEY", "RESEND_API_KEY",
     "RESEND_FROM_EMAIL", "UPLOADTHING_TOKEN", "UPLOADTHING_SECRET",
     "GOOGLE_PLACES_API_KEY", "PAGESPEED_API_KEY", "OPENAI_API_KEY",
-    "CHAT_TEST_DATABASE_URL", "ACADEMYFI_DATABASE_TEST", "ACADEMYFI_REALTIME_TEST",
+    "CHAT_TEST_DATABASE_URL", "LOYALTY_TEST_DATABASE_URL", "ACADEMYFI_DATABASE_TEST", "ACADEMYFI_REALTIME_TEST",
   ]) env[name] = "";
   // The sandbox's Windows temporary directory has ACLs rejected by native SWC.
   // Keep its materialization cache inside the already ignored workspace cache.
@@ -58,11 +58,15 @@ function databaseIdentity(value) {
  * @param {CheckEnvironment[]} configurations
  * @returns {CheckEnvironment & { DATABASE_URL: string }}
  */
-export function databaseIntegrationEnvironment(source = process.env, configurations = localConfigurations()) {
-  if (source.ACADEMYFI_DATABASE_TEST !== "1" || !source.CHAT_TEST_DATABASE_URL) {
-    throw new Error("Datenbanktests benötigen ACADEMYFI_DATABASE_TEST=1 und CHAT_TEST_DATABASE_URL. Ausschließlich eine separate, entbehrliche Testdatenbank verwenden.");
+export function databaseIntegrationEnvironment(source = process.env, configurations = localConfigurations(), variable = "CHAT_TEST_DATABASE_URL") {
+  if (!["CHAT_TEST_DATABASE_URL", "LOYALTY_TEST_DATABASE_URL"].includes(variable)) {
+    throw new Error("Unbekannte Testdatenbank-Zuordnung.");
   }
-  const identity = databaseIdentity(source.CHAT_TEST_DATABASE_URL);
+  const testUrl = source[variable];
+  if (source.ACADEMYFI_DATABASE_TEST !== "1" || !testUrl) {
+    throw new Error(`Datenbanktests benötigen ACADEMYFI_DATABASE_TEST=1 und ${variable}. Ausschließlich eine separate, entbehrliche Testdatenbank verwenden.`);
+  }
+  const identity = databaseIdentity(testUrl);
   const ordinaryUrls = [source.DATABASE_URL, ...configurations.map((configuration) => configuration.DATABASE_URL)];
   if (ordinaryUrls.some((url) => url && databaseIdentity(url) === identity)) {
     throw new Error("Testdatenbank entspricht einer normalen Anwendungsdatenbank; Testlauf verweigert.");
@@ -71,8 +75,8 @@ export function databaseIntegrationEnvironment(source = process.env, configurati
     ...isolatedEnvironment(source, configurations),
     NODE_ENV: "test",
     DATABASE_ENV: "development",
-    DATABASE_URL: source.CHAT_TEST_DATABASE_URL,
-    CHAT_TEST_DATABASE_URL: source.CHAT_TEST_DATABASE_URL,
+    DATABASE_URL: testUrl,
+    [variable]: testUrl,
     ACADEMYFI_DATABASE_TEST: "1",
   };
 }
