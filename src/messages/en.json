@@ -20,9 +20,37 @@
     "auditDesignDetails": "Design & usability · Details",
     "auditDesktopDetails": "Technical details · Desktop",
     "auditDeviceScore": "Technical score",
-    "auditSimpleIssues": {"document-title":"Page title is missing","meta-description":"Search preview text is missing","is-crawlable":"Search engines cannot crawl this page","color-contrast":"Text is difficult to read","image-alt":"Image descriptions are missing","button-name":"Buttons lack clear labels","link-name":"Links lack clear labels","render-blocking-resources":"Files delay the page appearing","render-blocking-insight":"Files delay the page appearing","unused-javascript":"Unnecessary scripts slow down the page","unused-css-rules":"Unused styles add page weight","uses-optimized-images":"Images could load more efficiently","uses-responsive-images":"Images are larger than necessary","is-on-https":"Encrypted connection is missing","viewport":"Mobile display is not configured"},
-    "auditVisualCriteria": {"hierarchy":"Structure & orientation","readability":"Readability","consistency":"Visual consistency","mobileLayout":"Mobile layout"},
-    "auditVisualStatuses": {"not_configured":"AI assessment is not configured","screenshot_missing":"No usable mobile screenshot available","unrateable":"Screenshot cannot be assessed reliably","unavailable":"AI assessment failed","cancelled":"AI assessment cancelled","not_evaluated":"Design has not been assessed"},
+    "auditSimpleIssues": {
+      "document-title": "Page title is missing",
+      "meta-description": "Search preview text is missing",
+      "is-crawlable": "Search engines cannot crawl this page",
+      "color-contrast": "Text is difficult to read",
+      "image-alt": "Image descriptions are missing",
+      "button-name": "Buttons lack clear labels",
+      "link-name": "Links lack clear labels",
+      "render-blocking-resources": "Files delay the page appearing",
+      "render-blocking-insight": "Files delay the page appearing",
+      "unused-javascript": "Unnecessary scripts slow down the page",
+      "unused-css-rules": "Unused styles add page weight",
+      "uses-optimized-images": "Images could load more efficiently",
+      "uses-responsive-images": "Images are larger than necessary",
+      "is-on-https": "Encrypted connection is missing",
+      "viewport": "Mobile display is not configured"
+    },
+    "auditVisualCriteria": {
+      "hierarchy": "Structure & orientation",
+      "readability": "Readability",
+      "consistency": "Visual consistency",
+      "mobileLayout": "Mobile layout"
+    },
+    "auditVisualStatuses": {
+      "not_configured": "AI assessment is not configured",
+      "screenshot_missing": "No usable mobile screenshot available",
+      "unrateable": "Screenshot cannot be assessed reliably",
+      "unavailable": "AI assessment failed",
+      "cancelled": "AI assessment cancelled",
+      "not_evaluated": "Design has not been assessed"
+    },
     "auditDesignCriteria": "Design criteria",
     "auditTechnicalDetails": "Technical details · Mobile",
     "auditDesign": "Design & usability",
@@ -76,7 +104,12 @@
     "auditTimeRemaining": "Estimated time remaining",
     "auditMinutesSeconds": "Minutes : seconds",
     "auditEstimateHint": "Remaining time is estimated from previous durations and adjusted continuously.",
-    "leadGroups": {"newWebsite":"Opportunity for a new website","manualReview":"Manual review","rated":"Rated websites","pending":"Audit pending"},
+    "leadGroups": {
+      "newWebsite": "Opportunity for a new website",
+      "manualReview": "Manual review",
+      "rated": "Rated websites",
+      "pending": "Audit pending"
+    },
     "auditParallelCount": "Up to {count} leads at once",
     "leadDetails": "Lead details",
     "leadDetailsFor": "Details and website report for {name}",
@@ -90,7 +123,12 @@
     "auditIssueCount": "{count, plural, =0 {No issues} one {# issue} other {# issues}}",
     "auditChecksHeading": "Technical checks",
     "auditMethod": "How the rating is calculated",
-    "auditRating": { "good": "Good", "medium": "Average", "poor": "Poor", "unknown": "Not rated" },
+    "auditRating": {
+      "good": "Good",
+      "medium": "Average",
+      "poor": "Poor",
+      "unknown": "Not rated"
+    },
     "auditReport": "Website audit report",
     "auditPlaceId": "Google place ID",
     "auditDetailsDescription": "Available business details and technical website audit report.",
@@ -129,9 +167,29 @@
     "auditUnsafeUrl": "The supplied address cannot be audited as a public HTTP(S) website.",
     "auditInterrupted": "The background audit was interrupted. API requests will not be retried automatically.",
     "auditQueueError": "The audit job could not be submitted for background processing.",
-    "auditStatuses": { "PAUSED": "Paused", "CANCELLED": "Cancelled", "NOT_STARTED": "Not checked yet", "QUEUED": "Audit queued", "RUNNING": "Checking", "COMPLETED": "Checked", "NO_WEBSITE": "No website provided", "FAILED": "Not auditable" },
-    "auditMetrics": { "lcpMs": "LCP · largest contentful paint", "fcpMs": "FCP · first contentful paint", "tbtMs": "TBT · total blocking time", "cls": "CLS · layout shifts" },
-    "auditChecks": { "viewport": "Mobile viewport", "document-title": "Page title", "meta-description": "Meta description", "is-crawlable": "Search engine crawlability", "is-on-https": "HTTPS audit" },
+    "auditStatuses": {
+      "PAUSED": "Paused",
+      "CANCELLED": "Cancelled",
+      "NOT_STARTED": "Not checked yet",
+      "QUEUED": "Audit queued",
+      "RUNNING": "Checking",
+      "COMPLETED": "Checked",
+      "NO_WEBSITE": "No website provided",
+      "FAILED": "Not auditable"
+    },
+    "auditMetrics": {
+      "lcpMs": "LCP · largest contentful paint",
+      "fcpMs": "FCP · first contentful paint",
+      "tbtMs": "TBT · total blocking time",
+      "cls": "CLS · layout shifts"
+    },
+    "auditChecks": {
+      "viewport": "Mobile viewport",
+      "document-title": "Page title",
+      "meta-description": "Meta description",
+      "is-crawlable": "Search engine crawlability",
+      "is-on-https": "HTTPS audit"
+    },
     "jobCapacity": "Three searches are already active. Please wait for a search to finish, then start again.",
     "jobQueued": "The search is waiting to be processed.",
     "jobLocating": "Determining the search center.",

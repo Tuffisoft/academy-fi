@@ -2,7 +2,12 @@ import { ArrowRight, LayoutDashboard, Wrench } from "lucide-react";
 import { getTranslations } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
 import { SignInPanel } from "@/components/auth/sign-in-panel";
-import { Card, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { getCurrentSession } from "@/lib/session";
 
 export default async function Home() {
@@ -16,7 +21,9 @@ export default async function Home() {
   return (
     <main className="flex flex-1 flex-col justify-center gap-8 px-6 py-16">
       <header className="max-w-2xl">
-        <p className="text-sm font-medium text-muted-foreground">{t("title")}</p>
+        <p className="text-sm font-medium text-muted-foreground">
+          {t("title")}
+        </p>
         <h1 className="mt-2 font-heading text-3xl font-semibold">
           {t("launcherTitle")}
         </h1>
@@ -32,7 +39,10 @@ export default async function Home() {
                 <span className="flex size-11 items-center justify-center rounded-lg bg-primary/10 text-primary">
                   <LayoutDashboard aria-hidden="true" className="size-5" />
                 </span>
-                <ArrowRight aria-hidden="true" className="size-5 text-muted-foreground transition-transform group-hover:translate-x-1" />
+                <ArrowRight
+                  aria-hidden="true"
+                  className="size-5 text-muted-foreground transition-transform group-hover:translate-x-1"
+                />
               </div>
               <div className="grid gap-1">
                 <CardTitle className="text-lg">{t("dashboardTitle")}</CardTitle>
@@ -51,7 +61,10 @@ export default async function Home() {
                 <span className="flex size-11 items-center justify-center rounded-lg bg-secondary text-secondary-foreground">
                   <Wrench aria-hidden="true" className="size-5" />
                 </span>
-                <ArrowRight aria-hidden="true" className="size-5 text-muted-foreground transition-transform group-hover:translate-x-1" />
+                <ArrowRight
+                  aria-hidden="true"
+                  className="size-5 text-muted-foreground transition-transform group-hover:translate-x-1"
+                />
               </div>
               <div className="grid gap-1">
                 <CardTitle className="text-lg">{t("toolsTitle")}</CardTitle>
