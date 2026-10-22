@@ -1,5 +1,5 @@
 import { getTranslations } from "next-intl/server";
-import { requireUser } from "@/lib/session";
+import { requireAcademyUser } from "@/lib/session";
 import { getAssignmentsOverview, getInterns } from "@/lib/data/assignments";
 import {
   Card,
@@ -14,7 +14,7 @@ import { CreateAssignmentDialog } from "@/components/fi/learning/create-assignme
 import { AssignmentFeedbackForm } from "@/components/fi/learning/assignment-feedback-form";
 
 export async function ManageAssignments() {
-  const user = await requireUser();
+  const user = await requireAcademyUser();
   const [t, assignments, interns] = await Promise.all([
     getTranslations("planner"),
     getAssignmentsOverview(),

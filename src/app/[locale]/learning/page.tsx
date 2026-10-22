@@ -1,12 +1,12 @@
 import { getTranslations } from "next-intl/server";
-import { requireUser } from "@/lib/session";
+import { requireAcademyUser } from "@/lib/session";
 import { DashboardHeader } from "@/components/fi/header/dashboard-header";
 import { BreadcrumbNav } from "@/components/fi/breadcrumb-nav";
 import { DepartmentsList } from "@/components/fi/learning/departments-list";
 import { ManageDepartments } from "@/components/fi/learning/manage-departments";
 
 export default async function LearningPage() {
-  const user = await requireUser();
+  const user = await requireAcademyUser();
   const t = await getTranslations("learning");
   const isOwner = user.role === "OWNER";
 

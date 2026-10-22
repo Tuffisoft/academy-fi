@@ -1,11 +1,11 @@
 import { getTranslations } from "next-intl/server";
-import { requireUser } from "@/lib/session";
+import { requireAcademyUser } from "@/lib/session";
 import { BreadcrumbNav } from "@/components/fi/breadcrumb-nav";
 import { PresentationViewer } from "@/components/fi/presentation/presentation-viewer";
 import { slides } from "@/components/fi/presentation/slides";
 
 export default async function PresentationPage() {
-  await requireUser();
+  await requireAcademyUser();
   const t = await getTranslations("presentation");
 
   return (

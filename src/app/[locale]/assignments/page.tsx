@@ -1,5 +1,5 @@
 import { getTranslations } from "next-intl/server";
-import { requireUser } from "@/lib/session";
+import { requireAcademyUser } from "@/lib/session";
 import { getAllAssignmentsForIntern } from "@/lib/data/assignments";
 import { BreadcrumbNav } from "@/components/fi/breadcrumb-nav";
 import { AssignmentsList } from "@/components/fi/assignments/assignments-list";
@@ -12,7 +12,7 @@ import {
 } from "@/components/ui/card";
 
 export default async function AssignmentsPage() {
-  const user = await requireUser();
+  const user = await requireAcademyUser();
   const t = await getTranslations("assignments");
 
   const assignments = await getAllAssignmentsForIntern(user.id);

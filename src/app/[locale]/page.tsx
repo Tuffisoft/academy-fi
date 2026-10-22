@@ -8,7 +8,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { getCurrentSession } from "@/lib/session";
+import { getCurrentSession, requireAcademyUser } from "@/lib/session";
 
 export default async function Home() {
   const [session, t] = await Promise.all([
@@ -17,6 +17,7 @@ export default async function Home() {
   ]);
 
   if (!session) return <SignInPanel />;
+  await requireAcademyUser();
 
   return (
     <main className="flex flex-1 flex-col justify-center gap-8 px-6 py-16">

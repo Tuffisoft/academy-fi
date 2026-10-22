@@ -5,7 +5,7 @@ import { after } from "next/server";
 import { randomUUID } from "node:crypto";
 import { prisma } from "@/lib/prisma";
 import { Prisma } from "@/generated/prisma/client";
-import { requireUser } from "@/lib/session";
+import { requireAcademyUser } from "@/lib/session";
 import {
   leadSearchMutableScope,
   leadSearchScope,
@@ -23,7 +23,7 @@ import { SEARCH_JOB_TIMEOUT_MS } from "@/lib/lead-research/run-search-job";
 import { queueWebsiteAudits } from "@/lib/lead-research/audit-jobs";
 
 export async function runLeadSearchAction(id: unknown) {
-  const user = await requireUser();
+  const user = await requireAcademyUser();
   if (typeof id !== "string" || !id || id.length > 128)
     return { success: false as const, error: "notEditable" as const };
   const key = process.env.GOOGLE_PLACES_API_KEY;
@@ -107,7 +107,7 @@ export async function runLeadSearchAction(id: unknown) {
 }
 
 export async function cancelLeadSearchAction(id: unknown) {
-  const user = await requireUser();
+  const user = await requireAcademyUser();
   if (typeof id !== "string" || !id || id.length > 128)
     return { success: false as const };
   const result = await prisma.leadSearch.updateMany({
@@ -128,7 +128,7 @@ export async function cancelLeadSearchAction(id: unknown) {
 }
 
 export async function pauseLeadSearchAction(id: unknown) {
-  const user = await requireUser();
+  const user = await requireAcademyUser();
   if (typeof id !== "string" || !id || id.length > 128)
     return { success: false as const };
   const count = await prisma.$transaction(async (tx) => {
@@ -148,7 +148,7 @@ export async function pauseLeadSearchAction(id: unknown) {
 }
 
 export async function resumeLeadSearchAction(id: unknown) {
-  const user = await requireUser();
+  const user = await requireAcademyUser();
   if (typeof id !== "string" || !id || id.length > 128)
     return { success: false as const };
   if (!process.env.GOOGLE_PLACES_API_KEY?.trim())
@@ -205,7 +205,7 @@ export async function loadLeadSearchResultsAction(
   id: unknown,
   offset: unknown,
 ) {
-  const user = await requireUser();
+  const user = await requireAcademyUser();
   if (
     typeof id !== "string" ||
     !id ||
@@ -272,7 +272,7 @@ export async function createLeadSearchAction(
 ): Promise<
   { success: true } | { success: false; error: "invalidInput" | "saveError" }
 > {
-  const user = await requireUser();
+  const user = await requireAcademyUser();
   const data = parseLeadSearchInput(input);
   if (!data) return { success: false, error: "invalidInput" };
 
@@ -299,7 +299,7 @@ export async function updateLeadSearchAction(
   | { success: true }
   | { success: false; error: "invalidInput" | "saveError" | "notEditable" }
 > {
-  const user = await requireUser();
+  const user = await requireAcademyUser();
   const data = parseLeadSearchInput(input);
   const where = leadSearchMutableScope(user, id);
   if (!data || !where) return { success: false, error: "invalidInput" };
@@ -336,7 +336,7 @@ export async function deleteLeadSearchAction(
 ): Promise<
   { success: true } | { success: false; error: "deleteError" | "notEditable" }
 > {
-  const user = await requireUser();
+  const user = await requireAcademyUser();
   const where = leadSearchMutableScope(user, id);
   if (!where) return { success: false, error: "notEditable" };
   try {

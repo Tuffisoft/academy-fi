@@ -10,7 +10,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { requireUser } from "@/lib/session";
+import { requireAcademyUser } from "@/lib/session";
 
 type ToolHref = "/ideas" | "/tools/calem" | "/tools/adrian";
 
@@ -52,7 +52,7 @@ function ToolLinkCard({
 }
 
 export default async function ToolsPage() {
-  const user = await requireUser();
+  const user = await requireAcademyUser();
   const t = await getTranslations("tools");
 
   return (

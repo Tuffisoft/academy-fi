@@ -1,4 +1,4 @@
-import { getCurrentSession } from "@/lib/session";
+import { getAcademyApiAccess } from "@/lib/session";
 import { parsePdfDesign } from "@/lib/lead-research/pdf/design";
 import { createWebsiteReportPdf } from "@/lib/lead-research/pdf/render";
 import { sampleWebsiteReport } from "@/lib/lead-research/pdf/report-data";
@@ -9,8 +9,8 @@ export const maxDuration = 60;
 const headers = { "Cache-Control": "private, no-store", Vary: "Cookie" };
 
 export async function POST(request: Request) {
-  const session = await getCurrentSession();
-  if (!session) return Response.json({ error: "unauthorized" }, { status: 401, headers });
+  const access = await getAcademyApiAccess();
+  if (access.response) return access.response;
   if (!request.headers.get("content-type")?.startsWith("application/json")) return Response.json({ error: "invalid_request" }, { status: 415, headers });
   try {
     const text = await request.text();

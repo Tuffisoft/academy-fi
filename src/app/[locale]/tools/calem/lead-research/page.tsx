@@ -1,5 +1,5 @@
 import { getTranslations } from "next-intl/server";
-import { requireUser } from "@/lib/session";
+import { requireAcademyUser } from "@/lib/session";
 import { DashboardHeader } from "@/components/fi/header/dashboard-header";
 import { BreadcrumbNav } from "@/components/fi/breadcrumb-nav";
 import { LeadResearchWorkspace } from "@/components/fi/lead-research/lead-research-workspace";
@@ -10,7 +10,7 @@ import { getWebsiteAudits } from "@/lib/data/website-audits";
 export const maxDuration = 120;
 
 export default async function LeadResearchPage() {
-  const user = await requireUser();
+  const user = await requireAcademyUser();
   const t = await getTranslations("leadResearch");
   const toolsT = await getTranslations("tools");
   const [searches, savedLeads, audits] = await Promise.all([

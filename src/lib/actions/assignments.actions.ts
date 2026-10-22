@@ -1,7 +1,7 @@
 "use server";
 
 import { prisma } from "@/lib/prisma";
-import { requireRole, requireUser } from "@/lib/session";
+import { requirePlatformOwner, requireAcademyUser } from "@/lib/session";
 import { Role } from "@/generated/prisma/enums";
 
 type CreateAssignmentInput = {
@@ -14,7 +14,7 @@ type CreateAssignmentInput = {
 };
 
 export async function createAssignmentAction(input: CreateAssignmentInput) {
-  const owner = await requireRole(Role.OWNER);
+  const owner = await requirePlatformOwner();
 
   await prisma.weeklyAssignment.create({
     data: {
@@ -37,7 +37,7 @@ export async function toggleChecklistItemAction(
   itemId: string,
   completed: boolean,
 ) {
-  const user = await requireUser();
+  const user = await requireAcademyUser();
 
   const item = await prisma.assignmentChecklistItem.findUnique({
     where: { id: itemId },
@@ -67,7 +67,7 @@ type ReflectionInput = {
 };
 
 export async function submitReflectionAction(input: ReflectionInput) {
-  const user = await requireUser();
+  const user = await requireAcademyUser();
 
   const assignment = await prisma.weeklyAssignment.findUnique({
     where: { id: input.assignmentId },
@@ -103,7 +103,7 @@ export async function addMentorFeedbackAction(
   reflectionId: string,
   message: string,
 ) {
-  const owner = await requireRole(Role.OWNER);
+  const owner = await requirePlatformOwner();
 
   await prisma.mentorFeedback.create({
     data: { reflectionId, authorId: owner.id, message },
@@ -114,7 +114,7 @@ export async function createTaskStageAction(
   checklistItemId: string,
   rawTitle: string,
 ) {
-  const user = await requireUser();
+  const user = await requireAcademyUser();
   const title = rawTitle.trim();
   if (!title) {
     throw new Error("Stage title is required.");
@@ -150,7 +150,7 @@ export async function updateTaskStageAction(
   completed: boolean,
   documentation: string,
 ) {
-  const user = await requireUser();
+  const user = await requireAcademyUser();
 
   const stage = await prisma.taskStage.findUnique({
     where: { id: stageId },
@@ -179,7 +179,7 @@ export async function updateTaskStageAction(
 }
 
 export async function deleteTaskStageAction(stageId: string) {
-  const user = await requireUser();
+  const user = await requireAcademyUser();
 
   const stage = await prisma.taskStage.findUnique({
     where: { id: stageId },
@@ -200,7 +200,7 @@ export async function deleteTaskStageAction(stageId: string) {
   await prisma.taskStage.delete({ where: { id: stageId } });
 }
 export async function deleteChecklistItemAction(itemId: string) {
-  await requireRole(Role.OWNER);
+  await requirePlatformOwner();
 
   const item = await prisma.assignmentChecklistItem.findUnique({
     where: { id: itemId },
@@ -215,7 +215,7 @@ export async function deleteChecklistItemAction(itemId: string) {
 }
 
 export async function updateChecklistItemAction(itemId: string, label: string) {
-  await requireRole(Role.OWNER);
+  await requirePlatformOwner();
 
   const item = await prisma.assignmentChecklistItem.findUnique({
     where: { id: itemId },
@@ -239,7 +239,7 @@ export async function updateAssignmentAction(
     acceptanceCriteria?: string;
   },
 ) {
-  await requireRole(Role.OWNER);
+  await requirePlatformOwner();
 
   const assignment = await prisma.weeklyAssignment.findUnique({
     where: { id: assignmentId },
@@ -256,7 +256,7 @@ export async function updateAssignmentAction(
 }
 
 export async function deleteAssignmentAction(assignmentId: string) {
-  await requireRole(Role.OWNER);
+  await requirePlatformOwner();
 
   const assignment = await prisma.weeklyAssignment.findUnique({
     where: { id: assignmentId },

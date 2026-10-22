@@ -11,10 +11,10 @@ import {
 } from "@/components/ui/card";
 import { CreateAssignmentDialog } from "@/components/fi/learning/create-assignment-dialog";
 import { getInterns } from "@/lib/data/assignments";
-import { requireUser } from "@/lib/session";
+import { requireAcademyUser } from "@/lib/session";
 
 export async function ObjectivesGrid() {
-  const user = await requireUser();
+  const user = await requireAcademyUser();
   const [t, assignments, interns] = await Promise.all([
     getTranslations("objectives"),
     getAssignmentsOverview(),

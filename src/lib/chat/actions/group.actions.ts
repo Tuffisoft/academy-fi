@@ -1,7 +1,7 @@
 "use server";
 
 import { after } from "next/server";
-import { requireUser } from "@/lib/session";
+import { requireAcademyUser } from "@/lib/session";
 import { ChatError } from "@/lib/chat/services/chat-message";
 import { notifyUsers } from "@/lib/chat/realtime/server";
 import {
@@ -34,7 +34,7 @@ export async function createGroupAction(
   name: string,
   contactIds: string[],
 ): Promise<ChatResult<string>> {
-  const user = await requireUser();
+  const user = await requireAcademyUser();
   try {
     const group = await createGroup(user.id, name, contactIds);
     notify(group.userIds);
@@ -48,7 +48,7 @@ export async function inviteGroupContactsAction(
   conversationId: string,
   contactIds: string[],
 ): Promise<ChatResult<null>> {
-  const user = await requireUser();
+  const user = await requireAcademyUser();
   try {
     notify(await inviteGroupContacts(user.id, conversationId, contactIds));
     return { ok: true, data: null };
@@ -61,7 +61,7 @@ export async function respondToGroupInvitationAction(
   conversationId: string,
   accept: boolean,
 ): Promise<ChatResult<null>> {
-  const user = await requireUser();
+  const user = await requireAcademyUser();
   try {
     notify(await respondToGroupInvitation(user.id, conversationId, accept));
     return { ok: true, data: null };
@@ -74,7 +74,7 @@ export async function renameGroupAction(
   conversationId: string,
   name: string,
 ): Promise<ChatResult<null>> {
-  const user = await requireUser();
+  const user = await requireAcademyUser();
   try {
     notify(await renameGroup(user.id, conversationId, name));
     return { ok: true, data: null };
@@ -88,7 +88,7 @@ export async function changeGroupRoleAction(
   targetId: string,
   role: "ADMIN" | "MEMBER",
 ): Promise<ChatResult<null>> {
-  const user = await requireUser();
+  const user = await requireAcademyUser();
   try {
     notify(await changeGroupRole(user.id, conversationId, targetId, role));
     return { ok: true, data: null };
@@ -101,7 +101,7 @@ export async function removeGroupMemberAction(
   conversationId: string,
   targetId: string,
 ): Promise<ChatResult<null>> {
-  const user = await requireUser();
+  const user = await requireAcademyUser();
   try {
     notify(await removeGroupMember(user.id, conversationId, targetId));
     return { ok: true, data: null };
@@ -113,7 +113,7 @@ export async function removeGroupMemberAction(
 export async function leaveGroupAction(
   conversationId: string,
 ): Promise<ChatResult<null>> {
-  const user = await requireUser();
+  const user = await requireAcademyUser();
   try {
     notify(await removeGroupMember(user.id, conversationId, user.id));
     return { ok: true, data: null };

@@ -1,6 +1,6 @@
 "use server";
 
-import { requireUser } from "@/lib/session";
+import { requireAcademyUser } from "@/lib/session";
 import { after } from "next/server";
 import {
   ChatError,
@@ -24,7 +24,7 @@ function failure(error: unknown): ChatResult<never> {
 export async function openConversationAction(
   contactId: string,
 ): Promise<ChatResult<string>> {
-  const user = await requireUser();
+  const user = await requireAcademyUser();
   try {
     const id = await openDirectConversation(user.id, contactId);
     after(async () => {
@@ -39,7 +39,7 @@ export async function openConversationAction(
 export async function deleteConversationAction(
   conversationId: string,
 ): Promise<ChatResult<null>> {
-  const user = await requireUser();
+  const user = await requireAcademyUser();
   try {
     await hideConversation(user.id, conversationId);
     after(async () => {
@@ -55,7 +55,7 @@ export async function markConversationReadAction(
   conversationId: string,
   sequence: number,
 ): Promise<ChatResult<null>> {
-  const user = await requireUser();
+  const user = await requireAcademyUser();
   try {
     await markConversationRead(user.id, conversationId, sequence);
     after(async () => {

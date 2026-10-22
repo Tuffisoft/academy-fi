@@ -1,13 +1,13 @@
 import "server-only";
 import { prisma } from "@/lib/prisma";
-import { requireUser } from "@/lib/session";
+import { requireAcademyUser } from "@/lib/session";
 import { leadSearchScope } from "@/lib/lead-research/search-input";
 import type { AuditSummary } from "@/lib/lead-research/audit-types";
 import { Prisma } from "@/generated/prisma/client";
 import { calculateQuality, validScore, type QualityParts } from "@/lib/lead-research/website-rating";
 
 export async function getWebsiteAudits(): Promise<AuditSummary[]> {
-  const user = await requireUser();
+  const user = await requireAcademyUser();
   // A terminated step is made visible as a failure; it is never silently billed again.
   await prisma.websiteAudit.updateMany({ where: { ...leadSearchScope(user), status: "RUNNING", startedAt: { lt: new Date(Date.now() - 120000) } }, data: { status: "FAILED", qualityScore: null, errorCode: "auditInterrupted", checkedAt: new Date() } });
   await prisma.websiteAudit.updateMany({ where: { ...leadSearchScope(user), status: "QUEUED", updatedAt: { lt: new Date(Date.now() - 90 * 60000) } }, data: { status: "FAILED", qualityScore: null, errorCode: "auditInterrupted", checkedAt: new Date() } });

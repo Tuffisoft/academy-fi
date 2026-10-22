@@ -1,7 +1,7 @@
 "use server";
 
 import { prisma } from "@/lib/prisma";
-import { requireUser } from "@/lib/session";
+import { requireAcademyUser } from "@/lib/session";
 import { isValidPlanDate } from "@/lib/daily-plan-date";
 
 function requireTitle(value: string, message: string) {
@@ -37,7 +37,7 @@ export async function upsertDailyPlanAction(input: {
   date: string;
   title: string;
 }) {
-  const user = await requireUser();
+  const user = await requireAcademyUser();
 
   if (!isValidPlanDate(input.date)) {
     throw new Error("Invalid date.");
@@ -52,7 +52,7 @@ export async function upsertDailyPlanAction(input: {
 }
 
 export async function deleteDailyPlanAction(planId: string) {
-  const user = await requireUser();
+  const user = await requireAcademyUser();
   await requireOwnPlan(user.id, planId);
 
   await prisma.dailyPlan.delete({ where: { id: planId } });
@@ -63,7 +63,7 @@ export async function addDailyPlanStageAction(
   title: string,
   parentId: string | null = null,
 ) {
-  const user = await requireUser();
+  const user = await requireAcademyUser();
   await requireOwnPlan(user.id, planId);
   const text = requireTitle(title, "Stage title is required.");
 
@@ -96,7 +96,7 @@ export async function reorderDailyPlanStagesAction(
   parentId: string | null,
   orderedIds: string[],
 ) {
-  const user = await requireUser();
+  const user = await requireAcademyUser();
   await requireOwnPlan(user.id, planId);
 
   const siblings = await prisma.dailyPlanStage.findMany({
@@ -123,7 +123,7 @@ export async function toggleDailyPlanStageAction(
   stageId: string,
   completed: boolean,
 ) {
-  const user = await requireUser();
+  const user = await requireAcademyUser();
   await requireOwnStage(user.id, stageId);
 
   await prisma.dailyPlanStage.update({
@@ -136,7 +136,7 @@ export async function renameDailyPlanStageAction(
   stageId: string,
   title: string,
 ) {
-  const user = await requireUser();
+  const user = await requireAcademyUser();
   await requireOwnStage(user.id, stageId);
   const text = requireTitle(title, "Stage title is required.");
 
@@ -147,7 +147,7 @@ export async function renameDailyPlanStageAction(
 }
 
 export async function deleteDailyPlanStageAction(stageId: string) {
-  const user = await requireUser();
+  const user = await requireAcademyUser();
   await requireOwnStage(user.id, stageId);
 
   await prisma.dailyPlanStage.delete({ where: { id: stageId } });

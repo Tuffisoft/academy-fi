@@ -1,12 +1,12 @@
 import "server-only";
 import { prisma } from "@/lib/prisma";
-import { requireUser } from "@/lib/session";
+import { requireAcademyUser } from "@/lib/session";
 import { leadSearchScope } from "@/lib/lead-research/search-input";
 import type { LeadSearchSummary } from "@/lib/lead-research/types";
 import { expireSearchJobs } from "@/lib/lead-research/search-jobs";
 
 export async function getLeadSearches(): Promise<LeadSearchSummary[]> {
-  const user = await requireUser();
+  const user = await requireAcademyUser();
   await expireSearchJobs(user);
   const searches = await prisma.leadSearch.findMany({
     where: leadSearchScope(user),

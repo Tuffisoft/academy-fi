@@ -1,5 +1,5 @@
 import { getTranslations } from "next-intl/server";
-import { requireUser } from "@/lib/session";
+import { requireAcademyUser } from "@/lib/session";
 import { getDailyPlan, getDailyPlanArchive } from "@/lib/data/daily-plans";
 import { isValidPlanDate, todayPlanDate } from "@/lib/daily-plan-date";
 import { DashboardHeader } from "@/components/fi/header/dashboard-header";
@@ -15,7 +15,7 @@ export default async function DailyPlannerPage({
 }: {
   searchParams: Promise<{ date?: string; archive?: string }>;
 }) {
-  const user = await requireUser();
+  const user = await requireAcademyUser();
   const t = await getTranslations("dailyPlanner");
 
   const today = todayPlanDate();

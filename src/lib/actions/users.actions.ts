@@ -2,8 +2,7 @@
 
 import { headers } from "next/headers";
 import { auth } from "@/lib/auth";
-import { requireRole } from "@/lib/session";
-import { Role } from "@/generated/prisma/enums";
+import { requirePlatformOwner } from "@/lib/session";
 
 type CreateUserInput = {
   name: string;
@@ -14,7 +13,7 @@ type CreateUserInput = {
 };
 
 export async function createUserAction(input: CreateUserInput) {
-  await requireRole(Role.OWNER);
+  await requirePlatformOwner();
 
   await auth.api.createUser({
     body: {
@@ -37,7 +36,7 @@ export async function createUserAction(input: CreateUserInput) {
 }
 
 export async function deleteUserAction(userId: string) {
-  const currentUser = await requireRole(Role.OWNER);
+  const currentUser = await requirePlatformOwner();
 
   if (userId === currentUser.id) {
     throw new Error("You cannot delete your own account.");
@@ -54,7 +53,7 @@ export async function setUserPasswordAction(
   userId: string,
   newPassword: string,
 ) {
-  await requireRole(Role.OWNER);
+  await requirePlatformOwner();
 
   await auth.api.setUserPassword({
     body: { userId, newPassword },

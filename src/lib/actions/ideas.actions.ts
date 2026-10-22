@@ -1,14 +1,14 @@
 "use server";
 
 import { prisma } from "@/lib/prisma";
-import { requireUser } from "@/lib/session";
+import { requireAcademyUser } from "@/lib/session";
 import { Role } from "@/generated/prisma/enums";
 
 export async function createIdeaAction(input: {
   title: string;
   description?: string;
 }) {
-  const user = await requireUser();
+  const user = await requireAcademyUser();
 
   const title = input.title.trim();
   if (!title) {
@@ -25,7 +25,7 @@ export async function createIdeaAction(input: {
 }
 
 export async function deleteIdeaAction(ideaId: string) {
-  const user = await requireUser();
+  const user = await requireAcademyUser();
 
   const idea = await prisma.idea.findUnique({
     where: { id: ideaId },
@@ -43,7 +43,7 @@ export async function deleteIdeaAction(ideaId: string) {
 }
 
 export async function addIdeaNoteAction(ideaId: string, content: string) {
-  const user = await requireUser();
+  const user = await requireAcademyUser();
 
   const text = content.trim();
   if (!text) {
@@ -64,7 +64,7 @@ export async function addIdeaNoteAction(ideaId: string, content: string) {
 }
 
 export async function deleteIdeaNoteAction(noteId: string) {
-  const user = await requireUser();
+  const user = await requireAcademyUser();
 
   const note = await prisma.ideaNote.findUnique({
     where: { id: noteId },

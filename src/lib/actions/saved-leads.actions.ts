@@ -2,7 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 import { prisma } from "@/lib/prisma";
-import { requireUser } from "@/lib/session";
+import { requireAcademyUser } from "@/lib/session";
 import { leadSearchScope } from "@/lib/lead-research/search-input";
 import {
   loadGooglePlaceDetails,
@@ -17,7 +17,7 @@ function validId(value: unknown): value is string {
 }
 
 export async function saveLeadAction(searchId: unknown, placeId: unknown) {
-  const user = await requireUser();
+  const user = await requireAcademyUser();
   if (!validId(searchId) || !validId(placeId))
     return { success: false as const, error: "invalidInput" as const };
   const search = await prisma.leadSearch.findFirst({
@@ -44,7 +44,7 @@ export async function saveLeadAction(searchId: unknown, placeId: unknown) {
 }
 
 export async function removeSavedLeadAction(id: unknown) {
-  const user = await requireUser();
+  const user = await requireAcademyUser();
   if (!validId(id))
     return { success: false as const, error: "invalidInput" as const };
   try {
@@ -61,7 +61,7 @@ export async function removeSavedLeadAction(id: unknown) {
 }
 
 export async function loadSavedLeadDetailsAction(ids: unknown) {
-  const user = await requireUser();
+  const user = await requireAcademyUser();
   if (
     !Array.isArray(ids) ||
     ids.length === 0 ||

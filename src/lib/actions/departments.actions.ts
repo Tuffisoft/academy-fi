@@ -2,7 +2,7 @@
 
 import { UTApi } from "uploadthing/server";
 import { prisma } from "@/lib/prisma";
-import { requireRole, requireUser } from "@/lib/session";
+import { requirePlatformOwner, requireAcademyUser } from "@/lib/session";
 import { Role } from "@/generated/prisma/enums";
 
 const utapi = new UTApi();
@@ -24,7 +24,7 @@ type DepartmentInput = {
 };
 
 export async function createDepartmentAction(input: DepartmentInput) {
-  await requireRole(Role.OWNER);
+  await requirePlatformOwner();
 
   const count = await prisma.department.count();
   await prisma.department.create({
@@ -39,7 +39,7 @@ export async function createDepartmentAction(input: DepartmentInput) {
 }
 
 export async function deleteDepartmentAction(id: string) {
-  await requireRole(Role.OWNER);
+  await requirePlatformOwner();
 
   // Resources cascade-delete, so grab their hosted files first
   const files = await prisma.departmentResource.findMany({
@@ -60,7 +60,7 @@ export async function createResourceAction(
   departmentId: string,
   input: ResourceInput,
 ) {
-  const user = await requireUser();
+  const user = await requireAcademyUser();
 
   // Only web links; blocks javascript: URLs now that interns can submit them
   const parsed = new URL(input.url);
@@ -88,7 +88,7 @@ export async function createResourceAction(
 }
 
 export async function deleteResourceAction(id: string) {
-  const user = await requireUser();
+  const user = await requireAcademyUser();
 
   const resource = await prisma.departmentResource.findUnique({
     where: { id },
@@ -121,7 +121,7 @@ export async function createDocumentAction(
   departmentId: string,
   input: DocumentInput,
 ) {
-  const user = await requireUser();
+  const user = await requireAcademyUser();
 
   const title = input.title.trim();
   if (!title) {

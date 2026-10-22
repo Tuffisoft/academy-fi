@@ -1,5 +1,5 @@
 import { getTranslations } from "next-intl/server";
-import { requireUser } from "@/lib/session";
+import { requireAcademyUser } from "@/lib/session";
 import { getAllAssignmentsForIntern } from "@/lib/data/assignments";
 import { getConversationsForUser } from "@/lib/chat/services/chat";
 import { isRealtimeConfigured } from "@/lib/chat/realtime/server";
@@ -23,7 +23,7 @@ import {
 } from "@/components/ui/card";
 
 export default async function DashboardPage() {
-  const user = await requireUser();
+  const user = await requireAcademyUser();
   const t = await getTranslations("dashboard");
   const isOwner = user.role === "OWNER";
 

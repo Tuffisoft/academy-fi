@@ -4,7 +4,7 @@ import { revalidatePath } from "next/cache";
 import { start } from "workflow/api";
 import { randomUUID } from "node:crypto";
 import { prisma } from "@/lib/prisma";
-import { requireUser } from "@/lib/session";
+import { requireAcademyUser } from "@/lib/session";
 import { auditWebsites } from "@/workflows/audit-websites";
 import {
   auditControlScope,
@@ -17,7 +17,7 @@ export async function controlWebsiteAuditsAction(
   batchId: unknown,
   command: AuditControl,
 ) {
-  const user = await requireUser();
+  const user = await requireAcademyUser();
   const scope = auditControlScope(user, userId, batchId);
   if (!scope || !["pause", "resume", "cancel"].includes(command))
     return { success: false as const };

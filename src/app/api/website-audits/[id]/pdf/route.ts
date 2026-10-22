@@ -1,4 +1,4 @@
-import { getCurrentSession } from "@/lib/session";
+import { getAcademyApiAccess } from "@/lib/session";
 import { prisma } from "@/lib/prisma";
 import { getPdfDesign } from "@/lib/data/pdf-design";
 import { leadSearchScope } from "@/lib/lead-research/search-input";
@@ -10,14 +10,14 @@ export const maxDuration = 60;
 const headers = { "Cache-Control": "private, no-store", Vary: "Cookie" };
 
 export async function GET(request: Request, { params }: { params: Promise<{ id: string }> }) {
-  const session = await getCurrentSession();
-  if (!session) return Response.json({ error: "unauthorized" }, { status: 401, headers });
+  const access = await getAcademyApiAccess();
+  if (access.response) return access.response;
   const { id } = await params;
   if (!id || id.length > 128) return Response.json({ error: "not_found" }, { status: 404, headers });
-  const row = await prisma.websiteAudit.findFirst({ where: { id, ...leadSearchScope(session.user), status: "COMPLETED" }, select: { report: true } });
+  const row = await prisma.websiteAudit.findFirst({ where: { id, ...leadSearchScope(access.user), status: "COMPLETED" }, select: { report: true } });
   if (!row?.report) return Response.json({ error: "not_found" }, { status: 404, headers });
   try {
-    const design = await getPdfDesign(session.user.id);
+    const design = await getPdfDesign(access.user.id);
     const report = row.report as WebsiteReport;
     const bytes = await createWebsiteReportPdf(report, design, new URL(request.url).searchParams.get("locale") === "en" ? "en" : "de");
     const host = new URL(report.url).hostname.replace(/[^a-zA-Z0-9.-]/g, "_");

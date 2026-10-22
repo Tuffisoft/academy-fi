@@ -2,11 +2,24 @@ import { createUploadthing, type FileRouter } from "uploadthing/next";
 import { UTApi, UploadThingError } from "uploadthing/server";
 import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
+import { AcademyAccessError, getAcademyIdentity } from "@/lib/academy-access";
 
 const f = createUploadthing();
 const utapi = new UTApi();
 
 const MAX_SIZE = "16MB";
+
+async function authorizeUpload(req: Request) {
+  const session = await auth.api.getSession({ headers: req.headers });
+  if (!session) throw new UploadThingError("Unauthorized");
+  try {
+    await getAcademyIdentity(session.user.id);
+  } catch (error) {
+    if (!(error instanceof AcademyAccessError)) throw error;
+    throw new UploadThingError("Forbidden");
+  }
+  return { userId: session.user.id };
+}
 
 function getUploadThingFileKey(image: string | null) {
   if (!image) return null;
@@ -46,11 +59,9 @@ export const ourFileRouter = {
         maxFileCount: 1,
       },
   })
-    // Any signed-in user (owner or intern) may upload
+    // Current internal Academy users only, regardless of a cached session role.
     .middleware(async ({ req }) => {
-      const session = await auth.api.getSession({ headers: req.headers });
-      if (!session) throw new UploadThingError("Unauthorized");
-      return { userId: session.user.id };
+      return authorizeUpload(req);
     })
     // The DB record is created by createDocumentAction once the client reports the result
     .onUploadComplete(async ({ metadata }) => {
@@ -60,11 +71,10 @@ export const ourFileRouter = {
     image: { maxFileSize: "4MB", maxFileCount: 1 },
   })
     .middleware(async ({ req }) => {
-      const session = await auth.api.getSession({ headers: req.headers });
-      if (!session) throw new UploadThingError("Unauthorized");
-      return { userId: session.user.id };
+      return authorizeUpload(req);
     })
     .onUploadComplete(async ({ file, metadata }) => {
+      await getAcademyIdentity(metadata.userId);
       const user = await prisma.user.findUnique({
         where: { id: metadata.userId },
         select: { image: true },

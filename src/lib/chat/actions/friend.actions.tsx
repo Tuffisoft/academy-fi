@@ -1,7 +1,7 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
-import { requireUser } from "@/lib/session";
+import { requireAcademyUser } from "@/lib/session";
 import { prisma } from "@/lib/prisma";
 import { notifyUsers } from "@/lib/chat/realtime/server";
 import {
@@ -55,7 +55,7 @@ async function changeRelationship(
 export async function getFriendsAction(): Promise<
   FriendsResult<FriendsSnapshot>
 > {
-  const user = await requireUser();
+  const user = await requireAcademyUser();
   try {
     return { ok: true, data: await getFriendsForUser(user.id) };
   } catch (error) {
@@ -66,7 +66,7 @@ export async function getFriendsAction(): Promise<
 export async function removeContactAction(
   friendshipId: string,
 ): Promise<FriendsResult<FriendsSnapshot>> {
-  const user = await requireUser();
+  const user = await requireAcademyUser();
   try {
     await changeRelationship(user.id, friendshipId, () =>
       removeFriendship(user.id, friendshipId),
@@ -81,7 +81,7 @@ export async function removeContactAction(
 export async function searchUsersAction(
   query: string,
 ): Promise<FriendsResult<UserSearchResult[]>> {
-  const user = await requireUser();
+  const user = await requireAcademyUser();
   try {
     return { ok: true, data: await searchUsersForFriendship(user.id, query) };
   } catch (error) {
@@ -92,7 +92,7 @@ export async function searchUsersAction(
 export async function sendFriendRequestAction(
   recipientId: string,
 ): Promise<FriendsResult<FriendsSnapshot>> {
-  const user = await requireUser();
+  const user = await requireAcademyUser();
   try {
     await sendFriendshipRequest(user.id, recipientId);
     await notifyUsers([user.id, recipientId], "contacts.changed");
@@ -107,7 +107,7 @@ export async function respondToFriendRequestAction(
   requestId: string,
   decision: "accept" | "decline",
 ): Promise<FriendsResult<FriendsSnapshot>> {
-  const user = await requireUser();
+  const user = await requireAcademyUser();
   try {
     await changeRelationship(user.id, requestId, async () => {
       if (decision === "accept")
@@ -130,7 +130,7 @@ export async function respondToFriendRequestAction(
 export async function cancelFriendRequestAction(
   requestId: string,
 ): Promise<FriendsResult<FriendsSnapshot>> {
-  const user = await requireUser();
+  const user = await requireAcademyUser();
   try {
     await changeRelationship(user.id, requestId, () =>
       cancelFriendshipRequest(user.id, requestId),

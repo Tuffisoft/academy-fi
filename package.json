@@ -13,7 +13,7 @@
     "db:seed": "tsx db/seed.ts",
     "postinstall": "prisma generate",
     "typecheck": "node scripts/check.mjs typecheck",
-    "test": "node scripts/check.mjs test tests/server-encryption.test.ts tests/message-delivery.test.ts tests/chat-permissions.test.ts tests/groups.test.ts tests/seed-config.test.ts tests/lead-searches.test.ts tests/google-places.test.ts tests/search-jobs.test.ts tests/website-quality.test.ts tests/visual-design.test.ts tests/audit-progress.test.ts tests/pdf-design.test.ts tests/pdf-template-library.test.ts tests/search-controls.test.ts tests/quality-environment.test.ts",
+    "test": "node scripts/check.mjs test tests/server-encryption.test.ts tests/message-delivery.test.ts tests/chat-permissions.test.ts tests/groups.test.ts tests/seed-config.test.ts tests/lead-searches.test.ts tests/google-places.test.ts tests/search-jobs.test.ts tests/website-quality.test.ts tests/visual-design.test.ts tests/audit-progress.test.ts tests/pdf-design.test.ts tests/pdf-template-library.test.ts tests/search-controls.test.ts tests/quality-environment.test.ts tests/academy-access.test.ts",
     "test:integration": "node scripts/check.mjs integration",
     "test:loyalty:integration": "node scripts/check.mjs loyalty-integration",
     "test:realtime": "node scripts/check.mjs realtime",

@@ -1,6 +1,6 @@
 "use server";
 
-import { requireUser } from "@/lib/session";
+import { requireAcademyUser } from "@/lib/session";
 import { prisma } from "@/lib/prisma";
 import { getPdfDesignerState } from "@/lib/data/pdf-design";
 import { parsePdfDesign } from "@/lib/lead-research/pdf/design";
@@ -10,24 +10,24 @@ import { PdfTemplateError } from "@/lib/lead-research/pdf/evaluate-jsx";
 import { activateStoredPdfTemplate, saveStoredPdfTemplate, selectStoredPdfTemplate } from "@/lib/lead-research/pdf/template-library";
 
 export async function getPdfDesignAction() {
-  const user = await requireUser();
+  const user = await requireAcademyUser();
   return getPdfDesignerState(user.id);
 }
 
 export async function selectPdfTemplateAction(id: unknown) {
-  const user = await requireUser();
+  const user = await requireAcademyUser();
   if (typeof id !== "string" || !id || id.length > 128) return { success: false as const };
   return prisma.$transaction(tx => selectStoredPdfTemplate(tx, user.id, id));
 }
 
 export async function activatePdfTemplateAction(id: unknown) {
-  const user = await requireUser();
+  const user = await requireAcademyUser();
   if (typeof id !== "string" || !id || id.length > 128) return { success: false as const };
   return prisma.$transaction(tx => activateStoredPdfTemplate(tx, user.id, id));
 }
 
 export async function savePdfDesignAction(input: unknown) {
-  const user = await requireUser();
+  const user = await requireAcademyUser();
   const design = parsePdfDesign(input);
   if (!design) return { success: false as const, error: "Invalid template." };
   const requestedId = (input as Record<string, unknown>).templateId;

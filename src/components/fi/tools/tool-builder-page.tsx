@@ -9,14 +9,14 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { requireUser } from "@/lib/session";
+import { requireAcademyUser } from "@/lib/session";
 
 export async function ToolBuilderPage({
   builder,
 }: {
   builder: "calem" | "adrian";
 }) {
-  const user = await requireUser();
+  const user = await requireAcademyUser();
   const t = await getTranslations("tools");
   const builderTitle = t(`${builder}Title`);
   const builderDescription = t(`${builder}Description`);

@@ -1,14 +1,13 @@
 import { getTranslations } from "next-intl/server";
-import { requireRole } from "@/lib/session";
-import { Role } from "@/generated/prisma/enums";
+import { requirePlatformOwner } from "@/lib/session";
 import { DashboardHeader } from "@/components/fi/header/dashboard-header";
 import { BreadcrumbNav } from "@/components/fi/breadcrumb-nav";
-import { requireUser } from "@/lib/session";
+import { requireAcademyUser } from "@/lib/session";
 import { ObjectivesGrid } from "@/components/fi/objectives/objectives-grid";
 
 export default async function ObjectivesPage() {
-  const user = await requireUser();
-  await requireRole(Role.OWNER);
+  const user = await requireAcademyUser();
+  await requirePlatformOwner();
   const t = await getTranslations("objectives");
 
   return (

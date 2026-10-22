@@ -3,7 +3,7 @@ import { Suspense } from "react";
 import { DashboardHeader } from "@/components/fi/header/dashboard-header";
 import { Footer } from "@/components/fi/footer";
 import { ChatSkeleton } from "@/components/fi/loading/chat-skeleton";
-import { requireUser } from "@/lib/session";
+import { requireAcademyUser } from "@/lib/session";
 import { getConversationsForUser } from "@/lib/chat/services/chat";
 import { isRealtimeConfigured } from "@/lib/chat/realtime/server";
 import { RealtimeProvider } from "@/lib/chat/realtime/provider";
@@ -24,7 +24,7 @@ export default function ChatLayout({ children }: { children: React.ReactNode }) 
 }
 
 async function ChatLayoutContent({ children }: { children: React.ReactNode }) {
-  const user = await requireUser();
+  const user = await requireAcademyUser();
   const conversations = await getConversationsForUser(user.id);
 
   return (

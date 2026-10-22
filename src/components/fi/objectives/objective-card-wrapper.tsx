@@ -1,4 +1,4 @@
-import { requireUser } from "@/lib/session";
+import { requireAcademyUser } from "@/lib/session";
 import { Role } from "@/generated/prisma/enums";
 import { ObjectiveCard } from "./objective-card";
 import { AdminObjectiveCard } from "./admin-objective-card";
@@ -44,7 +44,7 @@ export async function ObjectiveCardWrapper({
 }: {
   assignment: Assignment;
 }) {
-  const user = await requireUser();
+  const user = await requireAcademyUser();
   return user.role === Role.OWNER ? (
     <AdminObjectiveCard assignment={assignment} />
   ) : (

@@ -1,7 +1,6 @@
 import { getTranslations } from "next-intl/server";
 import { getUsers } from "@/lib/data/users";
-import { requireRole } from "@/lib/session";
-import { Role } from "@/generated/prisma/enums";
+import { requirePlatformOwner } from "@/lib/session";
 import {
   Card,
   CardAction,
@@ -25,7 +24,7 @@ import { DeleteUserButton } from "@/components/fi/dashboard/delete-user-button";
 
 export async function AdminDashboard() {
   const [currentUser, t, users] = await Promise.all([
-    requireRole(Role.OWNER),
+    requirePlatformOwner(),
     getTranslations("users"),
     getUsers(),
   ]);

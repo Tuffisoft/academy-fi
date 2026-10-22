@@ -1,13 +1,13 @@
 "use server";
 
 import { prisma } from "@/lib/prisma";
-import { requireUser } from "@/lib/session";
+import { requireAcademyUser } from "@/lib/session";
 import { leadSearchScope } from "@/lib/lead-research/search-input";
 import type { WebsiteReport } from "@/lib/lead-research/website-quality";
 import { normalizeWebsiteReport } from "@/lib/lead-research/website-rating";
 
 export async function getWebsiteReportAction(id: unknown) {
-  const user = await requireUser();
+  const user = await requireAcademyUser();
   if (typeof id !== "string" || !id.trim() || id.length > 128) return { success: false as const };
   const row = await prisma.websiteAudit.findFirst({ where: { id, ...leadSearchScope(user), status: "COMPLETED" }, select: { report: true } });
   if (!row) return { success: false as const };

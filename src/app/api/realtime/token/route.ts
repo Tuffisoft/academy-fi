@@ -1,11 +1,10 @@
-import { getCurrentSession } from "@/lib/session";
+import { getAcademyApiAccess } from "@/lib/session";
 import { getRealtimeServer, isRealtimeConfigured } from "@/lib/chat/realtime/server";
 import { userChannel } from "@/lib/chat/realtime/channel";
 
 export async function POST() {
-  const session = await getCurrentSession();
-  if (!session)
-    return Response.json({ error: "Anmeldung erforderlich." }, { status: 401 });
+  const access = await getAcademyApiAccess();
+  if (access.response) return access.response;
   if (!isRealtimeConfigured())
     return Response.json(
       { error: "Realtime ist noch nicht eingerichtet." },
@@ -13,10 +12,10 @@ export async function POST() {
     );
   try {
     const token = await getRealtimeServer().auth.createTokenRequest({
-      clientId: session.user.id,
+      clientId: access.user.id,
       ttl: 15 * 60 * 1000,
       capability: JSON.stringify({
-        [userChannel(session.user.id)]: ["subscribe"],
+        [userChannel(access.user.id)]: ["subscribe"],
       }),
     });
     return Response.json(token, { headers: { "Cache-Control": "no-store" } });

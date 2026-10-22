@@ -1,6 +1,8 @@
 import { prisma } from "@/lib/prisma";
+import { requirePlatformOwner } from "@/lib/session";
 
-export function getUsers() {
+export async function getUsers() {
+  await requirePlatformOwner();
   return prisma.user.findMany({
     select: {
       id: true,

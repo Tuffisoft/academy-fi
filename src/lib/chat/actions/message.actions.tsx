@@ -1,6 +1,6 @@
 "use server";
 
-import { requireUser } from "@/lib/session";
+import { requireAcademyUser } from "@/lib/session";
 import { after } from "next/server";
 import {
   ChatError,
@@ -30,7 +30,7 @@ export async function sendMessageAction(
   text: string,
   clientId: string,
 ): Promise<ChatResult<Message>> {
-  const user = await requireUser();
+  const user = await requireAcademyUser();
   try {
     const message = await createChatMessage(
       user.id,
@@ -55,7 +55,7 @@ export async function editMessageAction(
   messageId: string,
   text: string,
 ): Promise<MutationResult> {
-  const user = await requireUser();
+  const user = await requireAcademyUser();
   try {
     await updateChatMessage(user.id, conversationId, messageId, text);
     return {
@@ -71,7 +71,7 @@ export async function deleteMessageAction(
   conversationId: string,
   messageId: string,
 ): Promise<MutationResult> {
-  const user = await requireUser();
+  const user = await requireAcademyUser();
   try {
     await removeChatMessage(user.id, conversationId, messageId);
     return {
