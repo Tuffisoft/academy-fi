@@ -1,6 +1,6 @@
 # AcademyFi: Arbeitsregeln, Qualität und Status
 
-Version 1.2 · 22.10.2026. Vor Änderungen diese Datei lesen. Gilt projektweit; bestehende Fehler erlauben keine neuen. Bei Stempelkarten zusätzlich [Lastenheft](LASTENHEFT_STEMPELKARTEN.md) (Fachverhalten) und [Pflichtenheft](PFLICHTENHEFT_STEMPELKARTEN.md) (Technik) lesen. Deren Muss-Anforderungen bleiben vollständig verbindlich; Widersprüche vor Umsetzung klären und versionieren.
+Version 1.3 · 22.10.2026. Vor Änderungen diese Datei lesen. Gilt projektweit; bestehende Fehler erlauben keine neuen. Bei Stempelkarten zusätzlich [Lastenheft](src/lib/docs/LASTENHEFT_STEMPELKARTEN.md) (Fachverhalten) und [Pflichtenheft](src/lib/docs/PFLICHTENHEFT_STEMPELKARTEN.md) (Technik) lesen. Deren Muss-Anforderungen bleiben vollständig verbindlich; Widersprüche vor Umsetzung klären und versionieren.
 
 ## Verbindliche Regeln
 
@@ -13,7 +13,7 @@ Regelverletzungen sperren die betroffene Übernahme, bis sie behoben oder zuläs
 - **Q-P-03:** Neue/wesentlich geänderte Kernoberflächen ab 360 CSS-Pixeln ohne horizontales Scrollen, per Tastatur, mit Fokus, Labels, verständlichen Fehlern und farbunabhängigen Statusangaben bedienen. Breite Tabellen dürfen in beschrifteten Bereichen scrollen. Mobile/Tastatur-Durchläufe sowie Lade-, Leer-, Fehler-/Erfolgszustände dokumentieren. Nicht bedienbare Kernabläufe blockieren.
 - **Q-P-04:** SaaS-Kernabläufe und E-Mails vollständig DE/EN einschließlich Fehlern prüfen; Sprache ändert keine Fachregel. Fehlender Nachweis sperrt Freigabe.
 - **Q-P-05:** Betroffene Academy-Abläufe durch begründete automatisierte und nötigenfalls manuelle Regression prüfen; neue Regressionen sperren Übernahme.
-- **Q-P-06:** Implementiert, automatisiert geprüft, auf Geräten abgenommen und produktiv freigegeben getrennt mit Stand/Belegen in einer ausgefüllten [Freigabecheckliste](FREIGABECHECKLISTE.md) ausweisen. Pilot/Teilpaket ist keine vollständige Abnahme.
+- **Q-P-06:** Implementiert, automatisiert geprüft, auf Geräten abgenommen und produktiv freigegeben getrennt mit Stand/Belegen in einer ausgefüllten [Freigabecheckliste](src/lib/docs/FREIGABECHECKLISTE.md) ausweisen. Pilot/Teilpaket ist keine vollständige Abnahme.
 
 ### Code und Sicherheit
 
@@ -69,7 +69,7 @@ Prüfläufe einmal im zugehörigen Versions-/Änderungsnachweis führen: geprüf
 
 Keine Produktfreigabe, keine Ausnahme erteilt. SaaS in diesem Qualitätspaket nicht implementiert; keine Übernahme, kein Merge, Deployment oder produktive Migration durch den Agenten.
 
-Prüfnachweise: [aktueller Dokumentationsstand und letzter Softwarelauf](FREIGABE_ANLEITUNG_STEMPELKARTEN.md). Offene Befunde unten bleiben verbindlich; keine echten DB-/Ably- oder entfernten CI-Nachweise.
+Prüfnachweise: [aktueller Dokumentationsstand und letzter Softwarelauf](src/lib/docs/FREIGABE_ANLEITUNG_STEMPELKARTEN.md). Offene Befunde unten bleiben verbindlich; keine echten DB-/Ably- oder entfernten CI-Nachweise.
 
 | ID | Status, Verantwortung und Abschlusskriterium |
 | --- | --- |
@@ -83,6 +83,6 @@ Prüfnachweise: [aktueller Dokumentationsstand und letzter Softwarelauf](FREIGAB
 
 Reviewhistorie: Umsetzender Agent prüfte Qualitätspaket gegenüber 83552ef (Prüfscripte, CI, npm/Node, Tests, Isolation, Dokumentation); keine unabhängige menschliche Abnahme. Behoben: DB-Import erst nach Testkonfigurationsprüfung, separate Ably-App statt Skip, isolierte Providerwerte, Routentypgenerierung, Fortsetzung aller Checks. Älterer Hashnachweis ist wegen fehlender .nvmrc widersprüchlich und gilt nicht für diesen Stand.
 
-Aktuelles Review und Prozessänderungen: [Änderungsnachweis](FREIGABE_ANLEITUNG_STEMPELKARTEN.md).
+Aktuelles Review und Prozessänderungen: [Änderungsnachweis](src/lib/docs/FREIGABE_ANLEITUNG_STEMPELKARTEN.md).
 
-Versionen: 1.0 (22.10.2026) Qualitätsregeln eingeführt; 1.1 (22.10.2026) Regeln/Status in AGENTS.md verdichtet. 1.2 (22.10.2026) Dokumentationsprüfweg, zentrale Nachweise und frühe Restore-Planung eingeführt. Änderungen versionieren, Dokumente im Repository-Hauptverzeichnis halten (docs/ ignoriert).
+Versionen: 1.0 (22.10.2026) Qualitätsregeln eingeführt; 1.1 (22.10.2026) Regeln/Status in AGENTS.md verdichtet. 1.2 (22.10.2026) Dokumentationsprüfweg, zentrale Nachweise und frühe Restore-Planung eingeführt. 1.3 (22.10.2026): Projektunterlagen lokal unter src/lib/docs/ ablegen und von Git ausschließen; AGENTS.md/README.md bleiben im Hauptverzeichnis. Lokale Dokumentversionen/Standhashes weiter pflegen und separat sichern. Fehlende verbindliche Unterlagen vor betroffener Implementierung beschaffen.

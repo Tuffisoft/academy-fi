@@ -37,11 +37,11 @@ npm run check
 
 Softwarechecks oben; reine Markdown-Dokumentation nach dem eigenen Prüfweg in AGENTS.md.
 
-Arbeitsregeln, Prüfablauf und offene Blocker: [AGENTS.md](AGENTS.md). Abnahme: [Freigabecheckliste](FREIGABECHECKLISTE.md).
+Arbeitsregeln, Prüfablauf und offene Blocker: [AGENTS.md](AGENTS.md). Abnahme: [Freigabecheckliste](src/lib/docs/FREIGABECHECKLISTE.md).
 
 `typecheck` erzeugt Next.js-Routentypen; `check:build` prüft den Produktionsbuild mit isolierten Dummy-Zugängen. Deployment weiterhin über `npm run build`. Integrationstests und GitHub-Merge-Schutz separat nach den Qualitätsregeln einrichten.
 
-Stempelkarten: [Entwicklungsplan und Statusregister](ENTWICKLUNGSANLEITUNG_STEMPELKARTEN.md), [Archiv](ARCHIV_STEMPELKARTEN.md). Lokale PDF-Vorschauen und Design-Backups unter `output/` werden für neue Dateien von Git ignoriert.
+Stempelkarten-Unterlagen (nur lokal, nicht in Git): [Entwicklungsplan und Statusregister](src/lib/docs/ENTWICKLUNGSANLEITUNG_STEMPELKARTEN.md), [Archiv](src/lib/docs/ARCHIV_STEMPELKARTEN.md). Lokale PDF-Vorschauen und Design-Backups unter `output/` werden für neue Dateien von Git ignoriert.
 
 ## Website-Bewertung im Lead-Generator
 
