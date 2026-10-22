@@ -1,5 +1,5 @@
 import type { WebsiteReport } from "../website-quality";
-import { calculateDeviceScore, normalizeWebsiteReport, TOPIC_LABELS } from "../website-rating";
+import { calculateDeviceScore, normalizeWebsiteReport, QUALITY_WEIGHTS, TOPIC_LABELS } from "../website-rating";
 import de from "../../../messages/de.json";
 import en from "../../../messages/en.json";
 
@@ -27,7 +27,7 @@ export function pdfReportData(input: WebsiteReport, locale: "de" | "en") {
     designFindings: report.visual?.findings ?? [],
     designCriteria: Object.entries(report.visual?.criteria ?? {}).map(([key, value]) => ({ key, label: t.auditVisualCriteria[key as keyof typeof t.auditVisualCriteria], value: score(value), color: color(value) })),
     checkedAtLabel: `${new Intl.DateTimeFormat(locale, { dateStyle: "long", timeStyle: "short", timeZone: "Europe/Berlin" }).format(new Date(report.checkedAt))} (Europe/Berlin)`,
-    partsRows: Object.entries(report.parts).map(([key, value]) => ({ key, label: partLabels[key as keyof typeof partLabels], value: score(value), color: color(value) })),
+    partsRows: Object.entries(report.parts).map(([key, value]) => ({ key, weight: QUALITY_WEIGHTS[key as keyof typeof QUALITY_WEIGHTS], label: partLabels[key as keyof typeof partLabels], value: score(value), color: color(value) })),
     labels: { contents: locale === "de" ? "In diesem Bericht" : "In this report", back: locale === "de" ? "Zur Übersicht" : "Back to overview", page: locale === "de" ? "Seite" : "Page", deviceScore: t.auditDeviceScore, design: t.auditDesign, designCriteria: t.auditDesignCriteria, recommendation: locale === "de" ? "Empfehlung" : "Recommendation", scope: locale === "de" ? "Umfang der Prüfung" : "Assessment scope", weighting: locale === "de" ? "Gewichtung" : "Weighting", quality: t.auditQuality, breakdown: t.auditBreakdown, metrics: locale === "de" ? "Ladezeit & Stabilität" : "Loading & stability", checks: t.auditChecksHeading, issues: t.auditIssues, noIssues: t.auditNoIssues, scale: t.auditScale, method: t.auditMethod, formula: t.auditFormula, limitations: t.auditLimitations },
     devices: (["mobile", "desktop"] as const).map(key => {
       const data = report[key];
@@ -47,7 +47,7 @@ export function pdfReportData(input: WebsiteReport, locale: "de" | "en") {
 }
 
 export const sampleWebsiteReport: WebsiteReport = {
-  version: 2, url: "https://example.com/", checkedAt: "2026-10-21T09:00:00Z", qualityScore: 80,
+  version: 2, url: "https://example.com/", checkedAt: "2026-10-21T09:00:00Z", qualityScore: 75,
   parts: { performance: 54, design: 73, seo: 92, accessibility: 81, bestPractices: 100 },
   visual: { status: "completed", score: 73, model: "Demo", criteria: { hierarchy: 70, readability: 80, consistency: 72, mobileLayout: 70 }, findings: [{ observation: "Die wichtigste Aktion geht im Kopfbereich unter.", recommendation: "Die Kontakt-Schaltfläche deutlicher hervorheben." }] },
   mobile: { performance: 54, seo: 92, accessibility: 81, bestPractices: 100, https: true, metrics: { lcpMs: 3800, fcpMs: 1900, tbtMs: 320, cls: 0.128 }, checks: [{ id: "viewport", passed: true }, { id: "meta-description", passed: false }], issues: [{ id: "render-blocking", title: "Render-blocking resources", description: "Some resources delay the first page render. Defer non-essential scripts and stylesheets to show the main content earlier.", value: "1,200 ms" }], warnings: [], lighthouseVersion: "13" },

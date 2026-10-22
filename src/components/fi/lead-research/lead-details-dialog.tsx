@@ -122,7 +122,7 @@ export function LeadDetailsDialog({ place, audit, context }: { place: PlaceResul
 
           <p className="wrap-anywhere text-xs text-muted-foreground">{t("auditMeasuredUrl", { url: report.url })}</p>
         </>}
-        <div className="border-t pt-3 text-xs text-muted-foreground"><p>{t("googleSource")} <span translate="no">Google Maps</span></p>{place.attributions.map((a, index) => <p key={index}>{a.uri ? <a href={a.uri} target="_blank" rel="noopener noreferrer" className="underline">{a.name}</a> : a.name}</p>)}</div>
+        {place.attributions.length > 0 && <div className="border-t pt-3 text-xs text-muted-foreground">{place.attributions.map((a, index) => <p key={index}>{a.uri ? <a href={a.uri} target="_blank" rel="noopener noreferrer" className="underline">{a.name}</a> : a.name}</p>)}</div>}
       </div>
     </DialogContent>
   </Dialog>;

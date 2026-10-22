@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { Fragment, useEffect, useRef, useState } from "react";
 import { useTranslations } from "next-intl";
 import { Bookmark } from "lucide-react";
 import type { PlaceResult } from "@/lib/lead-research/google-places";
@@ -8,25 +8,28 @@ import type { SavedLeadSummary } from "@/lib/lead-research/types";
 import { loadSavedLeadDetailsAction } from "@/lib/actions/saved-leads.actions";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Card, CardAction, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardAction, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { SaveLeadButton } from "./save-lead-button";
 import { AuditScore, LeadDetailsDialog } from "./lead-details-dialog";
 import type { AuditSummary } from "@/lib/lead-research/audit-types";
-import { auditIsActive, compareAuditQuality } from "@/lib/lead-research/audit-progress";
+import { auditIsActive } from "@/lib/lead-research/audit-progress";
+
+import { prepareLeadRows } from "@/lib/lead-research/lead-groups";
+import { LeadGroupHeading } from "./lead-group-heading";
 
 export function SavedLeadsView({ leads, audits, isOwner, enabled }: { leads: SavedLeadSummary[]; audits: AuditSummary[]; isOwner: boolean; enabled: boolean }) {
   const t = useTranslations("leadResearch");
   const [page, setPage] = useState(0);
   const [retry, setRetry] = useState(0);
   const auditByPlace = new Map(audits.map((audit) => [JSON.stringify([audit.userId, audit.placeId]), audit]));
-  const sorted = audits.length > 0 && !audits.some(auditIsActive);
-  const orderedLeads = sorted ? [...leads].sort((a, b) => compareAuditQuality(auditByPlace.get(JSON.stringify([a.userId, a.placeId])), auditByPlace.get(JSON.stringify([b.userId, b.placeId])))) : leads;
+  const sorted = !audits.some(auditIsActive);
+  const grouped = prepareLeadRows(leads, lead => auditByPlace.get(JSON.stringify([lead.userId, lead.placeId])), sorted);
   const currentPage = Math.min(page, Math.max(0, Math.ceil(leads.length / 10) - 1));
   const offset = currentPage * 10;
-  const rows = orderedLeads.slice(offset, offset + 10);
-  const requestKey = JSON.stringify(rows.map((lead) => ({ id: lead.id, placeId: lead.placeId })));
+  const rows = grouped.rows.slice(offset, offset + 10);
+  const requestKey = JSON.stringify(rows.map(({ item: lead }) => ({ id: lead.id, placeId: lead.placeId })));
   const cache = useRef(new Map<string, PlaceResult>());
   const requests = useRef(new Map<string, ReturnType<typeof loadSavedLeadDetailsAction>>());
   const [snapshot, setSnapshot] = useState<{ key: string; places: PlaceResult[]; error: string | null } | null>(null);
@@ -70,10 +73,12 @@ export function SavedLeadsView({ leads, audits, isOwner, enabled }: { leads: Sav
       <Table>
         <TableHeader><TableRow>{["company", "address", "website", "phone", ...(isOwner ? ["author"] : []), "auditQuality", "selection", "leadDetails"].map((key) => <TableHead key={key} className={key === "selection" ? "w-12" : undefined}>{key === "selection" ? <><Bookmark className="size-4" aria-hidden="true" /><span className="sr-only">{t(key)}</span></> : t(key)}</TableHead>)}</TableRow></TableHeader>
         <TableBody>
-          {rows.map((lead) => {
+          {rows.map(({ item: lead, group }, index) => {
             const place = places.get(lead.placeId);
             const audit = auditByPlace.get(JSON.stringify([lead.userId, lead.placeId]));
-            return <TableRow key={lead.id}>
+            return <Fragment key={lead.id}>
+              {sorted && (index === 0 || rows[index - 1].group !== group) && <LeadGroupHeading group={group} count={grouped.counts[group]} columns={columns} />}
+              <TableRow>
               <TableCell className="min-w-40 max-w-52 whitespace-normal">{loading ? <Skeleton className="h-5 w-32" /> : <>
                 <p className="wrap-anywhere font-medium">{place?.name ?? t("savedLeadUnavailable")}</p>
                 {place?.attributions.map((a, index) => <p key={index} className="text-xs text-muted-foreground">{a.uri ? <a href={a.uri} className="underline" target="_blank" rel="noopener noreferrer">{a.name}</a> : a.name}</p>)}
@@ -85,7 +90,7 @@ export function SavedLeadsView({ leads, audits, isOwner, enabled }: { leads: Sav
               <TableCell><AuditScore audit={audit} /></TableCell>
               <TableCell><SaveLeadButton savedId={lead.id} placeId={lead.placeId} name={place?.name ?? t("savedLeads")} /></TableCell>
               <TableCell>{loading ? <Skeleton className="h-8 w-24" /> : place ? <LeadDetailsDialog place={place} audit={audit} context={lead.location && lead.industry ? { location: lead.location, industry: lead.industry } : undefined} /> : t("notProvided")}</TableCell>
-            </TableRow>;
+            </TableRow></Fragment>;
           })}
           {rows.length === 0 && <TableRow><TableCell colSpan={columns} className="h-40 whitespace-normal text-center text-muted-foreground">{t("noSavedLeads")}</TableCell></TableRow>}
         </TableBody>
@@ -95,6 +100,5 @@ export function SavedLeadsView({ leads, audits, isOwner, enabled }: { leads: Sav
         <div className="flex gap-2"><Button variant="outline" size="sm" disabled={currentPage === 0} onClick={() => setPage(currentPage - 1)}>{t("previous")}</Button><Button variant="outline" size="sm" disabled={offset + 10 >= leads.length} onClick={() => setPage(currentPage + 1)}>{t("next")}</Button></div>
       </div>}
     </CardContent>
-    <CardFooter className="text-xs text-muted-foreground"><span translate="no" className="whitespace-nowrap font-normal not-italic tracking-normal">Google Maps</span></CardFooter>
   </Card>;
 }

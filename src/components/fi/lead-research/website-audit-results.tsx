@@ -35,7 +35,7 @@ export function WebsiteAuditOverview({ report: input }: { report: WebsiteReport 
       </article>;
     })}</div>
     <article className="flex flex-wrap items-center justify-between gap-4 rounded-2xl border bg-card p-5 sm:p-6">
-      <div><h2 className="font-semibold">{t("auditDesign")}</h2><p className="mt-1 text-xs text-muted-foreground">{t("auditMobileDevice")} · KI</p></div>
+      <div><h2 className="font-semibold">{t("auditDesign")}</h2></div>
       <TopicScore value={report.parts.design} />
       {report.visual?.status !== "completed" && <p className="w-full text-sm text-muted-foreground">{t(`auditVisualStatuses.${report.visual?.status ?? "not_evaluated"}`)}</p>}
     </article>
@@ -47,7 +47,7 @@ export function WebsiteAuditResults({ report: input }: { report: WebsiteReport }
   const format = useFormatter();
   const report = normalizeWebsiteReport(input);
   const issueTitle = (issue: WebsiteReport["mobile"]["issues"][number]) => t.has(`auditSimpleIssues.${issue.id}`) ? t(`auditSimpleIssues.${issue.id}`) : issue.title;
-  const rawIssues = (issues: WebsiteReport["mobile"]["issues"]) => <ul className="space-y-3">{issues.map(issue => <li key={issue.id} className="rounded-lg border p-3 text-sm"><p className="font-medium">{issueTitle(issue)}{issue.value && <span className="ml-2 text-muted-foreground">{issue.value}</span>}</p><p className="mt-1 text-muted-foreground">{issue.description.replace(/\[([^\]]+)\]\([^)]+\)/g, "$1")}</p></li>)}</ul>;
+  const rawIssues = (issues: WebsiteReport["mobile"]["issues"]) => <ul className="space-y-3">{issues.map(issue => <li key={issue.id} className="rounded-lg border p-3 text-sm"><p className="font-medium">{issueTitle(issue)}{issue.value && <span className="ml-2 text-muted-foreground">{issue.value}</span>}</p></li>)}</ul>;
   const deviceDetails = (device: "mobile" | "desktop") => {
     const data = report[device];
     return <div className="mt-4 space-y-4">

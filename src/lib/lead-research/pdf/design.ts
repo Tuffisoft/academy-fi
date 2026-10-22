@@ -107,7 +107,7 @@ export const defaultPdfDesign: PdfDesign = {
       <PdfHeading level={1} style={{ fontSize: 28, marginBottom: 24 }}>{report.labels.method}</PdfHeading>
       <PdfHeading level={2} style={{ fontSize: 16, marginTop: 0, marginBottom: 12 }}>{report.labels.weighting}</PdfHeading>
       {report.partsRows.map(row => (
-        <View key={row.key} style={{ flexDirection: "row", justifyContent: "space-between", padding: 12, backgroundColor: "#f4f5fb", borderRadius: 6, marginBottom: 6 }}><Text>{row.label}</Text><Text style={{ color: "#6366f1", fontWeight: 700 }}>20 %</Text></View>
+        <View key={row.key} style={{ flexDirection: "row", justifyContent: "space-between", padding: 12, backgroundColor: "#f4f5fb", borderRadius: 6, marginBottom: 6 }}><Text>{row.label}</Text><Text style={{ color: "#6366f1", fontWeight: 700 }}>{row.weight} %</Text></View>
       ))}
       <Text style={{ fontSize: 11, marginTop: 18, color: "#475569" }}>{report.labels.formula}</Text>
       <PdfHeading level={2} style={{ fontSize: 16, marginTop: 28, marginBottom: 12 }}>{report.labels.scope}</PdfHeading>

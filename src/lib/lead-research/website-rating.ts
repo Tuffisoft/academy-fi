@@ -1,6 +1,6 @@
 import type { WebsiteReport } from "./website-quality";
 
-export const QUALITY_WEIGHTS = { performance: 20, seo: 20, accessibility: 20, bestPractices: 20, design: 20 } as const;
+export const QUALITY_WEIGHTS = { performance: 30, seo: 10, accessibility: 10, bestPractices: 20, design: 30 } as const;
 export type QualityTopic = keyof typeof QUALITY_WEIGHTS;
 export type QualityParts = Record<QualityTopic, number | null>;
 export const TOPIC_LABELS = { performance: "auditLoadSpeed", seo: "auditSeo", accessibility: "auditAccessibility", bestPractices: "auditTechnology", design: "auditDesign" } as const;
@@ -13,8 +13,9 @@ export function calculateDeviceScore(device: Pick<WebsiteReport["mobile"], typeo
 }
 
 export function calculateQuality(parts: QualityParts): number | null {
-  const values = Object.keys(QUALITY_WEIGHTS).map(key => validScore(parts[key as QualityTopic]));
-  return values.some(value => value === null) ? null : Math.round(values.reduce<number>((sum, value) => sum + value!, 0) / 5);
+  const topics = Object.keys(QUALITY_WEIGHTS) as QualityTopic[];
+  if (topics.some(key => validScore(parts[key]) === null)) return null;
+  return Math.round(topics.reduce((sum, key) => sum + parts[key]! * QUALITY_WEIGHTS[key], 0) / 100);
 }
 
 // Legacy reports keep their measurements, but never keep the old weighting.
