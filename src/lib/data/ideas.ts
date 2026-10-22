@@ -1,6 +1,8 @@
+import { requireAcademyUser } from "@/lib/session";
 import { prisma } from "@/lib/prisma";
 
-export function getIdeas() {
+export async function getIdeas() {
+  await requireAcademyUser();
   return prisma.idea.findMany({
     orderBy: { createdAt: "desc" },
     include: {

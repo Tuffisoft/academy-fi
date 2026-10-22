@@ -65,7 +65,7 @@ test("all five internal HTTP handlers reject missing sessions, external users an
   assert.equal(businessCalls, beforeCalls);
 });
 
-test("direct internal server actions reject external and revoked identities even with foreign or missing arguments", async () => {
+test("direct internal server actions reject external and revoked identities even with foreign or missing arguments", async (t) => {
   const modules = [
     await import("../src/lib/actions/assignments.actions"),
     await import("../src/lib/actions/daily-plans.actions"),
@@ -83,21 +83,57 @@ test("direct internal server actions reject external and revoked identities even
     await import("../src/lib/chat/actions/group.actions"),
     await import("../src/lib/chat/actions/friend.actions"),
   ];
-  session = { user: { id: "actor", role: "OWNER", name: "Actor" } };
   const beforeCalls = businessCalls;
   let checked = 0;
-  for (const role of ["CUSTOMER", "banned", "deleted"]) {
-    currentUser = role === "deleted" ? null : { id: "actor", role: role === "banned" ? "OWNER" : role, banned: role === "banned" };
+  for (const role of [null, "CUSTOMER", "banned", "deleted"]) {
+    session = role === null ? null : { user: { id: "actor", role: "OWNER", name: "Actor" } };
+    currentUser = role === "deleted" ? null : { id: "actor", role: role === "banned" ? "OWNER" : role ?? "INTERN", banned: role === "banned" };
     for (const actions of modules) {
       for (const [name, action] of Object.entries(actions)) {
         if (typeof action !== "function") continue;
-        await assert.rejects(async () => Reflect.apply(action, undefined, ["foreign", "foreign", "foreign"]), /not-found:404/, name);
-        checked++;
+        for (const args of [[], ["foreign", "foreign", "foreign"]]) {
+          await assert.rejects(async () => Reflect.apply(action, undefined, args), role === null ? /redirect:\/sign-in/ : /not-found:404/, name);
+          checked++;
+        }
       }
     }
   }
   assert.ok(checked >= 150, `Expected the complete action surface, checked ${checked}`);
+  t.diagnostic(`${checked} direct denials across ${modules.length} action modules`);
   assert.equal(businessCalls, beforeCalls);
+});
+
+test("internal user and data lists cannot be read by an external identity", async () => {
+  session = { user: { id: "actor", role: "OWNER", name: "Actor" } };
+  currentUser = { id: "actor", role: "CUSTOMER", banned: false };
+  const { getUsers } = await import("../src/lib/data/users");
+  const { getIdeas } = await import("../src/lib/data/ideas");
+  const { getDepartments } = await import("../src/lib/data/departments");
+  const { getAssignmentsOverview } = await import("../src/lib/data/assignments");
+  const { getDailyPlan } = await import("../src/lib/data/daily-plans");
+  const { getPdfDesignerState } = await import("../src/lib/data/pdf-design");
+  const beforeCalls = businessCalls;
+  for (const call of [getUsers, getIdeas, getDepartments, getAssignmentsOverview, () => getDailyPlan("foreign", "2026-10-22"), () => getPdfDesignerState("foreign")]) {
+    await assert.rejects(call, /not-found:404/);
+  }
+  assert.equal(businessCalls, beforeCalls);
+});
+
+test("internal HTTP validation stays reachable for OWNER and INTERN, and chat denials use DE/EN text", async () => {
+  const preview = await import("../src/app/api/pdf-design/preview/route");
+  const chat = await import("../src/app/api/chat/route");
+  for (const role of ["OWNER", "INTERN"]) {
+    session = { user: { id: "actor", role: "CUSTOMER", name: "Actor" } };
+    currentUser = { id: "actor", role, banned: false };
+    assert.equal((await preview.POST(new Request("http://localhost/api/pdf-design/preview", { method: "POST" }))).status, 415);
+  }
+  currentUser = { id: "actor", role: "CUSTOMER", banned: false };
+  for (const language of ["de", "en"]) {
+    locale = language;
+    const response = await chat.GET(new NextRequest("http://localhost/api/chat"));
+    assert.equal(response.status, 403);
+    assert.deepEqual(await response.json(), { ok: false, error: language === "de" ? "Kein Zugriff auf die Academy." : "Academy access denied." });
+  }
 });
 after(() => {
   for (const { target, name, value } of originals.reverse()) Reflect.set(target, name, value);

@@ -1,6 +1,8 @@
+import { requireAcademyUser } from "@/lib/session";
 import { prisma } from "@/lib/prisma";
 
-export function getCurrentAssignmentForIntern(internId: string) {
+export async function getCurrentAssignmentForIntern(internId: string) {
+  await requireAcademyUser();
   return prisma.weeklyAssignment.findFirst({
     where: { internId },
     orderBy: { weekOf: "desc" },
@@ -24,7 +26,8 @@ export function getCurrentAssignmentForIntern(internId: string) {
   });
 }
 
-export function getAssignmentsOverview() {
+export async function getAssignmentsOverview() {
+  await requireAcademyUser();
   return prisma.weeklyAssignment.findMany({
     orderBy: [{ weekOf: "desc" }],
     include: {
@@ -43,7 +46,8 @@ export function getAssignmentsOverview() {
   });
 }
 
-export function getInterns(includeUserId?: string) {
+export async function getInterns(includeUserId?: string) {
+  await requireAcademyUser();
   return prisma.user.findMany({
     where: {
       OR: [
@@ -56,7 +60,8 @@ export function getInterns(includeUserId?: string) {
   });
 }
 
-export function getAllAssignmentsForIntern(internId: string) {
+export async function getAllAssignmentsForIntern(internId: string) {
+  await requireAcademyUser();
   return prisma.weeklyAssignment.findMany({
     where: { internId },
     orderBy: { weekOf: "desc" },
