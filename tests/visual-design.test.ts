@@ -55,16 +55,22 @@ test("ambiguous screenshots, malformed responses, refusals and provider errors n
   }
 });
 
-test("all five topics have equal weight; desktop and legacy aggregate scores cannot affect mobile ranking", () => {
+test("topics follow approved weights; desktop and legacy aggregate scores cannot affect mobile ranking", () => {
   const report = structuredClone(sampleWebsiteReport);
   report.qualityScore = 1;
   report.desktop.performance = 0; report.desktop.seo = 0;
   const normalized = normalizeWebsiteReport(report);
-  assert.equal(normalized.qualityScore, 80);
-  assert.equal(pdfReportData(report, "de").scoreLabel, "80/100");
+  assert.equal(normalized.qualityScore, 75);
+  assert.equal(pdfReportData(report, "de").scoreLabel, "75/100");
   assert.equal(pdfReportData(report, "de").partsRows.length, 5);
   const best = { performance: 100, seo: 100, accessibility: 100, bestPractices: 100, design: 100 };
-  for (const key of Object.keys(best)) assert.equal(calculateQuality({ ...best, [key]: 0 }), 80);
+  for (const [key, expected] of Object.entries({ performance: 70, seo: 90, accessibility: 90, bestPractices: 80, design: 70 })) {
+    assert.equal(calculateQuality({ ...best, [key]: 0 }), expected, key);
+  }
+  assert.deepEqual(
+    Object.fromEntries(pdfReportData(report, "de").partsRows.map(({ key, weight }) => [key, weight])),
+    { performance: 30, seo: 10, accessibility: 10, bestPractices: 20, design: 30 },
+  );
   delete report.visual;
   report.version = 1;
   report.parts = { mobilePerformance: 54, desktopPerformance: 100, seo: 92, accessibility: 81, bestPractices: 100 };
@@ -79,7 +85,7 @@ test("PageSpeed screenshot reaches the assessor transiently; persisted report co
     categories: Object.fromEntries(["performance", "seo", "accessibility", "best-practices"].map(key => [key, { score: 0.8, auditRefs: key === "seo" ? [{ id: "document-title", weight: 1 }] : [] }])),
     audits: { "final-screenshot": { details: { data: image } }, "document-title": { title: "Missing title", score: 0, scoreDisplayMode: "binary" } },
   } }), { apiKey: "key", fetcher: async () => response() });
-  assert.equal(report.qualityScore, 78); assert.equal(report.parts.design, 70);
+  assert.equal(report.qualityScore, 77); assert.equal(report.parts.design, 70);
   assert.deepEqual(report.mobile.issues[0].categories, ["seo"]);
   assert.equal(JSON.stringify(report).includes("base64"), false);
 });

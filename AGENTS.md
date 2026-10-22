@@ -1,6 +1,6 @@
 # AcademyFi: Arbeitsregeln, Qualität und Status
 
-Version 1.3 · 22.10.2026. Vor Änderungen diese Datei lesen. Gilt projektweit; bestehende Fehler erlauben keine neuen. Bei Stempelkarten zusätzlich [Lastenheft](src/lib/docs/LASTENHEFT_STEMPELKARTEN.md) (Fachverhalten) und [Pflichtenheft](src/lib/docs/PFLICHTENHEFT_STEMPELKARTEN.md) (Technik) lesen. Deren Muss-Anforderungen bleiben vollständig verbindlich; Widersprüche vor Umsetzung klären und versionieren.
+Version 1.4 · 22.10.2026. Vor Änderungen diese Datei lesen. Gilt projektweit; bestehende Fehler erlauben keine neuen. Bei Stempelkarten zusätzlich [Lastenheft](src/lib/docs/LASTENHEFT_STEMPELKARTEN.md) (Fachverhalten) und [Pflichtenheft](src/lib/docs/PFLICHTENHEFT_STEMPELKARTEN.md) (Technik) lesen. Deren Muss-Anforderungen bleiben vollständig verbindlich; Widersprüche vor Umsetzung klären und versionieren.
 
 ## Verbindliche Regeln
 
@@ -69,13 +69,13 @@ Prüfläufe einmal im zugehörigen Versions-/Änderungsnachweis führen: geprüf
 
 Keine Produktfreigabe, keine Ausnahme erteilt. SaaS in diesem Qualitätspaket nicht implementiert; keine Übernahme, kein Merge, Deployment oder produktive Migration durch den Agenten.
 
-Prüfnachweise: [aktuelle Stempelkarten-Grundlage](src/lib/docs/FREIGABE_STEMPELKARTEN_v0.0.1.md); [historische Dokumentablage](src/lib/docs/FREIGABE_ANLEITUNG_STEMPELKARTEN.md). Offene Befunde unten bleiben verbindlich; keine echten DB-/Ably- oder entfernten CI-Nachweise.
+Prüfnachweise: [aktuelle Build-/Bewertungskorrektur](src/lib/docs/FREIGABE_BUILD_BEWERTUNG.md); [Stempelkarten-Grundlage](src/lib/docs/FREIGABE_STEMPELKARTEN_v0.0.1.md); [historische Dokumentablage](src/lib/docs/FREIGABE_ANLEITUNG_STEMPELKARTEN.md). Offene Befunde unten bleiben verbindlich; keine echten DB-/Ably- oder entfernten CI-Nachweise.
 
 | ID | Status, Verantwortung und Abschlusskriterium |
 | --- | --- |
 | QL-001 | Behoben (Umsetzung): 17 Testdateien aus 83552ef^ wiederhergestellt; 14 Unit-Dateien unverändert, 3 Integrationstests abgesichert, 4 Isolationstests ergänzt. |
-| QL-002 | Offen; sperrt Testcheck/betroffene Website-Bewertung. Produktverantwortlicher legt Gewichtung fest, Umsetzung harmonisiert Code/Dokumentation/Tests. README/Tests: 5×20 %, website-rating.ts: 30/10/10/20/30. Erwartet/aktuell: website-quality 80/70; visual-design 80/75 und 78/77. Keine Erwartungsänderung nur für Grün. |
-| QL-003 | Frühere SWC-Cachehürde durch .swc/native behoben (Umsetzung/Umgebung); aktueller Turbopack-Buildfehler offen. Abschluss: erfolgreicher isolierter Build mit Stand/Umgebung. |
+| QL-002 | Behoben: Auftraggeber bestätigt am 22.10.2026 die bestehenden Gewichte 30/10/10/20/30. README/Tests daran ausgerichtet, Fachlogik und DE/EN unverändert. Alle 92 Tests bestanden; Nachweis siehe Build-/Bewertungskorrektur. |
+| QL-003 | Produktionsbuild behoben: gemeinsamer Build-/Deployment-Befehl nutzt Webpack; alle 42 statischen Seiten erfolgreich. Finaler Sammellauf außerhalb Windows-Sandbox bestanden. Turbopack-Abbruch und separater Sandbox-EPERM bleiben als Diagnose dokumentiert; kein erfolgreicher Sandbox-Build behauptet. |
 | QL-004 | Offen; betroffene Integrationsabnahme blockiert. Betreiber stellt getrennte vorbereitete DB/Ably-Test-App, Umsetzung protokolliert echte erfolgreiche Läufe. Fehlende Konfiguration wird verweigert; keine normalen Zugänge verwendet. |
 | QL-005 | Offen vor externer Registrierung (Umsetzung): Academy-Abgrenzung nicht vollständig belegt; Registrierung deaktiviert, Standardrolle INTERN, viele Zugänge nur requireUser. Kein Nachweis eines öffentlich ausnutzbaren Zugangs. Abschluss: explizite Academy-/Geschäfts-Guards und T-01/T-02. |
 | QL-006 | Teilweise vorbereitet: .nvmrc mit Node 24 ergänzt und gegen package.json geprüft; Repository-Admin muss entfernten CI-Lauf und verpflichtende Checks/Reviews/Freigaben belegen. Abschluss erst mit diesen Nachweisen; lokale Datei ist keine Merge-Sperre. |
@@ -83,6 +83,8 @@ Prüfnachweise: [aktuelle Stempelkarten-Grundlage](src/lib/docs/FREIGABE_STEMPEL
 
 Reviewhistorie: Umsetzender Agent prüfte Qualitätspaket gegenüber 83552ef (Prüfscripte, CI, npm/Node, Tests, Isolation, Dokumentation); keine unabhängige menschliche Abnahme. Behoben: DB-Import erst nach Testkonfigurationsprüfung, separate Ably-App statt Skip, isolierte Providerwerte, Routentypgenerierung, Fortsetzung aller Checks. Älterer Hashnachweis ist wegen fehlender .nvmrc widersprüchlich und gilt nicht für diesen Stand.
 
-Aktuelles Review und Prozessänderungen: [Änderungsnachweis](src/lib/docs/FREIGABE_ANLEITUNG_STEMPELKARTEN.md).
+Aktuelles Review: [Build-/Bewertungsnachweis](src/lib/docs/FREIGABE_BUILD_BEWERTUNG.md). Frühere Prozessänderungen: [Änderungsnachweis](src/lib/docs/FREIGABE_ANLEITUNG_STEMPELKARTEN.md).
 
 Versionen: 1.0 (22.10.2026) Qualitätsregeln eingeführt; 1.1 (22.10.2026) Regeln/Status in AGENTS.md verdichtet. 1.2 (22.10.2026) Dokumentationsprüfweg, zentrale Nachweise und frühe Restore-Planung eingeführt. 1.3 (22.10.2026): Projektunterlagen lokal unter src/lib/docs/ ablegen und von Git ausschließen; AGENTS.md/README.md bleiben im Hauptverzeichnis. Lokale Dokumentversionen/Standhashes weiter pflegen und separat sichern. Fehlende verbindliche Unterlagen vor betroffener Implementierung beschaffen.
+
+Version 1.4 · 22.10.2026: QL-002/003 anhand bestätigter Gewichtung und erfolgreichem Produktionscheck aktualisiert; übrige Freigaben unverändert offen.

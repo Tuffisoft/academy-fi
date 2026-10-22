@@ -20,9 +20,13 @@ function payload(performance = 0.8) {
 test("quality score increases with quality, follows published weights and never fabricates missing values", () => {
   const best = { performance: 100, design: 100, seo: 100, accessibility: 100, bestPractices: 100 };
   assert.equal(calculateQuality(best), 100);
-  assert.equal(calculateQuality({ ...best, performance: 0 }), 80);
+  for (const [topic, expected] of Object.entries({ performance: 70, seo: 90, accessibility: 90, bestPractices: 80, design: 70 })) {
+    assert.equal(calculateQuality({ ...best, [topic]: 0 }), expected, topic);
+    for (const value of [null, NaN, Infinity, -1, 101]) {
+      assert.equal(calculateQuality({ ...best, [topic]: value }), null, `${topic}: ${value}`);
+    }
+  }
   assert.equal(calculateQuality({ performance: 0, design: 0, seo: 0, accessibility: 0, bestPractices: 0 }), 0);
-  for (const value of [null, NaN, Infinity, -1, 101]) assert.equal(calculateQuality({ ...best, seo: value }), null);
 });
 
 test("audit targets exclude local networks, credentials, non-HTTP URLs and nonstandard ports", () => {

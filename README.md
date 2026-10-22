@@ -39,13 +39,13 @@ Softwarechecks oben; reine Markdown-Dokumentation nach dem eigenen Prüfweg in A
 
 Arbeitsregeln, Prüfablauf und offene Blocker: [AGENTS.md](AGENTS.md). Abnahme: [Freigabecheckliste](src/lib/docs/FREIGABECHECKLISTE.md).
 
-`typecheck` erzeugt Next.js-Routentypen; `check:build` prüft den Produktionsbuild mit isolierten Dummy-Zugängen. Deployment weiterhin über `npm run build`. Integrationstests und GitHub-Merge-Schutz separat nach den Qualitätsregeln einrichten.
+`typecheck` erzeugt Next.js-Routentypen; `check:build` prüft den Produktionsbuild mit isolierten Dummy-Zugängen. Prüfung und Deployment verwenden über `npm run build` denselben Webpack-Produktionsbuild; damit wird der hier reproduzierte Turbopack-Abbruch bei der CSS-Verarbeitung vermieden. Der erste Build benötigt Netzwerkzugriff für Google Fonts. Integrationstests und GitHub-Merge-Schutz separat nach den Qualitätsregeln einrichten.
 
 Stempelkarten-Unterlagen (nur lokal, nicht in Git): [Entwicklungsplan und Statusregister](src/lib/docs/ENTWICKLUNGSANLEITUNG_STEMPELKARTEN.md), [Archiv](src/lib/docs/ARCHIV_STEMPELKARTEN.md). Lokale PDF-Vorschauen und Design-Backups unter `output/` werden für neue Dateien von Git ignoriert.
 
 ## Website-Bewertung im Lead-Generator
 
-Neue Website-Prüfungen bewerten Ladezeit, SEO, Barrierefreiheit, Technik und Design & Benutzerführung zu je 20 %. Die ersten vier Themen verwenden die mobilen PageSpeed-Werte; Desktop bleibt separat in den Details. Ein Gesamtscore wird nur bei fünf vorhandenen Teilwerten berechnet. Bestehende Berichte werden beim Lesen entsprechend eingeordnet, ohne kostenpflichtige Prüfungen erneut zu starten.
+Website-Prüfungen gewichten Ladezeit mit 30 %, SEO mit 10 %, Barrierefreiheit mit 10 %, Technik mit 20 % und Design & Benutzerführung mit 30 % (vom Auftraggeber bestätigt am 22.10.2026). Die ersten vier Themen verwenden die mobilen PageSpeed-Werte; Desktop bleibt separat in den Details. Ein Gesamtscore wird nur bei fünf vorhandenen Teilwerten berechnet. Bestehende Berichte werden beim Lesen entsprechend eingeordnet, ohne kostenpflichtige Prüfungen erneut zu starten.
 
 Die Übersicht zeigt Mobil und Desktop direkt mit einem separaten Technik-Score (gleich gewichteter Mittelwert der vier technischen Themen je Gerät). Dieser Gerätescore enthält keine KI-Designnote und verändert die Gewichtung des Gesamtscores nicht. Die genauen Befunde bleiben darunter aufklappbar.
 
