@@ -69,7 +69,7 @@ Prüfläufe einmal im zugehörigen Versions-/Änderungsnachweis führen: geprüf
 
 Keine Produktfreigabe, keine Ausnahme erteilt. SaaS in diesem Qualitätspaket nicht implementiert; keine Übernahme, kein Merge, Deployment oder produktive Migration durch den Agenten.
 
-Prüfnachweise: [aktueller Dokumentationsstand und letzter Softwarelauf](src/lib/docs/FREIGABE_ANLEITUNG_STEMPELKARTEN.md). Offene Befunde unten bleiben verbindlich; keine echten DB-/Ably- oder entfernten CI-Nachweise.
+Prüfnachweise: [aktuelle Stempelkarten-Grundlage](src/lib/docs/FREIGABE_STEMPELKARTEN_v0.0.1.md); [historische Dokumentablage](src/lib/docs/FREIGABE_ANLEITUNG_STEMPELKARTEN.md). Offene Befunde unten bleiben verbindlich; keine echten DB-/Ably- oder entfernten CI-Nachweise.
 
 | ID | Status, Verantwortung und Abschlusskriterium |
 | --- | --- |
@@ -78,7 +78,7 @@ Prüfnachweise: [aktueller Dokumentationsstand und letzter Softwarelauf](src/lib
 | QL-003 | Frühere SWC-Cachehürde durch .swc/native behoben (Umsetzung/Umgebung); aktueller Turbopack-Buildfehler offen. Abschluss: erfolgreicher isolierter Build mit Stand/Umgebung. |
 | QL-004 | Offen; betroffene Integrationsabnahme blockiert. Betreiber stellt getrennte vorbereitete DB/Ably-Test-App, Umsetzung protokolliert echte erfolgreiche Läufe. Fehlende Konfiguration wird verweigert; keine normalen Zugänge verwendet. |
 | QL-005 | Offen vor externer Registrierung (Umsetzung): Academy-Abgrenzung nicht vollständig belegt; Registrierung deaktiviert, Standardrolle INTERN, viele Zugänge nur requireUser. Kein Nachweis eines öffentlich ausnutzbaren Zugangs. Abschluss: explizite Academy-/Geschäfts-Guards und T-01/T-02. |
-| QL-006 | Offen (Repository-Admin): entfernte CI/Ruleset-Sperre fehlen als Nachweis; .nvmrc fehlt trotz Workflowverweis und älterer gegenteiliger Statusangabe. Abschluss: Node-Vorgabe korrigieren, erfolgreicher CI-Lauf, verpflichtende Checks/Review/Freigaben wie oben belegen. |
+| QL-006 | Teilweise vorbereitet: .nvmrc mit Node 24 ergänzt und gegen package.json geprüft; Repository-Admin muss entfernten CI-Lauf und verpflichtende Checks/Reviews/Freigaben belegen. Abschluss erst mit diesen Nachweisen; lokale Datei ist keine Merge-Sperre. |
 | QL-007 | Offen (Umsetzung/Betreiber): vollständige SaaS-Freigabe gesperrt bis AK-01–18, Geräte-, Betriebs-, Anbieterfreigaben und ausgefüllte Checkliste vorliegen. |
 
 Reviewhistorie: Umsetzender Agent prüfte Qualitätspaket gegenüber 83552ef (Prüfscripte, CI, npm/Node, Tests, Isolation, Dokumentation); keine unabhängige menschliche Abnahme. Behoben: DB-Import erst nach Testkonfigurationsprüfung, separate Ably-App statt Skip, isolierte Providerwerte, Routentypgenerierung, Fortsetzung aller Checks. Älterer Hashnachweis ist wegen fehlender .nvmrc widersprüchlich und gilt nicht für diesen Stand.
