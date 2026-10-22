@@ -2,7 +2,6 @@
 
 import { Languages } from "lucide-react";
 import { useLocale } from "next-intl";
-import { useParams } from "next/navigation";
 import { usePathname, useRouter } from "@/i18n/navigation";
 import { routing } from "@/i18n/routing";
 import { Button } from "@/components/ui/button";

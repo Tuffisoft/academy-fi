@@ -47,3 +47,6 @@ next-env.d.ts
 /src/app/.well-known/workflow/
 /.workflow-data/
 /.swc
+
+# Local report previews and design backups
+/output/

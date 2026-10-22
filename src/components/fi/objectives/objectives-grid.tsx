@@ -4,7 +4,6 @@ import { ObjectiveCardWrapper } from "./objective-card-wrapper";
 import { ObjectivesFilter, type ObjectiveItem } from "./objectives-filter";
 import {
   Card,
-  CardContent,
   CardDescription,
   CardHeader,
   CardTitle,

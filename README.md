@@ -1,24 +1,41 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Academy Fi
 
-## Getting Started
+Interne Plattform für Lernen, Aufgaben, Tagesplanung, Ideen, Chat und Lead-Recherche.
 
-First, run the development server:
+## Lokal starten
+
+Voraussetzungen: Node.js, npm und eine konfigurierte PostgreSQL-/Neon-Datenbank. Zugangsdaten stehen lokal in `.env`.
 
 ```bash
+npm ci
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Die Anwendung läuft unter http://localhost:3000 mit deutschen und englischen Routen. Prisma Client wird bei der Installation und vor dem Entwicklungsstart automatisch generiert. Datenbankmigrationen werden dabei nicht angewendet.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Projektstruktur
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- `src/app`: Seiten und API-Routen
+- `src/components`: Oberfläche, nach Funktionen gegliedert
+- `src/lib`: Serverlogik, Datenzugriff und gemeinsame Hilfsfunktionen
+- `src/messages` und `src/i18n`: Übersetzungen und Sprachrouting
+- `prisma`: Datenbankschema und Migrationen
+- `db`: Seed und Seed-Konfiguration
+- `tests`: automatisierte Prüfungen
+- `assets/pdf`: eingebundene PDF-Schriftarten
+
+## Prüfungen
+
+```bash
+npm run lint
+npm run typecheck
+npm test
+npm run build
+```
+
+Integrationstests (`tests/*.integration.test.ts`) gehören nicht zu `npm test` und benötigen die jeweils in den Dateien beschriebene Umgebung.
+
+Weitere Hinweise: [Chat-Integration](CHAT_INTEGRATION.md) und [Lead-Recherche](LEAD_RESEARCH.md). Lokale PDF-Vorschauen und Design-Backups unter `output/` werden für neue Dateien von Git ignoriert.
 
 ## Website-Bewertung im Lead-Generator
 
@@ -53,18 +70,3 @@ Der JSX-Editor verwendet lokal gebündeltes CodeMirror mit Syntaxfarben, Zeilenn
 Die Standardvorlage enthält ein anklickbares Inhaltsmenü auf der Titelseite, eigene Abschnitte für Mobil, Desktop, KI-Designbewertung und die Bewertungsmethode sowie Seitenzahlen. Die Links verwenden echte interne PDF-Sprungziele und bleiben bei zusätzlichen Seiten korrekt. Im Designer werden alte unveränderte Standardvorlagen mit der neuen Gestaltung geöffnet; der Live-Stand ändert sich erst durch ausdrückliches Aktivieren. Eigene JSX-Vorlagen bleiben erhalten. Im Editor lässt sich die neue Vorlage über „Standard einsetzen“ übernehmen und speichern.
 
 Eigene Sprunglinks lassen sich mit `href="#mobile"` auf `View`, `Text` oder `Link` anlegen. Das Ziel erhält `bookmark="mobile"` auf `View` oder `Text`. Sprungziele müssen eindeutig sein und tatsächlich existieren. Externe Links sind im Vorlageneditor nicht freigegeben. `Fixed position="footer"` unterstützt `{{pageNumber}}` und `{{totalPages}}`; Fixed-Elemente stehen vor dem Seiteninhalt, damit sie auch auf Fortsetzungsseiten erscheinen.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.

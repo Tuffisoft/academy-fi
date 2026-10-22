@@ -1,7 +1,6 @@
 "use client";
 
 import { useState, useTransition } from "react";
-import { useTranslations } from "next-intl";
 import { useRouter } from "@/i18n/navigation";
 import { toast } from "sonner";
 import { MoreVertical, Trash2, Edit2 } from "lucide-react";
@@ -12,7 +11,6 @@ import {
 } from "@/lib/actions/assignments.actions";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -24,7 +22,6 @@ import {
   DialogContent,
   DialogHeader,
   DialogTitle,
-  DialogDescription,
   DialogFooter,
 } from "@/components/ui/dialog";
 import {
@@ -68,7 +65,6 @@ interface AdminTaskEditorProps {
 }
 
 export function AdminTaskEditor({ assignment }: AdminTaskEditorProps) {
-  const t = useTranslations();
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
   const [editingItemId, setEditingItemId] = useState<string | null>(null);
