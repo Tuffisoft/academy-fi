@@ -135,16 +135,16 @@ test("upload middleware permits current internal users and rejects external, ban
     session = { user: { id: "actor", role: "OWNER", name: "Actor" } };
     currentUser = role === "deleted" ? null : { id: "actor", role: role === "banned" ? "OWNER" : role, banned: role === "banned" };
     for (const route of Object.values(ourFileRouter)) {
-      const call = () => Reflect.apply(route.middleware, undefined, [args]);
+      const call = async () => Reflect.apply(route.middleware, undefined, [args]);
       if (role === "OWNER" || role === "INTERN") assert.deepEqual(await call(), { userId: "actor" });
       else await assert.rejects(call, /Forbidden/);
     }
   }
   session = null;
-  await assert.rejects(() => Reflect.apply(ourFileRouter.profileImage.middleware, undefined, [args]), /Unauthorized/);
+  await assert.rejects(async () => Reflect.apply(ourFileRouter.profileImage.middleware, undefined, [args]), /Unauthorized/);
   const beforeCalls = businessCalls;
   currentUser = { id: "actor", role: "CUSTOMER", banned: false };
-  await assert.rejects(() => Reflect.apply(ourFileRouter.profileImage.onUploadComplete, undefined, [{ metadata: { userId: "actor" }, file: {} }]), /Academy access denied/);
+  await assert.rejects(async () => Reflect.apply(ourFileRouter.profileImage.onUploadComplete, undefined, [{ metadata: { userId: "actor" }, file: {} }]), /Academy access denied/);
   assert.equal(businessCalls, beforeCalls);
 });
 
