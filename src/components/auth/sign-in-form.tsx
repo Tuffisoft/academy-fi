@@ -13,7 +13,7 @@ import {
   FieldLabel,
 } from "@/components/ui/field";
 
-export function SignInForm() {
+export function SignInForm({ destination }: { destination?: "stempelfi" }) {
   const t = useTranslations("auth");
   const router = useRouter();
   const [email, setEmail] = useState("");
@@ -26,20 +26,16 @@ export function SignInForm() {
     setError(null);
     setIsSubmitting(true);
 
-    const { error: signInError } = await authClient.signIn.email({
-      email,
-      password,
-    });
-
-    setIsSubmitting(false);
-
-    if (signInError) {
-      setError(signInError.message ?? t("genericError"));
-      return;
+    try {
+      const { error: signInError } = await authClient.signIn.email({ email, password });
+      if (signInError) { setError(t("genericError")); return; }
+      router.push(destination === "stempelfi" ? "/tools/calem/stempelkarten/app" : "/dashboard");
+      router.refresh();
+    } catch {
+      setError(t("genericError"));
+    } finally {
+      setIsSubmitting(false);
     }
-
-    router.push("/dashboard");
-    router.refresh();
   }
 
   return (

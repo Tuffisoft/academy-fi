@@ -2,13 +2,20 @@
 
 import { BookOpen, Eye } from "lucide-react";
 import { useTranslations } from "next-intl";
-import { Link } from "@/i18n/navigation";
+import { Link, usePathname } from "@/i18n/navigation";
 import { authClient } from "@/lib/auth-client";
 import { Button } from "@/components/ui/button";
 import { ModeToggle } from "@/components/fi/elements/ThemeToggle";
 import { LanguageToggle } from "@/components/fi/elements/LanguageToggle";
 
 export function Footer() {
+  const pathname = usePathname();
+  const productPath = "/tools/calem/stempelkarten";
+  if (pathname === productPath || pathname === `${productPath}/preview` || pathname === `${productPath}/app` || pathname.startsWith(`${productPath}/app/`)) return null;
+  return <AcademyFooter />;
+}
+
+function AcademyFooter() {
   const t = useTranslations("auth");
   const { data: session } = authClient.useSession();
 

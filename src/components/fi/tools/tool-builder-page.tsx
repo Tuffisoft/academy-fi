@@ -28,8 +28,8 @@ export async function ToolBuilderPage({
         </span>
         <div className="grid gap-1">
           <CardTitle className="text-lg">{t("loyaltyTitle")}</CardTitle>
-          <CardDescription>{t("loyaltyDescription")}</CardDescription>
-          <p className="text-sm text-muted-foreground">{t(user.role === "OWNER" ? "loyaltyStatus" : "loyaltyOwnerOnly")}</p>
+          <CardDescription>{t("loyaltyLandingDescription")}</CardDescription>
+          <p className="text-sm text-muted-foreground">{t("loyaltyLandingEntry")}</p>
         </div>
       </CardHeader>
     </Card>
@@ -83,11 +83,9 @@ export async function ToolBuilderPage({
               </CardHeader>
             </Card>
           </Link>
-          {user.role === "OWNER" ? (
-            <Link href="/tools/calem/stempelkarten/admin" className="group min-w-0 rounded-xl outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2">
+            <Link href="/tools/calem/stempelkarten" className="group min-w-0 rounded-xl outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2">
               {loyaltyCard}
             </Link>
-          ) : loyaltyCard}
           </div>
         ) : (
           <Card>

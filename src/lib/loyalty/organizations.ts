@@ -1,10 +1,11 @@
 import "server-only";
+import { createHash } from "node:crypto";
 import { prisma } from "@/lib/prisma";
 import type { Prisma, OrganizationRole } from "@/generated/prisma/client";
 import { freeEntitlement } from "./plans";
 
 export class OrganizationAccessError extends Error {
-  constructor(public readonly code: "FORBIDDEN" | "INVALID_INPUT" | "LIMIT_REACHED") {
+  constructor(public readonly code: "FORBIDDEN" | "INVALID_INPUT" | "LIMIT_REACHED" | "CONFLICT") {
     super(code);
     this.name = "OrganizationAccessError";
   }
@@ -21,11 +22,76 @@ function identifier(value: string) {
 
 async function identity(db: Database, actorId: string) {
   identifier(actorId);
-  const user = await db.user.findUnique({ where: { id: actorId }, select: { id: true, role: true, banned: true } });
+  const user = await db.user.findUnique({ where: { id: actorId }, select: { id: true, role: true, banned: true, emailVerified: true } });
   if (!user || user.banned || !["CUSTOMER", "OWNER", "INTERN"].includes(user.role)) {
     throw new OrganizationAccessError("FORBIDDEN");
   }
   return user;
+}
+
+const portalSelection = { id: true, name: true, slug: true, status: true } as const;
+
+export async function getPortalOrganizations(actorId: string, after?: string) {
+  const actor = await identity(prisma, actorId);
+  if (after) identifier(after);
+  const internal = actor.role === "OWNER";
+  const organizations = await prisma.organization.findMany({
+    where: {
+      ...(after ? { id: { gt: after } } : {}),
+      ...(!internal ? { status: "ACTIVE", memberships: { some: { userId: actor.id, status: "ACTIVE", role: { in: [...roles] } } } } : {}),
+    },
+    select: portalSelection,
+    orderBy: { id: "asc" },
+    take: 51,
+  });
+  return { internal, canCreate: actor.role === "INTERN", organizations: organizations.slice(0, 50), next: organizations.length > 50 ? organizations[49].id : null };
+}
+
+export async function getPortalOrganization(actorId: string, slug: string) {
+  if (typeof slug !== "string" || !/^[a-z0-9]+(-[a-z0-9]+)*$/.test(slug) || slug.length > 100) throw new OrganizationAccessError("INVALID_INPUT");
+  const actor = await identity(prisma, actorId);
+  const organization = await prisma.organization.findFirst({
+    where: { slug, ...(actor.role === "OWNER" ? {} : { status: "ACTIVE", memberships: { some: { userId: actor.id, status: "ACTIVE", role: { in: [...roles] } } } }) },
+    select: portalSelection,
+  });
+  if (!organization) throw new OrganizationAccessError("FORBIDDEN");
+  if (actor.role === "OWNER") {
+    const detail = await getInternalOrganizationDetail(actorId, organization.id);
+    if (!detail) throw new OrganizationAccessError("FORBIDDEN");
+    return { ...detail, internal: true, role: null };
+  }
+  const context = await getOrganizationContext(actorId, organization.id);
+  const detail = await prisma.organization.findUnique({
+    where: { id: context.organizationId },
+    select: { ...portalSelection, entitlement: { select: { plan: true } }, _count: { select: { memberships: { where: { status: "ACTIVE" } } } } },
+  });
+  if (!detail) throw new OrganizationAccessError("FORBIDDEN");
+  return { ...detail, internal: false, role: context.role };
+}
+
+/** INTERN may found multiple companies. The same actor/request key commits at most one. */
+export async function createOrganization(actorId: string, name: string, operationId: string) {
+  identifier(actorId);
+  if (typeof name !== "string" || !name.trim() || name.trim().length > 160 || /[\u0000-\u001f\u007f]/.test(name)) throw new OrganizationAccessError("INVALID_INPUT");
+  if (typeof operationId !== "string" || !/^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(operationId)) throw new OrganizationAccessError("INVALID_INPUT");
+  const digest = createHash("sha256").update(`${actorId}\0${operationId.toLowerCase()}`).digest("hex");
+  const id = `org_${digest}`;
+  const fingerprint = createHash("sha256").update(name.trim()).digest("hex");
+  return prisma.$transaction(async tx => {
+    await tx.$queryRaw`SELECT "id" FROM "user" WHERE "id" = ${actorId} FOR UPDATE`;
+    const actor = await identity(tx, actorId);
+    if (actor.role !== "INTERN") throw new OrganizationAccessError("FORBIDDEN");
+    const previous = await tx.organization.findUnique({ where: { id }, include: { memberships: { where: { userId: actor.id, status: "ACTIVE", role: "OWNER" } }, auditEntries: { where: { actorId: actor.id, action: "ORGANIZATION_CREATED" }, select: { reason: true } } } });
+    if (previous) {
+      if (previous.status !== "ACTIVE" || previous.memberships.length !== 1) throw new OrganizationAccessError("FORBIDDEN");
+      if (previous.auditEntries.length !== 1 || previous.auditEntries[0].reason !== fingerprint) throw new OrganizationAccessError("CONFLICT");
+      return { id: previous.id, slug: previous.slug };
+    }
+    const organization = await tx.organization.create({ data: { id, name: name.trim(), slug: `company-${digest}`, status: "ACTIVE", entitlement: { create: { plan: "FREE" } } } });
+    const membership = await tx.organizationMembership.create({ data: { organizationId: organization.id, userId: actor.id, role: "OWNER" } });
+    await tx.organizationAuditLog.create({ data: { organizationId: organization.id, actorId: actor.id, actorMembershipId: membership.id, action: "ORGANIZATION_CREATED", targetId: organization.id, reason: fingerprint } });
+    return { id: organization.id, slug: organization.slug };
+  }, { maxWait: 60_000, timeout: 30_000 });
 }
 
 // actorId must come from the authenticated server session, never request data.

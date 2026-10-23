@@ -8,6 +8,7 @@ let detailReads = 0;
 let slots = 1;
 let writes = 0;
 let locks = 0;
+let portalQueries: unknown[] = [];
 const db = {
   user: { findUnique: async () => user },
   organizationMembership: {
@@ -15,7 +16,11 @@ const db = {
     count: async () => slots,
     upsert: async () => { writes++; return { id: "new-member" }; },
   },
-  organization: { findUnique: async () => { detailReads++; return { id: "org" }; } },
+  organization: {
+    findUnique: async () => { detailReads++; return { id: "org" }; },
+    findMany: async (query: unknown) => { portalQueries.push(query); return []; },
+    findFirst: async (query: unknown) => { portalQueries.push(query); return null; },
+  },
   organizationAuditLog: { create: async () => { writes++; } },
   $queryRaw: async () => { locks++; },
 };
@@ -23,14 +28,17 @@ mock.module("../src/lib/prisma.ts", { namedExports: { prisma: { ...db, $transact
 let getOrganizationContext: typeof import("../src/lib/loyalty/organizations").getOrganizationContext;
 let getInternalOrganizationDetail: typeof import("../src/lib/loyalty/organizations").getInternalOrganizationDetail;
 let addStaffMembership: typeof import("../src/lib/loyalty/organizations").addStaffMembership;
+let getPortalOrganizations: typeof import("../src/lib/loyalty/organizations").getPortalOrganizations;
+let getPortalOrganization: typeof import("../src/lib/loyalty/organizations").getPortalOrganization;
+let createOrganization: typeof import("../src/lib/loyalty/organizations").createOrganization;
 before(async () => {
-  ({ getOrganizationContext, getInternalOrganizationDetail, addStaffMembership } = await import("../src/lib/loyalty/organizations"));
+  ({ getOrganizationContext, getInternalOrganizationDetail, addStaffMembership, getPortalOrganizations, getPortalOrganization, createOrganization } = await import("../src/lib/loyalty/organizations"));
 });
 
 function reset() {
   user = { id: "actor", role: "CUSTOMER", banned: false };
   member = { id: "member", role: "OWNER", status: "ACTIVE", organization: { status: "ACTIVE", entitlement: { plan: "FREE" } } };
-  slots = 1; writes = 0; locks = 0;
+  slots = 1; writes = 0; locks = 0; portalQueries = [];
 }
 
 test("central tariff profiles match contractual limits; unconfirmed paid rights fail closed", () => {
@@ -85,4 +93,39 @@ test("membership writes recheck rights under the lock and reject exhausted Free 
   await assert.rejects(addStaffMembership("actor", "org", "target", "Test"), /FORBIDDEN/);
   assert.equal(writes, 0);
   await assert.rejects(addStaffMembership("actor", "org", "target", " "), /INVALID_INPUT/);
+});
+
+test("portal selection scopes member queries to current active memberships; only a DB OWNER gets all", async () => {
+  for (const role of ["INTERN", "CUSTOMER"]) {
+    reset(); user!.role = role;
+    const result = await getPortalOrganizations("actor");
+    assert.equal(result.internal, false);
+    assert.equal(result.canCreate, role === "INTERN");
+    assert.deepEqual(portalQueries[0], { where: { status: "ACTIVE", memberships: { some: { userId: "actor", status: "ACTIVE", role: { in: ["OWNER", "ADMIN", "STAFF"] } } } }, select: { id: true, name: true, slug: true, status: true }, orderBy: { id: "asc" }, take: 51 });
+    await assert.rejects(getPortalOrganization("actor", "foreign-company"), /FORBIDDEN/);
+    assert.deepEqual(portalQueries[1], { where: { slug: "foreign-company", status: "ACTIVE", memberships: { some: { userId: "actor", status: "ACTIVE", role: { in: ["OWNER", "ADMIN", "STAFF"] } } } }, select: { id: true, name: true, slug: true, status: true } });
+  }
+  reset(); user!.role = "OWNER";
+  assert.equal((await getPortalOrganizations("actor", "cursor")).internal, true);
+  assert.deepEqual(portalQueries[0], { where: { id: { gt: "cursor" } }, select: { id: true, name: true, slug: true, status: true }, orderBy: { id: "asc" }, take: 51 });
+  for (const invalid of [null, { id: "actor", role: "OWNER,INTERN", banned: false }, { id: "actor", role: "OWNER", banned: true }]) {
+    reset(); user = invalid;
+    await assert.rejects(getPortalOrganizations("actor"), /FORBIDDEN/);
+    assert.equal(portalQueries.length, 0);
+  }
+});
+
+test("company creation denies other account types, revoked identities and manipulated input before writes", async () => {
+  const operation = "12345678-1234-4567-8123-123456789abc";
+  for (const role of ["OWNER", "CUSTOMER", "OWNER,INTERN", "ADMIN"]) {
+    reset(); user!.role = role;
+    await assert.rejects(createOrganization("actor", "Business", operation), /FORBIDDEN/);
+    assert.equal(writes, 0);
+  }
+  reset(); user!.role = "INTERN"; user!.banned = true;
+  await assert.rejects(createOrganization("actor", "Business", operation), /FORBIDDEN/);
+  reset(); user!.role = "INTERN";
+  for (const name of ["", " ", "a".repeat(161), "A\nB"]) await assert.rejects(createOrganization("actor", name, operation), /INVALID_INPUT/);
+  await assert.rejects(createOrganization("actor", "Business", "foreign/id"), /INVALID_INPUT/);
+  assert.equal(writes, 0);
 });
