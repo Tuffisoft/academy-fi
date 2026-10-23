@@ -1,6 +1,6 @@
 # AcademyFi: Arbeitsregeln, Qualität und Status
 
-Version 1.4 · 22.10.2026. Vor Änderungen diese Datei lesen. Gilt projektweit; bestehende Fehler erlauben keine neuen. Bei Stempelkarten zusätzlich [Lastenheft](src/lib/docs/LASTENHEFT_STEMPELKARTEN.md) (Fachverhalten) und [Pflichtenheft](src/lib/docs/PFLICHTENHEFT_STEMPELKARTEN.md) (Technik) lesen. Deren Muss-Anforderungen bleiben vollständig verbindlich; Widersprüche vor Umsetzung klären und versionieren.
+Version 1.5 · 23.10.2026. Vor Änderungen diese Datei lesen. Gilt projektweit; bestehende Fehler erlauben keine neuen. Bei Stempelkarten zusätzlich [Lastenheft](src/lib/docs/LASTENHEFT_STEMPELKARTEN.md) (Fachverhalten) und [Pflichtenheft](src/lib/docs/PFLICHTENHEFT_STEMPELKARTEN.md) (Technik) lesen. Deren Muss-Anforderungen bleiben vollständig verbindlich; Widersprüche vor Umsetzung klären und versionieren.
 
 ## Verbindliche Regeln
 
@@ -35,7 +35,7 @@ Regelverletzungen sperren die betroffene Übernahme, bis sie behoben oder zuläs
 - **Q-S-02:** DB ist Wahrheit: Stempel, Belohnung, Einlösung, Limits und Outbox atomar/idempotent; gleicher Schlüssel mit anderem Inhalt scheitert. T-10/T-11/T-13 mit mindestens 20 parallelen Wiederholungen und unabhängigen konkurrierenden Vorgängen nachweisen. Übernahme-/Freigabesperre bei Verletzung.
 - **Q-S-03:** Kartenidentität, unveränderliche Sammelbedingungen, Mitarbeiterbestätigung, Recovery, Tarifwechsel und Bestandskartenschutz gemäß Heften; Browserredirect ist kein Zahlungsnachweis. T-/AK-03–14 einschließlich Ablauf, Replay, Webhook-Reihenfolge und Grenzen nachweisen.
 - **Q-S-04:** Bestätigte Buchungen überstehen Provider-/Prozessausfälle. Wiederanlauf verliert keine Arbeit und überschreibt keinen neueren Stand. Walletstatus beschreibt Bereitstellung, keine garantierte Offline-Anzeige. T-05–07/T-15 mit realem iPhone/Android und Absturz-/Wiederanlauftests; Mocks ersetzen keine Geräteabnahme. Fehlender Nachweis sperrt Freigabe.
-- **Q-O-01:** Vor erster Migration Sicherungs-, Restore-, Job- und Widerrufsgrenzen samt Zuständigkeit spezifizieren. Bei Betriebs-/Datenänderungen und Launch getrennte Umgebungen, kontrollierte Migrationen, Sicherung und erprobte Wiederherstellung samt Jobs/wirksamen Widerrufen nachweisen (T-18, Betriebsanleitung, Testprotokoll). Nach echten Buchungen kein pauschaler DB-Reset als Rollback. Fehlender Nachweis sperrt betroffene Betriebs-/Launchfreigabe.
+- **Q-O-01:** Während der Bauphase Migrationen additiv, kontrolliert und reversibel vorbereiten, auf einer getrennten Testdatenbank prüfen und erhaltenswerte Bestandsdaten schützen; Anwendung nur mit ausdrücklicher Auftraggeberfreigabe für den Umfang. Zentrale Sicherung, Zuständigkeit/Aufbewahrung, Wiederherstellungspunkt, separate Restore-Datenbank sowie erprobte Wiederherstellung einschließlich Jobs und wirksamer Widerrufe werden nach dem Bau und zwingend vor Livegang eingerichtet und nachgewiesen (T-18, Betriebsanleitung, Testprotokoll). Nach echten Buchungen kein pauschaler DB-Reset als Rollback. Fehlende Sicherungs-/Restorenachweise sperren die Betriebs-/Launchfreigabe, nicht die autorisierte additive Entwicklungsmigration in der Bauphase.
 - **Q-O-02:** Vor Launch Monitoring/Alarmtests für Job-/Webhook-Rückstände, dauerhafte Fehler, Zahlungen und Zertifikate sowie Anbieter-, Länder- und Betriebsfreigaben gemäß Pflichtenheft nachweisen; keine Secrets in Protokollen.
 - **Q-O-03:** Antwortzeit, Walletverzögerung und Kosten mit Umgebung/Methode im Pilot messen. Feste Ziele erst danach ausdrücklich vereinbaren; keine unbelegten SLA-/Zustellzusagen veröffentlichen.
 
@@ -91,3 +91,15 @@ Ergänzung 22.10.2026: v0.0.1 auf ausdrücklichen Auftrag als lokale Qualitätsv
 Versionen: 1.0 (22.10.2026) Qualitätsregeln eingeführt; 1.1 (22.10.2026) Regeln/Status in AGENTS.md verdichtet. 1.2 (22.10.2026) Dokumentationsprüfweg, zentrale Nachweise und frühe Restore-Planung eingeführt. 1.3 (22.10.2026): Projektunterlagen lokal unter src/lib/docs/ ablegen und von Git ausschließen; AGENTS.md/README.md bleiben im Hauptverzeichnis. Lokale Dokumentversionen/Standhashes weiter pflegen und separat sichern. Fehlende verbindliche Unterlagen vor betroffener Implementierung beschaffen.
 
 Version 1.4 · 22.10.2026: QL-002/003 anhand bestätigter Gewichtung und erfolgreichem Produktionscheck aktualisiert; übrige Freigaben unverändert offen.
+
+Version 1.5 · 23.10.2026: Auf ausdrücklichen Auftrag Q-O-01 präzisiert: zentrale Sicherung und getrennte Restore-Datenbank nach dem Bau, verbindlich vor Livegang. Frühere Hinweise auf Backup-/Restorepflicht vor erster Entwicklungsmigration sind damit für die Bauphase überholt; Testisolation, Bestandsschutz, Migrationsfreigabe und vollständige T-18-/Launchabnahme bleiben verbindlich. Auftraggeber hat additive v0.1.0-Migration auch für die bestehende App-Datenbank autorisiert; Anwendung/Prüfung im Versionsnachweis getrennt belegen.
+
+
+## Ergänzter Qualitätsstatus – 23.10.2026
+
+v0.1.0 lokal implementiert und automatisiert geprüft; ausdrücklich freigegebene additive Migration auf separater Test- und bestehender App-Datenbank angewendet. Keine Bestandszeilen geändert (29 Tabellen mit gleichen Zeilenzahlen/aggregierten Fingerabdrücken). Kein Merge, Deployment oder Produktabschluss. Status/Stand, Review, Browser-/DB-Belege und noch offene lokale Übernahmeentscheidung: [v0.1.0](src/lib/docs/FREIGABE_STEMPELKARTEN_v0.1.0.md). QL-004 für Chat/Ably und vollständige SaaS-Integration bleibt offen; der neue Loyalty-Teilnachweis ist keine pauschale Integrationsabnahme.
+
+| ID | Status, Auswirkung, Verantwortung und Abschlusskriterium |
+| --- | --- |
+| QL-008 | Offen, neu entdeckter Bestandsbefund: fehlende historische App-Migrationen und unvollständiger Replay lokaler Altdateien. Tatsächliches App-Schema entspricht dem vorherigen Code; neue Migration separat geprüft/angewendet, alte Historie nicht umgeschrieben. Reguläres `migrate deploy`/Neuinstallation und vollständige AK-18-/Betriebsabnahme bleiben gesperrt. Umsetzung/Betreiber müssen Originalhistorie bzw. gesondert geprüfte Baselinestrategie samt nicht destruktivem Replaynachweis bereitstellen. Beleg/Umfang im v0.1.0-Nachweis. |
+| QL-009 | Behoben in der lokalen v0.1.0-Vorbereitung: Stempelkarten hatten keinen Einstieg unter Tools/Calem. DE/EN-Kachel und geschützte interne Startseite ergänzt; direkte negative Berechtigungstests und Browser-Klickweg/360px belegt. Umsetzung/Review: Codex; Nachweis im aktuellen v0.1.0-Prüfbericht. Keine Freigabe zusätzlicher Rollen oder vollständiger Kartenerstellung. |

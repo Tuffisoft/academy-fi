@@ -1,5 +1,5 @@
 import { getTranslations } from "next-intl/server";
-import { ArrowRight, Search } from "lucide-react";
+import { ArrowRight, Search, Stamp } from "lucide-react";
 import { Link } from "@/i18n/navigation";
 import { BreadcrumbNav } from "@/components/fi/breadcrumb-nav";
 import { DashboardHeader } from "@/components/fi/header/dashboard-header";
@@ -20,6 +20,20 @@ export async function ToolBuilderPage({
   const t = await getTranslations("tools");
   const builderTitle = t(`${builder}Title`);
   const builderDescription = t(`${builder}Description`);
+  const loyaltyCard = (
+    <Card className="h-full min-h-40 transition-colors group-hover:bg-muted/40">
+      <CardHeader className="gap-4">
+        <span className="flex size-11 items-center justify-center rounded-lg bg-primary/10 text-primary">
+          <Stamp aria-hidden="true" className="size-5" />
+        </span>
+        <div className="grid gap-1">
+          <CardTitle className="text-lg">{t("loyaltyTitle")}</CardTitle>
+          <CardDescription>{t("loyaltyDescription")}</CardDescription>
+          <p className="text-sm text-muted-foreground">{t(user.role === "OWNER" ? "loyaltyStatus" : "loyaltyOwnerOnly")}</p>
+        </div>
+      </CardHeader>
+    </Card>
+  );
 
   return (
     <div className="flex flex-1 flex-col">
@@ -42,6 +56,7 @@ export async function ToolBuilderPage({
           <p className="mt-1 text-muted-foreground">{builderDescription}</p>
         </div>
         {builder === "calem" ? (
+          <div className="grid gap-4 sm:grid-cols-2">
           <Link
             href="/tools/calem/lead-research"
             className="group rounded-xl outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
@@ -68,6 +83,12 @@ export async function ToolBuilderPage({
               </CardHeader>
             </Card>
           </Link>
+          {user.role === "OWNER" ? (
+            <Link href="/tools/calem/stempelkarten/admin" className="group min-w-0 rounded-xl outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2">
+              {loyaltyCard}
+            </Link>
+          ) : loyaltyCard}
+          </div>
         ) : (
           <Card>
             <CardHeader>

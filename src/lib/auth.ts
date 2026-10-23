@@ -3,7 +3,7 @@ import { prismaAdapter } from "better-auth/adapters/prisma";
 import { nextCookies } from "better-auth/next-js";
 import { admin } from "better-auth/plugins/admin";
 import { prisma } from "@/lib/prisma";
-import { ac, owner, intern } from "@/lib/permissions";
+import { ac, owner, intern, customer } from "@/lib/permissions";
 import { sendResetPasswordEmail } from "@/lib/email";
 
 export const auth = betterAuth({
@@ -37,7 +37,7 @@ export const auth = betterAuth({
       defaultRole: "INTERN",
       adminRoles: ["OWNER"],
       ac,
-      roles: { OWNER: owner, INTERN: intern },
+      roles: { OWNER: owner, INTERN: intern, CUSTOMER: customer },
     }),
     // Must be listed last so it can set cookies from server actions
     nextCookies(),

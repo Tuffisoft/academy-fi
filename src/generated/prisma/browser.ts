@@ -123,6 +123,26 @@ export type Account = Prisma.AccountModel
  */
 export type Verification = Prisma.VerificationModel
 /**
+ * Model Organization
+ *
+ */
+export type Organization = Prisma.OrganizationModel
+/**
+ * Model OrganizationMembership
+ *
+ */
+export type OrganizationMembership = Prisma.OrganizationMembershipModel
+/**
+ * Model OrganizationEntitlement
+ *
+ */
+export type OrganizationEntitlement = Prisma.OrganizationEntitlementModel
+/**
+ * Model OrganizationAuditLog
+ *
+ */
+export type OrganizationAuditLog = Prisma.OrganizationAuditLogModel
+/**
  * Model DirectConversation
  * 
  */

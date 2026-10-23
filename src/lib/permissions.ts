@@ -29,3 +29,6 @@ export const intern = ac.newRole({
   user: [],
   session: [],
 });
+
+// Global business identity: tenant roles never grant account administration.
+export const customer = ac.newRole({ user: [], session: [] });

@@ -201,3 +201,13 @@ test("existing internal actions stay usable and subsequent calls honor role revo
   await assert.rejects(saveDiscussionNoteAction("must not write"), /not-found:404/);
   assert.equal(writes, 2);
 });
+
+test("loyalty administration entry rejects direct calls without current platform-owner rights", async () => {
+  const { default: entry } = await import("../src/app/[locale]/tools/calem/stempelkarten/admin/page");
+  for (const role of [null, "CUSTOMER", "INTERN", "banned", "deleted", "OWNER,CUSTOMER"]) {
+    session = role === null ? null : { user: { id: "actor", role: "OWNER", name: "Actor" } };
+    currentUser = role === "deleted" ? null : { id: "actor", role: role === "banned" ? "OWNER" : role ?? "CUSTOMER", banned: role === "banned" };
+    await assert.rejects(entry({ params: Promise.resolve({ locale: "de" }), searchParams: Promise.resolve({ organizationId: "foreign" }) }),
+      role === null ? /redirect:\/sign-in/ : role === "INTERN" ? /redirect:\/dashboard/ : /not-found:404/);
+  }
+});

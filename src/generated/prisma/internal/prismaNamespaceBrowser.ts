@@ -72,6 +72,10 @@ export const ModelName = {
   Session: 'Session',
   Account: 'Account',
   Verification: 'Verification',
+  Organization: 'Organization',
+  OrganizationMembership: 'OrganizationMembership',
+  OrganizationEntitlement: 'OrganizationEntitlement',
+  OrganizationAuditLog: 'OrganizationAuditLog',
   DirectConversation: 'DirectConversation',
   ChatMembership: 'ChatMembership',
   ChatMessage: 'ChatMessage',
@@ -402,6 +406,55 @@ export const VerificationScalarFieldEnum = {
 } as const
 
 export type VerificationScalarFieldEnum = (typeof VerificationScalarFieldEnum)[keyof typeof VerificationScalarFieldEnum]
+
+
+export const OrganizationScalarFieldEnum = {
+  id: 'id',
+  slug: 'slug',
+  name: 'name',
+  contactEmail: 'contactEmail',
+  status: 'status',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type OrganizationScalarFieldEnum = (typeof OrganizationScalarFieldEnum)[keyof typeof OrganizationScalarFieldEnum]
+
+
+export const OrganizationMembershipScalarFieldEnum = {
+  id: 'id',
+  organizationId: 'organizationId',
+  userId: 'userId',
+  role: 'role',
+  status: 'status',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type OrganizationMembershipScalarFieldEnum = (typeof OrganizationMembershipScalarFieldEnum)[keyof typeof OrganizationMembershipScalarFieldEnum]
+
+
+export const OrganizationEntitlementScalarFieldEnum = {
+  organizationId: 'organizationId',
+  plan: 'plan',
+  updatedAt: 'updatedAt'
+} as const
+
+export type OrganizationEntitlementScalarFieldEnum = (typeof OrganizationEntitlementScalarFieldEnum)[keyof typeof OrganizationEntitlementScalarFieldEnum]
+
+
+export const OrganizationAuditLogScalarFieldEnum = {
+  id: 'id',
+  organizationId: 'organizationId',
+  actorId: 'actorId',
+  actorMembershipId: 'actorMembershipId',
+  action: 'action',
+  targetId: 'targetId',
+  reason: 'reason',
+  createdAt: 'createdAt'
+} as const
+
+export type OrganizationAuditLogScalarFieldEnum = (typeof OrganizationAuditLogScalarFieldEnum)[keyof typeof OrganizationAuditLogScalarFieldEnum]
 
 
 export const DirectConversationScalarFieldEnum = {

@@ -29,7 +29,7 @@ function tests(paths, env) {
     throw new Error("Testliste ist leer oder enthält fehlende Dateien; der Lauf gilt nicht als bestanden.");
   }
   // Direct handler tests mock request-context/auth I/O, never the Academy guard.
-  const flags = paths.includes("tests/academy-access.test.ts") ? ["--experimental-test-module-mocks"] : [];
+  const flags = paths.some((path) => ["tests/academy-access.test.ts", "tests/loyalty-foundation.test.ts"].includes(path)) ? ["--experimental-test-module-mocks"] : [];
   return run(["--conditions=react-server", ...flags, "--import", "tsx", "--test", ...paths], { ...env, NODE_ENV: "test" });
 }
 

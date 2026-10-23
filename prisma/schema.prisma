@@ -198,6 +198,8 @@ model User {
   websiteAudits       WebsiteAudit[]
   pdfReportDesign     PdfReportDesign?
   pdfReportTemplates  PdfReportTemplate[]
+  organizationMemberships OrganizationMembership[]
+  organizationAuditEntries OrganizationAuditLog[]
 
   @@map("user")
 }
@@ -353,6 +355,79 @@ model Verification {
 enum Role {
   OWNER
   INTERN
+  CUSTOMER
+}
+
+enum OrganizationStatus {
+  PENDING
+  ACTIVE
+  SUSPENDED
+  DELETING
+}
+
+enum OrganizationRole {
+  OWNER
+  ADMIN
+  STAFF
+}
+
+enum OrganizationMembershipStatus {
+  ACTIVE
+  REVOKED
+}
+
+model Organization {
+  id           String @id @default(cuid())
+  slug         String @unique @db.VarChar(100)
+  name         String @db.VarChar(160)
+  contactEmail String? @db.VarChar(254)
+  status       OrganizationStatus @default(PENDING)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  memberships  OrganizationMembership[]
+  entitlement  OrganizationEntitlement?
+  auditEntries OrganizationAuditLog[]
+}
+
+model OrganizationMembership {
+  id             String @id @default(cuid())
+  organizationId String
+  userId         String
+  role           OrganizationRole
+  status         OrganizationMembershipStatus @default(ACTIVE)
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Restrict)
+  user           User @relation(fields: [userId], references: [id], onDelete: Restrict)
+  auditEntries   OrganizationAuditLog[] @relation("AuditMembership")
+
+  @@unique([organizationId, userId])
+  @@unique([organizationId, id, userId])
+  @@index([userId, status])
+}
+
+// This package grants only FREE. Paid entitlements require the later billing package.
+model OrganizationEntitlement {
+  organizationId String @id
+  plan           String @default("FREE") @db.VarChar(20)
+  updatedAt      DateTime @updatedAt
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Restrict)
+}
+
+model OrganizationAuditLog {
+  id                 String @id @default(cuid())
+  organizationId     String
+  actorId            String
+  actorMembershipId  String?
+  action             String @db.VarChar(80)
+  targetId           String @db.VarChar(160)
+  reason             String @db.VarChar(500)
+  createdAt          DateTime @default(now())
+  organization       Organization @relation(fields: [organizationId], references: [id], onDelete: Restrict)
+  actor              User @relation(fields: [actorId], references: [id], onDelete: Restrict)
+  actorMembership    OrganizationMembership? @relation("AuditMembership", fields: [organizationId, actorMembershipId, actorId], references: [organizationId, id, userId], onDelete: Restrict, map: "OrganizationAuditLog_actor_membership_fkey")
+
+  @@index([organizationId, createdAt])
 }
 
 enum FriendshipStatus {

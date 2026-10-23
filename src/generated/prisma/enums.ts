@@ -24,10 +24,38 @@ export type LeadSearchStatus = (typeof LeadSearchStatus)[keyof typeof LeadSearch
 
 export const Role = {
   OWNER: 'OWNER',
-  INTERN: 'INTERN'
+  INTERN: 'INTERN',
+  CUSTOMER: 'CUSTOMER'
 } as const
 
 export type Role = (typeof Role)[keyof typeof Role]
+
+
+export const OrganizationStatus = {
+  PENDING: 'PENDING',
+  ACTIVE: 'ACTIVE',
+  SUSPENDED: 'SUSPENDED',
+  DELETING: 'DELETING'
+} as const
+
+export type OrganizationStatus = (typeof OrganizationStatus)[keyof typeof OrganizationStatus]
+
+
+export const OrganizationRole = {
+  OWNER: 'OWNER',
+  ADMIN: 'ADMIN',
+  STAFF: 'STAFF'
+} as const
+
+export type OrganizationRole = (typeof OrganizationRole)[keyof typeof OrganizationRole]
+
+
+export const OrganizationMembershipStatus = {
+  ACTIVE: 'ACTIVE',
+  REVOKED: 'REVOKED'
+} as const
+
+export type OrganizationMembershipStatus = (typeof OrganizationMembershipStatus)[keyof typeof OrganizationMembershipStatus]
 
 
 export const FriendshipStatus = {

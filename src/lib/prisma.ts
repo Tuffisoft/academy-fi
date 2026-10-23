@@ -5,6 +5,10 @@ const globalForPrisma = globalThis as unknown as { prisma?: PrismaClient };
 
 function supportsCurrentSchema(client: PrismaClient | undefined): client is PrismaClient {
   return Boolean(
+    typeof client?.organization?.findUnique === "function" &&
+    typeof client?.organizationMembership?.findUnique === "function" &&
+    typeof client?.organizationEntitlement?.findUnique === "function" &&
+    typeof client?.organizationAuditLog?.create === "function" &&
     typeof client?.leadSearch?.findMany === "function" &&
     client?.leadSearch?.fields?.googlePlaceIds &&
     client?.leadSearch?.fields?.runId &&
