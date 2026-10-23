@@ -1267,5 +1267,33 @@
     "greeting": "Hallo {name},",
     "intro": "Für dich wurde ein Konto bei Academy Fi erstellt. Lege dein Passwort fest, um loszulegen:",
     "expiry": "Dieser Link läuft in 1 Stunde ab."
+  },
+  "customerAccount": {
+    "loginNote": "Melde dich mit deinem bestehenden Konto an. Neue Geschäftskonten werden nach Bestätigung der E-Mail-Adresse eingerichtet.",
+    "title": "Dein StempelFi-Geschäftskonto",
+    "disabled": "Der Geschäftskundenzugang ist noch nicht freigeschaltet.",
+    "register": "Geschäftskonto registrieren",
+    "name": "Dein Name",
+    "email": "E-Mail-Adresse",
+    "password": "Passwort (12–128 Zeichen)",
+    "submit": "Fortfahren",
+    "pending": "Wird verarbeitet …",
+    "login": "Bei StempelFi anmelden",
+    "resend": "Bestätigungslink erneut anfordern",
+    "requestReset": "Passwort vergessen",
+    "verify": "E-Mail-Adresse bestätigen",
+    "reset": "Neues Passwort speichern",
+    "CHECK_EMAIL": "Wenn die Adresse für diesen Vorgang berechtigt ist, erhältst du eine E-Mail. Prüfe auch den Spamordner.",
+    "VERIFIED": "Deine E-Mail-Adresse ist bestätigt. Melde dich an, um dein Unternehmen einzurichten.",
+    "RESET": "Dein Passwort wurde gespeichert. Melde dich erneut an.",
+    "INVALID_INPUT": "Prüfe deine Angaben. Das Passwort muss 12 bis 128 Zeichen enthalten.",
+    "INVALID_TOKEN": "Der Link ist ungültig, abgelaufen oder bereits verwendet. Fordere einen neuen Link an.",
+    "LIMIT_REACHED": "Zu viele Anfragen. Bitte versuche es später erneut.",
+    "CONFLICT": "Diese Vorgangskennung wurde mit anderen Angaben verwendet. Beginne die Registrierung erneut.",
+    "FORBIDDEN": "Dieser Vorgang ist für dein Konto nicht verfügbar.",
+    "DISABLED": "Der Geschäftskundenzugang ist noch nicht freigeschaltet.",
+    "UNAVAILABLE": "Der Vorgang konnte nicht bestätigt werden. Behalte deine Angaben bei und versuche es erneut.",
+    "setup": "Unternehmen einrichten",
+    "setupNote": "Dein bestätigtes Geschäftskonto wird Inhaber eines kostenlosen Free-Unternehmens. Erst nach bestätigter Speicherung öffnet sich die Übersicht."
   }
 }

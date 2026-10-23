@@ -5,6 +5,9 @@ import { requirePortalActor } from "@/lib/loyalty/portal-session";
 import { getPortalOrganizations, OrganizationAccessError } from "@/lib/loyalty/organizations";
 import { ProductHeader } from "@/components/loyalty/stempelfi-design";
 import { OrganizationForm } from "@/components/loyalty/organization-form";
+import { getCustomerSetup } from "@/lib/loyalty/customer-account";
+import { getLocale } from "next-intl/server";
+import { redirect } from "@/i18n/navigation";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardHeader, CardTitle, CardContent, CardDescription } from "@/components/ui/card";
@@ -14,6 +17,8 @@ export const metadata = { title: "StempelFi", referrer: "no-referrer", robots: {
 
 export default async function OrganizationsPage({ searchParams }: { searchParams: Promise<{ after?: string | string[] }> }) {
   const actorId = await requirePortalActor();
+  const setup = await getCustomerSetup(actorId);
+  if (setup) redirect({ href: setup.verified ? "/tools/calem/stempelkarten/app/setup" : "/tools/calem/stempelkarten/account?mode=resend", locale: await getLocale() });
   const t = await getTranslations("stempelfi");
   const { after } = await searchParams;
   if (after !== undefined && (typeof after !== "string" || !/^[a-zA-Z0-9_-]{1,160}$/.test(after))) notFound();

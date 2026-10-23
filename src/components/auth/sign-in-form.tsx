@@ -29,7 +29,7 @@ export function SignInForm({ destination }: { destination?: "stempelfi" }) {
     try {
       const { error: signInError } = await authClient.signIn.email({ email, password });
       if (signInError) { setError(t("genericError")); return; }
-      router.push(destination === "stempelfi" ? "/tools/calem/stempelkarten/app" : "/dashboard");
+      router.push(destination === "stempelfi" ? "/auth/continue?destination=stempelfi" : "/auth/continue");
       router.refresh();
     } catch {
       setError(t("genericError"));

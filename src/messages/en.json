@@ -1267,5 +1267,33 @@
     "greeting": "Hi {name},",
     "intro": "An account has been created for you on Academy Fi. Set your password to get started:",
     "expiry": "This link expires in 1 hour."
+  },
+  "customerAccount": {
+    "loginNote": "Sign in with your existing account. New business accounts are set up after email verification.",
+    "title": "Your StempelFi business account",
+    "disabled": "Business registration is not enabled yet.",
+    "register": "Register a business account",
+    "name": "Your name",
+    "email": "Email address",
+    "password": "Password (12–128 characters)",
+    "submit": "Continue",
+    "pending": "Processing …",
+    "login": "Sign in to StempelFi",
+    "resend": "Request another verification link",
+    "requestReset": "Forgot password",
+    "verify": "Verify email address",
+    "reset": "Save new password",
+    "CHECK_EMAIL": "If this address is eligible for this operation, you will receive an email. Check your spam folder too.",
+    "VERIFIED": "Your email address is verified. Sign in to set up your business.",
+    "RESET": "Your password was saved. Sign in again.",
+    "INVALID_INPUT": "Check your details. The password must contain 12 to 128 characters.",
+    "INVALID_TOKEN": "This link is invalid, expired or already used. Request a new link.",
+    "LIMIT_REACHED": "Too many requests. Please try again later.",
+    "CONFLICT": "This operation key was used with different details. Start registration again.",
+    "FORBIDDEN": "This operation is unavailable for your account.",
+    "DISABLED": "Business registration is not enabled yet.",
+    "UNAVAILABLE": "The operation could not be confirmed. Keep your details and try again.",
+    "setup": "Set up your business",
+    "setupNote": "Your verified business account becomes the owner of a free business. The overview opens only after confirmed storage."
   }
 }

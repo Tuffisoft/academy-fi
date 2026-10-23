@@ -28,6 +28,7 @@ export function isolatedEnvironment(source = process.env, configurations = local
     "RESEND_FROM_EMAIL", "UPLOADTHING_TOKEN", "UPLOADTHING_SECRET",
     "GOOGLE_PLACES_API_KEY", "PAGESPEED_API_KEY", "OPENAI_API_KEY",
     "CHAT_TEST_DATABASE_URL", "LOYALTY_TEST_DATABASE_URL", "ACADEMYFI_DATABASE_TEST", "ACADEMYFI_REALTIME_TEST",
+    "STEMPELFI_REGISTRATION_ENABLED",
   ]) env[name] = "";
   // The sandbox's Windows temporary directory has ACLs rejected by native SWC.
   // Keep its materialization cache inside the already ignored workspace cache.

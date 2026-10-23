@@ -25,7 +25,7 @@ function Brand() {
   return <span className="inline-flex items-center gap-2 text-xl font-semibold tracking-tight"><Stamp aria-hidden="true" className="size-6 text-primary" />StempelFi</span>;
 }
 
-export function ProductHeader({ portal = false }: { portal?: boolean }) {
+export function ProductHeader({ portal = false, languageHref }: { portal?: boolean; languageHref?: string }) {
   const t = useTranslations("stempelfi");
   const locale = useLocale();
   const pathname = usePathname();
@@ -35,7 +35,7 @@ export function ProductHeader({ portal = false }: { portal?: boolean }) {
     <nav aria-label={t("navigation")} className="flex flex-wrap items-center gap-2">
       {!portal && <Button variant="ghost" nativeButton={false} render={<a href="#pricing" />} className="min-h-11">{t("pricing")}</Button>}
       <Button variant="outline" nativeButton={false} render={<Link href={portal ? base : `${base}/app`} />} className="min-h-11">{t(portal ? "website" : "businessLogin")}</Button>
-      <Button variant="ghost" nativeButton={false} render={<Link href={pathname} locale={locale === "de" ? "en" : "de"} />} className="min-h-11" aria-label={t("language")}>{locale === "de" ? "EN" : "DE"}</Button>
+      <Button variant="ghost" nativeButton={false} render={<Link href={languageHref ?? pathname} locale={locale === "de" ? "en" : "de"} />} className="min-h-11" aria-label={t("language")}>{locale === "de" ? "EN" : "DE"}</Button>
       <Button variant="ghost" size="icon" className="size-11" onClick={() => setTheme(resolvedTheme === "dark" ? "light" : "dark")} aria-label={t("theme")}>
         <Sun className="size-4 dark:hidden" aria-hidden="true" /><Moon className="hidden size-4 dark:block" aria-hidden="true" />
       </Button>

@@ -11,7 +11,7 @@ import { LanguageToggle } from "@/components/fi/elements/LanguageToggle";
 export function Footer() {
   const pathname = usePathname();
   const productPath = "/tools/calem/stempelkarten";
-  if (pathname === productPath || pathname === `${productPath}/preview` || pathname === `${productPath}/app` || pathname.startsWith(`${productPath}/app/`)) return null;
+  if (pathname === productPath || pathname === `${productPath}/account` || pathname === `${productPath}/preview` || pathname === `${productPath}/app` || pathname.startsWith(`${productPath}/app/`)) return null;
   return <AcademyFooter />;
 }
 

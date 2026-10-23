@@ -69,7 +69,7 @@ Regelverletzungen sperren die betroffene Übernahme, bis sie behoben oder zuläs
 Echte Integrationstests separat:
 
 - DB: entbehrliche separate, mit bestehenden Migrationen vorbereitete Neon/PostgreSQL-Testdatenbank; nur im Testprozess ACADEMYFI_DATABASE_TEST=1 und CHAT_TEST_DATABASE_URL setzen, dann `npm run test:integration`. Keine bekannte normale App-DB; keine automatische Migration/Seeds gegen unbekannte DBs.
-- Stempelkarten separat: LOYALTY_TEST_DATABASE_URL und ACADEMYFI_DATABASE_TEST=1 nur im Testprozess, dann `npm run test:loyalty:integration -- tests/loyalty/<name>.integration.test.ts`. Gleiche DB-Sicherheitsregeln; kein Fallback auf Chat-/App-DB. Noch keine Loyalty-DB-Fachtests vorhanden.
+- Stempelkarten separat: LOYALTY_TEST_DATABASE_URL und ACADEMYFI_DATABASE_TEST=1 nur im Testprozess, dann `npm run test:loyalty:integration -- tests/loyalty/<name>.integration.test.ts`. Gleiche DB-Sicherheitsregeln; kein Fallback auf Chat-/App-DB. Fachtests liegen in tests/loyalty; die Dateien pro Lauf ausdrücklich angeben.
 - Ably: separate Test-App, ACADEMYFI_REALTIME_TEST=1 und ABLY_TEST_API_KEY; `npm run test:realtime`. Keine normalen App-Zugänge. Ausführender bestätigt die Testzuordnung; URL-/Schlüsselvergleiche allein beweisen sie nicht.
 
 CI führt vier unabhängige Jobs für PRs und Pushes auf master ohne Produktionssecrets aus. Im GitHub-Ruleset müssen Quality (lint), Quality (typecheck), Quality (test) und Quality (check:build) verpflichtend sein; Workflow allein sperrt keinen Merge. Integration, Geräte- und Betriebsnachweise bleiben zusätzlich nötig. SaaS Release 1.0 braucht AK-01–18 und sämtliche externen Voraussetzungen. Freigaben mit eindeutiger Standkennung über die Checkliste dokumentieren.
@@ -80,7 +80,7 @@ Prüfläufe einmal im zugehörigen Versions-/Änderungsnachweis führen: geprüf
 
 ## Aktueller Status und Blocker
 
-Stand 23.10.2026: v0.0.1/v0.0.2/v0.1.0 lokal abgeschlossen; v0.1.0 für 4e3df2d plus Patch c4be0966 ausdrücklich lokal übernommen. Additive v0.1.0-Migration auf separater Test- und bestehender App-DB ausdrücklich autorisiert und angewendet; 29 Bestandstabellen unverändert. Keine pauschale Freigabe weiterer Migrationen. Keine Produkt-/Betriebsfreigabe, kein Merge oder Deployment durch den Agenten. Maßgeblich: [Statusregister](src/lib/docs/ENTWICKLUNGSANLEITUNG_STEMPELKARTEN.md), [v0.1.0-Nachweis](src/lib/docs/FREIGABE_STEMPELKARTEN_v0.1.0.md).
+Stand 23.10.2026: v0.0.1/v0.0.2/v0.1.0/v0.2.0 lokal abgeschlossen; v0.1.0 für 4e3df2d plus Patch c4be0966 ausdrücklich lokal übernommen. v0.2.0 für Basis fcf7e23 plus Softwarestand f3744911 ausdrücklich lokal übernommen: [Nachweis](src/lib/docs/ENTWICKLUNGSANLEITUNG_STEMPELKARTEN.md#nachweis-v020). Additive v0.1.0-Migration auf separater Test- und bestehender App-DB ausdrücklich autorisiert und angewendet; 29 Bestandstabellen unverändert. Keine pauschale Freigabe weiterer Migrationen. Keine Produkt-/Betriebsfreigabe, kein Merge oder Deployment durch den Agenten. Maßgeblich: [Statusregister](src/lib/docs/ENTWICKLUNGSANLEITUNG_STEMPELKARTEN.md), [v0.1.0-Nachweis](src/lib/docs/FREIGABE_STEMPELKARTEN_v0.1.0.md).
 
 | ID | Status / Abschlusskriterium |
 | --- | --- |

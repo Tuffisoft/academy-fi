@@ -40,13 +40,15 @@ test("Loyalty configuration requires its own URL and rejects ordinary databases"
 });
 
 test("unit/build checks replace local and inherited provider credentials without changing the parent", () => {
-  const source = { PATH: "/tools", DATABASE_URL: "postgresql://app:secret@db.example/app", ABLY_API_KEY: "app.key:secret", OPENAI_API_KEY: "live-key" };
+  const source = { PATH: "/tools", DATABASE_URL: "postgresql://app:secret@db.example/app", ABLY_API_KEY: "app.key:secret", OPENAI_API_KEY: "live-key", STEMPELFI_REGISTRATION_ENABLED: "1" };
   const env = isolatedEnvironment(source, [{ CUSTOM_PROVIDER_KEY: "live-secret", RESEND_KEY: "mail-secret" }]);
   assert.equal(env.PATH, "/tools");
   assert.equal(env.CUSTOM_PROVIDER_KEY, "");
   assert.equal(env.OPENAI_API_KEY, "");
   assert.equal(env.ABLY_API_KEY, "");
   assert.equal(env.RESEND_KEY, "");
+  assert.equal(env.STEMPELFI_REGISTRATION_ENABLED, "");
+  assert.equal(source.STEMPELFI_REGISTRATION_ENABLED, "1");
   assert.equal(new URL(env.DATABASE_URL).hostname, "127.0.0.1");
   assert.equal(source.OPENAI_API_KEY, "live-key");
 });

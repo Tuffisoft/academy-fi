@@ -34,7 +34,7 @@ export const auth = betterAuth({
   plugins: [
     // Supplies User.role and auth.api.createUser, the provisioning path since sign-up is disabled
     admin({
-      defaultRole: "INTERN",
+      defaultRole: "CUSTOMER",
       adminRoles: ["OWNER"],
       ac,
       roles: { OWNER: owner, INTERN: intern, CUSTOMER: customer },
