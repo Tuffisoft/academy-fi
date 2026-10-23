@@ -1,6 +1,16 @@
-# AcademyFi: Arbeitsregeln, Qualität und Status
+# AcademyFi: Arbeitsregeln
 
-Version 1.5 · 23.10.2026. Vor Änderungen diese Datei lesen. Gilt projektweit; bestehende Fehler erlauben keine neuen. Bei Stempelkarten zusätzlich [Lastenheft](src/lib/docs/LASTENHEFT_STEMPELKARTEN.md) (Fachverhalten) und [Pflichtenheft](src/lib/docs/PFLICHTENHEFT_STEMPELKARTEN.md) (Technik) lesen. Deren Muss-Anforderungen bleiben vollständig verbindlich; Widersprüche vor Umsetzung klären und versionieren.
+Version 1.6 · 23.10.2026. Gilt projektweit. Bestehende Fehler erlauben keine neuen.
+
+## Kontext und Dokumentationspflege
+
+- Diese Datei ist der verpflichtende Einstieg. Danach nur den für den Auftrag nötigen Kontext laden: erst Dateipfade/Überschriften mit rg suchen, dann betroffene Abschnitte und direkte Abhängigkeiten lesen. Keine pauschalen Volltextlesungen von README, Dokumentationsordner, Archiv, Logs oder sämtlichen Quell-/Testdateien.
+- Projektwegweiser: Seiten/APIs in src/app, UI in src/components, Actions/Daten in src/lib/actions und src/lib/data, Stempelkartenservices in src/lib/loyalty, Sprachen in src/messages und src/i18n, Schema/Migrationen in prisma, Prüfprogramme in scripts/check.mjs und package.json, Tests in tests.
+- Bei Stempelkarten: aus [Entwicklungsanleitung](src/lib/docs/ENTWICKLUNGSANLEITUNG_STEMPELKARTEN.md) Abschnitt A, betroffene Registerzeile und Paketblock lesen. In [Lastenheft](src/lib/docs/LASTENHEFT_STEMPELKARTEN.md) und [Pflichtenheft](src/lib/docs/PFLICHTENHEFT_STEMPELKARTEN.md) gemeinsame Produktentscheidungen/Integritätsregeln sowie betroffene LF-/T-/AK-Abschnitte einschließlich Querverweisen lesen. Muss-Anforderungen bleiben vollständig verbindlich; bei unklaren Abhängigkeiten gezielt erweitern. Widersprüche vor Umsetzung klären und versionieren.
+- Zusatzkontext nur bei Betroffenheit: [Zugang](src/lib/docs/ZUGANG_STEMPELFI.md) für Anmeldung/Rollen/Unternehmensanlage; [Design](src/lib/docs/DESIGN_STEMPELFI_SHADCN.md) für StempelFi-Oberflächen; [aktueller Basisnachweis](src/lib/docs/FREIGABE_STEMPELKARTEN_v0.1.0.md) für Mandantenbasis/Migration. Historische Nachweise/Archiv nur bei konkreter historischer Frage oder benötigtem Beleg.
+- **Keine neuen Dateien in docs-Verzeichnissen anlegen**, insbesondere nicht in src/lib/docs/ oder docs/: keine neuen Versionsnachweise, Pläne, Logs, Screenshots, Dumps, Skripte oder Unterordner als Umgehung. Vorhandene Dokumente gezielt aktualisieren; bestehende Dateien weder löschen noch umbenennen, um sie zweckfremd wiederzuverwenden.
+- Versionsnachweise künftig als eindeutig benannte Abschnitte im bestehenden Entwicklungsdokument führen; bestehende paketbezogene Nachweise dort weiterpflegen, wo sie bereits liegen. Checklisteninhalt aus der vorhandenen Vorlage übernehmen, ohne eine neue Datei zu erstellen. Technische Belege bei Bedarf außerhalb von docs in output/ ablegen und verlinken; keine Geheimnisse oder sensiblen Rohdaten. Keine Ersatz-Dokumentationssammlung außerhalb von docs anlegen.
+- Eine Aussage/ein Prüflauf hat einen maßgeblichen Ablageort; andere Stellen verlinken ihn. Übergaben knapp halten: Auftrag/Paket, Stand, betroffene Pfade/Kennungen, Ergebnis, offene Blocker und nächster Schritt. Keine kopierten Dokumentvolltexte oder wiederholten Ergebnislisten.
 
 ## Verbindliche Regeln
 
@@ -66,40 +76,22 @@ CI führt vier unabhängige Jobs für PRs und Pushes auf master ohne Produktions
 
 Prüfläufe einmal im zugehörigen Versions-/Änderungsnachweis führen: geprüfter Softwarestand (Commit plus Patch-/Dateihash bei Codeabweichung), Dokumentstand, Datum/Umgebung, Umfang und Ergebnis. Andere Dokumente verlinken diesen Beleg und zentrale QL-Einträge statt Ergebnislisten zu kopieren. Nach relevanten Folgeänderungen betroffene Nachweise erneuern; alte Läufe bleiben historisch. Ein Quellenlink allein beweist keine Prüfung des neuen Stands.
 
-## Qualitätsstatus – 22.10.2026
+## Aktueller Status und Blocker
 
-Keine Produktfreigabe, keine Ausnahme erteilt. SaaS in diesem Qualitätspaket nicht implementiert; keine Übernahme, kein Merge, Deployment oder produktive Migration durch den Agenten.
+Stand 23.10.2026: v0.0.1/v0.0.2 lokal abgeschlossen; v0.1.0 lokal implementiert und automatisiert geprüft, lokale Übernahmeentscheidung offen. Additive v0.1.0-Migration auf separater Test- und bestehender App-DB ausdrücklich autorisiert und angewendet; 29 Bestandstabellen unverändert. Keine pauschale Freigabe weiterer Migrationen. Keine Produkt-/Betriebsfreigabe, kein Merge oder Deployment durch den Agenten. Maßgeblich: [Statusregister](src/lib/docs/ENTWICKLUNGSANLEITUNG_STEMPELKARTEN.md), [v0.1.0-Nachweis](src/lib/docs/FREIGABE_STEMPELKARTEN_v0.1.0.md).
 
-Prüfnachweise: [aktuelle Build-/Bewertungskorrektur](src/lib/docs/FREIGABE_BUILD_BEWERTUNG.md); [Stempelkarten-Grundlage](src/lib/docs/FREIGABE_STEMPELKARTEN_v0.0.1.md); [historische Dokumentablage](src/lib/docs/FREIGABE_ANLEITUNG_STEMPELKARTEN.md). Offene Befunde unten bleiben verbindlich; keine echten DB-/Ably- oder entfernten CI-Nachweise.
-
-| ID | Status, Verantwortung und Abschlusskriterium |
+| ID | Status / Abschlusskriterium |
 | --- | --- |
-| QL-001 | Behoben (Umsetzung): 17 Testdateien aus 83552ef^ wiederhergestellt; 14 Unit-Dateien unverändert, 3 Integrationstests abgesichert, 4 Isolationstests ergänzt. |
-| QL-002 | Behoben: Auftraggeber bestätigt am 22.10.2026 die bestehenden Gewichte 30/10/10/20/30. README/Tests daran ausgerichtet, Fachlogik und DE/EN unverändert. Alle 92 Tests bestanden; Nachweis siehe Build-/Bewertungskorrektur. |
-| QL-003 | Produktionsbuild behoben: gemeinsamer Build-/Deployment-Befehl nutzt Webpack; alle 42 statischen Seiten erfolgreich. Finaler Sammellauf außerhalb Windows-Sandbox bestanden. Turbopack-Abbruch und separater Sandbox-EPERM bleiben als Diagnose dokumentiert; kein erfolgreicher Sandbox-Build behauptet. |
-| QL-004 | Offen; betroffene Integrationsabnahme blockiert. Betreiber stellt getrennte vorbereitete DB/Ably-Test-App, Umsetzung protokolliert echte erfolgreiche Läufe. Fehlende Konfiguration wird verweigert; keine normalen Zugänge verwendet. |
-| QL-005 | Teilweise behoben in v0.0.2: explizite Academy-/Plattform-Owner-Guards mit aktuellem DB-Rollen-/Sperrstatus für Seiten, Actions, Datenleser, fünf fachliche APIs und Uploads vorbereitet; direkte negative Tests vorhanden. Registrierung bleibt deaktiviert, Standardrolle INTERN bis zum späteren Geschäftskontenpaket. Vollständige Geschäfts-/Mandantenabgrenzung und T-01/T-02 bleiben offen; keine öffentliche Registrierungsfreigabe. Stand, Review und Übernahmegrenzen: [v0.0.2](src/lib/docs/FREIGABE_STEMPELKARTEN_v0.0.2.md). |
-| QL-006 | Teilweise vorbereitet: .nvmrc mit Node 24 ergänzt und gegen package.json geprüft; Repository-Admin muss entfernten CI-Lauf und verpflichtende Checks/Reviews/Freigaben belegen. Abschluss erst mit diesen Nachweisen; lokale Datei ist keine Merge-Sperre. |
-| QL-007 | Offen (Umsetzung/Betreiber): vollständige SaaS-Freigabe gesperrt bis AK-01–18, Geräte-, Betriebs-, Anbieterfreigaben und ausgefüllte Checkliste vorliegen. |
+| QL-001 | Behoben: Testdateien wiederhergestellt und Isolation ergänzt. |
+| QL-002 | Behoben: bestätigte Gewichte 30/10/10/20/30; Fachlogik/DE/EN unverändert. |
+| QL-003 | Behoben: Webpack-Produktionscheck erfolgreich; historische Sandbox-/Turbopackfehler nicht als erfolgreich ausweisen. |
+| QL-004 | Offen (Umsetzung/Betreiber): echte getrennte Chat-/Ably- und vollständige SaaS-Integrationsnachweise fehlen; Loyalty-Teilnachweise ersetzen sie nicht. |
+| QL-005 | Teilweise behoben (Umsetzung): aktuelle DB-Guards vorbereitet; vollständige Mandanten-/Geschäftsrollenabgrenzung und T-01/T-02 offen. Registrierung deaktiviert; keine öffentliche Registrierungsfreigabe. |
+| QL-006 | Teilweise vorbereitet (Repository-Admin): Node 24 lokal vorgegeben; entfernte CI-Läufe und verpflichtende Checks/Reviews/Freigaben nachweisen. |
+| QL-007 | Offen (Umsetzung/Betreiber): vollständige SaaS-Freigabe erst mit AK-01–18, Geräte-/Betriebs-/Anbieterbelegen und ausgefüllter Checkliste. |
+| QL-008 | Offen (Umsetzung/Betreiber): historische App-Migrationen fehlen; migrate deploy/Neuinstallation und vollständige AK-18-/Betriebsabnahme gesperrt. Originalhistorie oder separat geprüfte Baselinestrategie samt nicht destruktivem Replay belegen; Altgeschichte nicht umschreiben. |
+| QL-009 | Behoben: DE/EN-Einstieg Tools/Calem, geschützte interne Startseite und negative Tests/360px-Klickweg belegt; keine zusätzliche Rollen-/Kartenerstellungsfreigabe. |
 
-Reviewhistorie: Umsetzender Agent prüfte Qualitätspaket gegenüber 83552ef (Prüfscripte, CI, npm/Node, Tests, Isolation, Dokumentation); keine unabhängige menschliche Abnahme. Behoben: DB-Import erst nach Testkonfigurationsprüfung, separate Ably-App statt Skip, isolierte Providerwerte, Routentypgenerierung, Fortsetzung aller Checks. Älterer Hashnachweis ist wegen fehlender .nvmrc widersprüchlich und gilt nicht für diesen Stand.
+Belege/Verantwortung im jeweiligen [Statusregister](src/lib/docs/ENTWICKLUNGSANLEITUNG_STEMPELKARTEN.md), [Build-/Bewertungsnachweis](src/lib/docs/FREIGABE_BUILD_BEWERTUNG.md) und [v0.1.0-Nachweis](src/lib/docs/FREIGABE_STEMPELKARTEN_v0.1.0.md). Frühere Status-/Versionsangaben stehen unverändert im [Archiv](src/lib/docs/ARCHIV_STEMPELKARTEN.md#historischer-agents-stand-15--23102026); sie sind keine zusätzlichen Startlektüren.
 
-Aktuelles Review: [Build-/Bewertungsnachweis](src/lib/docs/FREIGABE_BUILD_BEWERTUNG.md). Frühere Prozessänderungen: [Änderungsnachweis](src/lib/docs/FREIGABE_ANLEITUNG_STEMPELKARTEN.md).
-
-Ergänzung 22.10.2026: v0.0.1 auf ausdrücklichen Auftrag als lokale Qualitätsvorbereitung abgeschlossen, mit bestätigter separater Neon-Testdatenbank, entfallener .env.example und zurückgestellter Backupeinrichtung. Keine Betriebs-/Produktfreigabe; Q-O-01 vor betroffener Migration bleibt verbindlich. v0.0.2 auf ausdrückliche Auftraggeberfreigabe für e904c9b als lokales Entwicklungspaket abgeschlossen und archiviert; keine Merge-/Produktionsfreigabe oder produktive Anwendung durch den Agenten. [Statusregister](src/lib/docs/ENTWICKLUNGSANLEITUNG_STEMPELKARTEN.md), [Review v0.0.2](src/lib/docs/FREIGABE_STEMPELKARTEN_v0.0.2.md).
-
-Versionen: 1.0 (22.10.2026) Qualitätsregeln eingeführt; 1.1 (22.10.2026) Regeln/Status in AGENTS.md verdichtet. 1.2 (22.10.2026) Dokumentationsprüfweg, zentrale Nachweise und frühe Restore-Planung eingeführt. 1.3 (22.10.2026): Projektunterlagen lokal unter src/lib/docs/ ablegen und von Git ausschließen; AGENTS.md/README.md bleiben im Hauptverzeichnis. Lokale Dokumentversionen/Standhashes weiter pflegen und separat sichern. Fehlende verbindliche Unterlagen vor betroffener Implementierung beschaffen.
-
-Version 1.4 · 22.10.2026: QL-002/003 anhand bestätigter Gewichtung und erfolgreichem Produktionscheck aktualisiert; übrige Freigaben unverändert offen.
-
-Version 1.5 · 23.10.2026: Auf ausdrücklichen Auftrag Q-O-01 präzisiert: zentrale Sicherung und getrennte Restore-Datenbank nach dem Bau, verbindlich vor Livegang. Frühere Hinweise auf Backup-/Restorepflicht vor erster Entwicklungsmigration sind damit für die Bauphase überholt; Testisolation, Bestandsschutz, Migrationsfreigabe und vollständige T-18-/Launchabnahme bleiben verbindlich. Auftraggeber hat additive v0.1.0-Migration auch für die bestehende App-Datenbank autorisiert; Anwendung/Prüfung im Versionsnachweis getrennt belegen.
-
-
-## Ergänzter Qualitätsstatus – 23.10.2026
-
-v0.1.0 lokal implementiert und automatisiert geprüft; ausdrücklich freigegebene additive Migration auf separater Test- und bestehender App-Datenbank angewendet. Keine Bestandszeilen geändert (29 Tabellen mit gleichen Zeilenzahlen/aggregierten Fingerabdrücken). Kein Merge, Deployment oder Produktabschluss. Status/Stand, Review, Browser-/DB-Belege und noch offene lokale Übernahmeentscheidung: [v0.1.0](src/lib/docs/FREIGABE_STEMPELKARTEN_v0.1.0.md). QL-004 für Chat/Ably und vollständige SaaS-Integration bleibt offen; der neue Loyalty-Teilnachweis ist keine pauschale Integrationsabnahme.
-
-| ID | Status, Auswirkung, Verantwortung und Abschlusskriterium |
-| --- | --- |
-| QL-008 | Offen, neu entdeckter Bestandsbefund: fehlende historische App-Migrationen und unvollständiger Replay lokaler Altdateien. Tatsächliches App-Schema entspricht dem vorherigen Code; neue Migration separat geprüft/angewendet, alte Historie nicht umgeschrieben. Reguläres `migrate deploy`/Neuinstallation und vollständige AK-18-/Betriebsabnahme bleiben gesperrt. Umsetzung/Betreiber müssen Originalhistorie bzw. gesondert geprüfte Baselinestrategie samt nicht destruktivem Replaynachweis bereitstellen. Beleg/Umfang im v0.1.0-Nachweis. |
-| QL-009 | Behoben in der lokalen v0.1.0-Vorbereitung: Stempelkarten hatten keinen Einstieg unter Tools/Calem. DE/EN-Kachel und geschützte interne Startseite ergänzt; direkte negative Berechtigungstests und Browser-Klickweg/360px belegt. Umsetzung/Review: Codex; Nachweis im aktuellen v0.1.0-Prüfbericht. Keine Freigabe zusätzlicher Rollen oder vollständiger Kartenerstellung. |
+Version 1.6 · 23.10.2026: Auf Auftrag kontextabhängige Leseregeln, Verbot neuer docs-Dateien und Pflege vorhandener Nachweise eingeführt; historische Angaben ins vorhandene Archiv verschoben. Qualitätsregeln, Kennungen und Freigabegrenzen erhalten.

@@ -37,6 +37,8 @@ npm run check
 
 Softwarechecks oben; reine Markdown-Dokumentation nach dem eigenen Prüfweg in AGENTS.md.
 
+Agenten starten mit AGENTS.md und lesen danach nur aufgabenrelevante Abschnitte. Keine neuen Dateien in docs-Verzeichnissen erstellen; vorhandene Unterlagen fortschreiben, neue Paketnachweise als Abschnitte der bestehenden Entwicklungsanleitung führen.
+
 Arbeitsregeln, Prüfablauf und offene Blocker: [AGENTS.md](AGENTS.md). Abnahme: [Freigabecheckliste](src/lib/docs/FREIGABECHECKLISTE.md).
 
 `typecheck` erzeugt Next.js-Routentypen; `check:build` prüft den Produktionsbuild mit isolierten Dummy-Zugängen. Prüfung und Deployment verwenden über `npm run build` denselben Webpack-Produktionsbuild; damit wird der hier reproduzierte Turbopack-Abbruch bei der CSS-Verarbeitung vermieden. Der erste Build benötigt Netzwerkzugriff für Google Fonts. Integrationstests und GitHub-Merge-Schutz separat nach den Qualitätsregeln einrichten.
