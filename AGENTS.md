@@ -1,8 +1,10 @@
 # AcademyFi: Arbeitsregeln
 
-Version 1.6 · 23.10.2026. Gilt projektweit. Bestehende Fehler erlauben keine neuen.
+Version 1.7 · 23.10.2026. Gilt projektweit. Bestehende Fehler erlauben keine neuen.
 
 ## Kontext und Dokumentationspflege
+
+- Dokumentation knapp halten: nur aktuell benötigte Entscheidungen, Stand, maßgebliche Belege, offene Blocker und nächsten Schritt pflegen. Bestehende Einträge aktualisieren und verlinken; keine wiederholten Ergebnislisten oder zusätzlichen Verlaufsberichte.
 
 - Diese Datei ist der verpflichtende Einstieg. Danach nur den für den Auftrag nötigen Kontext laden: erst Dateipfade/Überschriften mit rg suchen, dann betroffene Abschnitte und direkte Abhängigkeiten lesen. Keine pauschalen Volltextlesungen von README, Dokumentationsordner, Archiv, Logs oder sämtlichen Quell-/Testdateien.
 - Projektwegweiser: Seiten/APIs in src/app, UI in src/components, Actions/Daten in src/lib/actions und src/lib/data, Stempelkartenservices in src/lib/loyalty, Sprachen in src/messages und src/i18n, Schema/Migrationen in prisma, Prüfprogramme in scripts/check.mjs und package.json, Tests in tests.
@@ -78,7 +80,7 @@ Prüfläufe einmal im zugehörigen Versions-/Änderungsnachweis führen: geprüf
 
 ## Aktueller Status und Blocker
 
-Stand 23.10.2026: v0.0.1/v0.0.2 lokal abgeschlossen; v0.1.0 lokal implementiert und automatisiert geprüft, lokale Übernahmeentscheidung offen. Additive v0.1.0-Migration auf separater Test- und bestehender App-DB ausdrücklich autorisiert und angewendet; 29 Bestandstabellen unverändert. Keine pauschale Freigabe weiterer Migrationen. Keine Produkt-/Betriebsfreigabe, kein Merge oder Deployment durch den Agenten. Maßgeblich: [Statusregister](src/lib/docs/ENTWICKLUNGSANLEITUNG_STEMPELKARTEN.md), [v0.1.0-Nachweis](src/lib/docs/FREIGABE_STEMPELKARTEN_v0.1.0.md).
+Stand 23.10.2026: v0.0.1/v0.0.2/v0.1.0 lokal abgeschlossen; v0.1.0 für 4e3df2d plus Patch c4be0966 ausdrücklich lokal übernommen. Additive v0.1.0-Migration auf separater Test- und bestehender App-DB ausdrücklich autorisiert und angewendet; 29 Bestandstabellen unverändert. Keine pauschale Freigabe weiterer Migrationen. Keine Produkt-/Betriebsfreigabe, kein Merge oder Deployment durch den Agenten. Maßgeblich: [Statusregister](src/lib/docs/ENTWICKLUNGSANLEITUNG_STEMPELKARTEN.md), [v0.1.0-Nachweis](src/lib/docs/FREIGABE_STEMPELKARTEN_v0.1.0.md).
 
 | ID | Status / Abschlusskriterium |
 | --- | --- |
@@ -91,7 +93,11 @@ Stand 23.10.2026: v0.0.1/v0.0.2 lokal abgeschlossen; v0.1.0 lokal implementiert 
 | QL-007 | Offen (Umsetzung/Betreiber): vollständige SaaS-Freigabe erst mit AK-01–18, Geräte-/Betriebs-/Anbieterbelegen und ausgefüllter Checkliste. |
 | QL-008 | Offen (Umsetzung/Betreiber): historische App-Migrationen fehlen; migrate deploy/Neuinstallation und vollständige AK-18-/Betriebsabnahme gesperrt. Originalhistorie oder separat geprüfte Baselinestrategie samt nicht destruktivem Replay belegen; Altgeschichte nicht umschreiben. |
 | QL-009 | Behoben: DE/EN-Einstieg Tools/Calem, geschützte interne Startseite und negative Tests/360px-Klickweg belegt; keine zusätzliche Rollen-/Kartenerstellungsfreigabe. |
+| QL-010 | Behoben: fehlende historische Belege durch aktuelle DB-/Migrations-/Browsernachweise und Standmanifest ersetzt; lokal übernommen. Maßgeblich: [Abschlussabgleich](src/lib/docs/FREIGABE_STEMPELKARTEN_v0.1.0.md#abschlussabgleich-und-vorlage-zur-lokalen-übernahme--23102026). |
+| QL-011 | Behoben: wirkungslose Umbruchklasse im internen Unternehmensdetail korrigiert; DE/EN bei 360px erneut geprüft. Beleg im Abschlussabgleich v0.1.0. |
 
 Belege/Verantwortung im jeweiligen [Statusregister](src/lib/docs/ENTWICKLUNGSANLEITUNG_STEMPELKARTEN.md), [Build-/Bewertungsnachweis](src/lib/docs/FREIGABE_BUILD_BEWERTUNG.md) und [v0.1.0-Nachweis](src/lib/docs/FREIGABE_STEMPELKARTEN_v0.1.0.md). Frühere Status-/Versionsangaben stehen unverändert im [Archiv](src/lib/docs/ARCHIV_STEMPELKARTEN.md#historischer-agents-stand-15--23102026); sie sind keine zusätzlichen Startlektüren.
 
 Version 1.6 · 23.10.2026: Auf Auftrag kontextabhängige Leseregeln, Verbot neuer docs-Dateien und Pflege vorhandener Nachweise eingeführt; historische Angaben ins vorhandene Archiv verschoben. Qualitätsregeln, Kennungen und Freigabegrenzen erhalten.
+
+Version 1.7 · 23.10.2026: Dokumentation auf aktuell Benötigtes begrenzt; QL-010 durch erneuerte Nachweise und QL-011 durch geprüfte Umbruchkorrektur behoben. v0.1.0 ausdrücklich lokal übernommen und abgeschlossen.

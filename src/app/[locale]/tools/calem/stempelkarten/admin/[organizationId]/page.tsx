@@ -91,7 +91,7 @@ export default async function OrganizationDetail({
         {rows.map(([label, value]) => (
           <div key={label} className="min-w-0">
             <dt className="font-medium">{label}</dt>
-            <dd className="wrap:anywhere">{value}</dd>
+            <dd className="wrap-anywhere">{value}</dd>
           </div>
         ))}
       </dl>
