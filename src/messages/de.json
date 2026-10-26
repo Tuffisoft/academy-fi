@@ -1,6 +1,9 @@
 {
   "stempelfi": {
     "businessLogin": "Unternehmen anmelden",
+    "accountEmail": "Angemeldet als {email}",
+    "signingOut": "Wird abgemeldet …",
+    "signOutError": "Die Abmeldung konnte nicht bestätigt werden. Bitte erneut versuchen.",
     "signInTitle": "Bei StempelFi anmelden",
     "signInDescription": "Nutze dein bestehendes Konto. Eine gültige Better-Auth-Sitzung wird auch für StempelFi verwendet. Kundenregistrierung folgt später.",
     "businessPortal": "Unternehmensportal",
@@ -1347,7 +1350,7 @@
     "loading": "Mitarbeiter werden geladen…",
     "acceptTitle": "Einladung annehmen",
     "acceptNote": "Das Öffnen dieses Links ändert nichts. Zur Annahme muss das angemeldete Konto die bestätigte E-Mail-Adresse besitzen, an die diese Einladung gesendet wurde.",
-    "loginNote": "Melde dich zuerst an. Öffne danach den Einladungslink aus deiner E-Mail erneut.",
+    "loginNote": "Melde dich zuerst an. Danach kehrst du zu dieser Einladung zurück und kannst sie ausdrücklich annehmen.",
     "login": "Anmelden",
     "accept": "Einladung annehmen",
     "accepted": "Einladung angenommen. Deine Mitgliedschaft ist bestätigt.",

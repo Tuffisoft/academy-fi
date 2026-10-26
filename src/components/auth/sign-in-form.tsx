@@ -4,6 +4,7 @@ import { useState, type FormEvent } from "react";
 import { useTranslations } from "next-intl";
 import { useRouter } from "@/i18n/navigation";
 import { authClient } from "@/lib/auth-client";
+import { afterSignInHref, type SignInDestination } from "@/lib/loyalty/invitation-link";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -13,7 +14,7 @@ import {
   FieldLabel,
 } from "@/components/ui/field";
 
-export function SignInForm({ destination }: { destination?: "stempelfi" }) {
+export function SignInForm({ destination }: { destination?: SignInDestination }) {
   const t = useTranslations("auth");
   const router = useRouter();
   const [email, setEmail] = useState("");
@@ -27,9 +28,10 @@ export function SignInForm({ destination }: { destination?: "stempelfi" }) {
     setIsSubmitting(true);
 
     try {
+      const nextHref = afterSignInHref(destination, window.location.hash);
       const { error: signInError } = await authClient.signIn.email({ email, password });
       if (signInError) { setError(t("genericError")); return; }
-      router.push(destination === "stempelfi" ? "/auth/continue?destination=stempelfi" : "/auth/continue");
+      router.push(nextHref);
       router.refresh();
     } catch {
       setError(t("genericError"));

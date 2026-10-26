@@ -5,6 +5,8 @@ import { useLocale, useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
 import { ProductHeader } from "./stempelfi-design";
 import { membershipAction } from "@/lib/loyalty/membership.actions";
+import { createOperationId } from "@/lib/loyalty/operation-id";
+import { invitationHref, invitationSignInHref, readInvitationFragment } from "@/lib/loyalty/invitation-link";
 import {
   isMembershipReply,
   type MembershipReply,
@@ -24,15 +26,7 @@ export function InvitationAcceptance({ signedIn }: { signedIn: boolean }) {
   const operation = useRef<string | null>(null);
   useEffect(() => {
     const read = () => {
-      const query = new URLSearchParams(window.location.hash.slice(1)),
-        organizationId = query.get("organization") ?? "",
-        token = query.get("token") ?? "";
-      setLink(
-        /^[a-zA-Z0-9_-]{1,160}$/.test(organizationId) &&
-          /^[A-Za-z0-9_-]{43}$/.test(token)
-          ? { organizationId, token }
-          : null,
-      );
+      setLink(readInvitationFragment(window.location.hash));
       setLoaded(true);
       setReply(null);
       operation.current = null;
@@ -43,10 +37,10 @@ export function InvitationAcceptance({ signedIn }: { signedIn: boolean }) {
   }, []);
   async function accept() {
     if (!link) return;
-    if (!operation.current) operation.current = crypto.randomUUID();
     setPending(true);
     setReply(null);
     try {
+      if (!operation.current) operation.current = createOperationId();
       const result = await membershipAction({
         locale: locale === "de" ? "de" : "en",
         command: { action: "ACCEPT", ...link, operationId: operation.current },
@@ -62,15 +56,7 @@ export function InvitationAcceptance({ signedIn }: { signedIn: boolean }) {
       setPending(false);
     }
   }
-  const languageHref =
-    "/tools/calem/stempelkarten/invitation" +
-    (link
-      ? "#" +
-        new URLSearchParams({
-          organization: link.organizationId,
-          token: link.token,
-        }).toString()
-      : "");
+  const languageHref = invitationHref(link);
   return (
     <main className="min-w-0">
       <ProductHeader portal languageHref={languageHref} />
@@ -86,7 +72,7 @@ export function InvitationAcceptance({ signedIn }: { signedIn: boolean }) {
             <p>{t("loginNote")}</p>
             <Link
               className="min-h-11 rounded underline focus-visible:outline-2"
-              href="/sign-in?destination=stempelfi"
+              href={invitationSignInHref(link)}
             >
               {t("login")}
             </Link>

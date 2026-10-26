@@ -4,6 +4,7 @@ import { useId, useRef, useState, type FormEvent } from "react";
 import { useLocale, useTranslations } from "next-intl";
 import { useRouter, Link } from "@/i18n/navigation";
 import { membershipAction } from "@/lib/loyalty/membership.actions";
+import { createOperationId } from "@/lib/loyalty/operation-id";
 import {
   isMembershipReply,
   type MembershipReply,
@@ -51,25 +52,25 @@ function MutationForm({
     event.preventDefault();
     const form = event.currentTarget;
     const data = new FormData(form);
-    if (!intent.current)
-      intent.current = {
-        locale: locale === "de" ? "de" : "en",
-        command: {
-          ...command,
-          organizationId,
-          operationId: crypto.randomUUID(),
-          ...(invite
-            ? {
-                email: String(data.get("email") ?? ""),
-                role: data.get("admin") === "ADMIN" ? "ADMIN" : "STAFF",
-              }
-            : {}),
-        },
-        confirmOwnership: data.get("confirm") === "yes",
-      };
     setPending(true);
     setReply(null);
     try {
+      if (!intent.current)
+        intent.current = {
+          locale: locale === "de" ? "de" : "en",
+          command: {
+            ...command,
+            organizationId,
+            operationId: createOperationId(),
+            ...(invite
+              ? {
+                  email: String(data.get("email") ?? ""),
+                  role: data.get("admin") === "ADMIN" ? "ADMIN" : "STAFF",
+                }
+              : {}),
+          },
+          confirmOwnership: data.get("confirm") === "yes",
+        };
       const result = await membershipAction(intent.current);
       if (!isMembershipReply(result)) throw new Error("Invalid response");
       setReply(result);
@@ -85,7 +86,7 @@ function MutationForm({
         if (result.error.code === "FORBIDDEN") router.refresh();
       }
     } catch {
-      setUncertain(true);
+      setUncertain(intent.current !== null);
       setReply({
         ok: false,
         error: { code: "UNAVAILABLE", message: t("errors.UNAVAILABLE") },

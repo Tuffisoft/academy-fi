@@ -1,6 +1,9 @@
 {
   "stempelfi": {
     "businessLogin": "Business sign in",
+    "accountEmail": "Signed in as {email}",
+    "signingOut": "Signing out …",
+    "signOutError": "Sign-out could not be confirmed. Please try again.",
     "signInTitle": "Sign in to StempelFi",
     "signInDescription": "Use your existing account. A valid Better Auth session also works for StempelFi. Customer registration will follow later.",
     "businessPortal": "Business portal",
@@ -1347,7 +1350,7 @@
     "loading": "Loading team…",
     "acceptTitle": "Accept your invitation",
     "acceptNote": "Opening this link makes no changes. Acceptance requires the signed-in account to have the verified email address this invitation was sent to.",
-    "loginNote": "Sign in first. Then open the invitation link from your email again.",
+    "loginNote": "Sign in first. You will return to this invitation and can explicitly accept it.",
     "login": "Sign in",
     "accept": "Accept invitation",
     "accepted": "Invitation accepted. Your membership is confirmed.",

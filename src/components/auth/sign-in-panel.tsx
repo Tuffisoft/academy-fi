@@ -9,8 +9,9 @@ import {
 import { SignInForm } from "@/components/auth/sign-in-form";
 import { Link } from "@/i18n/navigation";
 import { customerRegistrationEnabled } from "@/lib/loyalty/customer-account";
+import type { SignInDestination } from "@/lib/loyalty/invitation-link";
 
-export async function SignInPanel({ destination }: { destination?: "stempelfi" } = {}) {
+export async function SignInPanel({ destination }: { destination?: SignInDestination } = {}) {
   const t = await getTranslations("auth");
   const product = await getTranslations("stempelfi");
   const account = await getTranslations("customerAccount");
