@@ -200,6 +200,9 @@ model User {
   pdfReportTemplates  PdfReportTemplate[]
   organizationMemberships OrganizationMembership[]
   organizationAuditEntries OrganizationAuditLog[]
+  organizationInvitationsCreated OrganizationInvitation[] @relation("InvitationCreator")
+  organizationInvitationsAccepted OrganizationInvitation[] @relation("InvitationAcceptor")
+  organizationOperations OrganizationOperation[]
 
   @@map("user")
 }
@@ -387,6 +390,49 @@ model Organization {
   memberships  OrganizationMembership[]
   entitlement  OrganizationEntitlement?
   auditEntries OrganizationAuditLog[]
+  invitations  OrganizationInvitation[]
+  operations   OrganizationOperation[]
+}
+
+model OrganizationInvitation {
+  id               String @id @default(cuid())
+  organizationId   String
+  email            String @db.VarChar(254)
+  role             OrganizationRole
+  tokenHash        String @unique @db.VarChar(64)
+  status           String @default("PENDING") @db.VarChar(20)
+  expiresAt        DateTime
+  createdById      String
+  acceptedById     String?
+  acceptedAt       DateTime?
+  deliveryAttemptId String
+  deliveryStatus   String @default("NOT_SENT") @db.VarChar(24)
+  providerId       String? @db.VarChar(160)
+  deliveryUpdatedAt DateTime?
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+  organization     Organization @relation(fields: [organizationId], references: [id], onDelete: Restrict)
+  createdBy        User @relation("InvitationCreator", fields: [createdById], references: [id], onDelete: Restrict)
+  acceptedBy       User? @relation("InvitationAcceptor", fields: [acceptedById], references: [id], onDelete: Restrict)
+
+  @@index([organizationId, status, expiresAt])
+  @@index([organizationId, email, createdAt])
+}
+
+model OrganizationOperation {
+  id             String @id @default(cuid())
+  organizationId String
+  actorId        String
+  operationId    String @db.VarChar(36)
+  action         String @db.VarChar(40)
+  fingerprint    String @db.VarChar(64)
+  resultId       String @db.VarChar(160)
+  createdAt      DateTime @default(now())
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Restrict)
+  actor          User @relation(fields: [actorId], references: [id], onDelete: Restrict)
+
+  @@unique([organizationId, actorId, operationId])
+  @@index([organizationId, action, createdAt])
 }
 
 model OrganizationMembership {

@@ -3,6 +3,7 @@ import { createHash } from "node:crypto";
 import { prisma } from "@/lib/prisma";
 import type { Prisma, OrganizationRole } from "@/generated/prisma/client";
 import { freeEntitlement } from "./plans";
+import { membershipCapacity } from "./membership-capacity";
 
 export class OrganizationAccessError extends Error {
   constructor(public readonly code: "FORBIDDEN" | "INVALID_INPUT" | "LIMIT_REACHED" | "CONFLICT") {
@@ -22,7 +23,7 @@ function identifier(value: string) {
 
 async function identity(db: Database, actorId: string) {
   identifier(actorId);
-  const user = await db.user.findUnique({ where: { id: actorId }, select: { id: true, role: true, banned: true, emailVerified: true } });
+  const user = await db.user.findUnique({ where: { id: actorId }, select: { id: true, role: true, banned: true, emailVerified: true, email: true } });
   if (!user || user.banned || !["CUSTOMER", "OWNER", "INTERN"].includes(user.role)) {
     throw new OrganizationAccessError("FORBIDDEN");
   }
@@ -147,7 +148,7 @@ export async function getInternalOrganizationDetail(actorId: string, organizatio
 
 /** Internal foundation for later membership workflows; no public mutation endpoint.
  * Locks serialize capacity checks. Authorizations are read again inside the transaction.
- * Only STAFF additions are allowed here; invitation/ownership workflows come later.
+ * Only new STAFF additions are allowed here; invitations use the membership workflow.
  */
 export async function addStaffMembership(actorId: string, organizationId: string, userId: string, reason: string) {
   identifier(organizationId);
@@ -171,8 +172,11 @@ export async function addStaffMembership(actorId: string, organizationId: string
     if (target.role !== "CUSTOMER") throw new OrganizationAccessError("FORBIDDEN");
     const existing = await tx.organizationMembership.findUnique({ where: { organizationId_userId: { organizationId, userId } } });
     if (existing?.status === "ACTIVE") return existing;
-    const count = await tx.organizationMembership.count({ where: { organizationId, status: "ACTIVE" } });
-    if (count >= current.limits.users) throw new OrganizationAccessError("LIMIT_REACHED");
+    // Revoked users must go through a fresh invitation; do not bypass its token/verification.
+    if (existing) throw new OrganizationAccessError("FORBIDDEN");
+    const capacity = await membershipCapacity(tx, organizationId);
+    if (await tx.organizationInvitation.findFirst({ where: { organizationId, email: target.email.trim().toLowerCase(), status: "PENDING", expiresAt: { gt: capacity.now } } })) throw new OrganizationAccessError("CONFLICT");
+    if (capacity.occupied >= current.limits.users) throw new OrganizationAccessError("LIMIT_REACHED");
     const member = await tx.organizationMembership.upsert({
       where: { organizationId_userId: { organizationId, userId } },
       create: { organizationId, userId, role: "STAFF" },

@@ -2,7 +2,7 @@ import assert from "node:assert/strict";
 import { before, mock, test } from "node:test";
 import { freeEntitlement, loyaltyPlans } from "../src/lib/loyalty/plans";
 
-let user: { id: string; role: string; banned: boolean } | null;
+let user: { id: string; role: string; banned: boolean; email: string } | null;
 let member: { id: string; role: string; status: string; organization: { status: string; entitlement: { plan: string } | null } } | null;
 let detailReads = 0;
 let slots = 1;
@@ -22,7 +22,8 @@ const db = {
     findFirst: async (query: unknown) => { portalQueries.push(query); return null; },
   },
   organizationAuditLog: { create: async () => { writes++; } },
-  $queryRaw: async () => { locks++; },
+  organizationInvitation: { updateMany: async () => ({ count: 0 }), count: async () => 0, findFirst: async () => null },
+  $queryRaw: async () => { locks++; return [{ now: new Date() }]; },
 };
 mock.module("../src/lib/prisma.ts", { namedExports: { prisma: { ...db, $transaction: async (operation: (tx: typeof db) => Promise<unknown>) => operation(db) } } });
 let getOrganizationContext: typeof import("../src/lib/loyalty/organizations").getOrganizationContext;
@@ -36,7 +37,7 @@ before(async () => {
 });
 
 function reset() {
-  user = { id: "actor", role: "CUSTOMER", banned: false };
+  user = { id: "actor", role: "CUSTOMER", banned: false, email: "actor@example.invalid" };
   member = { id: "member", role: "OWNER", status: "ACTIVE", organization: { status: "ACTIVE", entitlement: { plan: "FREE" } } };
   slots = 1; writes = 0; locks = 0; portalQueries = [];
 }
@@ -108,7 +109,7 @@ test("portal selection scopes member queries to current active memberships; only
   reset(); user!.role = "OWNER";
   assert.equal((await getPortalOrganizations("actor", "cursor")).internal, true);
   assert.deepEqual(portalQueries[0], { where: { id: { gt: "cursor" } }, select: { id: true, name: true, slug: true, status: true }, orderBy: { id: "asc" }, take: 51 });
-  for (const invalid of [null, { id: "actor", role: "OWNER,INTERN", banned: false }, { id: "actor", role: "OWNER", banned: true }]) {
+  for (const invalid of [null, { id: "actor", role: "OWNER,INTERN", banned: false, email: "actor@example.invalid" }, { id: "actor", role: "OWNER", banned: true, email: "actor@example.invalid" }]) {
     reset(); user = invalid;
     await assert.rejects(getPortalOrganizations("actor"), /FORBIDDEN/);
     assert.equal(portalQueries.length, 0);
