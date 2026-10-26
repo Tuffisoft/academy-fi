@@ -63,23 +63,23 @@ export function ProductHeader({
   const pathname = usePathname();
   const { setTheme, resolvedTheme } = useTheme();
   return (
-    <header className="flex flex-wrap items-center justify-between gap-4 px-5 py-6 sm:px-10">
+    <header className="grid min-w-0 grid-cols-[minmax(0,1fr)_auto] items-center gap-x-4 gap-y-4 border-b px-5 py-4 sm:grid-cols-[auto_minmax(0,1fr)_auto] sm:px-10">
       <Link
         href={base}
-        className="rounded-md focus-visible:outline-2 focus-visible:outline-ring"
+        className="min-w-0 justify-self-start rounded-md focus-visible:outline-2 focus-visible:outline-ring"
       >
         <Brand />
       </Link>
       <nav
         aria-label={t("navigation")}
-        className="flex flex-wrap items-center gap-2"
+        className="col-span-2 row-start-2 flex min-w-0 items-center gap-2 sm:col-span-1 sm:col-start-2 sm:row-start-1 sm:justify-end"
       >
         {!portal && (
           <Button
             variant="ghost"
             nativeButton={false}
             render={<a href="#pricing" />}
-            className="min-h-11"
+            className="min-h-11 shrink-0"
           >
             {t("pricing")}
           </Button>
@@ -88,10 +88,12 @@ export function ProductHeader({
           variant="outline"
           nativeButton={false}
           render={<Link href={portal ? base : `${base}/app`} />}
-          className="min-h-11"
+          className="min-h-11 min-w-0 flex-1 sm:flex-none"
         >
           {t(portal ? "website" : "businessLogin")}
         </Button>
+      </nav>
+      <div className="col-start-2 row-start-1 flex shrink-0 items-center gap-1 sm:col-start-3">
         <Button
           variant="ghost"
           nativeButton={false}
@@ -116,8 +118,8 @@ export function ProductHeader({
           <Sun className="size-4 dark:hidden" aria-hidden="true" />
           <Moon className="hidden size-4 dark:block" aria-hidden="true" />
         </Button>
-      </nav>
-      {portal && <PortalAccountControls />}
+      </div>
+      {portal && <div className="col-span-2 min-w-0 border-t pt-3 sm:col-span-3"><PortalAccountControls /></div>}
     </header>
   );
 }

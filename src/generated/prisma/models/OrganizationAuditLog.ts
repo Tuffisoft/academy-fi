@@ -14,7 +14,7 @@ import type * as Prisma from "../internal/prismaNamespace"
 
 /**
  * Model OrganizationAuditLog
- *
+ * 
  */
 export type OrganizationAuditLogModel = runtime.Types.Result.DefaultSelection<Prisma.$OrganizationAuditLogPayload>
 
@@ -100,43 +100,43 @@ export type OrganizationAuditLogAggregateArgs<ExtArgs extends runtime.Types.Exte
   where?: Prisma.OrganizationAuditLogWhereInput
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-   *
+   * 
    * Determine the order of OrganizationAuditLogs to fetch.
    */
   orderBy?: Prisma.OrganizationAuditLogOrderByWithRelationInput | Prisma.OrganizationAuditLogOrderByWithRelationInput[]
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-   *
+   * 
    * Sets the start position
    */
   cursor?: Prisma.OrganizationAuditLogWhereUniqueInput
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-   *
+   * 
    * Take `±n` OrganizationAuditLogs from the position of the cursor.
    */
   take?: number
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-   *
+   * 
    * Skip the first `n` OrganizationAuditLogs.
    */
   skip?: number
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-   *
+   * 
    * Count returned OrganizationAuditLogs
   **/
   _count?: true | OrganizationAuditLogCountAggregateInputType
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-   *
+   * 
    * Select which fields to find the minimum value
   **/
   _min?: OrganizationAuditLogMinAggregateInputType
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-   *
+   * 
    * Select which fields to find the maximum value
   **/
   _max?: OrganizationAuditLogMaxAggregateInputType
@@ -944,13 +944,13 @@ export interface OrganizationAuditLogDelegate<ExtArgs extends runtime.Types.Exte
    * @example
    * // Get all OrganizationAuditLogs
    * const organizationAuditLogs = await prisma.organizationAuditLog.findMany()
-   *
+   * 
    * // Get first 10 OrganizationAuditLogs
    * const organizationAuditLogs = await prisma.organizationAuditLog.findMany({ take: 10 })
-   *
+   * 
    * // Only select the `id`
    * const organizationAuditLogWithIdOnly = await prisma.organizationAuditLog.findMany({ select: { id: true } })
-   *
+   * 
    */
   findMany<T extends OrganizationAuditLogFindManyArgs>(args?: Prisma.SelectSubset<T, OrganizationAuditLogFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$OrganizationAuditLogPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
 
@@ -964,7 +964,7 @@ export interface OrganizationAuditLogDelegate<ExtArgs extends runtime.Types.Exte
    *     // ... data to create a OrganizationAuditLog
    *   }
    * })
-   *
+   * 
    */
   create<T extends OrganizationAuditLogCreateArgs>(args: Prisma.SelectSubset<T, OrganizationAuditLogCreateArgs<ExtArgs>>): Prisma.Prisma__OrganizationAuditLogClient<runtime.Types.Result.GetResult<Prisma.$OrganizationAuditLogPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
@@ -978,7 +978,7 @@ export interface OrganizationAuditLogDelegate<ExtArgs extends runtime.Types.Exte
    *     // ... provide data here
    *   ]
    * })
-   *
+   *     
    */
   createMany<T extends OrganizationAuditLogCreateManyArgs>(args?: Prisma.SelectSubset<T, OrganizationAuditLogCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<Prisma.BatchPayload>
 
@@ -992,7 +992,7 @@ export interface OrganizationAuditLogDelegate<ExtArgs extends runtime.Types.Exte
    *     // ... provide data here
    *   ]
    * })
-   *
+   * 
    * // Create many OrganizationAuditLogs and only return the `id`
    * const organizationAuditLogWithIdOnly = await prisma.organizationAuditLog.createManyAndReturn({
    *   select: { id: true },
@@ -1002,7 +1002,7 @@ export interface OrganizationAuditLogDelegate<ExtArgs extends runtime.Types.Exte
    * })
    * Note, that providing `undefined` is treated as the value not being there.
    * Read more here: https://pris.ly/d/null-undefined
-   *
+   * 
    */
   createManyAndReturn<T extends OrganizationAuditLogCreateManyAndReturnArgs>(args?: Prisma.SelectSubset<T, OrganizationAuditLogCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$OrganizationAuditLogPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
 
@@ -1016,7 +1016,7 @@ export interface OrganizationAuditLogDelegate<ExtArgs extends runtime.Types.Exte
    *     // ... filter to delete one OrganizationAuditLog
    *   }
    * })
-   *
+   * 
    */
   delete<T extends OrganizationAuditLogDeleteArgs>(args: Prisma.SelectSubset<T, OrganizationAuditLogDeleteArgs<ExtArgs>>): Prisma.Prisma__OrganizationAuditLogClient<runtime.Types.Result.GetResult<Prisma.$OrganizationAuditLogPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
@@ -1033,7 +1033,7 @@ export interface OrganizationAuditLogDelegate<ExtArgs extends runtime.Types.Exte
    *     // ... provide data here
    *   }
    * })
-   *
+   * 
    */
   update<T extends OrganizationAuditLogUpdateArgs>(args: Prisma.SelectSubset<T, OrganizationAuditLogUpdateArgs<ExtArgs>>): Prisma.Prisma__OrganizationAuditLogClient<runtime.Types.Result.GetResult<Prisma.$OrganizationAuditLogPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
@@ -1047,7 +1047,7 @@ export interface OrganizationAuditLogDelegate<ExtArgs extends runtime.Types.Exte
    *     // ... provide filter here
    *   }
    * })
-   *
+   * 
    */
   deleteMany<T extends OrganizationAuditLogDeleteManyArgs>(args?: Prisma.SelectSubset<T, OrganizationAuditLogDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<Prisma.BatchPayload>
 
@@ -1066,7 +1066,7 @@ export interface OrganizationAuditLogDelegate<ExtArgs extends runtime.Types.Exte
    *     // ... provide data here
    *   }
    * })
-   *
+   * 
    */
   updateMany<T extends OrganizationAuditLogUpdateManyArgs>(args: Prisma.SelectSubset<T, OrganizationAuditLogUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<Prisma.BatchPayload>
 
@@ -1083,7 +1083,7 @@ export interface OrganizationAuditLogDelegate<ExtArgs extends runtime.Types.Exte
    *     // ... provide data here
    *   ]
    * })
-   *
+   * 
    * // Update zero or more OrganizationAuditLogs and only return the `id`
    * const organizationAuditLogWithIdOnly = await prisma.organizationAuditLog.updateManyAndReturn({
    *   select: { id: true },
@@ -1096,7 +1096,7 @@ export interface OrganizationAuditLogDelegate<ExtArgs extends runtime.Types.Exte
    * })
    * Note, that providing `undefined` is treated as the value not being there.
    * Read more here: https://pris.ly/d/null-undefined
-   *
+   * 
    */
   updateManyAndReturn<T extends OrganizationAuditLogUpdateManyAndReturnArgs>(args: Prisma.SelectSubset<T, OrganizationAuditLogUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$OrganizationAuditLogPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
 
@@ -1185,7 +1185,7 @@ export interface OrganizationAuditLogDelegate<ExtArgs extends runtime.Types.Exte
    *     _all: true
    *   },
    * })
-   *
+   * 
   **/
   groupBy<
     T extends OrganizationAuditLogGroupByArgs,
@@ -1300,7 +1300,7 @@ export interface OrganizationAuditLogFieldRefs {
   readonly reason: Prisma.FieldRef<"OrganizationAuditLog", 'String'>
   readonly createdAt: Prisma.FieldRef<"OrganizationAuditLog", 'DateTime'>
 }
-
+    
 
 // Custom InputTypes
 /**
@@ -1369,31 +1369,31 @@ export type OrganizationAuditLogFindFirstArgs<ExtArgs extends runtime.Types.Exte
   where?: Prisma.OrganizationAuditLogWhereInput
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-   *
+   * 
    * Determine the order of OrganizationAuditLogs to fetch.
    */
   orderBy?: Prisma.OrganizationAuditLogOrderByWithRelationInput | Prisma.OrganizationAuditLogOrderByWithRelationInput[]
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-   *
+   * 
    * Sets the position for searching for OrganizationAuditLogs.
    */
   cursor?: Prisma.OrganizationAuditLogWhereUniqueInput
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-   *
+   * 
    * Take `±n` OrganizationAuditLogs from the position of the cursor.
    */
   take?: number
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-   *
+   * 
    * Skip the first `n` OrganizationAuditLogs.
    */
   skip?: number
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-   *
+   * 
    * Filter by unique combinations of OrganizationAuditLogs.
    */
   distinct?: Prisma.OrganizationAuditLogScalarFieldEnum | Prisma.OrganizationAuditLogScalarFieldEnum[]
@@ -1421,31 +1421,31 @@ export type OrganizationAuditLogFindFirstOrThrowArgs<ExtArgs extends runtime.Typ
   where?: Prisma.OrganizationAuditLogWhereInput
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-   *
+   * 
    * Determine the order of OrganizationAuditLogs to fetch.
    */
   orderBy?: Prisma.OrganizationAuditLogOrderByWithRelationInput | Prisma.OrganizationAuditLogOrderByWithRelationInput[]
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-   *
+   * 
    * Sets the position for searching for OrganizationAuditLogs.
    */
   cursor?: Prisma.OrganizationAuditLogWhereUniqueInput
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-   *
+   * 
    * Take `±n` OrganizationAuditLogs from the position of the cursor.
    */
   take?: number
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-   *
+   * 
    * Skip the first `n` OrganizationAuditLogs.
    */
   skip?: number
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-   *
+   * 
    * Filter by unique combinations of OrganizationAuditLogs.
    */
   distinct?: Prisma.OrganizationAuditLogScalarFieldEnum | Prisma.OrganizationAuditLogScalarFieldEnum[]
@@ -1473,31 +1473,31 @@ export type OrganizationAuditLogFindManyArgs<ExtArgs extends runtime.Types.Exten
   where?: Prisma.OrganizationAuditLogWhereInput
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-   *
+   * 
    * Determine the order of OrganizationAuditLogs to fetch.
    */
   orderBy?: Prisma.OrganizationAuditLogOrderByWithRelationInput | Prisma.OrganizationAuditLogOrderByWithRelationInput[]
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-   *
+   * 
    * Sets the position for listing OrganizationAuditLogs.
    */
   cursor?: Prisma.OrganizationAuditLogWhereUniqueInput
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-   *
+   * 
    * Take `±n` OrganizationAuditLogs from the position of the cursor.
    */
   take?: number
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-   *
+   * 
    * Skip the first `n` OrganizationAuditLogs.
    */
   skip?: number
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-   *
+   * 
    * Filter by unique combinations of OrganizationAuditLogs.
    */
   distinct?: Prisma.OrganizationAuditLogScalarFieldEnum | Prisma.OrganizationAuditLogScalarFieldEnum[]

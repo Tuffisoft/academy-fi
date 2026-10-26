@@ -41,7 +41,7 @@ export function SignInForm({ destination }: { destination?: SignInDestination })
   }
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={handleSubmit} aria-busy={isSubmitting}>
       <FieldGroup>
         <Field>
           <FieldLabel htmlFor="email">{t("email")}</FieldLabel>
@@ -50,6 +50,8 @@ export function SignInForm({ destination }: { destination?: SignInDestination })
             type="email"
             autoComplete="email"
             required
+            className={destination ? "min-h-11" : undefined}
+            aria-describedby={error ? "sign-in-error" : undefined}
             value={email}
             onChange={(event) => setEmail(event.target.value)}
           />
@@ -61,12 +63,14 @@ export function SignInForm({ destination }: { destination?: SignInDestination })
             type="password"
             autoComplete="current-password"
             required
+            className={destination ? "min-h-11" : undefined}
+            aria-describedby={error ? "sign-in-error" : undefined}
             value={password}
             onChange={(event) => setPassword(event.target.value)}
           />
         </Field>
-        {error && <FieldError>{error}</FieldError>}
-        <Button type="submit" disabled={isSubmitting}>
+        {error && <FieldError id="sign-in-error" className={destination ? "rounded-lg border border-destructive/30 bg-destructive/5 p-3 text-foreground" : undefined}>{error}</FieldError>}
+        <Button type="submit" disabled={isSubmitting} className={destination ? "min-h-11 w-full" : undefined}>
           {isSubmitting ? t("signingIn") : t("signIn")}
         </Button>
       </FieldGroup>

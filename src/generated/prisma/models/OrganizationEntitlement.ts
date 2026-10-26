@@ -14,7 +14,7 @@ import type * as Prisma from "../internal/prismaNamespace"
 
 /**
  * Model OrganizationEntitlement
- *
+ * 
  */
 export type OrganizationEntitlementModel = runtime.Types.Result.DefaultSelection<Prisma.$OrganizationEntitlementPayload>
 
@@ -70,43 +70,43 @@ export type OrganizationEntitlementAggregateArgs<ExtArgs extends runtime.Types.E
   where?: Prisma.OrganizationEntitlementWhereInput
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-   *
+   * 
    * Determine the order of OrganizationEntitlements to fetch.
    */
   orderBy?: Prisma.OrganizationEntitlementOrderByWithRelationInput | Prisma.OrganizationEntitlementOrderByWithRelationInput[]
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-   *
+   * 
    * Sets the start position
    */
   cursor?: Prisma.OrganizationEntitlementWhereUniqueInput
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-   *
+   * 
    * Take `±n` OrganizationEntitlements from the position of the cursor.
    */
   take?: number
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-   *
+   * 
    * Skip the first `n` OrganizationEntitlements.
    */
   skip?: number
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-   *
+   * 
    * Count returned OrganizationEntitlements
   **/
   _count?: true | OrganizationEntitlementCountAggregateInputType
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-   *
+   * 
    * Select which fields to find the minimum value
   **/
   _min?: OrganizationEntitlementMinAggregateInputType
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-   *
+   * 
    * Select which fields to find the maximum value
   **/
   _max?: OrganizationEntitlementMaxAggregateInputType
@@ -464,13 +464,13 @@ export interface OrganizationEntitlementDelegate<ExtArgs extends runtime.Types.E
    * @example
    * // Get all OrganizationEntitlements
    * const organizationEntitlements = await prisma.organizationEntitlement.findMany()
-   *
+   * 
    * // Get first 10 OrganizationEntitlements
    * const organizationEntitlements = await prisma.organizationEntitlement.findMany({ take: 10 })
-   *
+   * 
    * // Only select the `organizationId`
    * const organizationEntitlementWithOrganizationIdOnly = await prisma.organizationEntitlement.findMany({ select: { organizationId: true } })
-   *
+   * 
    */
   findMany<T extends OrganizationEntitlementFindManyArgs>(args?: Prisma.SelectSubset<T, OrganizationEntitlementFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$OrganizationEntitlementPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
 
@@ -484,7 +484,7 @@ export interface OrganizationEntitlementDelegate<ExtArgs extends runtime.Types.E
    *     // ... data to create a OrganizationEntitlement
    *   }
    * })
-   *
+   * 
    */
   create<T extends OrganizationEntitlementCreateArgs>(args: Prisma.SelectSubset<T, OrganizationEntitlementCreateArgs<ExtArgs>>): Prisma.Prisma__OrganizationEntitlementClient<runtime.Types.Result.GetResult<Prisma.$OrganizationEntitlementPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
@@ -498,7 +498,7 @@ export interface OrganizationEntitlementDelegate<ExtArgs extends runtime.Types.E
    *     // ... provide data here
    *   ]
    * })
-   *
+   *     
    */
   createMany<T extends OrganizationEntitlementCreateManyArgs>(args?: Prisma.SelectSubset<T, OrganizationEntitlementCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<Prisma.BatchPayload>
 
@@ -512,7 +512,7 @@ export interface OrganizationEntitlementDelegate<ExtArgs extends runtime.Types.E
    *     // ... provide data here
    *   ]
    * })
-   *
+   * 
    * // Create many OrganizationEntitlements and only return the `organizationId`
    * const organizationEntitlementWithOrganizationIdOnly = await prisma.organizationEntitlement.createManyAndReturn({
    *   select: { organizationId: true },
@@ -522,7 +522,7 @@ export interface OrganizationEntitlementDelegate<ExtArgs extends runtime.Types.E
    * })
    * Note, that providing `undefined` is treated as the value not being there.
    * Read more here: https://pris.ly/d/null-undefined
-   *
+   * 
    */
   createManyAndReturn<T extends OrganizationEntitlementCreateManyAndReturnArgs>(args?: Prisma.SelectSubset<T, OrganizationEntitlementCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$OrganizationEntitlementPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
 
@@ -536,7 +536,7 @@ export interface OrganizationEntitlementDelegate<ExtArgs extends runtime.Types.E
    *     // ... filter to delete one OrganizationEntitlement
    *   }
    * })
-   *
+   * 
    */
   delete<T extends OrganizationEntitlementDeleteArgs>(args: Prisma.SelectSubset<T, OrganizationEntitlementDeleteArgs<ExtArgs>>): Prisma.Prisma__OrganizationEntitlementClient<runtime.Types.Result.GetResult<Prisma.$OrganizationEntitlementPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
@@ -553,7 +553,7 @@ export interface OrganizationEntitlementDelegate<ExtArgs extends runtime.Types.E
    *     // ... provide data here
    *   }
    * })
-   *
+   * 
    */
   update<T extends OrganizationEntitlementUpdateArgs>(args: Prisma.SelectSubset<T, OrganizationEntitlementUpdateArgs<ExtArgs>>): Prisma.Prisma__OrganizationEntitlementClient<runtime.Types.Result.GetResult<Prisma.$OrganizationEntitlementPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
@@ -567,7 +567,7 @@ export interface OrganizationEntitlementDelegate<ExtArgs extends runtime.Types.E
    *     // ... provide filter here
    *   }
    * })
-   *
+   * 
    */
   deleteMany<T extends OrganizationEntitlementDeleteManyArgs>(args?: Prisma.SelectSubset<T, OrganizationEntitlementDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<Prisma.BatchPayload>
 
@@ -586,7 +586,7 @@ export interface OrganizationEntitlementDelegate<ExtArgs extends runtime.Types.E
    *     // ... provide data here
    *   }
    * })
-   *
+   * 
    */
   updateMany<T extends OrganizationEntitlementUpdateManyArgs>(args: Prisma.SelectSubset<T, OrganizationEntitlementUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<Prisma.BatchPayload>
 
@@ -603,7 +603,7 @@ export interface OrganizationEntitlementDelegate<ExtArgs extends runtime.Types.E
    *     // ... provide data here
    *   ]
    * })
-   *
+   * 
    * // Update zero or more OrganizationEntitlements and only return the `organizationId`
    * const organizationEntitlementWithOrganizationIdOnly = await prisma.organizationEntitlement.updateManyAndReturn({
    *   select: { organizationId: true },
@@ -616,7 +616,7 @@ export interface OrganizationEntitlementDelegate<ExtArgs extends runtime.Types.E
    * })
    * Note, that providing `undefined` is treated as the value not being there.
    * Read more here: https://pris.ly/d/null-undefined
-   *
+   * 
    */
   updateManyAndReturn<T extends OrganizationEntitlementUpdateManyAndReturnArgs>(args: Prisma.SelectSubset<T, OrganizationEntitlementUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$OrganizationEntitlementPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
 
@@ -705,7 +705,7 @@ export interface OrganizationEntitlementDelegate<ExtArgs extends runtime.Types.E
    *     _all: true
    *   },
    * })
-   *
+   * 
   **/
   groupBy<
     T extends OrganizationEntitlementGroupByArgs,
@@ -813,7 +813,7 @@ export interface OrganizationEntitlementFieldRefs {
   readonly plan: Prisma.FieldRef<"OrganizationEntitlement", 'String'>
   readonly updatedAt: Prisma.FieldRef<"OrganizationEntitlement", 'DateTime'>
 }
-
+    
 
 // Custom InputTypes
 /**
@@ -882,31 +882,31 @@ export type OrganizationEntitlementFindFirstArgs<ExtArgs extends runtime.Types.E
   where?: Prisma.OrganizationEntitlementWhereInput
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-   *
+   * 
    * Determine the order of OrganizationEntitlements to fetch.
    */
   orderBy?: Prisma.OrganizationEntitlementOrderByWithRelationInput | Prisma.OrganizationEntitlementOrderByWithRelationInput[]
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-   *
+   * 
    * Sets the position for searching for OrganizationEntitlements.
    */
   cursor?: Prisma.OrganizationEntitlementWhereUniqueInput
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-   *
+   * 
    * Take `±n` OrganizationEntitlements from the position of the cursor.
    */
   take?: number
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-   *
+   * 
    * Skip the first `n` OrganizationEntitlements.
    */
   skip?: number
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-   *
+   * 
    * Filter by unique combinations of OrganizationEntitlements.
    */
   distinct?: Prisma.OrganizationEntitlementScalarFieldEnum | Prisma.OrganizationEntitlementScalarFieldEnum[]
@@ -934,31 +934,31 @@ export type OrganizationEntitlementFindFirstOrThrowArgs<ExtArgs extends runtime.
   where?: Prisma.OrganizationEntitlementWhereInput
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-   *
+   * 
    * Determine the order of OrganizationEntitlements to fetch.
    */
   orderBy?: Prisma.OrganizationEntitlementOrderByWithRelationInput | Prisma.OrganizationEntitlementOrderByWithRelationInput[]
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-   *
+   * 
    * Sets the position for searching for OrganizationEntitlements.
    */
   cursor?: Prisma.OrganizationEntitlementWhereUniqueInput
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-   *
+   * 
    * Take `±n` OrganizationEntitlements from the position of the cursor.
    */
   take?: number
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-   *
+   * 
    * Skip the first `n` OrganizationEntitlements.
    */
   skip?: number
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-   *
+   * 
    * Filter by unique combinations of OrganizationEntitlements.
    */
   distinct?: Prisma.OrganizationEntitlementScalarFieldEnum | Prisma.OrganizationEntitlementScalarFieldEnum[]
@@ -986,31 +986,31 @@ export type OrganizationEntitlementFindManyArgs<ExtArgs extends runtime.Types.Ex
   where?: Prisma.OrganizationEntitlementWhereInput
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-   *
+   * 
    * Determine the order of OrganizationEntitlements to fetch.
    */
   orderBy?: Prisma.OrganizationEntitlementOrderByWithRelationInput | Prisma.OrganizationEntitlementOrderByWithRelationInput[]
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-   *
+   * 
    * Sets the position for listing OrganizationEntitlements.
    */
   cursor?: Prisma.OrganizationEntitlementWhereUniqueInput
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-   *
+   * 
    * Take `±n` OrganizationEntitlements from the position of the cursor.
    */
   take?: number
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-   *
+   * 
    * Skip the first `n` OrganizationEntitlements.
    */
   skip?: number
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-   *
+   * 
    * Filter by unique combinations of OrganizationEntitlements.
    */
   distinct?: Prisma.OrganizationEntitlementScalarFieldEnum | Prisma.OrganizationEntitlementScalarFieldEnum[]

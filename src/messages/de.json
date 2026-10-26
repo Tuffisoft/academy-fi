@@ -1306,6 +1306,12 @@
     "setupNote": "Dein bestätigtes Geschäftskonto wird Inhaber eines kostenlosen Free-Unternehmens. Erst nach bestätigter Speicherung öffnet sich die Übersicht."
   },
   "membership": {
+    "activeSeats": "Aktiv",
+    "reservedSeats": "Reserviert",
+    "seatLimit": "Nutzerplätze gesamt",
+    "roleAccess": "Rolle und Berechtigungen",
+    "invitationLabel": "Einladung zum Unternehmen",
+    "acceptLoading": "Einladung wird geladen…",
     "roles": {
       "OWNER": "Inhaber",
       "ADMIN": "Administrator",

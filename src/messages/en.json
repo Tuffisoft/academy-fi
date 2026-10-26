@@ -1306,6 +1306,12 @@
     "setupNote": "Your verified business account becomes the owner of a free business. The overview opens only after confirmed storage."
   },
   "membership": {
+    "activeSeats": "Active",
+    "reservedSeats": "Reserved",
+    "seatLimit": "Total user seats",
+    "roleAccess": "Role and permissions",
+    "invitationLabel": "Company invitation",
+    "acceptLoading": "Loading invitation…",
     "roles": {
       "OWNER": "Owner",
       "ADMIN": "Administrator",
