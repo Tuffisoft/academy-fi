@@ -3,6 +3,7 @@ import { randomUUID, createHash } from "node:crypto";
 import { mock, test } from "node:test";
 import { databaseIntegrationEnvironment } from "../../scripts/quality-environment.mjs";
 import { loyaltyPlans } from "../../src/lib/loyalty/plans";
+import { isMembershipReply } from "../../src/lib/loyalty/membership-reply";
 
 let profile: keyof typeof loyaltyPlans = "FREE";
 let sessionActor: string | null = null;
@@ -486,6 +487,163 @@ test(
           }
         });
     } finally {
+      await prisma.$disconnect();
+    }
+  },
+);
+
+test(
+  "real DB: discarded mutation responses replay once, changed payloads conflict and revoked sessions cannot replay",
+  { timeout: 180_000 },
+  async () => {
+    databaseIntegrationEnvironment(
+      { ...process.env, DATABASE_URL: "" },
+      undefined,
+      "LOYALTY_TEST_DATABASE_URL",
+    );
+    process.env.DATABASE_URL = process.env.LOYALTY_TEST_DATABASE_URL;
+    process.env.STEMPELFI_MEMBERS_ENABLED = "1";
+    profile = "PRO";
+    const { prisma } = await import("../../src/lib/prisma");
+    const { membershipAction } = await import("../../src/lib/loyalty/membership.actions");
+    const { POST } = await import("../../src/app/api/loyalty/organizations/[organizationId]/memberships/route");
+    const org = randomUUID(), otherOrg = randomUUID();
+    const users = Array.from({ length: 4 }, () => randomUUID());
+    const [owner, successor, staff, foreignOwner] = users;
+    const command = (action: string, fields: Record<string, string>) => ({
+      action, organizationId: org, operationId: randomUUID(), ...fields,
+    });
+    const post = (intent: Record<string, string>, confirmOwnership = false, locale: "de" | "en" = "de") => POST(
+      new Request("http://localhost:3000/api", {
+        method: "POST",
+        headers: { origin: new URL(process.env.BETTER_AUTH_URL!).origin, "Content-Type": "application/json" },
+        body: JSON.stringify({ locale, command: intent, confirmOwnership }),
+      }),
+      { params: Promise.resolve({ organizationId: org }) },
+    );
+    const read = async (response: Response) => {
+      const body: unknown = await response.json();
+      assert.ok(isMembershipReply(body));
+      return body;
+    };
+    const state = async () => ({
+      members: await prisma.organizationMembership.findMany({
+        where: { organizationId: org }, orderBy: { userId: "asc" },
+        select: { userId: true, role: true, status: true, updatedAt: true },
+      }),
+      operations: await prisma.organizationOperation.count({ where: { organizationId: org } }),
+      audits: await prisma.organizationAuditLog.count({ where: { organizationId: org } }),
+      invitations: await prisma.organizationInvitation.count({ where: { organizationId: org } }),
+    });
+    const deniedWithoutWrites = async (intent: Record<string, string>, code: "FORBIDDEN" | "CONFLICT") => {
+      const before = await state();
+      for (const locale of ["de", "en"] as const) {
+        const response = await post(intent, true, locale);
+        assert.equal(response.status, code === "CONFLICT" ? 409 : 403);
+        const body = await read(response);
+        assert.ok(!body.ok);
+        assert.equal(body.error.code, code);
+        const action = await membershipAction({ locale, command: intent, confirmOwnership: true });
+        assert.ok(!action.ok);
+        assert.equal(action.error.code, code);
+      }
+      assert.deepEqual(await state(), before);
+    };
+    let created = false;
+    try {
+      await prisma.$transaction(async tx => {
+        await tx.user.createMany({ data: users.map(id => ({
+          id, name: "Isolated response-loss fixture", email: id + "@example.invalid", role: "CUSTOMER", emailVerified: true,
+        })) });
+        for (const [id, userId] of [[org, owner], [otherOrg, foreignOwner]]) {
+          await tx.organization.create({ data: {
+            id, slug: "retry-" + id, name: "Isolated response-loss fixture", status: "ACTIVE",
+            entitlement: { create: { plan: "FREE" } },
+          } });
+          await tx.organizationMembership.create({ data: { organizationId: id, userId, role: "OWNER" } });
+        }
+        await tx.organizationMembership.createMany({ data: [
+          { organizationId: org, userId: successor, role: "ADMIN" },
+          { organizationId: org, userId: staff, role: "STAFF" },
+        ] });
+      });
+      created = true;
+      const roleIntent = command("CHANGE_ROLE", { userId: staff, role: "ADMIN" });
+      const transferIntent = command("TRANSFER_OWNER", { userId: successor });
+      const removalIntent = command("REMOVE_MEMBER", { userId: staff });
+
+      sessionActor = foreignOwner; // Session mock deliberately claims global OWNER.
+      await deniedWithoutWrites(roleIntent, "FORBIDDEN");
+      sessionActor = owner;
+      const beforeConfirmation = await state();
+      const unconfirmed = await post(transferIntent);
+      assert.equal(unconfirmed.status, 422);
+      const invalid = await read(unconfirmed);
+      assert.ok(!invalid.ok);
+      assert.equal(invalid.error.code, "INVALID_INPUT");
+      assert.deepEqual(await state(), beforeConfirmation);
+
+      for (const intent of [roleIntent, transferIntent, removalIntent]) {
+        sessionActor = intent.action === "REMOVE_MEMBER" ? successor : owner;
+        const before = await state();
+        // Real handler and transaction commit; only consumption of the returned
+        // response body is dropped. This is not a real browser network outage.
+        const lostResponse = await post(intent, true);
+        assert.equal(lostResponse.status, 200);
+        await lostResponse.body?.cancel();
+        const committed = await state();
+        assert.equal(committed.operations, before.operations + 1);
+        assert.equal(committed.audits, before.audits + 1);
+        if (intent.action === "CHANGE_ROLE")
+          assert.equal(committed.members.find(row => row.userId === staff)?.role, "ADMIN");
+        if (intent.action === "TRANSFER_OWNER") {
+          assert.equal(committed.members.find(row => row.userId === successor)?.role, "OWNER");
+          assert.equal(committed.members.find(row => row.userId === owner)?.role, "ADMIN");
+        }
+        if (intent.action === "REMOVE_MEMBER")
+          assert.equal(committed.members.find(row => row.userId === staff)?.status, "REVOKED");
+        const retried = await Promise.all(Array.from({ length: 20 }, async (_, i) => {
+          const response = await post(intent, true, i % 2 ? "de" : "en");
+          assert.equal(response.status, 200);
+          const body = await read(response);
+          assert.ok(body.ok);
+          assert.equal(body.data.replayed, true);
+          return body.data.resultId;
+        }));
+        assert.equal(new Set(retried).size, 1);
+        assert.equal(await prisma.organizationOperation.count({ where: {
+          organizationId: org, actorId: sessionActor, operationId: intent.operationId,
+        } }), 1);
+        assert.deepEqual(await state(), committed);
+        await deniedWithoutWrites({ ...intent, userId: foreignOwner }, "CONFLICT");
+      }
+
+      sessionActor = owner; // Former owner is now ADMIN, even in the stale OWNER session.
+      await deniedWithoutWrites(command("TRANSFER_OWNER", { userId: owner }), "FORBIDDEN");
+      sessionActor = successor;
+      assert.equal((await post(command("REMOVE_MEMBER", { userId: owner }))).status, 200);
+      sessionActor = owner;
+      await deniedWithoutWrites(transferIntent, "FORBIDDEN");
+      sessionActor = staff;
+      await deniedWithoutWrites(roleIntent, "FORBIDDEN");
+      assert.equal(await prisma.organizationMembership.count({
+        where: { organizationId: org, role: "OWNER", status: "ACTIVE" },
+      }), 1);
+      assert.equal((await prisma.organizationEntitlement.findUniqueOrThrow({
+        where: { organizationId: org },
+      })).plan, "FREE");
+    } finally {
+      sessionActor = null;
+      if (created) await prisma.$transaction(async tx => {
+        const where = { organizationId: { in: [org, otherOrg] } };
+        await tx.organizationOperation.deleteMany({ where });
+        await tx.organizationInvitation.deleteMany({ where });
+        await tx.organizationAuditLog.deleteMany({ where });
+        await tx.organizationEntitlement.deleteMany({ where });
+        await tx.organizationMembership.deleteMany({ where });
+        await tx.organization.deleteMany({ where: { id: { in: [org, otherOrg] } } });
+        await tx.user.deleteMany({ where: { id: { in: users } } });
+      });
       await prisma.$disconnect();
     }
   },

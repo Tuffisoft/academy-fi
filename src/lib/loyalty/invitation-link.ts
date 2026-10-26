@@ -31,3 +31,8 @@ export function afterSignInHref(destination: SignInDestination | undefined, hash
   if (destination === "stempelfi-invitation") return invitationHref(readInvitationFragment(hash));
   return destination === "stempelfi" ? "/auth/continue?destination=stempelfi" : "/auth/continue";
 }
+
+/** Full document navigation avoids reusing a cached route's old fragment. */
+export function invitationDocumentHref(locale: "de" | "en", hash: string): string {
+  return "/" + locale + invitationHref(readInvitationFragment(hash));
+}

@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import { randomUUID } from "node:crypto";
 import { createOperationId } from "../src/lib/loyalty/operation-id";
-import { afterSignInHref, invitationSignInHref, parseSignInDestination, readInvitationFragment } from "../src/lib/loyalty/invitation-link";
+import { afterSignInHref, invitationDocumentHref, invitationSignInHref, parseSignInDestination, readInvitationFragment } from "../src/lib/loyalty/invitation-link";
 
 test("operation IDs use native crypto with its receiver when available", () => {
   const source = {
@@ -84,6 +84,31 @@ test("ordinary Academy and StempelFi login continuations keep their existing tar
   assert.equal(afterSignInHref("stempelfi", hash), "/auth/continue?destination=stempelfi");
   assert.equal(parseSignInDestination("stempelfi"), "stempelfi");
   assert.equal(parseSignInDestination("stempelfi-invitation"), "stempelfi-invitation");
+});
+
+test("document invitation return keeps DE/EN and a single canonical fragment without query credentials", () => {
+  const link = { organizationId: "company-123", token: "a".repeat(43) };
+  const login = new URL(invitationSignInHref(link), "https://example.invalid");
+  for (const locale of ["de", "en"] as const) {
+    const target = new URL(invitationDocumentHref(locale, login.hash), login.origin);
+    assert.equal(target.pathname, `/${locale}/tools/calem/stempelkarten/invitation`);
+    assert.equal(target.origin, login.origin);
+    assert.equal(target.search, "");
+    assert.equal(target.hash.split("#").length, 2);
+    assert.equal(new URLSearchParams(target.hash.slice(1)).getAll("token").length, 1);
+    assert.deepEqual(readInvitationFragment(target.hash), link);
+  }
+});
+
+test("document return rejects doubled cached fragments and ignores injected navigation targets", () => {
+  const original = "#organization=company-123&token=" + "a".repeat(43);
+  for (const locale of ["de", "en"] as const) {
+    for (const hash of ["", original + original, "#organization=company-123&token=short"])
+      assert.equal(invitationDocumentHref(locale, hash), `/${locale}/tools/calem/stempelkarten/invitation`);
+    const clean = invitationDocumentHref(locale, original + "&returnTo=https://foreign.invalid&destination=//foreign.invalid");
+    assert.equal(clean.includes("foreign"), false);
+    assert.deepEqual(readInvitationFragment(new URL(clean, "https://example.invalid").hash), readInvitationFragment(original));
+  }
 });
 import {
   membershipRequest,
