@@ -53,6 +53,15 @@ test("unit/build checks replace local and inherited provider credentials without
   assert.equal(source.OPENAI_API_KEY, "live-key");
 });
 
+test("isolation denies arbitrary inherited values without a maintained credential-name list", () => {
+  const source = Object.freeze({ PATH: "/tools", npm_execpath: "/tools/npm-cli.js", UNLISTED_SERVICE_ACCESS_VALUE: "private-value", OTHER_CONFIGURATION_VALUE: "enabled", NODE_OPTIONS: "--require=untrusted-loader" });
+  const env = isolatedEnvironment(source, [{ LOCAL_ONLY_SETTING: "private-value" }]);
+  assert.equal(env.PATH, source.PATH);
+  assert.equal(env.npm_execpath, source.npm_execpath);
+  for (const name of ["UNLISTED_SERVICE_ACCESS_VALUE", "OTHER_CONFIGURATION_VALUE", "NODE_OPTIONS", "LOCAL_ONLY_SETTING"]) assert.equal(env[name], "");
+  assert.equal(source.UNLISTED_SERVICE_ACCESS_VALUE, "private-value");
+});
+
 test("database tests reject missing opt-in, malformed URLs and the application database even with different credentials", () => {
   const app = "postgresql://app:secret@db.example/app";
   const optedIn = { ACADEMYFI_DATABASE_TEST: "1", CHAT_TEST_DATABASE_URL: "postgresql://test:test@db.example/quality_test" };
