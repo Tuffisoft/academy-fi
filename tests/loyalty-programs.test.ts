@@ -7,14 +7,18 @@ import { defaultProgram } from "../src/lib/loyalty/program-input";
 type Row = Record<string, unknown>;
 let role = "OWNER", active = true, session = true, banned = false;
 let operations: Row[] = [], programs: Row[] = [], assets: Row[] = [];
+let audits: Row[] = [];
+let transactionCalls = 0, failAudit = false, commitFailures = 0;
+let commitFailureCode = "P2034";
 const match = (row: Row, where: Row): boolean => Object.entries(where).every(([key, value]) =>
-  key === "organizationId_operationId" ? match(row, value as Row) : row[key] === value);
+  key === "organizationId_operationId" ? match(row, value as Row)
+    : value !== null && typeof value === "object" && "gt" in value ? String(row[key]) > String(value.gt) : row[key] === value);
 const tx = {
   $queryRaw: async () => [],
-  user: { findUnique: async ({ where }: { where: { id: string } }) => where.id === "actor" ? { id: "actor", role: "CUSTOMER", banned } : null },
+  user: { findUnique: async ({ where }: { where: { id: string } }) => ["actor", "otherActor"].includes(where.id) ? { id: where.id, role: "CUSTOMER", banned } : null },
   organizationMembership: { findUnique: async ({ where }: { where: { organizationId_userId: { organizationId: string; userId: string } } }) => {
     const key = where.organizationId_userId;
-    return key.organizationId === "org" && key.userId === "actor" ? { id: "member", role, status: active ? "ACTIVE" : "REVOKED", organization: { status: "ACTIVE", entitlement: { plan: "FREE" } } } : null;
+    return key.organizationId === "org" && ["actor", "otherActor"].includes(key.userId) ? { id: "member", role, status: active ? "ACTIVE" : "REVOKED", organization: { status: "ACTIVE", entitlement: { plan: "FREE" } } } : null;
   } },
   loyaltyOperation: {
     findUnique: async ({ where }: { where: Row }) => operations.find(row => match(row, where)) ?? null,
@@ -22,14 +26,25 @@ const tx = {
   },
   loyaltyProgram: {
     findFirst: async ({ where }: { where: Row }) => programs.find(row => match(row, where)) ?? null,
-    findMany: async ({ where }: { where: Row }) => programs.filter(row => match(row, where)),
+    findMany: async ({ where, take }: { where: Row; take: number }) => programs.filter(row => match(row, where)).sort((a, b) => String(a.id).localeCompare(String(b.id))).slice(0, take),
     create: async ({ data }: { data: Row }) => { const row = { ...data, id: randomUUID(), status: "DRAFT", revision: 1 }; programs.push(row); return row; },
     update: async ({ where, data }: { where: Row; data: Row }) => { const row = programs.find(row => match(row, where))!; Object.assign(row, { ...data, revision: Number(row.revision) + 1 }); return row; },
   },
   loyaltyAsset: { findFirst: async ({ where }: { where: Row }) => assets.find(row => match(row, where)) ?? null },
-  organizationAuditLog: { create: async () => ({}) },
+  organizationAuditLog: { create: async ({ data }: { data: Row }) => { if (failAudit) throw new Error("AUDIT_UNAVAILABLE"); audits.push(data); return data; } },
 };
-mock.module("../src/lib/prisma.ts", { namedExports: { prisma: { $transaction: async (callback: (transaction: typeof tx) => unknown) => callback(tx) } } });
+mock.module("../src/lib/prisma.ts", { namedExports: { prisma: { $transaction: async (callback: (transaction: typeof tx) => unknown) => {
+  transactionCalls++;
+  const snapshot = structuredClone({ operations, programs, assets, audits });
+  try {
+    const result = await callback(tx);
+    if (commitFailures > 0) { commitFailures--; throw Object.assign(new Error("COMMIT_FAILED"), { code: commitFailureCode }); }
+    return result;
+  } catch (error) {
+    ({ operations, programs, assets, audits } = snapshot);
+    throw error;
+  }
+} } } });
 mock.module("../src/lib/session.ts", { namedExports: { getCurrentSession: async () => session ? { user: { id: "actor", role: "STAFF" } } : null } });
 let save: typeof import("../src/lib/loyalty/programs").saveProgram;
 let read: typeof import("../src/lib/loyalty/programs").readPrograms;
@@ -82,4 +97,52 @@ test("service, action and HTTP reject STAFF, revoked access and foreign IDs", as
   assert.equal((await http(request(body), "org")).status, 401);
   const reply = await action(input, "en"); assert.equal(reply.ok, false);
   session = true;
+});
+
+test("reads validate empty identifiers before DB access and paginate exactly 50 own drafts", async () => {
+  role = "OWNER"; active = true; banned = false;
+  const beforeCalls = transactionCalls;
+  for (const [programId, after] of [["", undefined], [undefined, ""], ["id", "cursor"], ["../foreign", undefined]] as const) {
+    await assert.rejects(read("actor", "org", programId, after), /INVALID_INPUT/);
+  }
+  await assert.rejects(read("", "org"), /INVALID_INPUT/);
+  await assert.rejects(save("", command()), /INVALID_INPUT/);
+  assert.equal(transactionCalls, beforeCalls);
+  programs = Array.from({ length: 51 }, (_, i) => ({ ...command().config, id: `p${String(i).padStart(3, "0")}`, organizationId: "org", status: "DRAFT", revision: 1 }));
+  programs.push({ ...programs[0], id: "foreign", organizationId: "foreign" });
+  const first = await read("actor", "org");
+  assert.equal(first.programs.length, 50); assert.equal(first.next, "p049");
+  const second = await read("actor", "org", undefined, first.next!);
+  assert.deepEqual(second.programs.map(row => row.id), ["p050"]); assert.equal(second.next, null);
+  await assert.rejects(read("actor", "org", "foreign"), /NOT_FOUND/);
+});
+
+test("audit/commit failures roll back drafts and bounded retries keep the same operation", async () => {
+  operations = []; programs = []; assets = []; audits = []; role = "ADMIN"; active = true; banned = false; session = true;
+  const input = command();
+  failAudit = true;
+  const beforeFailure = transactionCalls;
+  const failed = await action(input, "de");
+  assert.equal(failed.ok, false); if (!failed.ok) assert.equal(failed.error.code, "UNAVAILABLE");
+  assert.equal(transactionCalls - beforeFailure, 1);
+  assert.equal(programs.length, 0); assert.equal(operations.length, 0); assert.equal(audits.length, 0);
+  failAudit = false; commitFailures = 2; commitFailureCode = "P2034";
+  const beforeRetry = transactionCalls;
+  const result = await save("actor", input);
+  assert.equal(transactionCalls - beforeRetry, 3);
+  assert.equal(programs.length, 1); assert.equal(operations.length, 1); assert.equal(audits.length, 1);
+  assert.equal(operations[0].operationId, input.operationId);
+  assert.equal((await save("actor", input)).program.id, result.program.id);
+  await assert.rejects(save("otherActor", input), /IDEMPOTENCY_CONFLICT/);
+  const snapshot = structuredClone(programs);
+  commitFailures = 3;
+  const beforeExhaustion = transactionCalls;
+  await assert.rejects(save("actor", { ...command(), programId: result.program.id, expectedRevision: 1, config: { ...input.config, name: "Uncommitted" } }), /COMMIT_FAILED/);
+  assert.equal(transactionCalls - beforeExhaustion, 3); assert.deepEqual(programs, snapshot);
+  commitFailureCode = "P1001"; commitFailures = 1;
+  const beforeConnectionFailure = transactionCalls;
+  await assert.rejects(save("actor", command()), /COMMIT_FAILED/);
+  assert.equal(transactionCalls - beforeConnectionFailure, 1); assert.deepEqual(programs, snapshot);
+  assert.equal(operations.length, 1); assert.equal(audits.length, 1);
+  commitFailures = 0;
 });

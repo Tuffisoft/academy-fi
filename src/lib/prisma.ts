@@ -11,6 +11,9 @@ function supportsCurrentSchema(client: PrismaClient | undefined): client is Pris
     typeof client?.organizationAuditLog?.create === "function" &&
     typeof client?.organizationInvitation?.findUnique === "function" &&
     typeof client?.organizationOperation?.findUnique === "function" &&
+    typeof client?.loyaltyProgram?.findMany === "function" &&
+    typeof client?.loyaltyAsset?.findFirst === "function" &&
+    typeof client?.loyaltyOperation?.findUnique === "function" &&
     typeof client?.leadSearch?.findMany === "function" &&
     client?.leadSearch?.fields?.googlePlaceIds &&
     client?.leadSearch?.fields?.runId &&

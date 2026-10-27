@@ -1,6 +1,16 @@
 import { z } from "zod";
 
 export const resourceId = z.string().regex(/^[a-zA-Z0-9_-]{1,160}$/);
+export const programReadRequest = z
+  .object({
+    organizationId: resourceId,
+    programId: resourceId.optional(),
+    after: resourceId.optional(),
+  })
+  .strict()
+  .refine(
+    (value) => value.programId === undefined || value.after === undefined,
+  );
 export const operationId = z
   .string()
   .uuid()

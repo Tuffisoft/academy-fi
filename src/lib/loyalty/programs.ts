@@ -3,16 +3,26 @@ import { createHash } from "node:crypto";
 import { prisma } from "@/lib/prisma";
 import type { Prisma } from "@/generated/prisma/client";
 import { getOrganizationContext } from "./organizations";
-import { programCommand, resourceId, type ProgramView } from "./program-input";
+import { programCommand, programReadRequest, resourceId, type ProgramView } from "./program-input";
 
 // Match the existing membership workflow's bounded wait for 20-way DB contention.
 export const programTransactionOptions = { maxWait: 60_000, timeout: 30_000 };
+
+async function programTransaction<T>(work: (tx: Prisma.TransactionClient) => Promise<T>): Promise<T> {
+  for (let attempt = 0; ; attempt++) {
+    try { return await prisma.$transaction(work, programTransactionOptions); }
+    catch (error) {
+      if (attempt < 2 && typeof error === "object" && error !== null && "code" in error && error.code === "P2034") continue;
+      throw error;
+    }
+  }
+}
 
 export class ProgramError extends Error {
   constructor(public readonly code: "INVALID_INPUT" | "FORBIDDEN" | "NOT_FOUND" | "REVISION_CONFLICT" | "IDEMPOTENCY_CONFLICT") { super(code); }
 }
 export async function programAccess(tx: Prisma.TransactionClient, actorId: string, organizationId: string) {
-  if (!resourceId.safeParse(organizationId).success) throw new ProgramError("INVALID_INPUT");
+  if (!resourceId.safeParse(actorId).success || !resourceId.safeParse(organizationId).success) throw new ProgramError("INVALID_INPUT");
   // Same lock order as membership changes: organization, identity, membership.
   await tx.$queryRaw`SELECT "id" FROM "Organization" WHERE "id" = ${organizationId} FOR UPDATE`;
   await tx.$queryRaw`SELECT "id" FROM "user" WHERE "id" = ${actorId} FOR UPDATE`;
@@ -30,21 +40,21 @@ function view(row: { symbol: string } & Omit<ProgramView, "symbol">): ProgramVie
   return { ...parsed, id: row.id, revision: row.revision };
 }
 export async function readPrograms(actorId: string, organizationId: string, programId?: string, after?: string) {
-  if ((programId && !resourceId.safeParse(programId).success) || (after && !resourceId.safeParse(after).success)) throw new ProgramError("INVALID_INPUT");
-  return prisma.$transaction(async tx => {
+  if (!resourceId.safeParse(actorId).success || !programReadRequest.safeParse({ organizationId, programId, after }).success) throw new ProgramError("INVALID_INPUT");
+  return programTransaction(async tx => {
     await programAccess(tx, actorId, organizationId);
     const rows = await tx.loyaltyProgram.findMany({ where: { organizationId, status: "DRAFT", ...(programId ? { id: programId } : {}), ...(after ? { id: { gt: after } } : {}) },
       select: selection, orderBy: { id: "asc" }, take: programId ? 1 : 51 });
     if (programId && !rows.length) throw new ProgramError("NOT_FOUND");
     return { programs: rows.slice(0, 50).map(view), next: rows.length > 50 ? rows[49].id : null };
-  }, programTransactionOptions);
+  });
 }
 export async function saveProgram(actorId: string, raw: unknown) {
   const parsed = programCommand.safeParse(raw);
-  if (!parsed.success) throw new ProgramError("INVALID_INPUT");
+  if (!resourceId.safeParse(actorId).success || !parsed.success) throw new ProgramError("INVALID_INPUT");
   const input = parsed.data;
   const fingerprint = createHash("sha256").update(JSON.stringify(input)).digest("hex");
-  return prisma.$transaction(async tx => {
+  return programTransaction(async tx => {
     const context = await programAccess(tx, actorId, input.organizationId);
     const key = { organizationId: input.organizationId, actorId, operationId: input.operationId };
     const previous = await tx.loyaltyOperation.findUnique({ where: { organizationId_operationId: { organizationId: key.organizationId, operationId: key.operationId } } });
@@ -67,5 +77,5 @@ export async function saveProgram(actorId: string, raw: unknown) {
     await tx.organizationAuditLog.create({ data: { organizationId: input.organizationId, actorId, actorMembershipId: context.membershipId,
       action: "PROGRAM_SAVE", targetId: row.id, reason: "Program draft saved" } });
     return { program: view(row), replayed: false };
-  }, programTransactionOptions);
+  });
 }
