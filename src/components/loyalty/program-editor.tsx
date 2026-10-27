@@ -1,6 +1,7 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
 import { useLocale, useTranslations } from "next-intl";
+import { z } from "zod";
 import { useRouter } from "@/i18n/navigation";
 import { saveProgramAction } from "@/lib/loyalty/program.actions";
 import { createOperationId } from "@/lib/loyalty/operation-id";
@@ -33,6 +34,10 @@ type Pending = {
   expectedRevision?: number;
   config: ProgramConfig;
 };
+const uploadedAsset = z.object({
+  ok: z.literal(true),
+  data: z.object({ id: resourceId }),
+});
 export function ProgramEditor({
   organizationId,
   slug,
@@ -77,7 +82,19 @@ export function ProgramEditor({
   const [invalidFields, setInvalidFields] = useState<string[]>([]);
   const pending = useRef<Pending | null>(null);
   const upload = useRef<{ file: File; operationId: string } | null>(null);
-  const dirty = saved !== JSON.stringify(config) || uncertain || uploading;
+  const validation = programConfig.safeParse(config);
+  const targetInvalid =
+    !Number.isInteger(config.target) ||
+    config.target < 1 ||
+    config.target > 2147483647;
+  const colorIssues = validation.success
+    ? []
+    : validation.error.issues.filter(
+        (issue) =>
+          issue.path[0] === "backgroundColor" || issue.path[0] === "textColor",
+      );
+  const dirty =
+    saved !== JSON.stringify(config) || uncertain || uploading || uploadRetry;
   useEffect(() => {
     if (!dirty) return;
     const before = (event: BeforeUnloadEvent) => {
@@ -85,11 +102,27 @@ export function ProgramEditor({
     };
     const click = (event: MouseEvent) => {
       const target = event.target;
+      const link = target instanceof Element ? target.closest("a[href]") : null;
       if (
-        target instanceof Element &&
-        target.closest("a[href]") &&
-        !window.confirm(t("unsaved"))
-      ) {
+        !(link instanceof HTMLAnchorElement) ||
+        event.defaultPrevented ||
+        event.button !== 0 ||
+        event.ctrlKey ||
+        event.metaKey ||
+        event.shiftKey ||
+        event.altKey ||
+        link.target === "_blank" ||
+        link.hasAttribute("download")
+      )
+        return;
+      const destination = new URL(link.href);
+      if (
+        destination.origin === location.origin &&
+        destination.pathname === location.pathname &&
+        destination.search === location.search
+      )
+        return;
+      if (!window.confirm(t("unsaved"))) {
         event.preventDefault();
         event.stopPropagation();
       }
@@ -120,15 +153,22 @@ export function ProgramEditor({
     value: ProgramConfig[K],
   ) => {
     setConfig((previous) => ({ ...previous, [key]: value }));
-    const textField = key === "name" ? programTextFields.name : key === "description" ? programTextFields.description : key === "reward" ? programTextFields.reward : undefined;
+    const textField =
+      key === "name"
+        ? programTextFields.name
+        : key === "description"
+          ? programTextFields.description
+          : key === "reward"
+            ? programTextFields.reward
+            : undefined;
     if (textField?.safeParse(value).success) {
-      setInvalidFields(fields => fields.filter(field => field !== key));
+      setInvalidFields((fields) => fields.filter((field) => field !== key));
     }
     setMessage("");
   };
   async function save() {
     if (preview) return;
-    if (busy || uploading || conflict) return;
+    if (busy || uploading || uploadRetry || conflict) return;
     if (!pending.current) {
       const parsed = programConfig.safeParse(config);
       if (!parsed.success) {
@@ -220,23 +260,9 @@ export function ProgramEditor({
         `/api/loyalty/organizations/${organizationId}/assets`,
         { method: "POST", body, headers: { "Accept-Language": locale } },
       );
-      const reply: unknown = await response.json();
-      if (
-        !response.ok ||
-        !reply ||
-        typeof reply !== "object" ||
-        !("ok" in reply) ||
-        reply.ok !== true ||
-        !("data" in reply) ||
-        !reply.data ||
-        typeof reply.data !== "object" ||
-        !("id" in reply.data) ||
-        typeof reply.data.id !== "string"
-      )
-        throw new Error("UPLOAD_FAILED");
-      if (!resourceId.safeParse(reply.data.id).success)
-        throw new Error("INVALID_ASSET_ID");
-      change("logoAssetId", reply.data.id);
+      const reply = uploadedAsset.safeParse(await response.json());
+      if (!response.ok || !reply.success) throw new Error("UPLOAD_FAILED");
+      change("logoAssetId", reply.data.data.id);
       upload.current = null;
       setMessage("");
     } catch {
@@ -249,17 +275,31 @@ export function ProgramEditor({
   }
   return (
     <div className="grid min-w-0 gap-8 lg:grid-cols-2">
-      <div className="order-first lg:order-last">
+      <div
+        id="program-preview"
+        tabIndex={-1}
+        className="order-first scroll-mt-5 focus-visible:outline-2 lg:order-last"
+      >
         <ProgramPreview config={config} organizationId={organizationId} />
       </div>
       <form
-        className="grid min-w-0 content-start gap-5"
+        className="grid min-w-0 content-start gap-5 [&_button]:h-auto [&_button]:min-h-11 [&_button]:whitespace-normal [&_button]:py-3"
         onSubmit={(event) => {
           event.preventDefault();
           void save();
         }}
         noValidate
       >
+        <p role="status" className="rounded-lg border bg-muted p-3 text-sm">
+          {current
+            ? t("revision", { revision: current.revision })
+            : t("notSaved")}
+          {dirty && (
+            <span className="mt-1 block font-medium">
+              {t("unsavedChanges")}
+            </span>
+          )}
+        </p>
         {preview && (
           <p role="note" className="rounded-lg border bg-muted p-4 text-sm">
             {t("demoNote")}
@@ -320,10 +360,28 @@ export function ProgramEditor({
                   }
                 />
               )}
-              <div id={`program-${key}-length`} className={`text-sm ${config[key].length > programTextLimits[key] ? "text-red-700 dark:text-red-400" : config[key].length === programTextLimits[key] ? "text-yellow-700 dark:text-yellow-400" : "text-muted-foreground"}`}>
-                <span>{t("characterCount", { count: config[key].length, max: programTextLimits[key] })}</span>
-                <span role="status" aria-live="polite" className="block font-medium">
-                  {config[key].length > programTextLimits[key] ? t("textTooLong", { max: programTextLimits[key] }) : config[key].length === programTextLimits[key] ? t("characterLimitReached", { max: programTextLimits[key] }) : ""}
+              <div
+                id={`program-${key}-length`}
+                className={`text-sm ${config[key].length > programTextLimits[key] ? "text-red-700 dark:text-red-400" : config[key].length === programTextLimits[key] ? "text-yellow-700 dark:text-yellow-400" : "text-muted-foreground"}`}
+              >
+                <span>
+                  {t("characterCount", {
+                    count: config[key].length,
+                    max: programTextLimits[key],
+                  })}
+                </span>
+                <span
+                  role="status"
+                  aria-live="polite"
+                  className="block font-medium"
+                >
+                  {config[key].length > programTextLimits[key]
+                    ? t("textTooLong", { max: programTextLimits[key] })
+                    : config[key].length === programTextLimits[key]
+                      ? t("characterLimitReached", {
+                          max: programTextLimits[key],
+                        })
+                      : ""}
                 </span>
               </div>
               {invalidFields.includes(key) && (
@@ -358,11 +416,15 @@ export function ProgramEditor({
                   event.target.value === "" ? NaN : Number(event.target.value),
                 )
               }
-              aria-invalid={invalidFields.includes("target")}
-              aria-describedby={
-                invalidFields.includes("target") ? "program-status" : undefined
-              }
+              aria-invalid={targetInvalid}
+              aria-describedby="program-target-hint"
             />
+            <p
+              id="program-target-hint"
+              className={`text-sm ${targetInvalid ? "text-red-700 dark:text-red-400" : "text-muted-foreground"}`}
+            >
+              {t("targetHint")}
+            </p>
           </div>
           {(["backgroundColor", "textColor"] as const).map((key) => (
             <div key={key} className="grid gap-2">
@@ -384,14 +446,25 @@ export function ProgramEditor({
                   maxLength={7}
                   value={config[key]}
                   onChange={(event) => change(key, event.target.value)}
-                  aria-invalid={invalidFields.includes(key)}
-                  aria-describedby={
-                    invalidFields.includes(key) ? "program-status" : undefined
-                  }
+                  aria-invalid={colorIssues.some(
+                    (issue) => issue.path[0] === key,
+                  )}
+                  aria-describedby="program-color-hint"
                 />
               </div>
             </div>
           ))}
+          <p
+            id="program-color-hint"
+            role={colorIssues.length ? "alert" : undefined}
+            className={`text-sm ${colorIssues.length ? "text-red-700 dark:text-red-400" : "text-muted-foreground"}`}
+          >
+            {t(
+              colorIssues.some((issue) => issue.message === "CONTRAST")
+                ? "contrastHint"
+                : "colorHint",
+            )}
+          </p>
           <div className="grid gap-2">
             <label id="program-symbol-label" htmlFor="program-symbol">
               {t("symbol")}
@@ -425,7 +498,7 @@ export function ProgramEditor({
             <Input
               id="program-logo"
               type="file"
-              disabled={preview}
+              disabled={preview || uploadRetry}
               accept="image/png,image/jpeg,image/webp"
               onChange={(event) => {
                 void uploadLogo(event.target.files?.[0]);
@@ -436,19 +509,34 @@ export function ProgramEditor({
               <Button
                 type="button"
                 variant="outline"
+                disabled={uploadRetry}
                 onClick={() => change("logoAssetId", null)}
               >
                 {t("removeLogo")}
               </Button>
             )}
             {uploadRetry && !uploading && (
-              <Button
-                type="button"
-                variant="outline"
-                onClick={() => void uploadLogo()}
-              >
-                {t("retryUpload")}
-              </Button>
+              <div className="grid gap-2">
+                <Button
+                  type="button"
+                  variant="outline"
+                  onClick={() => void uploadLogo()}
+                >
+                  {t("retryUpload")}
+                </Button>
+                <Button
+                  type="button"
+                  variant="outline"
+                  onClick={() => {
+                    upload.current = null;
+                    setUploadRetry(false);
+                    setMessage("");
+                    setError(false);
+                  }}
+                >
+                  {t("discardUpload")}
+                </Button>
+              </div>
             )}
           </div>
         </fieldset>
@@ -461,9 +549,28 @@ export function ProgramEditor({
         </p>
         <Button
           type="submit"
-          disabled={preview || busy || uploading || conflict}
+          disabled={
+            preview ||
+            busy ||
+            uploading ||
+            uploadRetry ||
+            conflict ||
+            (!uncertain && !validation.success)
+          }
         >
           {busy ? t("saving") : uncertain ? t("retry") : t("save")}
+        </Button>
+        <Button
+          type="button"
+          variant="outline"
+          className="lg:hidden"
+          onClick={() => {
+            const element = document.getElementById("program-preview");
+            element?.focus();
+            element?.scrollIntoView({ behavior: "smooth", block: "start" });
+          }}
+        >
+          {t("showPreview")}
         </Button>
         {conflict && (
           <Button

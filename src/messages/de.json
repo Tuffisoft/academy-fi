@@ -1,6 +1,14 @@
 {
   "stempelfi": {
     "programEditor": {
+      "revision": "Bestätigter Speicherstand: Revision {revision}",
+      "notSaved": "Dieser Entwurf wurde noch nicht gespeichert.",
+      "unsavedChanges": "Ungespeicherte Änderungen",
+      "targetHint": "Bitte eine ganze Zahl von 1 bis 2.147.483.647 eingeben.",
+      "colorHint": "Sechsstellige HEX-Farben; Text und Hintergrund benötigen mindestens 4,5:1 Kontrast.",
+      "contrastHint": "Der Kontrast ist zu gering. Bitte Text- oder Hintergrundfarbe ändern (mindestens 4,5:1).",
+      "discardUpload": "Uploadversuch verwerfen und bisheriges Logo behalten",
+      "showPreview": "Zur Kartenvorschau",
       "characterCount": "{count} / {max} Zeichen",
       "characterLimitReached": "Du hast die maximale Länge von {max} Zeichen erreicht.",
       "placeholders": {
@@ -32,7 +40,7 @@
       "saving": "Wird gespeichert …",
       "saved": "Entwurf gespeichert.",
       "uploading": "Logo wird hochgeladen …",
-      "uploadFailed": "Logo konnte nicht gespeichert werden. Bitte erneut versuchen.",
+      "uploadFailed": "Der Logo-Upload konnte nicht bestätigt werden. Bitte denselben Upload wiederholen oder den Versuch verwerfen. Der Entwurf kann bis dahin nicht gespeichert werden.",
       "invalid": "Bitte Eingaben prüfen: Name und Belohnung sind erforderlich, Ziel muss eine positive ganze Zahl sein; Farben benötigen mindestens 4,5:1 Kontrast.",
       "unsaved": "Ungespeicherte Änderungen verwerfen?",
       "retry": "Mit derselben Vorgangskennung erneut speichern",

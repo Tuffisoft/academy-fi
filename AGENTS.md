@@ -1,6 +1,6 @@
 # AcademyFi: Arbeitsregeln
 
-Version 1.15 · 27.10.2026 · Projektweit. Bestehende Fehler erlauben keine neuen.
+Version 1.16 · 27.10.2026 · Projektweit. Bestehende Fehler erlauben keine neuen.
 
 ## Kontext und Dokumentationspflege
 
@@ -32,6 +32,7 @@ Verletzungen sperren betroffene Übernahme bis Behebung oder ausdrücklich zulä
 - **Q-C-02a – Zod-Standard (Auftraggeberentscheidung 27.10.2026):** Zod projektweit für die Laufzeitvalidierung an Eingabe- und Vertrauensgrenzen verwenden: insbesondere Anmeldung/Registrierung, Formular- und Schreibfelder, API-/Action-Eingaben sowie Filter, IDs, Sortierung und Pagination vor Datenbankabfragen und Werte vor Datenbankschreibvorgängen. Gemeinsame Schemas für Client und Server nutzen, wo sinnvoll; Clientprüfung ersetzt nie Serverprüfung. Unbekannte externe Daten und untypisierte Datenbank-/JSON-Ergebnisse vor Nutzung mit Zod prüfen. Bereits typisierte Prisma-Ergebnisse nicht ohne zusätzlichen Validierungsbedarf redundant parsen. Zod ersetzt weder Autorisierung/Mandantentrennung noch parametrisierte Abfragen, DB-Constraints oder Transaktionen. Bestehende Auth-Protokolle und Anbieterprüfungen erhalten. Geplant: vor Feierabend gemeinsam das gesamte Projekt systematisch auf sinnvolle Zod-Einsatzstellen durchgehen; dieser Merkeintrag beauftragt noch keine pauschale Umstellung.
 - **Q-C-03:** Strict Mode erhalten; neues any, Typumgehungen/deaktivierte Regeln nur lokal konkret begründet. Unbekannte externe Daten eingrenzen; keine Fehlerverdeckung durch Prüfabschaltung. Typecheck/Review nachweisen.
 - **Q-C-04:** Aufgabenbezogen mit vorhandenen Mustern ändern; Abhängigkeiten auf Nutzen, Kompatibilität, Lizenz/Wartbarkeit prüfen und im npm-Lockfile erfassen. Kein beiläufiges Stack-Upgrade.
+- **Q-C-04a – Objektspeicher (Auftraggeberentscheidung 27.10.2026):** Cloudflare R2 ist der bevorzugte Objektspeicher für neue Tools und neue Datei-/Bildablagen. Vorhandene R2-Muster wiederverwenden, dabei toolbezogene Konfiguration, Berechtigungen, Schlüsselräume und Testumgebungen ausdrücklich abgrenzen; bestehende StempelFi-Zugänge gewähren nicht automatisch Zugriff für andere Tools. Private Ablage als Standard, serverseitige Autorisierung/Validierung und begrenzte Uploads/Abrufe erhalten. Bestehende UploadThing- oder andere Ablagen nicht ohne konkreten Auftrag migrieren, umstellen oder löschen. Kosten, Aufbewahrung und Löschverhalten im jeweiligen Toolumfang berücksichtigen; keine Secrets in Dokumentation/Chat speichern.
 - **Q-C-05:** Fehler gezielt behandeln/weitergeben; keine unbegründet leeren Catches, Scheinerfolge, Secrets in Repository/Browser oder sensiblen Rohdaten in Logs. Fehlerfälle/Ausgaben prüfen; Geheimnisoffenlegung sperrt Freigabe.
 - **Q-C-06:** Jede Änderung mit Prüfer, Stand, Befunden/Erledigung menschen-/agentenreviewen und dokumentieren; Tests ersetzen kein Review.
 - **Q-C-07:** Rollen, Buchungen, Billing, Löschung/Migration reversibel vorbereiten und isoliert testen. Konkrete Auftraggeberfreigabe für Stand/Umfang vor Übernahme/Merge/produktiver Anwendung; nicht erneut vor reversibler Vorbereitung fragen.

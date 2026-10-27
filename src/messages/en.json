@@ -1,6 +1,14 @@
 {
   "stempelfi": {
     "programEditor": {
+      "revision": "Confirmed saved version: revision {revision}",
+      "notSaved": "This draft has not been saved yet.",
+      "unsavedChanges": "Unsaved changes",
+      "targetHint": "Enter a whole number from 1 to 2,147,483,647.",
+      "colorHint": "Six-digit HEX colors; text and background require at least 4.5:1 contrast.",
+      "contrastHint": "The contrast is too low. Change the text or background color (at least 4.5:1).",
+      "discardUpload": "Discard upload attempt and keep previous logo",
+      "showPreview": "Go to card preview",
       "characterCount": "{count} / {max} characters",
       "characterLimitReached": "You have reached the maximum length of {max} characters.",
       "placeholders": {
@@ -32,7 +40,7 @@
       "saving": "Saving …",
       "saved": "Draft saved.",
       "uploading": "Uploading logo …",
-      "uploadFailed": "The logo could not be saved. Please try again.",
+      "uploadFailed": "The logo upload could not be confirmed. Retry the same upload or discard the attempt. The draft cannot be saved until then.",
       "invalid": "Please check your input: name and reward are required, the target must be a positive integer; colors require at least 4.5:1 contrast.",
       "unsaved": "Discard unsaved changes?",
       "retry": "Retry saving with the same operation ID",
