@@ -1,6 +1,9 @@
 {
   "stempelfi": {
     "programEditor": {
+      "historyUnsaved": "Your changes have not been saved. Would you like to keep editing or discard the changes and leave this page?",
+      "keepEditing": "Keep editing",
+      "discardAndLeave": "Discard and leave",
       "revision": "Confirmed saved version: revision {revision}",
       "notSaved": "This draft has not been saved yet.",
       "unsavedChanges": "Unsaved changes",
@@ -129,7 +132,7 @@
     "notConfigured": "Not configured",
     "activeMemberships": "Active memberships",
     "portalFoundation": "Your business area is ready",
-    "portalFoundationNote": "These are your stored business details. The card editor, transactions and analytics will follow. The separate design preview contains sample data only.",
+    "portalFoundationNote": "View your business details and design and save program drafts here. Transactions and analytics will follow. The separate design preview contains sample data only.",
     "internalDetail": "Internal business details",
     "navigation": "StempelFi navigation",
     "pricing": "Pricing",

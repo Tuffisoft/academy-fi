@@ -5,6 +5,17 @@ import { z } from "zod";
 import { useRouter } from "@/i18n/navigation";
 import { saveProgramAction } from "@/lib/loyalty/program.actions";
 import { createOperationId } from "@/lib/loyalty/operation-id";
+import { programHistory } from "@/lib/loyalty/program-history";
+import {
+  AlertDialog,
+  AlertDialogContent,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogCancel,
+  AlertDialogAction,
+} from "@/components/ui/alert-dialog";
 import {
   defaultProgram,
   programConfig,
@@ -82,6 +93,8 @@ export function ProgramEditor({
   const [invalidFields, setInvalidFields] = useState<string[]>([]);
   const pending = useRef<Pending | null>(null);
   const upload = useRef<{ file: File; operationId: string } | null>(null);
+  const reloadConfirmed = useRef(false);
+  const [historyLeave, setHistoryLeave] = useState<(() => void) | null>(null);
   const validation = programConfig.safeParse(config);
   const targetInvalid =
     !Number.isInteger(config.target) ||
@@ -98,7 +111,7 @@ export function ProgramEditor({
   useEffect(() => {
     if (!dirty) return;
     const before = (event: BeforeUnloadEvent) => {
-      event.preventDefault();
+      if (!reloadConfirmed.current) event.preventDefault();
     };
     const click = (event: MouseEvent) => {
       const target = event.target;
@@ -127,25 +140,15 @@ export function ProgramEditor({
         event.stopPropagation();
       }
     };
-    let restoring = false;
-    const pop = (event: PopStateEvent) => {
-      if (restoring) {
-        restoring = false;
-        return;
-      }
-      if (!window.confirm(t("unsaved"))) {
-        event.stopImmediatePropagation();
-        restoring = true;
-        window.history.forward();
-      }
-    };
+    const unblockHistory = programHistory().block((proceed) =>
+      setHistoryLeave(() => proceed),
+    );
     window.addEventListener("beforeunload", before);
     document.addEventListener("click", click, true);
-    window.addEventListener("popstate", pop, true);
     return () => {
       window.removeEventListener("beforeunload", before);
       document.removeEventListener("click", click, true);
-      window.removeEventListener("popstate", pop, true);
+      unblockHistory();
     };
   }, [dirty, t]);
   const change = <K extends keyof ProgramConfig>(
@@ -275,6 +278,39 @@ export function ProgramEditor({
   }
   return (
     <div className="grid min-w-0 gap-8 lg:grid-cols-2">
+      <AlertDialog
+        open={historyLeave !== null}
+        onOpenChange={(open) => {
+          if (!open) setHistoryLeave(null);
+        }}
+      >
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>{t("unsavedChanges")}</AlertDialogTitle>
+            <AlertDialogDescription>
+              {t("historyUnsaved")}
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel
+              className="h-auto min-h-11 whitespace-normal"
+              onClick={() => setHistoryLeave(null)}
+            >
+              {t("keepEditing")}
+            </AlertDialogCancel>
+            <AlertDialogAction
+              className="h-auto min-h-11 whitespace-normal"
+              onClick={() => {
+                const proceed = historyLeave;
+                setHistoryLeave(null);
+                proceed?.();
+              }}
+            >
+              {t("discardAndLeave")}
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
       <div
         id="program-preview"
         tabIndex={-1}
@@ -578,7 +614,10 @@ export function ProgramEditor({
             variant="outline"
             className="h-auto whitespace-normal"
             onClick={() => {
-              if (window.confirm(t("unsaved"))) window.location.reload();
+              if (window.confirm(t("unsaved"))) {
+                reloadConfirmed.current = true;
+                window.location.reload();
+              }
             }}
           >
             {t("reload")}

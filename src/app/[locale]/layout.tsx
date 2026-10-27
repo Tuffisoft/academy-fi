@@ -10,6 +10,7 @@ import "../globals.css";
 import { ThemeProvider } from "@/lib/providers/theme-provider";
 import { Footer } from "@/components/fi/footer";
 import { Toaster } from "@/components/ui/sonner";
+import { ProgramHistoryTracker } from "@/components/loyalty/program-history-tracker";
 
 const fontSans = Raleway({
   subsets: ["latin"],
@@ -63,6 +64,7 @@ export default async function LocaleLayout({
         className={`${fontSans.variable} ${fontSerif.variable} ${fontMono.variable} flex min-h-screen flex-col antialiased`}
       >
         <NextIntlClientProvider>
+          <ProgramHistoryTracker />
           <ThemeProvider attribute="class">
             <div className="mx-auto flex w-full max-w-6xl flex-1 flex-col">
               {children}

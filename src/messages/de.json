@@ -1,6 +1,9 @@
 {
   "stempelfi": {
     "programEditor": {
+      "historyUnsaved": "Deine Änderungen sind noch nicht gespeichert. Möchtest du weiter bearbeiten oder die Änderungen verwerfen und die Seite verlassen?",
+      "keepEditing": "Weiter bearbeiten",
+      "discardAndLeave": "Verwerfen und verlassen",
       "revision": "Bestätigter Speicherstand: Revision {revision}",
       "notSaved": "Dieser Entwurf wurde noch nicht gespeichert.",
       "unsavedChanges": "Ungespeicherte Änderungen",
@@ -129,7 +132,7 @@
     "notConfigured": "Nicht eingerichtet",
     "activeMemberships": "Aktive Mitgliedschaften",
     "portalFoundation": "Dein Unternehmensbereich ist eingerichtet",
-    "portalFoundationNote": "Hier siehst du die gespeicherten Unternehmensdaten. Karteneditor, Buchungen und Auswertungen folgen. Die separate Designvorschau enthält ausschließlich Beispieldaten.",
+    "portalFoundationNote": "Hier siehst du deine Unternehmensdaten und kannst Programmentwürfe gestalten und speichern. Buchungen und Auswertungen folgen. Die separate Designvorschau enthält ausschließlich Beispieldaten.",
     "internalDetail": "Interne Unternehmensdetails",
     "navigation": "StempelFi Navigation",
     "pricing": "Preise",
