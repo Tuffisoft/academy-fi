@@ -1,5 +1,11 @@
 {
   "stempelfi": {
+    "workspace": {
+      "name": "Unternehmensname", "slug": "Portal-Kennung", "status": "Status",
+      "navigation": "Unternehmensnavigation", "overview": "Übersicht", "members": "Mitarbeiter", "programs": "Programme", "scanner": "Scanner", "requests": "Anfragen", "rewards": "Belohnungen", "analytics": "Statistik", "settings": "Einstellungen", "billing": "Abrechnung", "unavailable": "Noch nicht verfügbar", "retry": "Erneut laden", "support": "Interner Support · ausgewähltes Unternehmen", "yourRole": "Deine Rolle",
+      "roles": { "OWNER": "Inhaber", "ADMIN": "Administrator", "STAFF": "Mitarbeiter" },
+      "searchTitle": "Unternehmen suchen", "searchLabel": "Unternehmensname oder exakte ID", "search": "Suchen", "searchHint": "Bis zu 160 Zeichen. Ohne Suchbegriff werden alle Unternehmen angezeigt.", "invalidSearch": "Bitte höchstens 160 Zeichen ohne Steuerzeichen eingeben und gültige Seitenparameter verwenden.", "noResults": "Keine passenden Unternehmen gefunden.", "id": "Unternehmens-ID", "backSearch": "Zur Unternehmenssuche", "priority": "Priorisierter Support"
+    },
     "overviewHeading": "Deine Karten. Mehr Wiederkommen.",
     "overviewIntro": "Deine Programme auf einen Blick. Gestalte den nächsten guten Grund für einen Besuch.",
     "programsIntro": "Ein veröffentlichtes Beispiel und Platz für deine nächste Idee.",

@@ -39,6 +39,7 @@ function tests(paths, env) {
       "tests/academy-access.test.ts",
       "tests/loyalty-foundation.test.ts",
       "tests/loyalty-portal.test.ts",
+      "tests/loyalty-workspace.test.ts",
       "tests/loyalty-customer-actions.test.ts",
       "tests/loyalty-memberships.test.ts",
       "tests/loyalty-membership-web.test.ts",

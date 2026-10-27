@@ -6,6 +6,7 @@ import { getPortalOrganization, OrganizationAccessError } from "@/lib/loyalty/or
 import { getMembershipOverview } from "@/lib/loyalty/membership-view";
 import { ProductHeader } from "@/components/loyalty/stempelfi-design";
 import { MembershipPanel } from "@/components/loyalty/membership-panel";
+import { PortalNavigation } from "@/components/loyalty/portal-navigation";
 
 export const dynamic = "force-dynamic";
 export const metadata = { title: "StempelFi", referrer: "no-referrer", robots: { index: false, follow: false } } as const;
@@ -21,5 +22,5 @@ export default async function MembersPage({ params }: { params: Promise<{ organi
     if (error instanceof OrganizationAccessError) notFound();
     return <main><ProductHeader portal /><p role="alert" className="p-5">{t("errors.UNAVAILABLE")}</p></main>;
   }
-  return <main className="min-w-0"><ProductHeader portal /><MembershipPanel overview={overview} /></main>;
+  return <main className="min-w-0"><ProductHeader portal /><div className="p-5"><PortalNavigation slug={organizationSlug} role={overview.role} internal={false} active="members" /></div><MembershipPanel overview={overview} /></main>;
 }

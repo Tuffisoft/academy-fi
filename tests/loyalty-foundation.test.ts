@@ -9,6 +9,9 @@ let slots = 1;
 let writes = 0;
 let locks = 0;
 let portalQueries: unknown[] = [];
+let searchRows: { id: string }[] = [];
+let portalFound = false;
+let auditFails = false;
 const db = {
   user: { findUnique: async () => user },
   organizationMembership: {
@@ -17,11 +20,11 @@ const db = {
     upsert: async () => { writes++; return { id: "new-member" }; },
   },
   organization: {
-    findUnique: async () => { detailReads++; return { id: "org" }; },
-    findMany: async (query: unknown) => { portalQueries.push(query); return []; },
-    findFirst: async (query: unknown) => { portalQueries.push(query); return null; },
+    findUnique: async () => { detailReads++; return portalFound ? { id: "org", status: member?.organization.status, entitlement: member?.organization.entitlement } : { id: "org" }; },
+    findMany: async (query: unknown) => { portalQueries.push(query); return searchRows; },
+    findFirst: async (query: unknown) => { portalQueries.push(query); return portalFound ? { id: "org" } : null; },
   },
-  organizationAuditLog: { create: async () => { writes++; } },
+  organizationAuditLog: { create: async () => { if (auditFails) throw new Error("Audit unavailable"); writes++; } },
   organizationInvitation: { updateMany: async () => ({ count: 0 }), count: async () => 0, findFirst: async () => null },
   $queryRaw: async () => { locks++; return [{ now: new Date() }]; },
 };
@@ -32,15 +35,74 @@ let addStaffMembership: typeof import("../src/lib/loyalty/organizations").addSta
 let getPortalOrganizations: typeof import("../src/lib/loyalty/organizations").getPortalOrganizations;
 let getPortalOrganization: typeof import("../src/lib/loyalty/organizations").getPortalOrganization;
 let createOrganization: typeof import("../src/lib/loyalty/organizations").createOrganization;
+let searchInternalOrganizations: typeof import("../src/lib/loyalty/organizations").searchInternalOrganizations;
 before(async () => {
-  ({ getOrganizationContext, getInternalOrganizationDetail, addStaffMembership, getPortalOrganizations, getPortalOrganization, createOrganization } = await import("../src/lib/loyalty/organizations"));
+  ({ getOrganizationContext, getInternalOrganizationDetail, addStaffMembership, getPortalOrganizations, getPortalOrganization, createOrganization, searchInternalOrganizations } = await import("../src/lib/loyalty/organizations"));
 });
 
 function reset() {
   user = { id: "actor", role: "CUSTOMER", banned: false, email: "actor@example.invalid" };
   member = { id: "member", role: "OWNER", status: "ACTIVE", organization: { status: "ACTIVE", entitlement: { plan: "FREE" } } };
   slots = 1; writes = 0; locks = 0; portalQueries = [];
+  searchRows = []; portalFound = false; auditFails = false;
 }
+
+test("internal search denies non-owners and stale identities before reading any companies", async () => {
+  for (const role of ["INTERN", "CUSTOMER", "OWNER,INTERN", "ADMIN"]) {
+    reset(); user!.role = role;
+    await assert.rejects(searchInternalOrganizations("actor", { q: "foreign" }), /FORBIDDEN/);
+    assert.equal(portalQueries.length, 0);
+  }
+  reset(); user!.role = "OWNER"; user!.banned = true;
+  await assert.rejects(searchInternalOrganizations("actor"), /FORBIDDEN/);
+  reset(); user = null;
+  await assert.rejects(searchInternalOrganizations("actor"), /FORBIDDEN/);
+  assert.equal(portalQueries.length, 0);
+});
+
+test("internal search validates boundaries and keeps the search filter on cursor pages", async () => {
+  reset(); user!.role = "OWNER";
+  for (const q of ["a".repeat(161), "A\nB", "A\u0000B"]) await assert.rejects(searchInternalOrganizations("actor", { q }), /INVALID_INPUT/);
+  for (const after of ["", "../foreign", "a".repeat(161)]) await assert.rejects(searchInternalOrganizations("actor", { after }), /INVALID_INPUT/);
+  assert.equal(portalQueries.length, 0);
+  searchRows = Array.from({ length: 51 }, (_, i) => ({ id: `org-${i}` }));
+  const result = await searchInternalOrganizations("actor", { q: "  Café  ", after: "org-10" });
+  assert.equal(result.q, "Café"); assert.equal(result.organizations.length, 50); assert.equal(result.next, "org-49");
+  assert.deepEqual(portalQueries[0], {
+    where: { id: { gt: "org-10" }, OR: [{ id: "Café" }, { name: { contains: "Café", mode: "insensitive" } }] },
+    select: { id: true, name: true, slug: true, status: true, entitlement: { select: { plan: true } } },
+    orderBy: { id: "asc" }, take: 51,
+  });
+  searchRows = [];
+  const empty = await searchInternalOrganizations("actor", { q: " " });
+  assert.deepEqual(empty, { q: "", organizations: [], next: null });
+});
+
+test("portal basis without a tariff is readable by active roles while business writes remain denied", async () => {
+  for (const role of ["OWNER", "ADMIN", "STAFF"]) {
+    reset(); portalFound = true; member!.role = role; member!.organization.entitlement = null;
+    const result = await getPortalOrganization("actor", "own-company");
+    assert.equal(result.role, role); assert.equal(result.entitlement, null); assert.equal(result.internal, false);
+    await assert.rejects(getOrganizationContext("actor", "org"), /FORBIDDEN/);
+  }
+});
+
+test("portal reads recheck membership and status and reject manipulated roles or a revoked member", async () => {
+  for (const role of ["OWNER,ADMIN", "", "INTERN"]) {
+    reset(); portalFound = true; member!.role = role;
+    await assert.rejects(getPortalOrganization("actor", "own-company"), /FORBIDDEN/);
+  }
+  reset(); portalFound = true; member!.status = "REVOKED";
+  await assert.rejects(getPortalOrganization("actor", "own-company"), /FORBIDDEN/);
+  reset(); portalFound = true; member!.organization.status = "SUSPENDED";
+  await assert.rejects(getPortalOrganization("actor", "own-company"), /FORBIDDEN/);
+});
+
+test("internal detail refuses to return data when the audit write fails", async () => {
+  reset(); user!.role = "OWNER"; auditFails = true;
+  await assert.rejects(getInternalOrganizationDetail("actor", "org"), /Audit unavailable/);
+  assert.equal(writes, 0);
+});
 
 test("central tariff profiles match contractual limits; unconfirmed paid rights fail closed", () => {
   assert.deepEqual(loyaltyPlans, { FREE: { programs: 1, users: 1, cards: 100 }, PRO: { programs: 5, users: 5, cards: 1000 }, BUSINESS: { programs: null, users: 20, cards: 10000 } });

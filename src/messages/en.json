@@ -1,5 +1,11 @@
 {
   "stempelfi": {
+    "workspace": {
+      "name": "Business name", "slug": "Portal identifier", "status": "Status",
+      "navigation": "Business navigation", "overview": "Overview", "members": "Team", "programs": "Programmes", "scanner": "Scanner", "requests": "Requests", "rewards": "Rewards", "analytics": "Analytics", "settings": "Settings", "billing": "Billing", "unavailable": "Not available yet", "retry": "Reload", "support": "Internal support · selected business", "yourRole": "Your role",
+      "roles": { "OWNER": "Owner", "ADMIN": "Administrator", "STAFF": "Staff" },
+      "searchTitle": "Find businesses", "searchLabel": "Business name or exact ID", "search": "Search", "searchHint": "Up to 160 characters. Leave empty to show all businesses.", "invalidSearch": "Enter up to 160 characters without control characters and use valid page parameters.", "noResults": "No matching businesses found.", "id": "Business ID", "backSearch": "Back to business search", "priority": "Priority support"
+    },
     "overviewHeading": "Your cards. More reasons to return.",
     "overviewIntro": "Your programmes at a glance. Design the next good reason for a visit.",
     "programsIntro": "One published example and room for your next idea.",
