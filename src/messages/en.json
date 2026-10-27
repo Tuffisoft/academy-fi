@@ -1,7 +1,17 @@
 {
   "stempelfi": {
     "programEditor": {
-      "demoLink": "View new designer",
+      "characterCount": "{count} / {max} characters",
+      "characterLimitReached": "You have reached the maximum length of {max} characters.",
+      "placeholders": {
+        "name": "e.g. Your coffee break",
+        "description": "e.g. Collect a stamp with every visit.",
+        "reward": "e.g. One free cappuccino"
+      },
+      "textRequired": "Please fill in this field.",
+      "textTooLong": "Please shorten your text to {max} characters or fewer.",
+      "textPlainOnly": "Please use plain text without HTML tags or special formatting.",
+      "lockedExample": "Published example: stamp target and free reward are protected; branding remains editable.",
       "demoNote": "Visual preview using sample data. Changes last until reload. Saving and logo uploads are disabled here; no database is accessed.",
       "title": "Program drafts",
       "new": "Create program",

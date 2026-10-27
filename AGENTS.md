@@ -1,6 +1,6 @@
 # AcademyFi: Arbeitsregeln
 
-Version 1.11 · 27.10.2026 · Projektweit. Bestehende Fehler erlauben keine neuen.
+Version 1.12 · 27.10.2026 · Projektweit. Bestehende Fehler erlauben keine neuen.
 
 ## Kontext und Dokumentationspflege
 
@@ -29,6 +29,7 @@ Verletzungen sperren betroffene Übernahme bis Behebung oder ausdrücklich zulä
 
 - **Q-C-01:** Gemeinsame serverseitige Fachservices für Seiten/APIs/Actions/Jobs; verbindliche Buchungs-/Tarif-/Rechtelogik nicht in der UI. Aufrufwege reviewen.
 - **Q-C-02:** Eingaben serverseitig validieren, Aktion/Ressourcenzugehörigkeit autorisieren; Clientrollen/versteckte Buttons gewähren keine Rechte. Fremde IDs, ungültige Eingaben, Rollenmanipulation und Rechteentzug negativ testen. Unberechtigter Zugriff sperrt Übernahme/Freigabe.
+- **Q-C-02a – Zod-Standard (Auftraggeberentscheidung 27.10.2026):** Zod projektweit für die Laufzeitvalidierung an Eingabe- und Vertrauensgrenzen verwenden: insbesondere Anmeldung/Registrierung, Formular- und Schreibfelder, API-/Action-Eingaben sowie Filter, IDs, Sortierung und Pagination vor Datenbankabfragen und Werte vor Datenbankschreibvorgängen. Gemeinsame Schemas für Client und Server nutzen, wo sinnvoll; Clientprüfung ersetzt nie Serverprüfung. Unbekannte externe Daten und untypisierte Datenbank-/JSON-Ergebnisse vor Nutzung mit Zod prüfen. Bereits typisierte Prisma-Ergebnisse nicht ohne zusätzlichen Validierungsbedarf redundant parsen. Zod ersetzt weder Autorisierung/Mandantentrennung noch parametrisierte Abfragen, DB-Constraints oder Transaktionen. Bestehende Auth-Protokolle und Anbieterprüfungen erhalten. Geplant: vor Feierabend gemeinsam das gesamte Projekt systematisch auf sinnvolle Zod-Einsatzstellen durchgehen; dieser Merkeintrag beauftragt noch keine pauschale Umstellung.
 - **Q-C-03:** Strict Mode erhalten; neues any, Typumgehungen/deaktivierte Regeln nur lokal konkret begründet. Unbekannte externe Daten eingrenzen; keine Fehlerverdeckung durch Prüfabschaltung. Typecheck/Review nachweisen.
 - **Q-C-04:** Aufgabenbezogen mit vorhandenen Mustern ändern; Abhängigkeiten auf Nutzen, Kompatibilität, Lizenz/Wartbarkeit prüfen und im npm-Lockfile erfassen. Kein beiläufiges Stack-Upgrade.
 - **Q-C-05:** Fehler gezielt behandeln/weitergeben; keine unbegründet leeren Catches, Scheinerfolge, Secrets in Repository/Browser oder sensiblen Rohdaten in Logs. Fehlerfälle/Ausgaben prüfen; Geheimnisoffenlegung sperrt Freigabe.

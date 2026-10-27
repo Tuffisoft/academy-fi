@@ -64,6 +64,11 @@ test("service, action and HTTP reject STAFF, revoked access and foreign IDs", as
   assert.equal((await http(request(body), "org")).status, 403);
   role = "ADMIN";
   assert.equal((await http(request(body), "org")).status, 200);
+  for (const size of [41, 20_000]) {
+    const oversized = { ...body, operationId: randomUUID(), config: { ...body.config, name: "a".repeat(size) } };
+    assert.equal((await http(request(oversized), "org")).status, 422);
+    assert.equal((await action({ ...oversized, organizationId: "org" }, "de")).ok, false);
+  }
   assert.equal((await http(request(body, "https://foreign.invalid"), "org")).status, 403);
   assert.equal((await http(request({ ...body, actorId: "foreign" }), "org")).status, 422);
   assert.equal((await http(request(body), "foreign")).status, 403);

@@ -28,8 +28,6 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
 import { loyaltyPlans } from "@/lib/loyalty/plans";
 import { PortalAccountControls } from "./portal-account-controls";
@@ -237,7 +235,7 @@ export function StempelFiLanding() {
             <Button
               className="min-h-11 px-5"
               nativeButton={false}
-              render={<Link href={`${base}/preview?view=editor`} />}
+              render={<Link href={`${base}/preview?view=program-editor`} />}
             >
               {t("tryCard")}
               <ArrowUpRight aria-hidden="true" />
@@ -390,37 +388,14 @@ export function StempelFiLanding() {
   );
 }
 
-export function StempelFiPortalPreview({
-  initialEditor = false,
-}: {
-  initialEditor?: boolean;
-}) {
+export function StempelFiPortalPreview() {
   const t = useTranslations("stempelfi");
-  const [page, setPage] = useState<"overview" | "editor">(
-    initialEditor ? "editor" : "overview",
-  );
-  const [company, setCompany] = useState("Kaffeekollektiv");
-  const [title, setTitle] = useState(t("sampleTitle"));
-  const [reward, setReward] = useState(t("sampleReward"));
-  const [goalInput, setGoalInput] = useState("8");
-  const [tone, setTone] = useState<CardTone>("primary");
-  const [locked, setLocked] = useState(false);
-  const goal = Number(goalInput);
-  const validGoal = Number.isSafeInteger(goal) && goal > 0;
-  function openEditor(published: boolean) {
-    if (published) {
-      setGoalInput("8");
-      setReward(t("sampleReward"));
-    }
-    setLocked(published);
-    setPage("editor");
-  }
   return (
     <main className="min-w-0 bg-background text-foreground">
-      <ProductHeader pricingHref={`${base}#pricing`} languageHref={`${base}/preview${page === "editor" ? "?view=editor" : ""}`} />
+      <ProductHeader pricingHref={`${base}#pricing`} languageHref={`${base}/preview`} />
       <div className="mx-auto w-full max-w-7xl">
         <section className="min-w-0 px-5 py-8 sm:px-9 sm:py-10">
-          {page === "overview" ? (
+
             <div className="grid gap-10 sm:gap-14">
               <div className="grid gap-7">
                 <div className="flex flex-wrap items-center gap-3 text-sm">
@@ -434,8 +409,7 @@ export function StempelFiPortalPreview({
                     <p className="max-w-xl text-lg leading-relaxed text-muted-foreground">{t("overviewIntro")}</p>
                   </div>
                   <div className="flex flex-wrap gap-3">
-                    <Button variant="outline" nativeButton={false} className="min-h-11 px-5" render={<Link href="/tools/calem/stempelkarten/preview?view=program-editor" />}>{t("programEditor.demoLink")}</Button>
-                    <Button className="min-h-11 px-5" onClick={() => openEditor(false)}><Plus aria-hidden="true" />{t("newCard")}</Button>
+                    <Button className="min-h-11 px-5" nativeButton={false} render={<Link href={`${base}/preview?view=program-editor`} />}><Plus aria-hidden="true" />{t("newCard")}</Button>
                   </div>
                 </div>
               </div>
@@ -471,7 +445,7 @@ export function StempelFiPortalPreview({
                       <CardTitle className="text-xl">{t("sampleTitle")}</CardTitle>
                       <CardDescription>{t("publishedDetails")}</CardDescription>
                     </CardHeader>
-                    <CardContent className="mt-auto px-6 pb-6"><Button variant="outline" className="min-h-11 w-full justify-between" onClick={() => { setTitle(t("sampleTitle")); openEditor(true); }}>{t("viewBranding")}<ArrowUpRight aria-hidden="true" /></Button></CardContent>
+                    <CardContent className="mt-auto px-6 pb-6"><Button variant="outline" className="min-h-11 w-full justify-between" nativeButton={false} render={<Link href={`${base}/preview?view=program-editor&example=published`} />}>{t("viewBranding")}<ArrowUpRight aria-hidden="true" /></Button></CardContent>
                   </Card>
                   <Card className="min-w-0 gap-0 overflow-hidden rounded-2xl py-0 shadow-none">
                     <div className="grid flex-1 place-items-center bg-muted/40 p-5 sm:p-8">
@@ -482,7 +456,7 @@ export function StempelFiPortalPreview({
                       </div>
                     </div>
                     <CardHeader className="gap-3 p-6"><Badge className="w-fit" variant="outline">{t("draft")}</Badge><CardTitle className="text-xl">{t("draftTitle")}</CardTitle><CardDescription>{t("noCards")}</CardDescription></CardHeader>
-                    <CardContent className="mt-auto px-6 pb-6"><Button variant="outline" className="min-h-11 w-full justify-between" onClick={() => { setTitle(t("draftTitle")); openEditor(false); }}>{t("editDraft")}<ArrowUpRight aria-hidden="true" /></Button></CardContent>
+                    <CardContent className="mt-auto px-6 pb-6"><Button variant="outline" className="min-h-11 w-full justify-between" nativeButton={false} render={<Link href={`${base}/preview?view=program-editor&example=draft`} />}>{t("editDraft")}<ArrowUpRight aria-hidden="true" /></Button></CardContent>
                   </Card>
                 </div>
               </section>
@@ -496,153 +470,6 @@ export function StempelFiPortalPreview({
               </section>
               <p className="max-w-2xl text-sm leading-relaxed text-muted-foreground">{t("overviewScope")}</p>
             </div>
-          ) : (
-            <div className="grid gap-8">
-              <div className="flex flex-wrap items-end justify-between gap-5">
-                <div className="grid gap-3">
-                  <Badge variant="secondary">
-                    {t(locked ? "published" : "draft")}
-                  </Badge>
-                  <h1 className="font-sans text-4xl font-semibold tracking-tight text-balance">
-                    {t("editorHeading")}
-                  </h1>
-                  <p className="text-muted-foreground">{t("editorIntro")}</p>
-                </div>
-                <Button
-                  variant="outline"
-                  className="min-h-11"
-                  onClick={() => setPage("overview")}
-                >
-                  {t("back")}
-                </Button>
-              </div>
-              <div className="grid items-start gap-8 lg:grid-cols-2 lg:gap-12">
-                <Card className="order-2 min-w-0 rounded-2xl shadow-none lg:order-1">
-                  <CardHeader>
-                    <CardTitle>{t("cardDesign")}</CardTitle>
-                    <CardDescription>{t("localOnly")}</CardDescription>
-                  </CardHeader>
-                  <CardContent>
-                    <form
-                      onSubmit={(event) => event.preventDefault()}
-                      className="grid gap-6"
-                    >
-                      <div className="grid gap-2">
-                        <Label htmlFor="sf-company">{t("company")}</Label>
-                        <Input
-                          id="sf-company"
-                          className="min-h-11"
-                          value={company}
-                          maxLength={45}
-                          onChange={(event) => setCompany(event.target.value)}
-                        />
-                      </div>
-                      <div className="grid gap-2">
-                        <Label htmlFor="sf-title">{t("cardTitle")}</Label>
-                        <Input
-                          id="sf-title"
-                          className="min-h-11"
-                          value={title}
-                          maxLength={60}
-                          onChange={(event) => setTitle(event.target.value)}
-                        />
-                      </div>
-                      <div className="grid gap-2">
-                        <Label htmlFor="sf-reward">{t("reward")}</Label>
-                        <Input
-                          id="sf-reward"
-                          className="min-h-11"
-                          value={reward}
-                          maxLength={80}
-                          disabled={locked}
-                          onChange={(event) => setReward(event.target.value)}
-                        />
-                      </div>
-                      <div className="grid gap-2">
-                        <Label htmlFor="sf-goal">{t("goal")}</Label>
-                        <Input
-                          id="sf-goal"
-                          className="min-h-11"
-                          type="number"
-                          min="1"
-                          step="1"
-                          value={goalInput}
-                          disabled={locked}
-                          aria-invalid={!validGoal}
-                          aria-describedby={
-                            !validGoal ? "sf-goal-error" : undefined
-                          }
-                          onChange={(event) => setGoalInput(event.target.value)}
-                        />
-                        {!validGoal && (
-                          <p
-                            id="sf-goal-error"
-                            role="alert"
-                            className="text-sm text-destructive"
-                          >
-                            {t("goalError")}
-                          </p>
-                        )}
-                      </div>
-                      <fieldset className="grid gap-3">
-                        <legend className="mb-3 text-sm font-medium">
-                          {t("editorColor")}
-                        </legend>
-                        <div className="flex flex-wrap gap-2">
-                          {(["primary", "secondary", "card"] as const).map(
-                            (value) => (
-                              <Button
-                                key={value}
-                                type="button"
-                                variant={tone === value ? "default" : "outline"}
-                                className="min-h-11 gap-2"
-                                aria-pressed={tone === value}
-                                onClick={() => setTone(value)}
-                              >
-                                <span aria-hidden="true" className={`flex size-6 shrink-0 items-center justify-center rounded-full border ${tones[value]}`}>
-                                  {tone === value && <Check className="size-4" />}
-                                </span>
-                                {t(`colorNames.${value}`)}
-                              </Button>
-                            ),
-                          )}
-                        </div>
-                      </fieldset>
-                      <Button variant="outline" nativeButton={false} render={<a href="#sf-live-preview" />} className="min-h-11 lg:hidden">
-                        {t("showPreview")}
-                        <ArrowUpRight aria-hidden="true" />
-                      </Button>
-                      {locked && (
-                        <p className="text-sm text-muted-foreground">
-                          {t("locked")}
-                        </p>
-                      )}
-                    </form>
-                  </CardContent>
-                </Card>
-                <div
-                  id="sf-live-preview"
-                  tabIndex={-1}
-                  aria-label={t("livePreview")}
-                  className="order-1 grid min-w-0 scroll-mt-6 justify-items-center gap-5 rounded-3xl bg-muted/40 px-3 py-8 focus-visible:outline-2 focus-visible:outline-ring sm:px-6 sm:py-10 lg:order-2 lg:sticky lg:top-6"
-                  aria-live="polite"
-                >
-                  <Badge variant="outline">{t("livePreview")}</Badge>
-                  <StampCard
-                    showcase
-                    company={company}
-                    title={title}
-                    reward={reward}
-                    goal={validGoal ? goal : 8}
-                    tone={tone}
-                  />
-                  <p className="max-w-sm text-center text-sm text-muted-foreground">
-                    {t(validGoal ? "cardPreview" : "invalidPreview")}
-                  </p>
-                </div>
-              </div>
-            </div>
-          )}
         </section>
       </div>
     </main>

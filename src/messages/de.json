@@ -1,7 +1,17 @@
 {
   "stempelfi": {
     "programEditor": {
-      "demoLink": "Neuen Designer ansehen",
+      "characterCount": "{count} / {max} Zeichen",
+      "characterLimitReached": "Du hast die maximale Länge von {max} Zeichen erreicht.",
+      "placeholders": {
+        "name": "z. B. Deine Kaffeepause",
+        "description": "z. B. Sammle bei jedem Besuch einen Stempel.",
+        "reward": "z. B. Ein Cappuccino gratis"
+      },
+      "textRequired": "Bitte fülle dieses Feld aus.",
+      "textTooLong": "Bitte kürze deinen Text auf höchstens {max} Zeichen.",
+      "textPlainOnly": "Bitte verwende normalen Text ohne HTML-Tags oder Sonderformatierung.",
+      "lockedExample": "Veröffentlichtes Beispiel: Stempelziel und Gratisbelohnung sind geschützt; das Branding bleibt bearbeitbar.",
       "demoNote": "Visuelle Vorschau mit Beispieldaten. Änderungen bleiben nur bis zum Neuladen sichtbar. Speichern und Logo-Upload sind hier deaktiviert; es erfolgt kein Datenbankzugriff.",
       "title": "Programmentwürfe",
       "new": "Programm anlegen",

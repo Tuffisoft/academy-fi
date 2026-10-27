@@ -5,14 +5,22 @@ import { contrast, defaultProgram, programConfig, programCommand } from "../src/
 import { normalizeLogo } from "../src/lib/loyalty/logo";
 
 const config = { ...defaultProgram, name: "  Coffee   club  ", reward: "Free coffee" };
+test("text limits reject oversized raw input before normalization, including large payloads", () => {
+  for (const [field, limit] of [["name", 40], ["description", 70], ["reward", 40]] as const) {
+    assert.ok(programConfig.safeParse({ ...config, [field]: "a".repeat(limit) }).success);
+    for (const value of ["a".repeat(limit + 1), " ".repeat(limit) + "a", "a".repeat(1_000_000)]) {
+      assert.equal(programConfig.safeParse({ ...config, [field]: value }).success, false, field);
+    }
+  }
+});
 test("program validation normalizes text and colors, preserves integer boundaries", () => {
   assert.equal(programConfig.parse(config).name, "Coffee club");
   assert.equal(programConfig.parse({ ...config, backgroundColor: "#173a32" }).backgroundColor, "#173A32");
   assert.ok(programConfig.safeParse({ ...config, target: 2147483647 }).success);
   for (const target of [0, -1, 1.5, NaN, Infinity, 2147483648, "8"]) assert.equal(programConfig.safeParse({ ...config, target }).success, false);
-  for (const name of ["", " ", "a".repeat(81), "<img>", "Hi\nthere", "bad\u0000"]) assert.equal(programConfig.safeParse({ ...config, name }).success, false);
+  for (const name of ["", " ", "a".repeat(41), "<img>", "Hi\nthere", "bad\u0000"]) assert.equal(programConfig.safeParse({ ...config, name }).success, false);
   assert.equal(programConfig.safeParse({ ...config, reward: "" }).success, false);
-  assert.equal(programConfig.safeParse({ ...config, description: "a".repeat(501) }).success, false);
+  assert.equal(programConfig.safeParse({ ...config, description: "a".repeat(71) }).success, false);
   assert.equal(programConfig.safeParse({ ...config, symbol: "HTML" }).success, false);
   assert.equal(programConfig.safeParse({ ...config, logoAssetId: "https://example.invalid/image" }).success, false);
 });
