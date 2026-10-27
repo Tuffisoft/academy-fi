@@ -39,11 +39,11 @@ Softwarechecks oben; reine Markdown-Dokumentation nach dem eigenen Prüfweg in A
 
 Agenten starten mit AGENTS.md und lesen danach nur aufgabenrelevante Abschnitte. Keine neuen Dateien in docs-Verzeichnissen erstellen; vorhandene Unterlagen fortschreiben, neue Paketnachweise als Abschnitte der bestehenden Entwicklungsanleitung führen.
 
-Arbeitsregeln, Prüfablauf und offene Blocker: [AGENTS.md](AGENTS.md). Abnahme: [Freigabecheckliste](src/lib/docs/FREIGABECHECKLISTE.md).
+Arbeitsregeln, Prüfablauf und offene Blocker: [AGENTS.md](AGENTS.md). Abnahme: [Freigabecheckliste](context/dauerhaft/dokumentation/FREIGABECHECKLISTE.md).
 
 `typecheck` erzeugt Next.js-Routentypen; `check:build` prüft den Produktionsbuild mit isolierten Dummy-Zugängen. Prüfung und Deployment verwenden über `npm run build` denselben Webpack-Produktionsbuild; damit wird der hier reproduzierte Turbopack-Abbruch bei der CSS-Verarbeitung vermieden. Der erste Build benötigt Netzwerkzugriff für Google Fonts. Integrationstests und GitHub-Merge-Schutz separat nach den Qualitätsregeln einrichten.
 
-Stempelkarten-Unterlagen (nur lokal, nicht in Git): [Entwicklungsplan und Statusregister](src/lib/docs/ENTWICKLUNGSANLEITUNG_STEMPELKARTEN.md), [Archiv](src/lib/docs/ARCHIV_STEMPELKARTEN.md). Lokale PDF-Vorschauen und Design-Backups unter `output/` werden für neue Dateien von Git ignoriert.
+Stempelkarten-Unterlagen (nur lokal, nicht in Git): [Entwicklungsplan und Statusregister](context/dauerhaft/dokumentation/ENTWICKLUNGSANLEITUNG_STEMPELKARTEN.md), [Archiv](context/dauerhaft/dokumentation/ARCHIV_STEMPELKARTEN.md). Nachweise stehen ausschließlich in der kurzen [Zusammenfassung](context/dauerhaft/nachweise/NACHWEISE.md); frühere Einzelbelege wurden auf Auftrag gelöscht. Entbehrliche Prüfarbeitsdateien liegen unter `context/temporaer/` und werden am Arbeitsende gelöscht. Die lokale Kontextablage wird von Git ignoriert. Ausführbare Workflows bleiben unter `.github/workflows/` und `src/workflows/`.
 
 ## Website-Bewertung im Lead-Generator
 

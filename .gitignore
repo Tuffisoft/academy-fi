@@ -41,9 +41,9 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
-# Local project documentation (not versioned)
+# Local project context (not versioned)
 /docs/
-/src/lib/docs/
+/context/
 
 # Generated Workflow routes and local durable execution state
 /src/app/.well-known/workflow/

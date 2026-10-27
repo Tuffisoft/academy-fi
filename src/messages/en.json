@@ -1,5 +1,15 @@
 {
   "stempelfi": {
+    "overviewHeading": "Your cards. More reasons to return.",
+    "overviewIntro": "Your programmes at a glance. Design the next good reason for a visit.",
+    "programsIntro": "One published example and room for your next idea.",
+    "draftPreviewIntro": "Your next idea starts with a card.",
+    "overviewScope": "This is a preview with sample data. Changes are not saved. Scanning, team management and analytics will follow.",
+    "editorColor": "Card colour",
+    "livePreview": "Your card · Live preview",
+    "showPreview": "View your card",
+    "colorNames": {"primary":"Accent","secondary":"Soft","card":"Neutral"},
+    "backToAcademy": "Back to Academy",
     "businessLogin": "Business sign in",
     "accountEmail": "Signed in as {email}",
     "signingOut": "Signing out …",
@@ -53,6 +63,9 @@
     "notice": "StempelFi is taking shape. Sample data, no saving or transactions. Registration will follow.",
     "kicker": "Digital loyalty. Your brand.",
     "hero": "Turn guests into regulars.",
+    "heroLead": "Turn guests into",
+    "heroHighlight": "regulars.",
+    "sampleCard": "Your card. Here’s one example.",
     "intro": "Your own stamp card in your customers’ wallets. Personally designed, easy to collect and ready for their next visit.",
     "tryCard": "Try your own card",
     "how": "How it works",
@@ -501,7 +514,7 @@
     "openDailyPlanner": "Open Daily Planner"
   },
   "tools": {
-    "loyaltyLandingDescription": "Digital loyalty with StempelFi – your website and business portal.",
+    "loyaltyLandingDescription": "Digital stamp cards for your business. Design your card and reward your regular customers.",
     "loyaltyLandingEntry": "Open StempelFi website · Business access in the header",
     "loyaltyDesignPreview": "Design preview",
     "title": "Tools",

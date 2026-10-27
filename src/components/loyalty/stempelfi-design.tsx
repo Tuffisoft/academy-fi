@@ -4,11 +4,11 @@ import { useState } from "react";
 import { useLocale, useTranslations } from "next-intl";
 import { useTheme } from "next-themes";
 import {
+  ArrowLeft,
   ArrowUpRight,
   Check,
   Coffee,
   Gift,
-  LayoutDashboard,
   Moon,
   Plus,
   ScanLine,
@@ -54,9 +54,11 @@ function Brand() {
 export function ProductHeader({
   portal = false,
   languageHref,
+  pricingHref = "#pricing",
 }: {
   portal?: boolean;
   languageHref?: string;
+  pricingHref?: string;
 }) {
   const t = useTranslations("stempelfi");
   const locale = useLocale();
@@ -72,13 +74,24 @@ export function ProductHeader({
       </Link>
       <nav
         aria-label={t("navigation")}
-        className="col-span-2 row-start-2 flex min-w-0 items-center gap-2 sm:col-span-1 sm:col-start-2 sm:row-start-1 sm:justify-end"
+        className="col-span-2 row-start-2 flex min-w-0 flex-wrap items-center gap-2 sm:col-span-1 sm:col-start-2 sm:row-start-1 sm:justify-end"
       >
         {!portal && (
           <Button
             variant="ghost"
             nativeButton={false}
-            render={<a href="#pricing" />}
+            render={<Link href="/" />}
+            className="min-h-11 basis-full justify-start sm:basis-auto"
+          >
+            <ArrowLeft aria-hidden="true" />
+            {t("backToAcademy")}
+          </Button>
+        )}
+        {!portal && (
+          <Button
+            variant="ghost"
+            nativeButton={false}
+            render={<a href={pricingHref} />}
             className="min-h-11 shrink-0"
           >
             {t("pricing")}
@@ -119,18 +132,12 @@ export function ProductHeader({
           <Moon className="hidden size-4 dark:block" aria-hidden="true" />
         </Button>
       </div>
-      {portal && <div className="col-span-2 min-w-0 border-t pt-3 sm:col-span-3"><PortalAccountControls /></div>}
+      {portal && (
+        <div className="col-span-2 min-w-0 border-t pt-3 sm:col-span-3">
+          <PortalAccountControls />
+        </div>
+      )}
     </header>
-  );
-}
-
-function PreviewNotice() {
-  const t = useTranslations("stempelfi");
-  return (
-    <div className="flex flex-wrap items-center gap-2 border-b bg-muted px-5 py-3 text-sm text-muted-foreground sm:px-10">
-      <Badge variant="secondary">{t("design")}</Badge>
-      <span>{t("notice")}</span>
-    </div>
   );
 }
 
@@ -140,17 +147,21 @@ function StampCard({
   reward,
   goal = 8,
   tone = "primary",
+  showcase = false,
 }: {
   company: string;
   title: string;
   reward: string;
   goal?: number;
   tone?: CardTone;
+  showcase?: boolean;
 }) {
   const t = useTranslations("stempelfi");
   const count = Math.min(6, goal);
   return (
-    <Card className={`w-full max-w-sm gap-5 p-2 ${tones[tone]}`}>
+    <Card
+      className={`w-full gap-5 p-2 ${showcase ? "max-w-md rounded-2xl shadow-xl" : "max-w-sm"} ${tones[tone]}`}
+    >
       <CardHeader className="gap-6">
         <div className="flex items-center justify-between gap-3">
           <span className="min-w-0 wrap-break-words text-xs font-medium uppercase tracking-widest">
@@ -158,7 +169,9 @@ function StampCard({
           </span>
           <Coffee aria-hidden="true" className="size-5 shrink-0" />
         </div>
-        <CardTitle className="wrap-break-words font-serif text-3xl text-inherit">
+        <CardTitle
+          className={`wrap-break-words text-3xl text-inherit ${showcase ? "font-sans font-semibold tracking-tight" : "font-serif"}`}
+        >
           {title || t("titlePlaceholder")}
         </CardTitle>
       </CardHeader>
@@ -171,7 +184,15 @@ function StampCard({
                 variant={i < count ? "secondary" : "outline"}
                 className={`aspect-square h-auto w-full justify-center rounded-full p-0 ${i >= count ? "border-current text-inherit" : ""}`}
               >
-                {i < count ? <Coffee className="size-5!" /> : i + 1}
+                {i < count ? (
+                  showcase ? (
+                    <Check className="size-6!" />
+                  ) : (
+                    <Coffee className="size-5!" />
+                  )
+                ) : (
+                  i + 1
+                )}
               </Badge>
             ))}
           </div>
@@ -201,21 +222,20 @@ export function StempelFiLanding() {
   const locale = useLocale();
   const [currency, setCurrency] = useState<"EUR" | "USD">("EUR");
   return (
-    <main className="min-w-0 bg-background text-foreground">
-      <PreviewNotice />
+    <main className="min-w-0 bg-background text-foreground [&_h1]:font-sans [&_h2]:font-sans">
       <ProductHeader />
-      <section className="grid items-center gap-14 px-6 py-12 sm:px-10 sm:py-20 lg:grid-cols-2">
-        <div className="grid gap-7">
-          <Badge variant="secondary">{t("kicker")}</Badge>
-          <h1 className="max-w-xl font-serif text-5xl leading-[1.08] tracking-tight sm:text-6xl">
-            {t("hero")}
+      <section className="mx-auto grid w-full max-w-7xl items-center gap-12 px-6 py-12 sm:px-10 sm:py-20 lg:grid-cols-2 lg:gap-12 lg:py-24">
+        <div className="grid min-w-0 justify-items-start gap-7">
+          <h1 className="max-w-xl text-4xl leading-[1.12] font-semibold tracking-tight text-balance sm:text-5xl xl:text-6xl">
+            <span className="block">{t("heroLead")}</span>
+            <span className="block text-primary">{t("heroHighlight")}</span>
           </h1>
           <p className="max-w-lg text-lg leading-relaxed text-muted-foreground">
             {t("intro")}
           </p>
           <div className="flex flex-wrap gap-3">
             <Button
-              className="min-h-11"
+              className="min-h-11 px-5"
               nativeButton={false}
               render={<Link href={`${base}/preview?view=editor`} />}
             >
@@ -224,7 +244,7 @@ export function StempelFiLanding() {
             </Button>
             <Button
               variant="ghost"
-              className="min-h-11"
+              className="min-h-11 px-5"
               nativeButton={false}
               render={<a href="#how-it-works" />}
             >
@@ -233,18 +253,20 @@ export function StempelFiLanding() {
           </div>
           <p className="text-sm text-muted-foreground">{t("freeNote")}</p>
         </div>
-        <div className="grid justify-items-center gap-6 rounded-3xl bg-accent px-6 py-12 sm:rotate-2">
+        <figure className="grid min-w-0 justify-items-center gap-6 rounded-3xl bg-muted/40 px-3 py-8 sm:px-6 sm:py-10">
+          <Badge variant="outline">{t("sampleCard")}</Badge>
           <StampCard
+            showcase
             company="Kaffeekollektiv"
             title={t("sampleTitle")}
             reward={t("sampleReward")}
           />
-          <p className="max-w-xs text-center text-sm text-accent-foreground">
+          <figcaption className="max-w-xs text-center text-sm leading-relaxed text-muted-foreground">
             {t("brandPromise")}
-          </p>
-        </div>
+          </figcaption>
+        </figure>
       </section>
-      <div className="flex flex-wrap justify-center gap-x-8 gap-y-4 border-y px-6 py-6 text-sm text-muted-foreground">
+      <div className="mx-auto flex max-w-7xl flex-wrap justify-center gap-x-10 gap-y-4 px-6 pb-12 text-sm text-muted-foreground sm:px-10 sm:pb-20">
         {(
           [
             { Icon: Wallet, key: "wallets" },
@@ -260,10 +282,10 @@ export function StempelFiLanding() {
       </div>
       <section
         id="how-it-works"
-        className="grid gap-10 px-6 py-14 sm:px-10 sm:py-20"
+        className="mx-auto grid w-full max-w-7xl scroll-mt-8 gap-10 px-6 py-14 sm:px-10 sm:py-24"
       >
         <div className="grid gap-4 sm:grid-cols-2">
-          <h2 className="font-serif text-4xl tracking-tight">
+          <h2 className="max-w-xl text-3xl font-semibold tracking-tight text-balance sm:text-4xl">
             {t("everyday")}
           </h2>
           <p className="self-end leading-relaxed text-muted-foreground">
@@ -272,9 +294,11 @@ export function StempelFiLanding() {
         </div>
         <div className="grid gap-5 md:grid-cols-3">
           {(["create", "share", "return"] as const).map((key, index) => (
-            <Card key={key} className="shadow-none">
+            <Card key={key} className="border-0 bg-muted/50 py-8 shadow-none">
               <CardHeader className="gap-4">
-                <Badge variant="outline">0{index + 1}</Badge>
+                <span className="text-sm font-medium tabular-nums text-muted-foreground">
+                  0{index + 1}
+                </span>
                 <CardTitle className="text-lg">{t(`${key}Title`)}</CardTitle>
                 <CardDescription className="leading-relaxed">
                   {t(`${key}Text`)}
@@ -285,10 +309,15 @@ export function StempelFiLanding() {
         </div>
       </section>
       <Separator />
-      <section id="pricing" className="grid gap-8 px-6 py-14 sm:px-10 sm:py-20">
+      <section
+        id="pricing"
+        className="mx-auto grid w-full max-w-7xl scroll-mt-8 gap-10 px-6 py-14 sm:px-10 sm:py-24"
+      >
         <div className="flex flex-wrap items-end justify-between gap-6">
           <div className="grid gap-4">
-            <h2 className="font-serif text-4xl tracking-tight">{t("grow")}</h2>
+            <h2 className="max-w-xl text-3xl font-semibold tracking-tight text-balance sm:text-4xl">
+              {t("grow")}
+            </h2>
             <p className="text-muted-foreground">{t("allPlans")}</p>
           </div>
           <div role="group" aria-label={t("currency")} className="flex gap-2">
@@ -296,7 +325,7 @@ export function StempelFiLanding() {
               <Button
                 key={value}
                 variant={currency === value ? "default" : "outline"}
-                className="min-h-11"
+                className="min-h-11 px-5"
                 aria-pressed={currency === value}
                 onClick={() => setCurrency(value)}
               >
@@ -314,12 +343,15 @@ export function StempelFiLanding() {
               minimumFractionDigits: i === 0 ? 0 : 2,
             }).format([0, 9.9, 24.9][i]);
             return (
-              <Card key={plan} className={i === 1 ? "ring-2 ring-primary" : ""}>
+              <Card
+                key={plan}
+                className={`min-w-0 py-8 shadow-none ${i === 1 ? "ring-2 ring-primary" : ""}`}
+              >
                 <CardHeader className="gap-4">
                   <CardTitle>{["Free", "Pro", "Business"][i]}</CardTitle>
-                  <p className="text-3xl font-medium tracking-tight">
+                  <p className="flex flex-wrap items-baseline gap-x-2 gap-y-1 text-3xl font-medium tracking-tight">
                     {price}
-                    <span className="ml-2 text-sm font-normal text-muted-foreground">
+                    <span className="text-sm font-normal text-muted-foreground">
                       {currency} / {t("month")}
                     </span>
                   </p>
@@ -350,7 +382,7 @@ export function StempelFiLanding() {
         <p className="text-sm text-muted-foreground">{t("taxes")}</p>
       </section>
       <Separator />
-      <footer className="flex flex-wrap items-center justify-between gap-4 px-6 py-7 sm:px-10">
+      <footer className="mx-auto flex w-full max-w-7xl flex-wrap items-center justify-between gap-4 px-6 py-8 sm:px-10">
         <Brand />
         <p className="text-sm text-muted-foreground">{t("tagline")}</p>
       </footer>
@@ -385,150 +417,81 @@ export function StempelFiPortalPreview({
   }
   return (
     <main className="min-w-0 bg-background text-foreground">
-      <PreviewNotice />
-      <ProductHeader portal />
-      <div className="grid border-t lg:grid-cols-[210px_minmax(0,1fr)]">
-        <aside className="grid content-start gap-6 border-b bg-sidebar px-5 py-6 text-sidebar-foreground lg:border-r lg:border-b-0">
-          <div className="grid gap-1">
-            <p className="font-medium">Kaffeekollektiv</p>
-            <p className="text-sm text-muted-foreground">{t("owner")} · Pro</p>
-          </div>
-          <nav
-            aria-label={t("portalNavigation")}
-            className="flex flex-wrap gap-2 lg:grid"
-          >
-            <Button
-              variant={page === "overview" ? "secondary" : "ghost"}
-              className="min-h-11 justify-start"
-              aria-pressed={page === "overview"}
-              onClick={() => setPage("overview")}
-            >
-              <LayoutDashboard aria-hidden="true" />
-              {t("overview")}
-            </Button>
-            <Button
-              variant={page === "editor" ? "secondary" : "ghost"}
-              className="min-h-11 justify-start"
-              aria-pressed={page === "editor"}
-              onClick={() => openEditor(false)}
-            >
-              <Stamp aria-hidden="true" />
-              {t("cardDesign")}
-            </Button>
-          </nav>
-          <p className="hidden text-sm leading-relaxed text-muted-foreground lg:block">
-            {t("previewScope")}
-          </p>
-        </aside>
+      <ProductHeader pricingHref={`${base}#pricing`} languageHref={`${base}/preview${page === "editor" ? "?view=editor" : ""}`} />
+      <div className="mx-auto w-full max-w-7xl">
         <section className="min-w-0 px-5 py-8 sm:px-9 sm:py-10">
           {page === "overview" ? (
-            <div className="grid gap-9">
-              <div className="flex flex-wrap items-end justify-between gap-5">
-                <div className="grid gap-3">
-                  <Badge variant="outline">{t("sampleData")}</Badge>
-                  <h1 className="font-serif text-4xl tracking-tight">
-                    {t("welcome")}
-                  </h1>
-                  <p className="text-muted-foreground">{t("welcomeText")}</p>
+            <div className="grid gap-10 sm:gap-14">
+              <div className="grid gap-7">
+                <div className="flex flex-wrap items-center gap-3 text-sm">
+                  <span className="inline-flex items-center gap-2 font-medium"><Coffee aria-hidden="true" className="size-4 text-primary" />Kaffeekollektiv</span>
+                  <span className="text-muted-foreground">{t("owner")} · Pro</span>
+                  <Badge variant="secondary">{t("sampleData")}</Badge>
                 </div>
-                <Button className="min-h-11" onClick={() => openEditor(false)}>
-                  <Plus aria-hidden="true" />
-                  {t("newCard")}
-                </Button>
+                <div className="flex flex-wrap items-end justify-between gap-6">
+                  <div className="grid max-w-2xl gap-4">
+                    <h1 className="font-sans text-4xl leading-[1.12] font-semibold tracking-tight text-balance sm:text-5xl">{t("overviewHeading")}</h1>
+                    <p className="max-w-xl text-lg leading-relaxed text-muted-foreground">{t("overviewIntro")}</p>
+                  </div>
+                  <Button className="min-h-11 px-5" onClick={() => openEditor(false)}><Plus aria-hidden="true" />{t("newCard")}</Button>
+                </div>
               </div>
-              <div className="grid gap-4 sm:grid-cols-3">
-                {(
-                  [
-                    { Icon: Wallet, label: "customerCards", value: "248" },
-                    { Icon: Gift, label: "redemptions", value: "31" },
-                    { Icon: Users, label: "team", value: "3" },
-                  ] as const
-                ).map(({ Icon, label, value }) => (
-                  <Card key={label}>
-                    <CardHeader className="gap-3">
-                      <Icon
-                        className="size-4 text-muted-foreground"
-                        aria-hidden="true"
-                      />
-                      <CardDescription>{t(label)}</CardDescription>
-                      <CardTitle className="text-3xl tabular-nums">
-                        {value}
-                      </CardTitle>
-                    </CardHeader>
-                  </Card>
+              <dl className="grid gap-5 rounded-2xl bg-muted/40 p-6 sm:grid-cols-3 sm:gap-8 sm:p-8">
+                {([
+                  { Icon: Wallet, label: "customerCards", value: "248" },
+                  { Icon: Gift, label: "redemptions", value: "31" },
+                  { Icon: Users, label: "team", value: "3" },
+                ] as const).map(({ Icon, label, value }) => (
+                  <div key={label} className="flex min-w-0 items-center gap-4">
+                    <span className="flex size-11 shrink-0 items-center justify-center rounded-xl bg-background text-primary"><Icon aria-hidden="true" className="size-5" /></span>
+                    <div className="grid gap-1"><dt className="text-sm text-muted-foreground">{t(label)}</dt><dd className="text-3xl font-semibold tracking-tight tabular-nums">{value}</dd></div>
+                  </div>
                 ))}
-              </div>
-              <div className="grid gap-5">
-                <div className="flex flex-wrap items-center justify-between gap-3">
-                  <h2 className="text-xl font-medium">{t("yourCards")}</h2>
-                  <Badge variant="secondary">{t("activePrograms")}</Badge>
+              </dl>
+              <section aria-labelledby="sf-programs-heading" className="grid gap-6">
+                <div className="flex flex-wrap items-end justify-between gap-3">
+                  <div className="grid gap-2"><h2 id="sf-programs-heading" className="text-2xl font-semibold tracking-tight">{t("yourCards")}</h2><p className="text-sm text-muted-foreground">{t("programsIntro")}</p></div>
+                  <Badge variant="outline">{t("activePrograms")}</Badge>
                 </div>
-                <div className="grid gap-5 xl:grid-cols-2">
-                  <Card>
-                    <CardHeader>
-                      <CardTitle>{t("sampleTitle")}</CardTitle>
+                <div className="grid items-stretch gap-6 md:grid-cols-2">
+                  <Card className="min-w-0 gap-0 overflow-hidden rounded-2xl py-0 shadow-none">
+                    <div className="bg-muted/40 p-5 sm:p-8">
+                      <div className="grid gap-6 rounded-2xl bg-primary p-5 text-primary-foreground sm:p-7">
+                        <div className="flex items-center justify-between gap-3"><span className="min-w-0 text-xs font-medium uppercase tracking-widest wrap-break-words">Kaffeekollektiv</span><Coffee aria-hidden="true" className="size-5 shrink-0" /></div>
+                        <p className="text-3xl font-semibold tracking-tight wrap-break-words">{t("sampleTitle")}</p>
+                        <div className="grid grid-cols-8 gap-2" aria-hidden="true">{Array.from({ length: 8 }, (_, index) => <span key={index} className="flex aspect-square items-center justify-center rounded-full border border-current/50">{index < 6 && <Check className="size-3 sm:size-4" />}</span>)}</div>
+                        <p className="text-sm font-medium">{t("sampleReward")}</p>
+                      </div>
+                    </div>
+                    <CardHeader className="gap-3 p-6">
+                      <Badge className="w-fit" variant="secondary">{t("published")}</Badge>
+                      <CardTitle className="text-xl">{t("sampleTitle")}</CardTitle>
                       <CardDescription>{t("publishedDetails")}</CardDescription>
                     </CardHeader>
-                    <CardContent className="grid justify-items-start gap-5">
-                      <Badge>{t("published")}</Badge>
-                      <Button
-                        variant="outline"
-                        className="min-h-11"
-                        onClick={() => openEditor(true)}
-                      >
-                        {t("viewBranding")}
-                      </Button>
-                    </CardContent>
+                    <CardContent className="mt-auto px-6 pb-6"><Button variant="outline" className="min-h-11 w-full justify-between" onClick={() => { setTitle(t("sampleTitle")); openEditor(true); }}>{t("viewBranding")}<ArrowUpRight aria-hidden="true" /></Button></CardContent>
                   </Card>
-                  <Card>
-                    <CardHeader>
-                      <CardTitle>{t("draftTitle")}</CardTitle>
-                      <CardDescription>{t("noCards")}</CardDescription>
-                    </CardHeader>
-                    <CardContent className="grid justify-items-start gap-5">
-                      <Badge variant="secondary">{t("draft")}</Badge>
-                      <Button
-                        variant="outline"
-                        className="min-h-11"
-                        onClick={() => openEditor(false)}
-                      >
-                        {t("editDraft")}
-                      </Button>
-                    </CardContent>
+                  <Card className="min-w-0 gap-0 overflow-hidden rounded-2xl py-0 shadow-none">
+                    <div className="grid flex-1 place-items-center bg-muted/40 p-5 sm:p-8">
+                      <div className="grid w-full content-center justify-items-center gap-4 self-stretch rounded-2xl border border-dashed bg-background px-5 py-8 text-center">
+                        <span className="flex size-12 items-center justify-center rounded-full bg-muted text-primary"><Stamp aria-hidden="true" className="size-6" /></span>
+                        <p className="text-2xl font-semibold tracking-tight wrap-break-words">{t("draftTitle")}</p>
+                        <p className="max-w-xs text-sm leading-relaxed text-muted-foreground">{t("draftPreviewIntro")}</p>
+                      </div>
+                    </div>
+                    <CardHeader className="gap-3 p-6"><Badge className="w-fit" variant="outline">{t("draft")}</Badge><CardTitle className="text-xl">{t("draftTitle")}</CardTitle><CardDescription>{t("noCards")}</CardDescription></CardHeader>
+                    <CardContent className="mt-auto px-6 pb-6"><Button variant="outline" className="min-h-11 w-full justify-between" onClick={() => { setTitle(t("draftTitle")); openEditor(false); }}>{t("editDraft")}<ArrowUpRight aria-hidden="true" /></Button></CardContent>
                   </Card>
                 </div>
-              </div>
-              <Card>
-                <CardHeader>
-                  <CardTitle>{t("activity")}</CardTitle>
-                  <CardDescription>{t("sampleData")}</CardDescription>
-                </CardHeader>
-                <CardContent className="grid gap-4">
-                  <div className="flex flex-wrap justify-between gap-2">
-                    <p>
-                      {t("rewardActivity")}
-                      <span className="mt-1 block text-sm text-muted-foreground">
-                        {t("confirmedBy", { name: "Mia" })}
-                      </span>
-                    </p>
-                    <span className="text-sm text-muted-foreground">
-                      {t("minutesAgo", { count: 12 })}
-                    </span>
-                  </div>
-                  <Separator />
-                  <div className="flex flex-wrap justify-between gap-2">
-                    <p>
-                      {t("stampActivity")}
-                      <span className="mt-1 block text-sm text-muted-foreground">
-                        {t("confirmedBy", { name: "Alex" })}
-                      </span>
-                    </p>
-                    <span className="text-sm text-muted-foreground">
-                      {t("minutesAgo", { count: 24 })}
-                    </span>
-                  </div>
-                </CardContent>
-              </Card>
+              </section>
+              <section aria-labelledby="sf-activity-heading" className="grid gap-5">
+                <div className="flex flex-wrap items-center justify-between gap-3"><h2 id="sf-activity-heading" className="text-2xl font-semibold tracking-tight">{t("activity")}</h2><span className="text-sm text-muted-foreground">{t("sampleData")}</span></div>
+                <ul className="grid divide-y rounded-2xl border px-5 sm:px-7">
+                  {([{ Icon: Gift, action: "rewardActivity", name: "Mia", minutes: 12 }, { Icon: Stamp, action: "stampActivity", name: "Alex", minutes: 24 }] as const).map(({ Icon, action, name, minutes }) => (
+                    <li key={action} className="flex items-start gap-4 py-5"><span className="flex size-10 shrink-0 items-center justify-center rounded-full bg-muted text-primary"><Icon aria-hidden="true" className="size-4" /></span><div className="flex min-w-0 flex-1 flex-wrap items-start justify-between gap-x-5 gap-y-2"><div className="grid gap-1"><p className="font-medium">{t(action)}</p><p className="text-sm text-muted-foreground">{t("confirmedBy", { name })}</p></div><span className="text-sm text-muted-foreground">{t("minutesAgo", { count: minutes })}</span></div></li>
+                  ))}
+                </ul>
+              </section>
+              <p className="max-w-2xl text-sm leading-relaxed text-muted-foreground">{t("overviewScope")}</p>
             </div>
           ) : (
             <div className="grid gap-8">
@@ -537,7 +500,7 @@ export function StempelFiPortalPreview({
                   <Badge variant="secondary">
                     {t(locked ? "published" : "draft")}
                   </Badge>
-                  <h1 className="font-serif text-4xl tracking-tight">
+                  <h1 className="font-sans text-4xl font-semibold tracking-tight text-balance">
                     {t("editorHeading")}
                   </h1>
                   <p className="text-muted-foreground">{t("editorIntro")}</p>
@@ -550,8 +513,8 @@ export function StempelFiPortalPreview({
                   {t("back")}
                 </Button>
               </div>
-              <div className="grid items-start gap-8 xl:grid-cols-2">
-                <Card>
+              <div className="grid items-start gap-8 lg:grid-cols-2 lg:gap-12">
+                <Card className="order-2 min-w-0 rounded-2xl shadow-none lg:order-1">
                   <CardHeader>
                     <CardTitle>{t("cardDesign")}</CardTitle>
                     <CardDescription>{t("localOnly")}</CardDescription>
@@ -620,7 +583,7 @@ export function StempelFiPortalPreview({
                       </div>
                       <fieldset className="grid gap-3">
                         <legend className="mb-3 text-sm font-medium">
-                          {t("color")}
+                          {t("editorColor")}
                         </legend>
                         <div className="flex flex-wrap gap-2">
                           {(["primary", "secondary", "card"] as const).map(
@@ -629,16 +592,23 @@ export function StempelFiPortalPreview({
                                 key={value}
                                 type="button"
                                 variant={tone === value ? "default" : "outline"}
-                                className="min-h-11"
+                                className="min-h-11 gap-2"
                                 aria-pressed={tone === value}
                                 onClick={() => setTone(value)}
                               >
-                                {t(value)}
+                                <span aria-hidden="true" className={`flex size-6 shrink-0 items-center justify-center rounded-full border ${tones[value]}`}>
+                                  {tone === value && <Check className="size-4" />}
+                                </span>
+                                {t(`colorNames.${value}`)}
                               </Button>
                             ),
                           )}
                         </div>
                       </fieldset>
+                      <Button variant="outline" nativeButton={false} render={<a href="#sf-live-preview" />} className="min-h-11 lg:hidden">
+                        {t("showPreview")}
+                        <ArrowUpRight aria-hidden="true" />
+                      </Button>
                       {locked && (
                         <p className="text-sm text-muted-foreground">
                           {t("locked")}
@@ -648,10 +618,15 @@ export function StempelFiPortalPreview({
                   </CardContent>
                 </Card>
                 <div
-                  className="grid justify-items-center gap-4 py-3"
+                  id="sf-live-preview"
+                  tabIndex={-1}
+                  aria-label={t("livePreview")}
+                  className="order-1 grid min-w-0 scroll-mt-6 justify-items-center gap-5 rounded-3xl bg-muted/40 px-3 py-8 focus-visible:outline-2 focus-visible:outline-ring sm:px-6 sm:py-10 lg:order-2 lg:sticky lg:top-6"
                   aria-live="polite"
                 >
+                  <Badge variant="outline">{t("livePreview")}</Badge>
                   <StampCard
+                    showcase
                     company={company}
                     title={title}
                     reward={reward}

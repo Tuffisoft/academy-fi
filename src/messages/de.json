@@ -1,5 +1,15 @@
 {
   "stempelfi": {
+    "overviewHeading": "Deine Karten. Mehr Wiederkommen.",
+    "overviewIntro": "Deine Programme auf einen Blick. Gestalte den nächsten guten Grund für einen Besuch.",
+    "programsIntro": "Ein veröffentlichtes Beispiel und Platz für deine nächste Idee.",
+    "draftPreviewIntro": "Deine nächste Idee beginnt mit einer Karte.",
+    "overviewScope": "Dies ist eine Vorschau mit Beispieldaten. Änderungen werden nicht gespeichert. Scanner, Teamverwaltung und Auswertungen folgen.",
+    "editorColor": "Kartenfarbe",
+    "livePreview": "Deine Karte · Live-Vorschau",
+    "showPreview": "Zur Kartenvorschau",
+    "colorNames": {"primary":"Akzent","secondary":"Sanft","card":"Neutral"},
+    "backToAcademy": "Zurück zur Academy",
     "businessLogin": "Unternehmen anmelden",
     "accountEmail": "Angemeldet als {email}",
     "signingOut": "Wird abgemeldet …",
@@ -53,6 +63,9 @@
     "notice": "StempelFi entsteht. Beispieldaten, keine Speicherung oder Buchungen. Registrierung folgt.",
     "kicker": "Digitale Kundentreue. Deine Marke.",
     "hero": "Aus Gästen werden Stammgäste.",
+    "heroLead": "Aus Gästen werden",
+    "heroHighlight": "Stammgäste.",
+    "sampleCard": "Deine Karte. Zum Beispiel so.",
     "intro": "Deine eigene Stempelkarte im Wallet deiner Kundschaft. Persönlich gestaltet, einfach gesammelt und beim nächsten Besuch wieder dabei.",
     "tryCard": "Deine Karte ausprobieren",
     "how": "So funktioniert’s",
@@ -501,7 +514,7 @@
     "openDailyPlanner": "Tagesplaner öffnen"
   },
   "tools": {
-    "loyaltyLandingDescription": "Digitale Kundentreue mit StempelFi – deine Website und dein Unternehmensbereich.",
+    "loyaltyLandingDescription": "Digitale Stempelkarten für dein Unternehmen. Gestalte deine Karte und belohne deine Stammkundschaft.",
     "loyaltyLandingEntry": "StempelFi-Website öffnen · Unternehmenszugang im Header",
     "loyaltyDesignPreview": "Designvorschau",
     "title": "Tools",

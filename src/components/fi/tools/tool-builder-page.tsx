@@ -23,13 +23,15 @@ export async function ToolBuilderPage({
   const loyaltyCard = (
     <Card className="h-full min-h-40 transition-colors group-hover:bg-muted/40">
       <CardHeader className="gap-4">
-        <span className="flex size-11 items-center justify-center rounded-lg bg-primary/10 text-primary">
-          <Stamp aria-hidden="true" className="size-5" />
-        </span>
+        <div className="flex items-center justify-between gap-3">
+          <span className="flex size-11 items-center justify-center rounded-lg bg-primary/10 text-primary">
+            <Stamp aria-hidden="true" className="size-5" />
+          </span>
+          <ArrowRight aria-hidden="true" className="size-5 shrink-0 text-muted-foreground transition-transform group-hover:translate-x-1 motion-reduce:transform-none motion-reduce:transition-none" />
+        </div>
         <div className="grid gap-1">
-          <CardTitle className="text-lg">{t("loyaltyTitle")}</CardTitle>
+          <CardTitle className="text-lg">StempelFi</CardTitle>
           <CardDescription>{t("loyaltyLandingDescription")}</CardDescription>
-          <p className="text-sm text-muted-foreground">{t("loyaltyLandingEntry")}</p>
         </div>
       </CardHeader>
     </Card>
