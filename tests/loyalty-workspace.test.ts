@@ -69,7 +69,7 @@ test("workspace navigation reflects role, feature switch and active page in DE/E
   for (locale of ["de", "en"]) {
     feature = true;
     for (const role of ["OWNER", "ADMIN", "STAFF"] as const) {
-      const view = await Navigation({ slug: "own-company", role, internal: false, active: "members" });
+      const view = await Navigation({ slug: "own-company", role, internal: false, membersAvailable: true, active: "members" });
       const links = elements(view).filter(el => typeof el.props.href === "string");
       assert.equal(links.some(el => String(el.props.href).endsWith("/members")), role !== "STAFF");
       assert.equal(text(view).includes(locale === "de" ? "Abrechnung" : "Billing"), role === "OWNER");
@@ -77,8 +77,8 @@ test("workspace navigation reflects role, feature switch and active page in DE/E
       if (role !== "STAFF") assert.equal(links.find(el => String(el.props.href).endsWith("/members"))?.props["aria-current"], "page");
     }
     feature = false;
-    assert.equal(elements(await Navigation({ slug: "own-company", role: "OWNER", internal: false })).filter(el => String(el.props.href).endsWith("/members")).length, 0);
-    assert.ok(!text(await Navigation({ slug: "own-company", role: null, internal: true })).includes(locale === "de" ? "Noch nicht verfügbar" : "Not available yet"));
+    assert.equal(elements(await Navigation({ slug: "own-company", role: "OWNER", internal: false, membersAvailable: true })).filter(el => String(el.props.href).endsWith("/members")).length, 0);
+    assert.ok(!text(await Navigation({ slug: "own-company", role: null, internal: true, membersAvailable: false })).includes(locale === "de" ? "Noch nicht verfügbar" : "Not available yet"));
   }
 });
 
@@ -92,6 +92,18 @@ test("direct internal search rejects non-owners and duplicate parameters before 
     assert.ok(elements(view).some(el => el.props.role === "alert"));
   }
   assert.equal(searchCalls, 0);
+});
+
+test("missing or unsupported tariff keeps member management unavailable without a misleading link", async () => {
+  feature = true;
+  for (locale of ["de", "en"]) {
+    for (const role of ["OWNER", "ADMIN"] as const) {
+      const view = await Navigation({ slug: "own-company", role, internal: false, membersAvailable: false });
+      assert.ok(!elements(view).some(el => String(el.props.href).endsWith("/members")));
+      assert.ok(text(view).includes(locale === "de" ? "Mitarbeiter" : "Team"));
+      assert.ok(text(view).includes(locale === "de" ? "Noch nicht verfügbar" : "Not available yet"));
+    }
+  }
 });
 
 test("internal search renders real data, carries query through pagination and separates empty/error states", async () => {

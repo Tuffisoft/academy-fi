@@ -41,11 +41,13 @@ test("real DB: multiple INTERN companies, tenant reads, retry payloads and 20-wa
     // Read-only basis remains available without granting tariff-dependent writes.
     await prisma.organizationEntitlement.delete({ where: { organizationId: foreign.id } });
     assert.equal((await getPortalOrganization(users[1], foreign.slug)).entitlement, null);
+    assert.equal((await getPortalOrganization(users[1], foreign.slug)).canManageMembers, false);
     await assert.rejects(getOrganizationContext(users[1], foreign.id), /FORBIDDEN/);
     await prisma.organizationEntitlement.create({ data: { organizationId: foreign.id, plan: "FREE" } });
     for (const role of ["ADMIN", "STAFF"] as const) {
       const membership = await prisma.organizationMembership.create({ data: { organizationId: foreign.id, userId: users[3], role } });
       assert.equal((await getPortalOrganization(users[3], foreign.slug)).role, role);
+      assert.equal((await getPortalOrganization(users[3], foreign.slug)).canManageMembers, role === "ADMIN");
       await prisma.organizationMembership.update({ where: { id: membership.id }, data: { status: "REVOKED" } });
       await assert.rejects(getPortalOrganization(users[3], foreign.slug), /FORBIDDEN/);
       await prisma.organizationMembership.delete({ where: { id: membership.id } });

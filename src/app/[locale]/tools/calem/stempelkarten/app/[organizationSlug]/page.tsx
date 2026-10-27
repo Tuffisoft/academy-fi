@@ -81,6 +81,7 @@ export default async function OrganizationPage({
           slug={organization.slug}
           role={organization.role}
           internal={organization.internal}
+          membersAvailable={organization.canManageMembers}
         />
         <div className="grid gap-4 sm:grid-cols-2">
           <Card>

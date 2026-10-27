@@ -6,6 +6,10 @@ export const loyaltyPlans = {
 
 export function freeEntitlement(plan: string) {
   // Fail closed on unexpected or manually inserted paid states until billing exists.
-  if (plan !== "FREE") throw new Error("Unconfirmed loyalty entitlement");
+  if (!isSupportedLoyaltyPlan(plan)) throw new Error("Unconfirmed loyalty entitlement");
   return loyaltyPlans.FREE;
+}
+
+export function isSupportedLoyaltyPlan(plan: string | null | undefined): plan is "FREE" {
+  return plan === "FREE";
 }

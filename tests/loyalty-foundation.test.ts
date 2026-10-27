@@ -83,7 +83,12 @@ test("portal basis without a tariff is readable by active roles while business w
     reset(); portalFound = true; member!.role = role; member!.organization.entitlement = null;
     const result = await getPortalOrganization("actor", "own-company");
     assert.equal(result.role, role); assert.equal(result.entitlement, null); assert.equal(result.internal, false);
+    assert.equal(result.canManageMembers, false);
     await assert.rejects(getOrganizationContext("actor", "org"), /FORBIDDEN/);
+    member!.organization.entitlement = { plan: "FREE" };
+    assert.equal((await getPortalOrganization("actor", "own-company")).canManageMembers, role !== "STAFF");
+    member!.organization.entitlement = { plan: "PRO" };
+    assert.equal((await getPortalOrganization("actor", "own-company")).canManageMembers, false);
   }
 });
 

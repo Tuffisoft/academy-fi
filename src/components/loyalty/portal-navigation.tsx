@@ -8,19 +8,23 @@ export async function PortalNavigation({
   role,
   internal,
   active = "overview",
+  membersAvailable,
 }: {
   slug: string;
   role: OrganizationRole | null;
   internal: boolean;
   active?: "overview" | "members";
+  membersAvailable: boolean;
 }) {
   const t = await getTranslations("stempelfi.workspace");
   const base = `/tools/calem/stempelkarten/app/${slug}`;
   const manage = !internal && (role === "OWNER" || role === "ADMIN");
+  const showMembers = manage && membersAvailable && membershipsEnabled();
   const unavailable = [
     "scanner",
     "requests",
     "rewards",
+    ...(manage && !showMembers ? ["members"] : []),
     ...(manage ? ["programs", "analytics", "settings"] : []),
     ...(role === "OWNER" && !internal ? ["billing"] : []),
   ] as const;
@@ -37,7 +41,7 @@ export async function PortalNavigation({
       >
         {t("overview")}
       </Link>
-      {manage && membershipsEnabled() && (
+      {showMembers && (
         <Link
           href={`${base}/members`}
           aria-current={active === "members" ? "page" : undefined}

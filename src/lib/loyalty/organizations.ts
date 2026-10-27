@@ -2,7 +2,7 @@ import "server-only";
 import { createHash } from "node:crypto";
 import { prisma } from "@/lib/prisma";
 import type { Prisma, OrganizationRole } from "@/generated/prisma/client";
-import { freeEntitlement } from "./plans";
+import { freeEntitlement, isSupportedLoyaltyPlan } from "./plans";
 import { membershipCapacity } from "./membership-capacity";
 
 export class OrganizationAccessError extends Error {
@@ -121,7 +121,7 @@ export async function getPortalOrganization(actorId: string, slug: string) {
       organization.id,
     );
     if (!detail) throw new OrganizationAccessError("FORBIDDEN");
-    return { ...detail, internal: true, role: null };
+    return { ...detail, internal: true, role: null, canManageMembers: false };
   }
   const member = await prisma.organizationMembership.findUnique({
     where: {
@@ -144,7 +144,7 @@ export async function getPortalOrganization(actorId: string, slug: string) {
   });
   if (!detail || detail.status !== "ACTIVE")
     throw new OrganizationAccessError("FORBIDDEN");
-  return { ...detail, internal: false, role: member.role };
+  return { ...detail, internal: false, role: member.role, canManageMembers: (member.role === "OWNER" || member.role === "ADMIN") && isSupportedLoyaltyPlan(detail.entitlement?.plan) };
 }
 
 /** Read-only internal search; actor identity always comes from the server session. */
