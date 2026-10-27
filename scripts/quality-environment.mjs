@@ -24,17 +24,42 @@ export function isolatedEnvironment(
 ) {
   // Deny all inherited application configuration without maintaining a credential catalog.
   // Explicit empty values also stop framework .env loading from restoring those values.
-  const env = Object.fromEntries(Object.keys(source).map(name => [name, ""]));
+  const env = Object.fromEntries(Object.keys(source).map((name) => [name, ""]));
   for (const configuration of configurations) {
     for (const name of Object.keys(configuration)) env[name] = "";
   }
   for (const name of [
-    "PATH", "Path", "PATHEXT", "SystemRoot", "SYSTEMROOT", "WINDIR",
-    "COMSPEC", "ComSpec", "SystemDrive", "OS", "TEMP", "TMP", "TMPDIR",
-    "HOME", "USERPROFILE", "APPDATA", "LOCALAPPDATA", "ProgramData",
-    "ProgramFiles", "ProgramFiles(x86)", "PROCESSOR_ARCHITECTURE",
-    "NUMBER_OF_PROCESSORS", "LANG", "LC_ALL", "TERM", "CI", "NO_COLOR",
-    "FORCE_COLOR", "npm_execpath", "npm_node_execpath", "npm_config_cache",
+    "PATH",
+    "Path",
+    "PATHEXT",
+    "SystemRoot",
+    "SYSTEMROOT",
+    "WINDIR",
+    "COMSPEC",
+    "ComSpec",
+    "SystemDrive",
+    "OS",
+    "TEMP",
+    "TMP",
+    "TMPDIR",
+    "HOME",
+    "USERPROFILE",
+    "APPDATA",
+    "LOCALAPPDATA",
+    "ProgramData",
+    "ProgramFiles",
+    "ProgramFiles(x86)",
+    "PROCESSOR_ARCHITECTURE",
+    "NUMBER_OF_PROCESSORS",
+    "LANG",
+    "LC_ALL",
+    "TERM",
+    "CI",
+    "NO_COLOR",
+    "FORCE_COLOR",
+    "npm_execpath",
+    "npm_node_execpath",
+    "npm_config_cache",
   ])
     if (source[name] !== undefined) env[name] = source[name];
   // The sandbox's Windows temporary directory has ACLs rejected by native SWC.
@@ -109,6 +134,20 @@ export function databaseIntegrationEnvironment(
     [variable]: testUrl,
     ACADEMYFI_DATABASE_TEST: "1",
   };
+}
+
+export const r2EnvironmentNames = ["STEMPELFI_R2_ENDPOINT", "STEMPELFI_R2_BUCKET_NAME", "STEMPELFI_R2_ACCESS_KEY_ID", "STEMPELFI_R2_SECRET_ACCESS_KEY"];
+/**
+ * @param {CheckEnvironment} source
+ * @param {CheckEnvironment[]} configurations
+ * @returns {CheckEnvironment & { DATABASE_URL: string }}
+ */
+export function loyaltyUploadIntegrationEnvironment(source = process.env, configurations = localConfigurations()) {
+  if (source.ACADEMYFI_UPLOAD_TEST !== "1" || r2EnvironmentNames.some(name => !source[name]?.trim())) {
+    throw new Error("R2-Uploadtests benötigen bestätigten Testbucket, ACADEMYFI_UPLOAD_TEST=1 und alle vier STEMPELFI_R2-Werte im Testprozess.");
+  }
+  return { ...databaseIntegrationEnvironment(source, configurations, "LOYALTY_TEST_DATABASE_URL"),
+    ACADEMYFI_UPLOAD_TEST: "1", ...Object.fromEntries(r2EnvironmentNames.map(name => [name, source[name]])) };
 }
 
 /**

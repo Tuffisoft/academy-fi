@@ -13,7 +13,7 @@
     "db:seed": "tsx db/seed.ts",
     "postinstall": "prisma generate",
     "typecheck": "node scripts/check.mjs typecheck",
-    "test": "node scripts/check.mjs test tests/server-encryption.test.ts tests/message-delivery.test.ts tests/chat-permissions.test.ts tests/groups.test.ts tests/seed-config.test.ts tests/lead-searches.test.ts tests/google-places.test.ts tests/search-jobs.test.ts tests/website-quality.test.ts tests/visual-design.test.ts tests/audit-progress.test.ts tests/pdf-design.test.ts tests/pdf-template-library.test.ts tests/search-controls.test.ts tests/quality-environment.test.ts tests/academy-access.test.ts tests/loyalty-foundation.test.ts tests/loyalty-portal.test.ts tests/loyalty-workspace.test.ts tests/loyalty-customer.test.ts tests/loyalty-customer-actions.test.ts tests/loyalty-memberships.test.ts tests/loyalty-membership-web.test.ts tests/loyalty-program-input.test.ts tests/loyalty-programs.test.ts tests/loyalty-program-assets.test.ts",
+    "test": "node scripts/check.mjs test tests/server-encryption.test.ts tests/message-delivery.test.ts tests/chat-permissions.test.ts tests/groups.test.ts tests/seed-config.test.ts tests/lead-searches.test.ts tests/google-places.test.ts tests/search-jobs.test.ts tests/website-quality.test.ts tests/visual-design.test.ts tests/audit-progress.test.ts tests/pdf-design.test.ts tests/pdf-template-library.test.ts tests/search-controls.test.ts tests/quality-environment.test.ts tests/academy-access.test.ts tests/loyalty-foundation.test.ts tests/loyalty-portal.test.ts tests/loyalty-workspace.test.ts tests/loyalty-customer.test.ts tests/loyalty-customer-actions.test.ts tests/loyalty-memberships.test.ts tests/loyalty-membership-web.test.ts tests/loyalty-program-input.test.ts tests/loyalty-programs.test.ts tests/loyalty-program-assets.test.ts tests/loyalty-logo-storage.test.ts",
     "test:integration": "node scripts/check.mjs integration",
     "test:loyalty:integration": "node scripts/check.mjs loyalty-integration",
     "test:realtime": "node scripts/check.mjs realtime",
@@ -22,7 +22,8 @@
     "db:generate": "prisma generate",
     "db:validate": "prisma validate",
     "chat:key:setup": "node scripts/setup-master-key.mjs",
-    "predev": "prisma generate"
+    "predev": "prisma generate",
+    "test:loyalty:upload": "node scripts/check.mjs loyalty-upload-integration tests/loyalty/program-assets.integration.test.ts"
   },
   "dependencies": {
     "@babel/parser": "^8.0.7",
@@ -40,6 +41,7 @@
     "@uiw/react-codemirror": "^4.25.12",
     "@uploadthing/react": "^7.3.3",
     "ably": "^2.29.0",
+    "aws4fetch": "1.0.20",
     "better-auth": "^1.7.6",
     "class-variance-authority": "^0.7.1",
     "cn": "^0.4.0",

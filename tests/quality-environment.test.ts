@@ -4,31 +4,97 @@ import { spawnSync } from "node:child_process";
 import {
   databaseIntegrationEnvironment,
   isolatedEnvironment,
+  loyaltyUploadIntegrationEnvironment,
   realtimeIntegrationEnvironment,
 } from "../scripts/quality-environment.mjs";
 
+test("live R2 tests require opt-in and separate DB; ordinary checks strip storage credentials", () => {
+  const source = {
+    ACADEMYFI_DATABASE_TEST: "1",
+    LOYALTY_TEST_DATABASE_URL: "postgresql://test:test@db.example/logo_test",
+    ACADEMYFI_UPLOAD_TEST: "1",
+    STEMPELFI_R2_ENDPOINT:
+      "https://" + "a".repeat(32) + ".r2.cloudflarestorage.com",
+    STEMPELFI_R2_BUCKET_NAME: "synthetic-bucket",
+    STEMPELFI_R2_ACCESS_KEY_ID: "synthetic-access-key",
+    STEMPELFI_R2_SECRET_ACCESS_KEY: "synthetic-secret-key",
+    UPLOADTHING_TOKEN: "must-not-propagate",
+  };
+  for (const bad of [
+    { ...source, ACADEMYFI_UPLOAD_TEST: "" },
+    { ...source, STEMPELFI_R2_SECRET_ACCESS_KEY: "" },
+    { ...source, ACADEMYFI_DATABASE_TEST: "" },
+    { ...source, DATABASE_URL: source.LOYALTY_TEST_DATABASE_URL },
+  ])
+    assert.throws(() => loyaltyUploadIntegrationEnvironment(bad, []));
+  const env = loyaltyUploadIntegrationEnvironment(source, []);
+  assert.equal(
+    env.STEMPELFI_R2_SECRET_ACCESS_KEY,
+    source.STEMPELFI_R2_SECRET_ACCESS_KEY,
+  );
+  assert.equal(env.DATABASE_URL, source.LOYALTY_TEST_DATABASE_URL);
+  assert.equal(env.UPLOADTHING_TOKEN, "");
+  assert.equal(
+    isolatedEnvironment(source, []).STEMPELFI_R2_SECRET_ACCESS_KEY,
+    "",
+  );
+});
+
 test("Loyalty DB entry refuses empty, foreign and unconfigured test runs before database access", () => {
-  for (const files of [[], ["tests/chats.integration.test.ts"], ["tests/loyalty/../../chats.integration.test.ts"], ["tests/loyalty/cards.integration.test.ts"]]) {
-    const result = spawnSync(process.execPath, ["scripts/check.mjs", "loyalty-integration", ...files], {
-      env: { ...process.env, ACADEMYFI_DATABASE_TEST: "", CHAT_TEST_DATABASE_URL: "", LOYALTY_TEST_DATABASE_URL: "" },
-      encoding: "utf8",
-    });
+  for (const files of [
+    [],
+    ["tests/chats.integration.test.ts"],
+    ["tests/loyalty/../../chats.integration.test.ts"],
+    ["tests/loyalty/cards.integration.test.ts"],
+  ]) {
+    const result = spawnSync(
+      process.execPath,
+      ["scripts/check.mjs", "loyalty-integration", ...files],
+      {
+        env: {
+          ...process.env,
+          ACADEMYFI_DATABASE_TEST: "",
+          CHAT_TEST_DATABASE_URL: "",
+          LOYALTY_TEST_DATABASE_URL: "",
+        },
+        encoding: "utf8",
+      },
+    );
     assert.equal(result.status, 1);
-    assert.match(result.stderr, files[0] === "tests/loyalty/cards.integration.test.ts" ? /Datenbanktests benötigen/ : /Loyalty-Testliste/);
+    assert.match(
+      result.stderr,
+      files[0] === "tests/loyalty/cards.integration.test.ts"
+        ? /Datenbanktests benötigen/
+        : /Loyalty-Testliste/,
+    );
   }
 });
 
 test("Loyalty configuration requires its own URL and rejects ordinary databases", () => {
   const variable = "LOYALTY_TEST_DATABASE_URL";
   const testUrl = "postgresql://test:test@db.example/loyalty_test";
-  const source = { ACADEMYFI_DATABASE_TEST: "1", LOYALTY_TEST_DATABASE_URL: testUrl, CHAT_TEST_DATABASE_URL: "postgresql://chat:chat@db.example/chat_test" };
+  const source = {
+    ACADEMYFI_DATABASE_TEST: "1",
+    LOYALTY_TEST_DATABASE_URL: testUrl,
+    CHAT_TEST_DATABASE_URL: "postgresql://chat:chat@db.example/chat_test",
+  };
   for (const invalid of [
     { ...source, ACADEMYFI_DATABASE_TEST: "" },
     { ...source, LOYALTY_TEST_DATABASE_URL: "" },
     { ...source, LOYALTY_TEST_DATABASE_URL: "https://db.example/test" },
-    { ...source, DATABASE_URL: "postgres://other:pass@DB.EXAMPLE:5432/loyalty_test" },
-  ]) assert.throws(() => databaseIntegrationEnvironment(invalid, [], variable));
-  assert.throws(() => databaseIntegrationEnvironment(source, [{ DATABASE_URL: testUrl }], variable));
+    {
+      ...source,
+      DATABASE_URL: "postgres://other:pass@DB.EXAMPLE:5432/loyalty_test",
+    },
+  ])
+    assert.throws(() => databaseIntegrationEnvironment(invalid, [], variable));
+  assert.throws(() =>
+    databaseIntegrationEnvironment(
+      source,
+      [{ DATABASE_URL: testUrl }],
+      variable,
+    ),
+  );
   const env = databaseIntegrationEnvironment(source, [], variable);
   assert.equal(env.DATABASE_URL, testUrl);
   assert.equal(env.LOYALTY_TEST_DATABASE_URL, testUrl);
@@ -40,8 +106,16 @@ test("Loyalty configuration requires its own URL and rejects ordinary databases"
 });
 
 test("unit/build checks replace local and inherited provider credentials without changing the parent", () => {
-  const source = { PATH: "/tools", DATABASE_URL: "postgresql://app:secret@db.example/app", ABLY_API_KEY: "app.key:secret", OPENAI_API_KEY: "live-key", STEMPELFI_REGISTRATION_ENABLED: "1" };
-  const env = isolatedEnvironment(source, [{ CUSTOM_PROVIDER_KEY: "live-secret", RESEND_KEY: "mail-secret" }]);
+  const source = {
+    PATH: "/tools",
+    DATABASE_URL: "postgresql://app:secret@db.example/app",
+    ABLY_API_KEY: "app.key:secret",
+    OPENAI_API_KEY: "live-key",
+    STEMPELFI_REGISTRATION_ENABLED: "1",
+  };
+  const env = isolatedEnvironment(source, [
+    { CUSTOM_PROVIDER_KEY: "live-secret", RESEND_KEY: "mail-secret" },
+  ]);
   assert.equal(env.PATH, "/tools");
   assert.equal(env.CUSTOM_PROVIDER_KEY, "");
   assert.equal(env.OPENAI_API_KEY, "");
@@ -54,29 +128,64 @@ test("unit/build checks replace local and inherited provider credentials without
 });
 
 test("isolation denies arbitrary inherited values without a maintained credential-name list", () => {
-  const source = Object.freeze({ PATH: "/tools", npm_execpath: "/tools/npm-cli.js", UNLISTED_SERVICE_ACCESS_VALUE: "private-value", OTHER_CONFIGURATION_VALUE: "enabled", NODE_OPTIONS: "--require=untrusted-loader" });
-  const env = isolatedEnvironment(source, [{ LOCAL_ONLY_SETTING: "private-value" }]);
+  const source = Object.freeze({
+    PATH: "/tools",
+    npm_execpath: "/tools/npm-cli.js",
+    UNLISTED_SERVICE_ACCESS_VALUE: "private-value",
+    OTHER_CONFIGURATION_VALUE: "enabled",
+    NODE_OPTIONS: "--require=untrusted-loader",
+  });
+  const env = isolatedEnvironment(source, [
+    { LOCAL_ONLY_SETTING: "private-value" },
+  ]);
   assert.equal(env.PATH, source.PATH);
   assert.equal(env.npm_execpath, source.npm_execpath);
-  for (const name of ["UNLISTED_SERVICE_ACCESS_VALUE", "OTHER_CONFIGURATION_VALUE", "NODE_OPTIONS", "LOCAL_ONLY_SETTING"]) assert.equal(env[name], "");
+  for (const name of [
+    "UNLISTED_SERVICE_ACCESS_VALUE",
+    "OTHER_CONFIGURATION_VALUE",
+    "NODE_OPTIONS",
+    "LOCAL_ONLY_SETTING",
+  ])
+    assert.equal(env[name], "");
   assert.equal(source.UNLISTED_SERVICE_ACCESS_VALUE, "private-value");
 });
 
 test("database tests reject missing opt-in, malformed URLs and the application database even with different credentials", () => {
   const app = "postgresql://app:secret@db.example/app";
-  const optedIn = { ACADEMYFI_DATABASE_TEST: "1", CHAT_TEST_DATABASE_URL: "postgresql://test:test@db.example/quality_test" };
+  const optedIn = {
+    ACADEMYFI_DATABASE_TEST: "1",
+    CHAT_TEST_DATABASE_URL: "postgresql://test:test@db.example/quality_test",
+  };
   for (const source of [
-    {}, { CHAT_TEST_DATABASE_URL: optedIn.CHAT_TEST_DATABASE_URL },
+    {},
+    { CHAT_TEST_DATABASE_URL: optedIn.CHAT_TEST_DATABASE_URL },
     { ...optedIn, CHAT_TEST_DATABASE_URL: "https://db.example/test" },
     { ...optedIn, CHAT_TEST_DATABASE_URL: "postgresql://db.example" },
-    { ...optedIn, DATABASE_URL: app, CHAT_TEST_DATABASE_URL: "postgres://other:pass@DB.EXAMPLE:5432/app" },
-  ]) assert.throws(() => databaseIntegrationEnvironment(source, []));
-  assert.throws(() => databaseIntegrationEnvironment({ ...optedIn, CHAT_TEST_DATABASE_URL: app }, [{ DATABASE_URL: app }]));
+    {
+      ...optedIn,
+      DATABASE_URL: app,
+      CHAT_TEST_DATABASE_URL: "postgres://other:pass@DB.EXAMPLE:5432/app",
+    },
+  ])
+    assert.throws(() => databaseIntegrationEnvironment(source, []));
+  assert.throws(() =>
+    databaseIntegrationEnvironment(
+      { ...optedIn, CHAT_TEST_DATABASE_URL: app },
+      [{ DATABASE_URL: app }],
+    ),
+  );
 });
 
 test("explicit database tests receive only the separate test connection and no provider keys", () => {
   const testUrl = "postgresql://test:test@db.example/quality_test";
-  const env = databaseIntegrationEnvironment({ ACADEMYFI_DATABASE_TEST: "1", CHAT_TEST_DATABASE_URL: testUrl, OPENAI_API_KEY: "live" }, []);
+  const env = databaseIntegrationEnvironment(
+    {
+      ACADEMYFI_DATABASE_TEST: "1",
+      CHAT_TEST_DATABASE_URL: testUrl,
+      OPENAI_API_KEY: "live",
+    },
+    [],
+  );
   assert.equal(env.DATABASE_URL, testUrl);
   assert.equal(env.DATABASE_ENV, "development");
   assert.equal(env.NODE_ENV, "test");
@@ -85,12 +194,34 @@ test("explicit database tests receive only the separate test connection and no p
 
 test("realtime tests require a dedicated app and reject rotated or different keys in the ordinary app", () => {
   for (const source of [
-    {}, { ABLY_TEST_API_KEY: "test.key:secret" },
-    { ACADEMYFI_REALTIME_TEST: "1", ABLY_TEST_API_KEY: "app.key:new", ABLY_API_KEY: "app.key:old" },
-    { ACADEMYFI_REALTIME_TEST: "1", ABLY_TEST_API_KEY: "app.other:new", ABLY_API_KEY: "app.key:old" },
+    {},
+    { ABLY_TEST_API_KEY: "test.key:secret" },
+    {
+      ACADEMYFI_REALTIME_TEST: "1",
+      ABLY_TEST_API_KEY: "app.key:new",
+      ABLY_API_KEY: "app.key:old",
+    },
+    {
+      ACADEMYFI_REALTIME_TEST: "1",
+      ABLY_TEST_API_KEY: "app.other:new",
+      ABLY_API_KEY: "app.key:old",
+    },
     { ACADEMYFI_REALTIME_TEST: "1", ABLY_TEST_API_KEY: "malformed" },
-  ]) assert.throws(() => realtimeIntegrationEnvironment(source, []));
-  assert.throws(() => realtimeIntegrationEnvironment({ ACADEMYFI_REALTIME_TEST: "1", ABLY_TEST_API_KEY: "app.key:new" }, [{ ABLY_API_KEY: "app.key:old" }]));
-  const env = realtimeIntegrationEnvironment({ ACADEMYFI_REALTIME_TEST: "1", ABLY_TEST_API_KEY: "test.key:secret", ABLY_API_KEY: "app.key:secret" }, []);
+  ])
+    assert.throws(() => realtimeIntegrationEnvironment(source, []));
+  assert.throws(() =>
+    realtimeIntegrationEnvironment(
+      { ACADEMYFI_REALTIME_TEST: "1", ABLY_TEST_API_KEY: "app.key:new" },
+      [{ ABLY_API_KEY: "app.key:old" }],
+    ),
+  );
+  const env = realtimeIntegrationEnvironment(
+    {
+      ACADEMYFI_REALTIME_TEST: "1",
+      ABLY_TEST_API_KEY: "test.key:secret",
+      ABLY_API_KEY: "app.key:secret",
+    },
+    [],
+  );
   assert.equal(env.ABLY_API_KEY, "test.key:secret");
 });

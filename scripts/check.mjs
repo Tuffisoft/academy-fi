@@ -4,6 +4,7 @@ import { fileURLToPath } from "node:url";
 import {
   databaseIntegrationEnvironment,
   isolatedEnvironment,
+  loyaltyUploadIntegrationEnvironment,
   realtimeIntegrationEnvironment,
 } from "./quality-environment.mjs";
 
@@ -47,6 +48,7 @@ function tests(paths, env) {
       "tests/loyalty-program-assets.test.ts",
       "tests/loyalty/memberships.integration.test.ts",
       "tests/loyalty/membership-matrix.integration.test.ts",
+      "tests/loyalty/program-asset-store.integration.test.ts",
     ].includes(path),
   )
     ? ["--experimental-test-module-mocks"]
@@ -121,6 +123,11 @@ try {
         "LOYALTY_TEST_DATABASE_URL",
       ),
     );
+  } else if (mode === "loyalty-upload-integration") {
+    if (files.length !== 1 || files[0] !== "tests/loyalty/program-assets.integration.test.ts") {
+      throw new Error("Upload-Testliste muss ausdrücklich tests/loyalty/program-assets.integration.test.ts enthalten.");
+    }
+    process.exitCode = tests(files, loyaltyUploadIntegrationEnvironment());
   } else if (mode === "all") {
     const failed = [];
     for (const script of ["lint", "typecheck", "test", "check:build"]) {
