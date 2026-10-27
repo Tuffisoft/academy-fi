@@ -25,7 +25,7 @@ export async function PortalNavigation({
     "requests",
     "rewards",
     ...(manage && !showMembers ? ["members"] : []),
-    ...(manage ? ["programs", "analytics", "settings"] : []),
+    ...(manage ? ["analytics", "settings"] : []),
     ...(role === "OWNER" && !internal ? ["billing"] : []),
   ] as const;
   return (
@@ -48,6 +48,11 @@ export async function PortalNavigation({
           className="rounded-lg border px-4 py-3 underline-offset-4 aria-[current=page]:font-semibold aria-[current=page]:underline hover:underline focus-visible:outline-2 focus-visible:outline-offset-4"
         >
           {t("members")}
+        </Link>
+      )}
+      {manage && (
+        <Link href={`${base}#program-list-heading`} className="rounded-lg border px-4 py-3 underline-offset-4 hover:underline focus-visible:outline-2 focus-visible:outline-offset-4">
+          {t("programs")}
         </Link>
       )}
       {!internal &&

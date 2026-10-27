@@ -8,6 +8,7 @@ import {
 } from "@/lib/loyalty/organizations";
 import { ProductHeader } from "@/components/loyalty/stempelfi-design";
 import { PortalNavigation } from "@/components/loyalty/portal-navigation";
+import { ProgramList } from "@/components/loyalty/program-list";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
@@ -27,8 +28,10 @@ export const metadata = {
 
 export default async function OrganizationPage({
   params,
+  searchParams,
 }: {
   params: Promise<{ organizationSlug: string }>;
+  searchParams: Promise<{ programAfter?: string | string[] }>;
 }) {
   const actorId = await requirePortalActor();
   const { organizationSlug } = await params;
@@ -83,6 +86,10 @@ export default async function OrganizationPage({
           internal={organization.internal}
           membersAvailable={organization.canManageMembers}
         />
+        {!organization.internal && (organization.role === "OWNER" || organization.role === "ADMIN") && (
+          <ProgramList actorId={actorId} organizationId={organization.id} slug={organization.slug}
+            after={typeof (await searchParams).programAfter === "string" ? (await searchParams).programAfter as string : undefined} />
+        )}
         <div className="grid gap-4 sm:grid-cols-2">
           <Card>
             <CardHeader>

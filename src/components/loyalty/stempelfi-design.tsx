@@ -433,7 +433,10 @@ export function StempelFiPortalPreview({
                     <h1 className="font-sans text-4xl leading-[1.12] font-semibold tracking-tight text-balance sm:text-5xl">{t("overviewHeading")}</h1>
                     <p className="max-w-xl text-lg leading-relaxed text-muted-foreground">{t("overviewIntro")}</p>
                   </div>
-                  <Button className="min-h-11 px-5" onClick={() => openEditor(false)}><Plus aria-hidden="true" />{t("newCard")}</Button>
+                  <div className="flex flex-wrap gap-3">
+                    <Button variant="outline" nativeButton={false} className="min-h-11 px-5" render={<Link href="/tools/calem/stempelkarten/preview?view=program-editor" />}>{t("programEditor.demoLink")}</Button>
+                    <Button className="min-h-11 px-5" onClick={() => openEditor(false)}><Plus aria-hidden="true" />{t("newCard")}</Button>
+                  </div>
                 </div>
               </div>
               <dl className="grid gap-5 rounded-2xl bg-muted/40 p-6 sm:grid-cols-3 sm:gap-8 sm:p-8">

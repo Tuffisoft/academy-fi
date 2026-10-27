@@ -1,6 +1,6 @@
 # AcademyFi: Arbeitsregeln
 
-Version 1.10 · 27.10.2026 · Projektweit. Bestehende Fehler erlauben keine neuen.
+Version 1.11 · 27.10.2026 · Projektweit. Bestehende Fehler erlauben keine neuen.
 
 ## Kontext und Dokumentationspflege
 
@@ -85,7 +85,7 @@ Nur NACHWEISE.md: geprüfter Commit plus Patch-/Dateihash bei Codeabweichung, Do
 
 ## Aktueller Status und Blocker
 
-Stand 27.10.2026: v0.0.1–v0.3.0 lokal als Entwicklungspakete abgeschlossen; nächstes Paket v0.4.0. [Register und konkrete Genehmigungen](context/dauerhaft/dokumentation/ENTWICKLUNGSANLEITUNG_STEMPELKARTEN.md#c-statusregister-und-abhängigkeiten). v0.3.0 nur mit [befristeter manueller Prüfausnahme](context/dauerhaft/dokumentation/ENTWICKLUNGSANLEITUNG_STEMPELKARTEN.md#unterschritt-037--lokal-übernommen); Gerätefälle bleiben Freigabesperre. Additive v0.1.0-Test-/App-Migration autorisiert/angewendet, keine pauschale weitere Migrationsfreigabe. Keine Produkt-/Betriebsfreigabe, kein Merge/Deployment durch den Agenten.
+Stand 27.10.2026: v0.0.1–v0.4.0 lokal als Entwicklungspakete abgeschlossen; nächstes Paket v0.5.0. [Register und konkrete Genehmigungen](context/dauerhaft/dokumentation/ENTWICKLUNGSANLEITUNG_STEMPELKARTEN.md#c-statusregister-und-abhängigkeiten). v0.3.0 nur mit [befristeter manueller Prüfausnahme](context/dauerhaft/dokumentation/ENTWICKLUNGSANLEITUNG_STEMPELKARTEN.md#unterschritt-037--lokal-übernommen); v0.4.0 einschließlich v0.4.8 ebenfalls mit [konkret genehmigter befristeter manueller Prüfausnahme](context/dauerhaft/dokumentation/ENTWICKLUNGSANLEITUNG_STEMPELKARTEN.md#v048--vorbereitete-lokale-ubernahmeentscheidung); Resttests am Ende der Bauphase vor Pilot. Gerätefälle bleiben Freigabesperre. Additive v0.1.0-Test-/App-Migration autorisiert/angewendet, keine pauschale weitere Migrationsfreigabe. Keine Produkt-/Betriebsfreigabe, kein Merge/Deployment durch den Agenten.
 
 | ID | Offener Umfang / Verantwortung und Abschlusskriterium |
 | --- | --- |

@@ -203,6 +203,7 @@ model User {
   organizationInvitationsCreated OrganizationInvitation[] @relation("InvitationCreator")
   organizationInvitationsAccepted OrganizationInvitation[] @relation("InvitationAcceptor")
   organizationOperations OrganizationOperation[]
+  loyaltyOperations LoyaltyOperation[]
 
   @@map("user")
 }
@@ -392,6 +393,58 @@ model Organization {
   auditEntries OrganizationAuditLog[]
   invitations  OrganizationInvitation[]
   operations   OrganizationOperation[]
+  programs     LoyaltyProgram[]
+  assets       LoyaltyAsset[]
+  loyaltyOperations LoyaltyOperation[]
+}
+
+// Draft operations are unique across actors within a tenant. Existing membership history is untouched.
+model LoyaltyOperation {
+  id String @id @default(cuid())
+  organizationId String
+  actorId String
+  operationId String @db.VarChar(36)
+  action String @db.VarChar(40)
+  fingerprint String @db.VarChar(64)
+  resultId String @db.VarChar(160)
+  createdAt DateTime @default(now())
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Restrict)
+  actor User @relation(fields: [actorId], references: [id], onDelete: Restrict)
+  @@unique([organizationId, operationId])
+  @@index([organizationId, action, createdAt])
+}
+
+model LoyaltyAsset {
+  id String @id @default(cuid())
+  organizationId String
+  storageKey String @unique
+  mediaType String @default("image/png")
+  purpose String @default("LOGO")
+  createdAt DateTime @default(now())
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Restrict)
+  programs LoyaltyProgram[]
+  @@unique([organizationId, id])
+}
+
+model LoyaltyProgram {
+  id String @id @default(cuid())
+  organizationId String
+  status String @default("DRAFT") @db.VarChar(20)
+  name String @db.VarChar(80)
+  description String @db.VarChar(500)
+  reward String @db.VarChar(160)
+  target Int
+  backgroundColor String @db.VarChar(7)
+  textColor String @db.VarChar(7)
+  symbol String @db.VarChar(20)
+  logoAssetId String?
+  revision Int @default(1)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Restrict)
+  logo LoyaltyAsset? @relation(fields: [organizationId, logoAssetId], references: [organizationId, id], onDelete: Restrict)
+  @@unique([organizationId, id])
+  @@index([organizationId, createdAt, id])
 }
 
 model OrganizationInvitation {

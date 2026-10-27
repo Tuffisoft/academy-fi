@@ -43,6 +43,8 @@ function tests(paths, env) {
       "tests/loyalty-customer-actions.test.ts",
       "tests/loyalty-memberships.test.ts",
       "tests/loyalty-membership-web.test.ts",
+      "tests/loyalty-programs.test.ts",
+      "tests/loyalty-program-assets.test.ts",
       "tests/loyalty/memberships.integration.test.ts",
       "tests/loyalty/membership-matrix.integration.test.ts",
     ].includes(path),
