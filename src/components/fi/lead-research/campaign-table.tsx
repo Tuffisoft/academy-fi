@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useFormatter, useTranslations } from "next-intl";
 import { FolderSearch } from "lucide-react";
 import type { LeadSearchSummary } from "@/lib/lead-research/types";
+import { isAreaSearch } from "@/lib/lead-research/search-input";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
@@ -19,6 +20,7 @@ export function CampaignTable({ searches, isOwner, compact, onRun, onShow, runni
   const offset = compact ? 0 : currentPage * pageSize;
   const visible = searches.slice(offset, offset + pageSize);
   const dateLabel = (value: string) => format.dateTime(new Date(value), { dateStyle: "medium", timeStyle: "short", timeZone: "Europe/Berlin" });
+  const industryLabel = (value: string) => isAreaSearch(value) ? t("areaSearch") : value;
 
   return <div className="space-y-4">
     <Table>
@@ -30,19 +32,19 @@ export function CampaignTable({ searches, isOwner, compact, onRun, onShow, runni
           <FolderSearch className="mx-auto mb-3 size-6 text-muted-foreground" aria-hidden="true" />
           <p className="font-medium">{t("noCampaigns")}</p>
         </TableCell></TableRow> : visible.map((search) => <TableRow key={search.id}>
-          <TableCell className="max-w-72 whitespace-normal"><p className="wrap-anywhere font-medium">{search.location}</p><p className="wrap-anywhere text-xs text-muted-foreground">{search.industry} · {t("radiusValue", { value: search.radiusKm })}</p></TableCell>
-          <TableCell><Badge variant="secondary">{t(`statuses.${search.status}`)}</Badge>{search.status === "COMPLETED" && <p className="mt-1 text-xs text-muted-foreground">{t("leadCount", { count: search.resultCount })}</p>}</TableCell>
+          <TableCell className="max-w-72 whitespace-normal"><p className="wrap-anywhere font-medium">{search.location}</p><p className="wrap-anywhere text-xs text-muted-foreground">{industryLabel(search.industry)} · {t("radiusValue", { value: search.radiusKm })}</p></TableCell>
+          <TableCell><Badge variant="secondary">{t(`statuses.${search.status}`)}</Badge>{search.status === "COMPLETED" && <p className="mt-1 text-xs text-muted-foreground">{isAreaSearch(search.industry) ? t("areaCandidateSummary", { candidates: search.resultCount, target: search.maxResults }) : t("leadCount", { count: search.resultCount })}</p>}</TableCell>
           {isOwner && <TableCell>{search.authorName}</TableCell>}
           <TableCell><time dateTime={search.createdAt}>{dateLabel(search.createdAt)}</time></TableCell>
           <TableCell className="w-px align-middle">
             <div className="flex items-center justify-end gap-2">
             <Dialog>
-              <DialogTrigger render={<Button variant="outline" size="sm" aria-label={t("detailsFor", { location: search.location, industry: search.industry })}>{t("details")}</Button>} />
+              <DialogTrigger render={<Button variant="outline" size="sm" aria-label={t("detailsFor", { location: search.location, industry: industryLabel(search.industry) })}>{t("details")}</Button>} />
               <DialogContent className="max-h-[90dvh] overflow-y-auto sm:max-w-lg">
                 <DialogHeader><DialogTitle>{t("searchDetails")}</DialogTitle><DialogDescription className="sr-only">{t("savedNotice")}</DialogDescription></DialogHeader>
                 <dl className="grid gap-4 sm:grid-cols-2">
                   {[
-                    [t("location"), search.location], [t("industry"), search.industry],
+                    [t("location"), search.location], [t("industry"), industryLabel(search.industry)],
                     [t("radius"), t("radiusValue", { value: search.radiusKm })], [t("maxResults"), format.number(search.maxResults)],
                     [t("analyzeWebsites"), search.analyzeWebsites ? t("yes") : t("no")],
                     [t("status"), t(`statuses.${search.status}`)], [t("author"), search.authorName], [t("created"), dateLabel(search.createdAt)],

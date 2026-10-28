@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { Pause, Play, Square } from "lucide-react";
 import { useTranslations } from "next-intl";
 import type { LeadSearchSummary } from "@/lib/lead-research/types";
+import { isAreaSearch } from "@/lib/lead-research/search-input";
 import { cancelLeadSearchAction, pauseLeadSearchAction, resumeLeadSearchAction } from "@/lib/actions/lead-searches.actions";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -12,6 +13,7 @@ import { Card, CardAction, CardContent, CardDescription, CardHeader, CardTitle }
 
 export function SearchJobStatus({ search }: { search: LeadSearchSummary }) {
   const t = useTranslations("leadResearch");
+  const industry = isAreaSearch(search.industry) ? t("areaSearch") : search.industry;
   const router = useRouter();
   const [pending, startTransition] = useTransition();
   const [error, setError] = useState(false);
@@ -26,7 +28,7 @@ export function SearchJobStatus({ search }: { search: LeadSearchSummary }) {
   }
   return <Card>
     <CardHeader>
-      <CardTitle className="wrap-anywhere">{search.industry} · {search.location}</CardTitle>
+      <CardTitle className="wrap-anywhere">{industry} · {search.location}</CardTitle>
       <CardDescription>{search.pauseRequested ? t("jobPausing") : active ? t(search.phase === "LOCATING" ? "jobLocating" : search.phase === "SEARCHING" ? "jobSearching" : "jobQueued") : t(`statuses.${search.status}`)}</CardDescription>
       <CardAction><Badge variant="secondary">{t(`statuses.${search.status}`)}</Badge></CardAction>
     </CardHeader>

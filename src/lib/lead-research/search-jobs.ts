@@ -37,5 +37,5 @@ export async function processLeadSearchJob(id: string, runId: string) {
       return queueWebsiteAudits(search.userId, result.placeIds, { id, runId, resultLimit: result.resultLimit, errorCode: result.errorCode });
     },
     fail: async (errorCode) => { await prisma.leadSearch.updateMany({ where, data: { status: "FAILED", phase: "DONE", pauseRequested: false, errorCode, finishedAt: new Date() } }); },
-  }, undefined, { checkpoint: search.checkpoint as SearchCheckpoint | null, processedPages: search.processedPages, placeIds: search.googlePlaceIds });
+  }, undefined, { checkpoint: search.checkpoint as SearchCheckpoint | null, processedPages: search.processedPages, placeIds: search.googlePlaceIds }, { searchId: id, runId });
 }

@@ -5,7 +5,7 @@ export { calculateQuality, QUALITY_WEIGHTS, type QualityParts } from "./website-
 
 export type QualityErrorCode = "auditUnavailable" | "auditTimeout" | "auditQuota" | "auditAccess" | "auditResponse" | "auditUnreachable" | "auditUnsafeUrl";
 export class QualityError extends Error {
-  constructor(public readonly code: QualityErrorCode) { super(code); }
+  constructor(public readonly code: QualityErrorCode, public readonly reason?: string) { super(code); }
 }
 export type WebsiteReport = {
   version: 1 | 2;
@@ -53,16 +53,16 @@ export function publicWebsiteUrl(value: unknown): string | null {
 function parseDevice(data: unknown): { report: DeviceReport; url: string; checkedAt: string; screenshot: string | null } {
   const root = object(data);
   const lighthouse = object(root.lighthouseResult);
-  if (object(lighthouse.runtimeError).code) throw new QualityError("auditUnreachable");
+  if (object(lighthouse.runtimeError).code) throw new QualityError("auditUnreachable", "lighthouse_runtime_error");
   const url = publicWebsiteUrl(lighthouse.finalUrl);
   const checkedAt = text(lighthouse.fetchTime, 64);
-  if (!url || !checkedAt || !Number.isFinite(Date.parse(checkedAt))) throw new QualityError("auditResponse");
+  if (!url || !checkedAt || !Number.isFinite(Date.parse(checkedAt))) throw new QualityError("auditResponse", "invalid_report_metadata");
   const categories = object(lighthouse.categories);
   const audits = object(lighthouse.audits);
-  if (object(audits["http-status-code"]).score === 0) throw new QualityError("auditUnreachable");
+  if (object(audits["http-status-code"]).score === 0) throw new QualityError("auditUnreachable", "website_http_error");
   const getScore = (id: string) => score(object(categories[id]).score);
   const performance = getScore("performance");
-  if (performance === null && Object.keys(categories).length === 0) throw new QualityError("auditResponse");
+  if (performance === null && Object.keys(categories).length === 0) throw new QualityError("auditResponse", "missing_lighthouse_categories");
   const included = new Set<string>();
   const membership = new Map<string, QualityTopic[]>();
   for (const key of ["performance", "seo", "accessibility", "best-practices"]) {
@@ -99,6 +99,7 @@ type Fetcher = (url: string, init: RequestInit) => Promise<Response>;
 export async function inspectWebsite(website: string, key?: string, fetcher: Fetcher = fetch, visualOptions: VisualOptions = {}): Promise<WebsiteReport & { parts: QualityParts }> {
   const target = publicWebsiteUrl(website);
   if (!target) throw new QualityError("auditUnsafeUrl");
+  const log = (event: string, details: Record<string, unknown> = {}) => console.warn("[lead-audit]", { event, auditId: visualOptions.auditId, ...details });
   async function run(strategy: "mobile" | "desktop") {
     const url = new URL("https://www.googleapis.com/pagespeedonline/v5/runPagespeed");
     url.searchParams.set("url", target!);
@@ -108,11 +109,27 @@ export async function inspectWebsite(website: string, key?: string, fetcher: Fet
     if (key?.trim()) url.searchParams.set("key", key.trim());
     let response: Response;
     try { response = await fetcher(url.href, { method: "GET", cache: "no-store", redirect: "error", signal: AbortSignal.timeout(75000) }); }
-    catch (error) { throw new QualityError(error instanceof Error && ["TimeoutError", "AbortError"].includes(error.name) ? "auditTimeout" : "auditUnavailable"); }
-    if (!response.ok) throw new QualityError(response.status === 429 ? "auditQuota" : [401, 403].includes(response.status) ? "auditAccess" : "auditUnavailable");
+    catch (error) {
+      const timedOut = error instanceof Error && ["TimeoutError", "AbortError"].includes(error.name);
+      log("pagespeed.request_failed", { strategy, reason: timedOut ? "timeout" : "network_error", errorName: error instanceof Error ? error.name : "unknown" });
+      throw new QualityError(timedOut ? "auditTimeout" : "auditUnavailable", timedOut ? "request_timeout" : "network_error");
+    }
+    if (!response.ok) {
+      const errorCode = response.status === 429 ? "auditQuota" : [401, 403].includes(response.status) ? "auditAccess" : "auditUnavailable";
+      log("pagespeed.request_failed", { strategy, status: response.status, errorCode });
+      throw new QualityError(errorCode, `http_${response.status}`);
+    }
     let data: unknown;
-    try { data = await response.json(); } catch { throw new QualityError("auditResponse"); }
-    return parseDevice(data);
+    try { data = await response.json(); } catch {
+      log("pagespeed.response_invalid", { strategy, status: response.status, reason: "invalid_json" });
+      throw new QualityError("auditResponse", "invalid_json");
+    }
+    try { return parseDevice(data); } catch (error) {
+      const reason = error instanceof QualityError ? error.reason ?? error.code : "unexpected_response_shape";
+      const errorCode = error instanceof QualityError ? error.code : "auditResponse";
+      log("pagespeed.response_invalid", { strategy, status: response.status, reason, errorCode });
+      throw error;
+    }
   }
   // Two bounded requests, no automatic paid retries. Both finish before the
   // worker releases its claim, even if one strategy fails.

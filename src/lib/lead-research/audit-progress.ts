@@ -35,7 +35,7 @@ export function getAuditProgress(audits: readonly AuditSummary[], now: number | 
     }
     remainingSeconds = Math.ceil(Math.max(...slots) / 1000);
   }
-  return { total: batch.length, done, percentage, failed, paused, cancelled: batch.filter(audit => audit.status === "CANCELLED").length, active: pending.some(auditIsActive), remainingSeconds };
+  return { total: batch.length, done, percentage, failed, failedAudits: batch.filter(audit => audit.status === "FAILED"), paused, cancelled: batch.filter(audit => audit.status === "CANCELLED").length, active: pending.some(auditIsActive), remainingSeconds };
 }
 
 export function formatRemainingTime(seconds: number) {

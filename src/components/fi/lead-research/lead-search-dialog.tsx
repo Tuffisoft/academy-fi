@@ -1,12 +1,13 @@
 "use client";
 
 import { useRef, useState, useTransition, type FormEvent } from "react";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { Pencil, Plus } from "lucide-react";
 import { toast } from "sonner";
 import { createLeadSearchAction, updateLeadSearchAction } from "@/lib/actions/lead-searches.actions";
 import type { LeadSearchSummary } from "@/lib/lead-research/types";
-import { isLeadSearchMutable, MAX_SEARCH_RESULTS } from "@/lib/lead-research/search-input";
+import { INDUSTRY_CATEGORIES } from "@/lib/lead-research/industry-catalog";
+import { AREA_SEARCH_TERM, isAreaSearch, isLeadSearchMutable, MAX_AREA_SEARCH_RESULTS, MAX_SEARCH_RESULTS } from "@/lib/lead-research/search-input";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -36,6 +37,8 @@ export function LeadSearchDialog({ search, open: controlledOpen, onOpenChange, h
   hideTrigger?: boolean;
 }) {
   const t = useTranslations("leadResearch");
+  const locale = useLocale() === "de" ? "de" : "en";
+  const [searchMode, setSearchMode] = useState<"industry" | "area">(search && isAreaSearch(search.industry) ? "area" : "industry");
   const [internalOpen, setInternalOpen] = useState(false);
   const open = controlledOpen ?? internalOpen;
   const setOpen = onOpenChange ?? setInternalOpen;
@@ -43,6 +46,7 @@ export function LeadSearchDialog({ search, open: controlledOpen, onOpenChange, h
   const [isPending, startTransition] = useTransition();
   const submitting = useRef(false);
   const [error, setError] = useState<string | null>(null);
+  const industryListId = `lead-industry-options-${search?.id ?? "new"}`;
 
   function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -50,7 +54,7 @@ export function LeadSearchDialog({ search, open: controlledOpen, onOpenChange, h
     setPreview({
       location: String(data.get("location") ?? "").trim(),
       radiusKm: Number(data.get("radiusKm")),
-      industry: String(data.get("industry") ?? "").trim(),
+      industry: searchMode === "area" ? AREA_SEARCH_TERM : String(data.get("industry") ?? "").trim(),
       maxResults: Number(data.get("maxResults")),
       analyzeWebsites: true,
     });
@@ -92,7 +96,7 @@ export function LeadSearchDialog({ search, open: controlledOpen, onOpenChange, h
     >
       {!hideTrigger && <DialogTrigger
         render={
-          <Button variant={search ? "outline" : "default"} size={search ? "sm" : "default"} disabled={search ? !isLeadSearchMutable(search.status) : false} aria-label={search ? t("editFor", { location: search.location, industry: search.industry }) : undefined}>
+          <Button variant={search ? "outline" : "default"} size={search ? "sm" : "default"} disabled={search ? !isLeadSearchMutable(search.status) : false} aria-label={search ? t("editFor", { location: search.location, industry: isAreaSearch(search.industry) ? t("areaSearch") : search.industry }) : undefined}>
             {search ? <Pencil aria-hidden="true" /> : <Plus aria-hidden="true" />}
             {t(search ? "edit" : "newSearch")}
           </Button>
@@ -109,6 +113,13 @@ export function LeadSearchDialog({ search, open: controlledOpen, onOpenChange, h
           className="flex flex-col gap-5"
         >
           <fieldset disabled={isPending} className="flex min-w-0 flex-col gap-5">
+          <div className="flex flex-col gap-2">
+            <Label>{t("searchMode")}</Label>
+            <div role="group" aria-label={t("searchMode")} className="flex w-fit rounded-md border p-1">
+              <Button type="button" size="sm" variant={searchMode === "industry" ? "secondary" : "ghost"} aria-pressed={searchMode === "industry"} onClick={() => { setSearchMode("industry"); setPreview(null); setError(null); }}>{t("industrySearch")}</Button>
+              <Button type="button" size="sm" variant={searchMode === "area" ? "secondary" : "ghost"} aria-pressed={searchMode === "area"} onClick={() => { setSearchMode("area"); setPreview(null); setError(null); }}>{t("areaSearch")}</Button>
+            </div>
+          </div>
           <div className="grid gap-4 sm:grid-cols-2">
             <div className="flex flex-col gap-2">
               <Label htmlFor="lead-location">{t("location")}</Label>
@@ -136,20 +147,31 @@ export function LeadSearchDialog({ search, open: controlledOpen, onOpenChange, h
                 required
               />
             </div>
-            <div className="flex flex-col gap-2">
+            {searchMode === "industry" ? <div className="flex flex-col gap-2">
               <Label htmlFor="lead-industry">{t("industry")}</Label>
               <Input
                 id="lead-industry"
                 name="industry"
-                defaultValue={search?.industry}
+                defaultValue={search && !isAreaSearch(search.industry) ? search.industry : undefined}
                 placeholder={t("industryPlaceholder")}
+                list={industryListId}
                 required
                 pattern=".*\S.*"
                 maxLength={200}
               />
-            </div>
+              <datalist id={industryListId}>
+                {INDUSTRY_CATEGORIES.flatMap((category) => category.items.map((industry) => (
+                  <option key={industry.key} value={industry[locale]} label={`${t(`industryCategories.${category.key}`)} · ${t(`industryOptions.${industry.key}`)}`} />
+                )))}
+              </datalist>
+              <p className="text-xs text-muted-foreground">{t("industryHelp")}</p>
+            </div> : <div className="flex flex-col gap-2">
+              <Label>{t("areaSearch")}</Label>
+              <input type="hidden" name="industry" value={AREA_SEARCH_TERM} />
+              <p className="text-xs text-muted-foreground">{t("areaSearchHelp")}</p>
+            </div>}
             <div className="flex flex-col gap-2">
-              <Label htmlFor="lead-max-results">{t("maxResults")}</Label>
+              <Label htmlFor="lead-max-results">{t(searchMode === "area" ? "topResults" : "maxResults")}</Label>
               <Input
                 id="lead-max-results"
                 name="maxResults"
@@ -157,8 +179,8 @@ export function LeadSearchDialog({ search, open: controlledOpen, onOpenChange, h
                 type="number"
                 min={1}
                 step={1}
-                max={MAX_SEARCH_RESULTS}
-                placeholder="100"
+                max={searchMode === "area" ? MAX_AREA_SEARCH_RESULTS : MAX_SEARCH_RESULTS}
+                placeholder={searchMode === "area" ? String(MAX_AREA_SEARCH_RESULTS) : "100"}
                 required
               />
             </div>
@@ -183,7 +205,7 @@ export function LeadSearchDialog({ search, open: controlledOpen, onOpenChange, h
                       t("radius"),
                       t("radiusValue", { value: preview.radiusKm }),
                     ],
-                    [t("industry"), preview.industry],
+                    [t("industry"), isAreaSearch(preview.industry) ? t("areaSearch") : preview.industry],
                     [t("maxResults"), String(preview.maxResults)],
                     [
                       t("analyzeWebsites"),

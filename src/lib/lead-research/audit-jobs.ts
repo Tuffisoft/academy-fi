@@ -10,6 +10,7 @@ import { MAX_PARALLEL_WEBSITE_AUDITS } from "./audit-scheduling";
 export type AuditTicket = { id: string; token: string };
 
 export async function queueWebsiteAudits(userId: string, placeIds: string[], search?: { id: string; runId: string; resultLimit: boolean; errorCode: string | null }) {
+  const log = (event: string, details: Record<string, unknown> = {}) => console.info("[lead-audit]", { event, ...details });
   const ids = [...new Set(placeIds)].slice(0, 60);
   const runToken = randomUUID();
   const prepared = await prisma.$transaction(async (tx) => {
@@ -26,22 +27,27 @@ export async function queueWebsiteAudits(userId: string, placeIds: string[], sea
     return { completed: true, jobs };
   });
   const { jobs } = prepared;
+  log("audit.batch_queued", { searchId: search?.id, runId: search?.runId, requestedCount: ids.length, queuedCount: jobs.length, searchCompleted: prepared.completed });
   if (!jobs.length) return prepared.completed;
   try { await start(auditWebsites, [jobs.map((job) => ({ id: job.id, token: job.runToken }))]); }
   catch {
+    log("audit.batch_start_failed", { searchId: search?.id, runId: search?.runId, queuedCount: jobs.length, errorCode: "auditQueueError" });
     await prisma.websiteAudit.updateMany({ where: { OR: jobs.map((job) => ({ id: job.id, runToken: job.runToken })), status: "QUEUED" }, data: { status: "FAILED", errorCode: "auditQueueError", checkedAt: new Date() } });
   }
   return prepared.completed;
 }
 
 export async function processWebsiteAudit(ticket: AuditTicket) {
+  const log = (event: string, details: Record<string, unknown> = {}) => console.info("[lead-audit]", { event, auditId: ticket.id, ...details });
   const where = { id: ticket.id, runToken: ticket.token };
   const audit = await prisma.websiteAudit.findFirst({ where, include: { user: { select: { banned: true } } } });
-  if (!audit || audit.status !== "QUEUED") return "skip";
+  if (!audit) { log("audit.skipped", { reason: "not_found" }); return "skip"; }
+  if (audit.status !== "QUEUED") { log("audit.skipped", { reason: "not_queued", status: audit.status }); return "skip"; }
   if (audit.user.banned) { await failWebsiteAudit(ticket, "notEditable"); return "skip"; }
   const running = { ...where, status: "RUNNING" };
   let claimed = false;
   try { return await executeWebsiteAudit(audit.placeId, {
+    auditId: ticket.id,
     claim: () => prisma.$transaction(async (tx) => {
       await tx.$queryRaw`SELECT pg_advisory_xact_lock(20261020, 5)::text`;
       const cutoff = new Date(Date.now() - 120000);
@@ -51,13 +57,19 @@ export async function processWebsiteAudit(ticket: AuditTicket) {
       if (await tx.websiteAudit.count({ where: { OR: [{ status: "RUNNING" }, { status: "CANCELLED", startedAt: { gte: cutoff } }] } }) >= MAX_PARALLEL_WEBSITE_AUDITS) return "busy" as const;
       const result = await tx.websiteAudit.updateMany({ where: { ...where, status: "QUEUED" }, data: { status: "RUNNING", startedAt: new Date(), errorCode: null } });
       claimed = result.count > 0;
+      log(claimed ? "audit.started" : "audit.claim_skipped", { reason: claimed ? undefined : "state_changed" });
       return result.count ? "claimed" as const : "skip" as const;
     }),
     active: async () => Boolean(await prisma.websiteAudit.findFirst({ where: { ...running, user: { OR: [{ banned: false }, { banned: null }] } }, select: { id: true } })),
     complete: async (report) => {
-      await prisma.websiteAudit.updateMany({ where: running, data: { status: report ? "COMPLETED" : "NO_WEBSITE", qualityScore: report?.qualityScore ?? null, ...(report ? { report } : {}), checkedAt: new Date(), errorCode: null } });
+      const status = report ? "COMPLETED" : "NO_WEBSITE";
+      const result = await prisma.websiteAudit.updateMany({ where: running, data: { status, qualityScore: report?.qualityScore ?? null, ...(report ? { report } : {}), checkedAt: new Date(), errorCode: null } });
+      log("audit.completed", { status, visualStatus: report?.visual?.status, saved: result.count > 0 });
     },
-    fail: (code) => failWebsiteAudit(ticket, code),
+    fail: (code) => {
+      log("audit.failed", { errorCode: code });
+      return failWebsiteAudit(ticket, code);
+    },
   }, process.env.GOOGLE_PLACES_API_KEY, process.env.PAGESPEED_API_KEY); }
   finally {
     if (claimed) await prisma.websiteAudit.updateMany({ where: { ...where, status: "CANCELLED", startedAt: { not: null } }, data: { startedAt: null } });
@@ -65,5 +77,6 @@ export async function processWebsiteAudit(ticket: AuditTicket) {
 }
 
 export async function failWebsiteAudit(ticket: AuditTicket, errorCode: string) {
-  await prisma.websiteAudit.updateMany({ where: { id: ticket.id, runToken: ticket.token, status: { in: ["QUEUED", "RUNNING"] } }, data: { status: "FAILED", qualityScore: null, errorCode, checkedAt: new Date() } });
+  const result = await prisma.websiteAudit.updateMany({ where: { id: ticket.id, runToken: ticket.token, status: { in: ["QUEUED", "RUNNING"] } }, data: { status: "FAILED", qualityScore: null, errorCode, checkedAt: new Date() } });
+  console.info("[lead-audit]", { event: "audit.failure_persisted", auditId: ticket.id, errorCode, saved: result.count > 0 });
 }

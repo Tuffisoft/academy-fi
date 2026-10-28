@@ -1,4 +1,12 @@
 export const MAX_SEARCH_RESULTS = 2_147_483_647;
+export const AREA_SEARCH_TERM = "__area_search__";
+export const MAX_AREA_SEARCH_RESULTS = 20;
+export const MAX_AREA_SEARCH_CANDIDATES = 60;
+export const AREA_SEARCH_CANDIDATE_MULTIPLIER = 3;
+
+export function isAreaSearch(industry: string) {
+  return industry === AREA_SEARCH_TERM;
+}
 
 export type LeadSearchInput = {
   location: string;
@@ -17,6 +25,7 @@ export function parseLeadSearchInput(input: unknown): LeadSearchInput | null {
   if (!location || location.length > 200 || !industry || industry.length > 200) return null;
   if (typeof data.radiusKm !== "number" || !Number.isFinite(data.radiusKm) || data.radiusKm < 0.1 || data.radiusKm > Number.MAX_SAFE_INTEGER) return null;
   if (typeof data.maxResults !== "number" || !Number.isInteger(data.maxResults) || data.maxResults < 1 || data.maxResults > MAX_SEARCH_RESULTS) return null;
+  if (isAreaSearch(industry) && data.maxResults > MAX_AREA_SEARCH_RESULTS) return null;
   if (typeof data.analyzeWebsites !== "boolean") return null;
   // Whitelist input: ownership and status always come from the server.
   return { location, industry, radiusKm: data.radiusKm, maxResults: data.maxResults, analyzeWebsites: data.analyzeWebsites };

@@ -6,7 +6,7 @@ import { Trash2 } from "lucide-react";
 import { toast } from "sonner";
 import { deleteLeadSearchAction } from "@/lib/actions/lead-searches.actions";
 import type { LeadSearchSummary } from "@/lib/lead-research/types";
-import { isLeadSearchMutable } from "@/lib/lead-research/search-input";
+import { isAreaSearch, isLeadSearchMutable } from "@/lib/lead-research/search-input";
 import { Button } from "@/components/ui/button";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
 
@@ -17,6 +17,7 @@ export function DeleteSearchDialog({ search, open: controlledOpen, onOpenChange,
   hideTrigger?: boolean;
 }) {
   const t = useTranslations("leadResearch");
+  const industry = isAreaSearch(search.industry) ? t("areaSearch") : search.industry;
   const [internalOpen, setInternalOpen] = useState(false);
   const open = controlledOpen ?? internalOpen;
   const setOpen = onOpenChange ?? setInternalOpen;
@@ -41,11 +42,11 @@ export function DeleteSearchDialog({ search, open: controlledOpen, onOpenChange,
   }
 
   return <AlertDialog open={open} onOpenChange={(value) => { if (!submitting.current) { setOpen(value); setError(null); } }}>
-    {!hideTrigger && <AlertDialogTrigger render={<Button variant="destructive" size="sm" disabled={!isLeadSearchMutable(search.status)} aria-label={t("deleteFor", { location: search.location, industry: search.industry })}><Trash2 aria-hidden="true" />{t("delete")}</Button>} />}
+    {!hideTrigger && <AlertDialogTrigger render={<Button variant="destructive" size="sm" disabled={!isLeadSearchMutable(search.status)} aria-label={t("deleteFor", { location: search.location, industry })}><Trash2 aria-hidden="true" />{t("delete")}</Button>} />}
     <AlertDialogContent>
       <AlertDialogHeader>
         <AlertDialogTitle>{t("deleteTitle")}</AlertDialogTitle>
-        <AlertDialogDescription className="wrap-anywhere">{t("deleteDescription", { location: search.location, industry: search.industry })}</AlertDialogDescription>
+        <AlertDialogDescription className="wrap-anywhere">{t("deleteDescription", { location: search.location, industry })}</AlertDialogDescription>
       </AlertDialogHeader>
       {error && <p role="alert" className="text-sm text-destructive">{error}</p>}
       <AlertDialogFooter>

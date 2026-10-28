@@ -19,6 +19,7 @@ import { SavedLeadsView } from "./saved-leads-view";
 import type { AuditSummary } from "@/lib/lead-research/audit-types";
 import { qualityStyles, qualityTone } from "./quality-presentation";
 import { AuditProgressCard } from "./audit-progress-card";
+import { isAreaSearch } from "@/lib/lead-research/search-input";
 
 const PdfDesignEditor = dynamic(() => import("./pdf-design-editor").then(module => module.PdfDesignEditor));
 type View = "overview" | "campaigns" | "leads" | "savedLeads" | "analytics" | "pdfDesign";
@@ -123,7 +124,7 @@ export function LeadResearchWorkspace({ searches: initialSearches, savedLeads, a
         <div className={view === "overview" ? "grid min-w-0 gap-4 lg:grid-cols-3" : "grid min-w-0 gap-4"}>
           {view !== "analytics" && (
             <div className={view === "overview" ? "min-w-0 space-y-3 lg:col-span-2" : "min-w-0 space-y-3"}>
-              <PlacesResults key={selected?.id + String(selected?.runId)} result={result} pending={pending || isSearching || loadingDetails} compact={view === "overview"} searchId={selected?.id} savedLeads={savedLeads} userId={userId} audits={audits.filter((audit) => audit.userId === selected?.userId)} context={selected ? { location: selected.location, industry: selected.industry } : undefined} />
+              <PlacesResults key={selected?.id + String(selected?.runId)} result={result} pending={pending || isSearching || loadingDetails} compact={view === "overview"} searchId={selected?.id} completedWithoutResults={selected?.status === "COMPLETED" && selected.resultCount === 0} targetResults={selected?.maxResults} savedLeads={savedLeads} userId={userId} audits={audits.filter((audit) => audit.userId === selected?.userId)} context={selected ? { location: selected.location, industry: isAreaSearch(selected.industry) ? t("areaSearch") : selected.industry } : undefined} />
             </div>
           )}
           {view !== "leads" && <Card>

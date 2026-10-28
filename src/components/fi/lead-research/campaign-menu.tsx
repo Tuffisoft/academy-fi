@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useTranslations } from "next-intl";
 import { Ellipsis, Eye, Pencil, Play, Trash2 } from "lucide-react";
 import type { LeadSearchSummary } from "@/lib/lead-research/types";
-import { isLeadSearchMutable } from "@/lib/lead-research/search-input";
+import { isAreaSearch, isLeadSearchMutable } from "@/lib/lead-research/search-input";
 import { Button } from "@/components/ui/button";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { LeadSearchDialog } from "./lead-search-dialog";
@@ -12,6 +12,7 @@ import { DeleteSearchDialog } from "./delete-search-dialog";
 
 export function CampaignMenu({ search, onRun, onShow, running }: { search: LeadSearchSummary; onRun: (id: string) => void; onShow: (id: string) => void; running: boolean }) {
   const t = useTranslations("leadResearch");
+  const industry = isAreaSearch(search.industry) ? t("areaSearch") : search.industry;
   const [dialog, setDialog] = useState<"edit" | "delete" | null>(null);
 
   return <>
@@ -22,7 +23,7 @@ export function CampaignMenu({ search, onRun, onShow, running }: { search: LeadS
       <Eye aria-hidden="true" />
     </Button>
     <DropdownMenu>
-      <DropdownMenuTrigger render={<Button variant="ghost" size="icon-sm" aria-label={t("actionsFor", { location: search.location, industry: search.industry })}><Ellipsis aria-hidden="true" /></Button>} />
+      <DropdownMenuTrigger render={<Button variant="ghost" size="icon-sm" aria-label={t("actionsFor", { location: search.location, industry })}><Ellipsis aria-hidden="true" /></Button>} />
       <DropdownMenuContent align="end">
         <DropdownMenuItem disabled={running || !isLeadSearchMutable(search.status)} onClick={() => setDialog("edit")}><Pencil aria-hidden="true" />{t("edit")}</DropdownMenuItem>
         <DropdownMenuSeparator />

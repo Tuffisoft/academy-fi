@@ -6,7 +6,7 @@ export type VisualDesign = {
   criteria?: { hierarchy: number; readability: number; consistency: number; mobileLayout: number };
   findings?: { observation: string; recommendation: string }[];
 };
-export type VisualOptions = { apiKey?: string; model?: string; active?: () => Promise<boolean>; fetcher?: typeof fetch };
+export type VisualOptions = { apiKey?: string; model?: string; active?: () => Promise<boolean>; fetcher?: typeof fetch; auditId?: string };
 const criterionKeys = ["hierarchy", "readability", "consistency", "mobileLayout"] as const;
 const integer = { type: "integer", minimum: 0, maximum: 100 };
 const schema = {
@@ -24,6 +24,10 @@ export function screenshotData(value: unknown): string | null {
 
 export async function assessVisualDesign(screenshot: string | null, options: VisualOptions = {}): Promise<VisualDesign> {
   const empty = (status: VisualStatus): VisualDesign => ({ status, score: null });
+  const unavailable = (reason: string, details: Record<string, unknown> = {}) => {
+    console.warn("[lead-audit]", { event: "openai.visual_assessment_unavailable", auditId: options.auditId, reason, ...details });
+    return empty("unavailable");
+  };
   if (!options.apiKey?.trim()) return empty("not_configured");
   if (!screenshotData(screenshot)) return empty("screenshot_missing");
   if (options.active && !await options.active()) return empty("cancelled");
@@ -38,22 +42,26 @@ export async function assessVisualDesign(screenshot: string | null, options: Vis
         text: { format: { type: "json_schema", name: "website_design", strict: true, schema } },
       }),
     });
-    if (!response.ok) return empty("unavailable");
-    const body = await response.json();
-    if (body.status !== "completed" || !Array.isArray(body.output)) return empty("unavailable");
+    if (!response.ok) return unavailable("http_error", { status: response.status });
+    let body: Awaited<ReturnType<typeof response.json>>;
+    try { body = await response.json(); } catch { return unavailable("invalid_json", { status: response.status }); }
+    if (body.status !== "completed" || !Array.isArray(body.output)) return unavailable("response_incomplete", { responseStatus: body.status });
     const content = body.output.flatMap((item: { type?: string; content?: unknown[] }) => item.type === "message" && Array.isArray(item.content) ? item.content : []);
-    if (content.some((item: { type?: string }) => item.type === "refusal")) return empty("unavailable");
+    if (content.some((item: { type?: string }) => item.type === "refusal")) return unavailable("model_refusal");
     const texts = content.filter((item: { type?: string; text?: unknown }) => item.type === "output_text" && typeof item.text === "string");
-    if (texts.length !== 1) return empty("unavailable");
-    const result = JSON.parse(texts[0].text);
-    if (typeof result.rateable !== "boolean" || !["low", "high"].includes(result.confidence)) return empty("unavailable");
+    if (texts.length !== 1) return unavailable("unexpected_output_count", { count: texts.length });
+    let result: ReturnType<typeof JSON.parse>;
+    try { result = JSON.parse(texts[0].text); } catch { return unavailable("invalid_output_json"); }
+    if (typeof result.rateable !== "boolean" || !["low", "high"].includes(result.confidence)) return unavailable("invalid_output_schema");
     if (!result.rateable || result.confidence === "low") return empty("unrateable");
     const values = criterionKeys.map(key => result.criteria?.[key]);
-    if (!values.every(value => Number.isInteger(value) && value >= 0 && value <= 100)) return empty("unavailable");
-    if (!Array.isArray(result.findings) || result.findings.length > 4 || !result.findings.every((item: { observation?: unknown; recommendation?: unknown }) => typeof item.observation === "string" && item.observation.trim() && item.observation.length <= 500 && typeof item.recommendation === "string" && item.recommendation.trim() && item.recommendation.length <= 500)) return empty("unavailable");
+    if (!values.every(value => Number.isInteger(value) && value >= 0 && value <= 100)) return unavailable("invalid_score_schema");
+    if (!Array.isArray(result.findings) || result.findings.length > 4 || !result.findings.every((item: { observation?: unknown; recommendation?: unknown }) => typeof item.observation === "string" && item.observation.trim() && item.observation.length <= 500 && typeof item.recommendation === "string" && item.recommendation.trim() && item.recommendation.length <= 500)) return unavailable("invalid_findings_schema");
     return { status: "completed", score: Math.round(values.reduce((a, b) => a + b, 0) / 4), model,
       criteria: Object.fromEntries(criterionKeys.map((key, index) => [key, values[index]])) as NonNullable<VisualDesign["criteria"]>,
       findings: result.findings.map((item: { observation: string; recommendation: string }) => ({ observation: item.observation.trim(), recommendation: item.recommendation.trim() })),
     };
-  } catch { return empty("unavailable"); }
+  } catch (error) {
+    return unavailable("request_error", { errorName: error instanceof Error ? error.name : "unknown" });
+  }
 }

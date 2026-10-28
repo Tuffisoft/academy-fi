@@ -26,17 +26,25 @@ export async function runLeadSearchAction(id: unknown) {
   const user = await requireUser();
   if (typeof id !== "string" || !id || id.length > 128)
     return { success: false as const, error: "notEditable" as const };
+  const log = (event: string, details: Record<string, unknown> = {}) => console.info("[lead-research]", { event, searchId: id, ...details });
+  log("search.start_requested");
   const key = process.env.GOOGLE_PLACES_API_KEY;
-  if (!key?.trim())
+  if (!key?.trim()) {
+    log("search.start_rejected", { reason: "googleNotConfigured" });
     return { success: false as const, error: "googleNotConfigured" as const };
+  }
   await expireSearchJobs(user);
   const search = await prisma.leadSearch.findFirst({
     where: { id, ...leadSearchScope(user) },
   });
-  if (!search)
+  if (!search) {
+    log("search.start_rejected", { reason: "notFound" });
     return { success: false as const, error: "notEditable" as const };
-  if (search.radiusKm > 50)
+  }
+  if (search.radiusKm > 50) {
+    log("search.start_rejected", { reason: "googleRadius" });
     return { success: false as const, error: "googleRadius" as const };
+  }
   const runId = randomUUID();
   const admission = await prisma.$transaction(async (tx) => {
     // Serialize admissions across Vercel instances without holding a transaction during Google calls.
@@ -85,7 +93,8 @@ export async function runLeadSearchAction(id: unknown) {
     });
     return claim.count ? "accepted" : "busy";
   });
-  if (admission !== "accepted")
+  if (admission !== "accepted") {
+    log("search.start_rejected", { reason: admission });
     return {
       success: false as const,
       error:
@@ -95,6 +104,8 @@ export async function runLeadSearchAction(id: unknown) {
             ? ("jobCapacity" as const)
             : ("googleBusy" as const),
     };
+  }
+  log("search.accepted", { runId });
   after(async () => {
     try {
       await processLeadSearchJob(id, runId);
