@@ -26,7 +26,8 @@ export async function runLeadSearchAction(id: unknown) {
   const user = await requireUser();
   if (typeof id !== "string" || !id || id.length > 128)
     return { success: false as const, error: "notEditable" as const };
-  const log = (event: string, details: Record<string, unknown> = {}) => console.info("[lead-research]", { event, searchId: id, ...details });
+  const log = (event: string, details: Record<string, unknown> = {}) =>
+    console.info("[lead-research]", { event, searchId: id, ...details });
   log("search.start_requested");
   const key = process.env.GOOGLE_PLACES_API_KEY;
   if (!key?.trim()) {

@@ -4,11 +4,19 @@ export const INDUSTRY_CATEGORIES = [
     items: [
       { key: "dentists", en: "dentists", de: "Zahnärzte" },
       { key: "doctors", en: "doctors", de: "Ärzte" },
-      { key: "physiotherapists", en: "physiotherapists", de: "Physiotherapeuten" },
+      {
+        key: "physiotherapists",
+        en: "physiotherapists",
+        de: "Physiotherapeuten",
+      },
       { key: "chiropractors", en: "chiropractors", de: "Chiropraktiker" },
       { key: "veterinarians", en: "veterinarians", de: "Tierärzte" },
       { key: "opticians", en: "opticians", de: "Optiker" },
-      { key: "psychologists", en: "psychologists", de: "Psychologische Praxen" },
+      {
+        key: "psychologists",
+        en: "psychologists",
+        de: "Psychologische Praxen",
+      },
       { key: "pharmacies", en: "pharmacies", de: "Apotheken" },
     ],
   },
@@ -20,10 +28,26 @@ export const INDUSTRY_CATEGORIES = [
       { key: "roofers", en: "roofers", de: "Dachdecker" },
       { key: "painters", en: "painters", de: "Maler" },
       { key: "carpenters", en: "carpenters", de: "Tischler" },
-      { key: "generalContractors", en: "general contractors", de: "Bauunternehmen" },
-      { key: "landscapers", en: "landscapers", de: "Garten- und Landschaftsbauer" },
-      { key: "cleaningServices", en: "cleaning services", de: "Reinigungsfirmen" },
-      { key: "heatingServices", en: "heating and air conditioning services", de: "Heizungs- und Klimabetriebe" },
+      {
+        key: "generalContractors",
+        en: "general contractors",
+        de: "Bauunternehmen",
+      },
+      {
+        key: "landscapers",
+        en: "landscapers",
+        de: "Garten- und Landschaftsbauer",
+      },
+      {
+        key: "cleaningServices",
+        en: "cleaning services",
+        de: "Reinigungsfirmen",
+      },
+      {
+        key: "heatingServices",
+        en: "heating and air conditioning services",
+        de: "Heizungs- und Klimabetriebe",
+      },
     ],
   },
   {
@@ -31,12 +55,32 @@ export const INDUSTRY_CATEGORIES = [
     items: [
       { key: "accountants", en: "accountants", de: "Steuerberater" },
       { key: "lawyers", en: "lawyers", de: "Rechtsanwälte" },
-      { key: "realEstateAgencies", en: "real estate agencies", de: "Immobilienmakler" },
-      { key: "insuranceAgencies", en: "insurance agencies", de: "Versicherungsagenturen" },
-      { key: "marketingAgencies", en: "marketing agencies", de: "Marketingagenturen" },
-      { key: "webDesignAgencies", en: "web design agencies", de: "Webdesign-Agenturen" },
+      {
+        key: "realEstateAgencies",
+        en: "real estate agencies",
+        de: "Immobilienmakler",
+      },
+      {
+        key: "insuranceAgencies",
+        en: "insurance agencies",
+        de: "Versicherungsagenturen",
+      },
+      {
+        key: "marketingAgencies",
+        en: "marketing agencies",
+        de: "Marketingagenturen",
+      },
+      {
+        key: "webDesignAgencies",
+        en: "web design agencies",
+        de: "Webdesign-Agenturen",
+      },
       { key: "itServices", en: "IT service providers", de: "IT-Dienstleister" },
-      { key: "businessConsultants", en: "business consultants", de: "Unternehmensberater" },
+      {
+        key: "businessConsultants",
+        en: "business consultants",
+        de: "Unternehmensberater",
+      },
     ],
   },
   {
@@ -45,8 +89,16 @@ export const INDUSTRY_CATEGORIES = [
       { key: "restaurants", en: "restaurants", de: "Restaurants" },
       { key: "cafes", en: "cafes", de: "Cafés" },
       { key: "bakeries", en: "bakeries", de: "Bäckereien" },
-      { key: "groceryStores", en: "grocery stores", de: "Lebensmittelgeschäfte" },
-      { key: "clothingStores", en: "clothing stores", de: "Bekleidungsgeschäfte" },
+      {
+        key: "groceryStores",
+        en: "grocery stores",
+        de: "Lebensmittelgeschäfte",
+      },
+      {
+        key: "clothingStores",
+        en: "clothing stores",
+        de: "Bekleidungsgeschäfte",
+      },
       { key: "furnitureStores", en: "furniture stores", de: "Möbelgeschäfte" },
       { key: "florists", en: "florists", de: "Blumengeschäfte" },
       { key: "butcherShops", en: "butcher shops", de: "Metzgereien" },
@@ -79,9 +131,17 @@ export const INDUSTRY_CATEGORIES = [
   {
     key: "educationAndCare",
     items: [
-      { key: "childcareCenters", en: "childcare centers", de: "Kindertagesstätten" },
+      {
+        key: "childcareCenters",
+        en: "childcare centers",
+        de: "Kindertagesstätten",
+      },
       { key: "schools", en: "schools", de: "Schulen" },
-      { key: "tutoringServices", en: "tutoring services", de: "Nachhilfeangebote" },
+      {
+        key: "tutoringServices",
+        en: "tutoring services",
+        de: "Nachhilfeangebote",
+      },
       { key: "languageSchools", en: "language schools", de: "Sprachschulen" },
       { key: "musicSchools", en: "music schools", de: "Musikschulen" },
     ],
@@ -90,7 +150,11 @@ export const INDUSTRY_CATEGORIES = [
     key: "automotive",
     items: [
       { key: "carDealers", en: "car dealers", de: "Autohändler" },
-      { key: "autoRepairShops", en: "auto repair shops", de: "Autowerkstätten" },
+      {
+        key: "autoRepairShops",
+        en: "auto repair shops",
+        de: "Autowerkstätten",
+      },
       { key: "drivingSchools", en: "driving schools", de: "Fahrschulen" },
     ],
   },
@@ -98,8 +162,16 @@ export const INDUSTRY_CATEGORIES = [
     key: "associationsAndCommunity",
     items: [
       { key: "associations", en: "associations", de: "Vereine" },
-      { key: "nonprofits", en: "nonprofit organizations", de: "gemeinnützige Organisationen" },
-      { key: "communityCenters", en: "community centers", de: "Gemeinschaftszentren" },
+      {
+        key: "nonprofits",
+        en: "nonprofit organizations",
+        de: "gemeinnützige Organisationen",
+      },
+      {
+        key: "communityCenters",
+        en: "community centers",
+        de: "Gemeinschaftszentren",
+      },
     ],
   },
 ] as const;

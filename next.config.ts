@@ -4,11 +4,23 @@ import path from "node:path";
 import createNextIntlPlugin from "next-intl/plugin";
 import { withWorkflow } from "workflow/next";
 
-if (process.platform === "win32" && process.env.NODE_ENV === "development" && !process.env.VERCEL_DEPLOYMENT_ID && process.env.LOCALAPPDATA) {
+if (
+  process.platform === "win32" &&
+  process.env.NODE_ENV === "development" &&
+  !process.env.VERCEL_DEPLOYMENT_ID &&
+  process.env.LOCALAPPDATA
+) {
   process.env.WORKFLOW_TARGET_WORLD ??= "local";
-  if (process.env.WORKFLOW_TARGET_WORLD === "local" && !process.env.WORKFLOW_LOCAL_DATA_DIR) {
+  if (
+    process.env.WORKFLOW_TARGET_WORLD === "local" &&
+    !process.env.WORKFLOW_LOCAL_DATA_DIR
+  ) {
     const source = path.resolve(".next/workflow-data");
-    const destination = path.join(process.env.LOCALAPPDATA, "AcademyFi", "workflow-data");
+    const destination = path.join(
+      process.env.LOCALAPPDATA,
+      "AcademyFi",
+      "workflow-data",
+    );
     if (!existsSync(destination) && existsSync(source)) {
       mkdirSync(path.dirname(destination), { recursive: true });
       cpSync(source, destination, { recursive: true });
