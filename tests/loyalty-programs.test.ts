@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import { randomUUID } from "node:crypto";
 import { before, mock, test } from "node:test";
 import { defaultProgram } from "../src/lib/loyalty/program-input";
+import { logoObjectKey } from "../src/lib/loyalty/logo-storage-config";
 
 // Adapter/service behavior only; real constraints and concurrency have a separate DB test.
 type Row = Record<string, unknown>;
@@ -10,8 +11,15 @@ let operations: Row[] = [], programs: Row[] = [], assets: Row[] = [];
 let audits: Row[] = [];
 let transactionCalls = 0, failAudit = false, commitFailures = 0;
 let commitFailureCode = "P2034";
+let failDeletion = false;
+const deletedKeys: string[] = [];
+mock.module("../src/lib/loyalty/logo-storage.ts", { namedExports: {
+  deleteLogoObject: async (key: string) => { if (failDeletion) throw new Error("R2_UNAVAILABLE"); deletedKeys.push(key); },
+} });
 const match = (row: Row, where: Row): boolean => Object.entries(where).every(([key, value]) =>
   key === "organizationId_operationId" ? match(row, value as Row)
+    : value !== null && typeof value === "object" && "in" in value ? (value.in as unknown[]).includes(row[key])
+    : value !== null && typeof value === "object" && "startsWith" in value ? String(row[key]).startsWith(String(value.startsWith))
     : value !== null && typeof value === "object" && "gt" in value ? String(row[key]) > String(value.gt) : row[key] === value);
 const tx = {
   $queryRaw: async () => [],
@@ -22,7 +30,10 @@ const tx = {
   } },
   loyaltyOperation: {
     findUnique: async ({ where }: { where: Row }) => operations.find(row => match(row, where)) ?? null,
-    create: async ({ data }: { data: Row }) => { operations.push(data); return data; },
+    findFirst: async ({ where }: { where: Row }) => operations.find(row => match(row, where)) ?? null,
+    findMany: async ({ where }: { where: Row }) => operations.filter(row => match(row, where)),
+    updateMany: async ({ where, data }: { where: Row; data: Row }) => { const rows = operations.filter(row => match(row, where)); rows.forEach(row => Object.assign(row, data)); return { count: rows.length }; },
+    create: async ({ data }: { data: Row }) => { const row = { id: randomUUID(), ...data }; operations.push(row); return row; },
   },
   loyaltyProgram: {
     findFirst: async ({ where }: { where: Row }) => programs.find(row => match(row, where)) ?? null,
@@ -30,10 +41,14 @@ const tx = {
     create: async ({ data }: { data: Row }) => { const row = { ...data, id: randomUUID(), status: "DRAFT", revision: 1 }; programs.push(row); return row; },
     update: async ({ where, data }: { where: Row; data: Row }) => { const row = programs.find(row => match(row, where))!; Object.assign(row, { ...data, revision: Number(row.revision) + 1 }); return row; },
   },
-  loyaltyAsset: { findFirst: async ({ where }: { where: Row }) => assets.find(row => match(row, where)) ?? null },
+  loyaltyAsset: {
+    findFirst: async ({ where }: { where: Row }) => assets.find(row => match(row, where)) ?? null,
+    findMany: async ({ where }: { where: Row }) => assets.filter(row => match(row, where)),
+    updateMany: async ({ where, data }: { where: Row; data: Row }) => { const rows = assets.filter(row => match(row, where)); rows.forEach(row => Object.assign(row, data)); return { count: rows.length }; },
+  },
   organizationAuditLog: { create: async ({ data }: { data: Row }) => { if (failAudit) throw new Error("AUDIT_UNAVAILABLE"); audits.push(data); return data; } },
 };
-mock.module("../src/lib/prisma.ts", { namedExports: { prisma: { $transaction: async (callback: (transaction: typeof tx) => unknown) => {
+mock.module("../src/lib/prisma.ts", { namedExports: { prisma: { loyaltyAsset: tx.loyaltyAsset, loyaltyOperation: tx.loyaltyOperation, $transaction: async (callback: (transaction: typeof tx) => unknown) => {
   transactionCalls++;
   const snapshot = structuredClone({ operations, programs, assets, audits });
   try {
@@ -84,6 +99,14 @@ test("service, action and HTTP reject STAFF, revoked access and foreign IDs", as
     assert.equal((await http(request(oversized), "org")).status, 422);
     assert.equal((await action({ ...oversized, organizationId: "org" }, "de")).ok, false);
   }
+  const beforeInvalidTargets = { calls: transactionCalls, programs: programs.length, operations: operations.length, audits: audits.length };
+  for (const target of [0, 11, 1.5, 2147483647]) {
+    const invalidTarget = { ...body, operationId: randomUUID(), config: { ...body.config, target } };
+    await assert.rejects(save("actor", { ...invalidTarget, organizationId: "org" }), /INVALID_INPUT/);
+    assert.equal((await http(request(invalidTarget), "org")).status, 422);
+    assert.equal((await action({ ...invalidTarget, organizationId: "org" }, "de")).ok, false);
+  }
+  assert.deepEqual({ calls: transactionCalls, programs: programs.length, operations: operations.length, audits: audits.length }, beforeInvalidTargets);
   assert.equal((await http(request(body, "https://foreign.invalid"), "org")).status, 403);
   assert.equal((await http(request({ ...body, actorId: "foreign" }), "org")).status, 422);
   assert.equal((await http(request(body), "foreign")).status, 403);
@@ -109,9 +132,11 @@ test("reads validate empty identifiers before DB access and paginate exactly 50 
   await assert.rejects(save("", command()), /INVALID_INPUT/);
   assert.equal(transactionCalls, beforeCalls);
   programs = Array.from({ length: 51 }, (_, i) => ({ ...command().config, id: `p${String(i).padStart(3, "0")}`, organizationId: "org", status: "DRAFT", revision: 1 }));
+  programs[0].target = 11;
   programs.push({ ...programs[0], id: "foreign", organizationId: "foreign" });
   const first = await read("actor", "org");
   assert.equal(first.programs.length, 50); assert.equal(first.next, "p049");
+  assert.equal(first.programs[0].target, 11);
   const second = await read("actor", "org", undefined, first.next!);
   assert.deepEqual(second.programs.map(row => row.id), ["p050"]); assert.equal(second.next, null);
   await assert.rejects(read("actor", "org", "foreign"), /NOT_FOUND/);
@@ -129,7 +154,7 @@ test("audit/commit failures roll back drafts and bounded retries keep the same o
   failAudit = false; commitFailures = 2; commitFailureCode = "P2034";
   const beforeRetry = transactionCalls;
   const result = await save("actor", input);
-  assert.equal(transactionCalls - beforeRetry, 3);
+  assert.equal(transactionCalls - beforeRetry, 4);
   assert.equal(programs.length, 1); assert.equal(operations.length, 1); assert.equal(audits.length, 1);
   assert.equal(operations[0].operationId, input.operationId);
   assert.equal((await save("actor", input)).program.id, result.program.id);
@@ -145,4 +170,36 @@ test("audit/commit failures roll back drafts and bounded retries keep the same o
   assert.equal(transactionCalls - beforeConnectionFailure, 1); assert.deepEqual(programs, snapshot);
   assert.equal(operations.length, 1); assert.equal(audits.length, 1);
   commitFailures = 0;
+});
+
+test("logo retirement waits for commit, protects shared references and retries cleanup on save replay", async () => {
+  operations = []; programs = []; assets = []; audits = []; role = "OWNER"; active = true; banned = false; session = true;
+  deletedKeys.length = 0;
+  const key = logoObjectKey("org", randomUUID(), "a".repeat(64));
+  assets.push({ id: "old-logo", organizationId: "org", purpose: "LOGO", mediaType: "image/png", storageKey: key });
+  const config = { ...command().config, logoAssetId: "old-logo" };
+  const first = await save("actor", { ...command(), config });
+  const second = await save("actor", { ...command(), config });
+  const remove = { ...command(), programId: first.program.id, expectedRevision: 1 };
+  failAudit = true;
+  await assert.rejects(save("actor", remove), /AUDIT_UNAVAILABLE/);
+  failAudit = false;
+  assert.equal(assets[0].purpose, "LOGO"); assert.deepEqual(deletedKeys, []);
+  await assert.rejects(save("actor", { ...remove, expectedRevision: 2 }), /REVISION_CONFLICT/);
+  await save("actor", remove);
+  assert.equal(assets[0].purpose, "LOGO"); assert.deepEqual(deletedKeys, []);
+  const last = { ...command(), programId: second.program.id, expectedRevision: 1 };
+  commitFailureCode = "P1001"; commitFailures = 1;
+  await assert.rejects(save("actor", last), /COMMIT_FAILED/);
+  assert.equal(assets[0].purpose, "LOGO"); assert.deepEqual(deletedKeys, []);
+  failDeletion = true;
+  assert.equal((await save("actor", last)).cleanupPending, true);
+  assert.ok(operations.some(row => row.action === "LOGO_DELETE_PENDING"));
+  assert.equal((await read("actor", "org")).cleanupPending, true);
+  await assert.rejects(save("actor", { ...command(), config }), /INVALID_INPUT/);
+  failDeletion = false;
+  assert.equal((await save("actor", last)).cleanupPending, false);
+  assert.ok(operations.some(row => row.action === "LOGO_DELETED"));
+  assert.deepEqual(deletedKeys, [key]);
+  assert.equal((await read("actor", "org", second.program.id)).programs[0].revision, 2);
 });

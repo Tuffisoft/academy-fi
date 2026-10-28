@@ -31,6 +31,7 @@ export async function ProgramList({
       <h2 id="program-list-heading" className="text-2xl font-semibold">
         {t("title")}
       </h2>
+      {data.cleanupPending && <p role="alert">{t("logoCleanupPending")}</p>}
       <Link
         className="min-h-11 justify-self-start rounded-md border px-4 py-3"
         href={`${base}/programs/new`}
@@ -44,7 +45,7 @@ export async function ProgramList({
             <CardHeader>
               <CardTitle className="wrap-anywhere">{program.name}</CardTitle>
               <p className="text-sm text-muted-foreground">
-                {t("draft")} · {t("revision", { revision: program.revision })}
+                {t("draft")} · {t("savedStatus")}
               </p>
             </CardHeader>
             <CardContent className="grid gap-3">

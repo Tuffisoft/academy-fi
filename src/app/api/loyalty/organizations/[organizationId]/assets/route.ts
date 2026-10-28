@@ -11,7 +11,7 @@ export async function POST(request: Request, context: { params: Promise<{ organi
     const actor = await programRequestActor(request);
     if (!actor) return Response.json({ ok: false, error: { code: "UNAUTHENTICATED", message: locale === "de" ? "Bitte erneut anmelden." : "Please sign in again." } }, { status: 401, headers: programHeaders });
     if (!request.headers.get("content-type")?.startsWith("multipart/form-data;")) throw new ProgramError("INVALID_INPUT");
-    const bytes = await boundedBody(request, maxLogoBytes + 16384);
+    const bytes = await boundedBody(request, maxLogoBytes + 16384, "LOGO_TOO_LARGE");
     let form: FormData;
     try { form = await new Response(new Uint8Array(bytes), { headers: { "content-type": request.headers.get("content-type")! } }).formData(); }
     catch { throw new ProgramError("INVALID_INPUT"); }

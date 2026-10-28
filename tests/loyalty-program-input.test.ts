@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
 import sharp from "sharp";
-import { contrast, defaultProgram, programConfig, programCommand } from "../src/lib/loyalty/program-input";
+import { contrast, defaultProgram, programConfig, programCommand, storedProgramConfig } from "../src/lib/loyalty/program-input";
 import { normalizeLogo } from "../src/lib/loyalty/logo";
 
 const config = { ...defaultProgram, name: "  Coffee   club  ", reward: "Free coffee" };
@@ -13,11 +13,12 @@ test("text limits reject oversized raw input before normalization, including lar
     }
   }
 });
-test("program validation normalizes text and colors, preserves integer boundaries", () => {
+test("program validation normalizes text and colors, allows only targets 1–10 for writes and preserves older stored targets", () => {
   assert.equal(programConfig.parse(config).name, "Coffee club");
   assert.equal(programConfig.parse({ ...config, backgroundColor: "#173a32" }).backgroundColor, "#173A32");
-  assert.ok(programConfig.safeParse({ ...config, target: 2147483647 }).success);
-  for (const target of [0, -1, 1.5, NaN, Infinity, 2147483648, "8"]) assert.equal(programConfig.safeParse({ ...config, target }).success, false);
+  for (let target = 1; target <= 10; target++) assert.ok(programConfig.safeParse({ ...config, target }).success);
+  assert.equal(storedProgramConfig.parse({ ...config, target: 2147483647 }).target, 2147483647);
+  for (const target of [0, -1, 1.5, 11, NaN, Infinity, 2147483647, 2147483648, "8"]) assert.equal(programConfig.safeParse({ ...config, target }).success, false);
   for (const name of ["", " ", "a".repeat(41), "<img>", "Hi\nthere", "bad\u0000"]) assert.equal(programConfig.safeParse({ ...config, name }).success, false);
   assert.equal(programConfig.safeParse({ ...config, reward: "" }).success, false);
   assert.equal(programConfig.safeParse({ ...config, description: "a".repeat(71) }).success, false);

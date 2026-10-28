@@ -156,7 +156,9 @@ test(
       const overview = await request(portal);
       assert.equal(overview.status, 200);
       assert.match(await overview.text(), /Noch keine Entwürfe vorhanden/);
-      assert.equal((await request(`${portal}/programs/new`)).status, 200);
+      const newDraftPage = await request(`${portal}/programs/new`);
+      assert.equal(newDraftPage.status, 200);
+      assert.match(await newDraftPage.text(), /role="status"[^>]*>Nicht gespeichert<\/p>/);
       const input = {
         operationId: randomUUID(),
         config: { ...defaultProgram, name: "Portal proof", reward: "Coffee" },
@@ -225,7 +227,7 @@ test(
         `/en/tools/calem/stempelkarten/app/${org}/programs/${id}`,
       );
       assert.equal(english.status, 200);
-      assert.match(await english.text(), /Confirmed saved version/);
+      assert.match(await english.text(), /role="status"[^>]*>Saved<\/p>/);
       assert.equal(
         (
           await request(

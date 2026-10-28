@@ -1,7 +1,6 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
 import { useLocale, useTranslations } from "next-intl";
-import { z } from "zod";
 import { useRouter } from "@/i18n/navigation";
 import { saveProgramAction } from "@/lib/loyalty/program.actions";
 import { createOperationId } from "@/lib/loyalty/operation-id";
@@ -19,14 +18,17 @@ import {
 import {
   defaultProgram,
   programConfig,
+  storedProgramConfig,
+  programTarget,
+  programTargetLimits,
   programTextFields,
   programTextLimits,
-  resourceId,
   symbols,
   type ProgramConfig,
   type ProgramView,
 } from "@/lib/loyalty/program-input";
 import { ProgramPreview } from "./program-preview";
+import { ProgramLogoUpload } from "./program-logo-upload";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -45,10 +47,6 @@ type Pending = {
   expectedRevision?: number;
   config: ProgramConfig;
 };
-const uploadedAsset = z.object({
-  ok: z.literal(true),
-  data: z.object({ id: resourceId }),
-});
 export function ProgramEditor({
   organizationId,
   slug,
@@ -67,7 +65,7 @@ export function ProgramEditor({
     router = useRouter();
   const [config, setConfig] = useState<ProgramConfig>(
     initial
-      ? programConfig.parse({
+      ? storedProgramConfig.parse({
           name: initial.name,
           description: initial.description,
           reward: initial.reward,
@@ -92,14 +90,10 @@ export function ProgramEditor({
   const [uploadRetry, setUploadRetry] = useState(false);
   const [invalidFields, setInvalidFields] = useState<string[]>([]);
   const pending = useRef<Pending | null>(null);
-  const upload = useRef<{ file: File; operationId: string } | null>(null);
   const reloadConfirmed = useRef(false);
   const [historyLeave, setHistoryLeave] = useState<(() => void) | null>(null);
   const validation = programConfig.safeParse(config);
-  const targetInvalid =
-    !Number.isInteger(config.target) ||
-    config.target < 1 ||
-    config.target > 2147483647;
+  const targetInvalid = !programTarget.safeParse(config.target).success;
   const colorIssues = validation.success
     ? []
     : validation.error.issues.filter(
@@ -233,47 +227,17 @@ export function ProgramEditor({
       setConflict(false);
       setError(false);
       setMessage(t("saved"));
-      window.history.replaceState(
-        null,
-        "",
-        `/${locale}/tools/calem/stempelkarten/app/${slug}/programs/${row.id}`,
-      );
+      // Only a confirmed commit may bypass the unsaved-changes guard. A fresh
+      // document also prevents a cached overview from showing the previous data.
+      reloadConfirmed.current = true;
+      window.location.replace(`/${locale}/tools/calem/stempelkarten/app/${slug}`);
     } catch {
+      reloadConfirmed.current = false;
       setUncertain(true);
       setError(true);
       setMessage(t("uncertain"));
     } finally {
       setBusy(false);
-    }
-  }
-  async function uploadLogo(file?: File) {
-    if (preview) return;
-    if (uploading || busy || uncertain) return;
-    if (file) upload.current = { file, operationId: createOperationId() };
-    if (!upload.current) return;
-    setUploading(true);
-    setUploadRetry(false);
-    setError(false);
-    setMessage(t("uploading"));
-    try {
-      const body = new FormData();
-      body.set("file", upload.current.file);
-      body.set("operationId", upload.current.operationId);
-      const response = await fetch(
-        `/api/loyalty/organizations/${organizationId}/assets`,
-        { method: "POST", body, headers: { "Accept-Language": locale } },
-      );
-      const reply = uploadedAsset.safeParse(await response.json());
-      if (!response.ok || !reply.success) throw new Error("UPLOAD_FAILED");
-      change("logoAssetId", reply.data.data.id);
-      upload.current = null;
-      setMessage("");
-    } catch {
-      setUploadRetry(true);
-      setError(true);
-      setMessage(t("uploadFailed"));
-    } finally {
-      setUploading(false);
     }
   }
   return (
@@ -327,14 +291,9 @@ export function ProgramEditor({
         noValidate
       >
         <p role="status" className="rounded-lg border bg-muted p-3 text-sm">
-          {current
-            ? t("revision", { revision: current.revision })
-            : t("notSaved")}
-          {dirty && (
-            <span className="mt-1 block font-medium">
-              {t("unsavedChanges")}
-            </span>
-          )}
+          {current && !preview && !dirty && !busy
+            ? t("savedStatus")
+            : t("notSavedStatus")}
         </p>
         {preview && (
           <p role="note" className="rounded-lg border bg-muted p-4 text-sm">
@@ -441,8 +400,8 @@ export function ProgramEditor({
               id="program-target"
               disabled={previewConditionsLocked}
               type="number"
-              min={1}
-              max={2147483647}
+              min={programTargetLimits.min}
+              max={programTargetLimits.max}
               step={1}
               required
               value={Number.isNaN(config.target) ? "" : config.target}
@@ -496,9 +455,11 @@ export function ProgramEditor({
             className={`text-sm ${colorIssues.length ? "text-red-700 dark:text-red-400" : "text-muted-foreground"}`}
           >
             {t(
-              colorIssues.some((issue) => issue.message === "CONTRAST")
-                ? "contrastHint"
-                : "colorHint",
+              colorIssues.length === 0
+                ? "colorNote"
+                : colorIssues.some((issue) => issue.message === "CONTRAST")
+                  ? "contrastHint"
+                  : "colorHint",
             )}
           </p>
           <div className="grid gap-2">
@@ -529,53 +490,11 @@ export function ProgramEditor({
               </SelectContent>
             </Select>
           </div>
-          <div className="grid gap-2">
-            <label htmlFor="program-logo">{t("logo")}</label>
-            <Input
-              id="program-logo"
-              type="file"
-              disabled={preview || uploadRetry}
-              accept="image/png,image/jpeg,image/webp"
-              onChange={(event) => {
-                void uploadLogo(event.target.files?.[0]);
-                event.target.value = "";
-              }}
-            />
-            {config.logoAssetId && (
-              <Button
-                type="button"
-                variant="outline"
-                disabled={uploadRetry}
-                onClick={() => change("logoAssetId", null)}
-              >
-                {t("removeLogo")}
-              </Button>
-            )}
-            {uploadRetry && !uploading && (
-              <div className="grid gap-2">
-                <Button
-                  type="button"
-                  variant="outline"
-                  onClick={() => void uploadLogo()}
-                >
-                  {t("retryUpload")}
-                </Button>
-                <Button
-                  type="button"
-                  variant="outline"
-                  onClick={() => {
-                    upload.current = null;
-                    setUploadRetry(false);
-                    setMessage("");
-                    setError(false);
-                  }}
-                >
-                  {t("discardUpload")}
-                </Button>
-              </div>
-            )}
-          </div>
         </fieldset>
+        <ProgramLogoUpload organizationId={organizationId} logoAssetId={config.logoAssetId} hasSavedLogo={!!current?.logoAssetId}
+          disabled={preview || busy || uncertain || conflict}
+          onChange={id => change("logoAssetId", id)}
+          onState={(active, unresolved) => { setUploading(active); setUploadRetry(unresolved); }} />
         <p
           id="program-status"
           role={error ? "alert" : "status"}

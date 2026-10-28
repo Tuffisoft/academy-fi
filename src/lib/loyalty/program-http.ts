@@ -16,6 +16,9 @@ export function programResponse<T>(reply: ProgramReply<T>) {
     : (
         {
           INVALID_INPUT: 422,
+          LOGO_TOO_LARGE: 413,
+          LOGO_UNSUPPORTED: 415,
+          LOGO_INVALID: 422,
           FORBIDDEN: 403,
           NOT_FOUND: 404,
           REVISION_CONFLICT: 409,

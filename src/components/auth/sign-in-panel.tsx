@@ -18,12 +18,12 @@ export async function SignInPanel({ destination }: { destination?: SignInDestina
   const account = await getTranslations("customerAccount");
 
   return (
-    <div className={destination ? "flex min-w-0 flex-1 items-center justify-center bg-muted/30 px-5 py-12 sm:py-20" : "flex flex-1 items-center justify-center px-4 py-32"}>
-      <div className="grid w-full min-w-0 max-w-sm gap-6">
+    <div data-stempelfi-sign-in={destination ? "" : undefined} className={destination ? "flex min-w-0 flex-1 items-center justify-center bg-muted/30 px-5 py-6 sm:py-20" : "flex flex-1 items-center justify-center px-4 py-32"}>
+      <div className={destination ? "grid w-full min-w-0 max-w-sm gap-3 sm:gap-6" : "grid w-full min-w-0 max-w-sm gap-6"}>
         {destination && <p className="flex items-center justify-center gap-2 text-xl font-semibold tracking-tight"><Stamp className="size-6 text-primary" aria-hidden="true" />StempelFi</p>}
         <Card className="w-full min-w-0">
-          <CardHeader className={destination ? "gap-3 border-b pb-5" : undefined}>
-            <CardTitle>{destination ? <h1 className="wrap-break-words font-serif text-3xl tracking-tight">{product("signInTitle")}</h1> : t("signInTitle")}</CardTitle>
+          <CardHeader className={destination ? "gap-2 border-b pb-3 sm:gap-3 sm:pb-5" : undefined}>
+            <CardTitle>{destination ? <h1 className="wrap-break-words font-serif text-2xl tracking-tight sm:text-3xl">{product("signInTitle")}</h1> : t("signInTitle")}</CardTitle>
             <CardDescription>{destination ? (customerRegistrationEnabled() ? account("loginNote") : product("signInDescription")) : t("signInDescription")}</CardDescription>
           </CardHeader>
           <CardContent>

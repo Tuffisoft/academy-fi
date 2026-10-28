@@ -50,7 +50,12 @@ async function request(
           }
         : {}),
     });
-    const response = await fetch(signed, {
+    // Pass the original bounded bytes, not Request.body's stream. Next's fetch
+    // wrapper reconstructs Request inputs, losing the known body length on PUT.
+    const response = await fetch(signed.url, {
+      method: signed.method,
+      headers: signed.headers,
+      ...(bytes ? { body: new Uint8Array(bytes) } : {}),
       redirect: "error",
       cache: "no-store",
       signal: AbortSignal.timeout(method === "PUT" ? 30_000 : 15_000),
@@ -78,7 +83,7 @@ export async function putLogoObject(
 export async function getLogoObject(key: string) {
   return request(key, "GET");
 }
-/** Cleanup only for known owned synthetic integration-test keys; no public deletion API. */
+/** Internal cleanup of committed retired logos (and known synthetic test keys). */
 export async function deleteLogoObject(key: string) {
   const response = await request(key, "DELETE");
   await response.body?.cancel();

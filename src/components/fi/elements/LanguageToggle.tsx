@@ -2,7 +2,7 @@
 
 import { Languages } from "lucide-react";
 import { useLocale } from "next-intl";
-import { usePathname, useRouter } from "@/i18n/navigation";
+import { getPathname, usePathname } from "@/i18n/navigation";
 import { routing } from "@/i18n/routing";
 import { Button } from "@/components/ui/button";
 import {
@@ -19,7 +19,6 @@ const labels: Record<(typeof routing.locales)[number], string> = {
 
 export function LanguageToggle() {
   const locale = useLocale();
-  const router = useRouter();
   const pathname = usePathname();
 
   return (
@@ -33,7 +32,9 @@ export function LanguageToggle() {
           <DropdownMenuItem
             key={nextLocale}
             disabled={nextLocale === locale}
-            onClick={() => router.replace(pathname, { locale: nextLocale })}
+            onClick={() => window.location.replace(
+              getPathname({ href: pathname, locale: nextLocale }) + window.location.search + window.location.hash,
+            )}
           >
             {labels[nextLocale]}
           </DropdownMenuItem>

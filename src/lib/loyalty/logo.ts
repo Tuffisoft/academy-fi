@@ -1,6 +1,7 @@
 import sharp from "sharp";
 
-export const maxLogoBytes = 4 * 1024 * 1024;
+import { maxLogoBytes } from "./logo-input";
+export { maxLogoBytes } from "./logo-input";
 export async function normalizeLogo(bytes: Uint8Array, mime: string) {
   if (!bytes.length || bytes.length > maxLogoBytes) throw new Error("INVALID_LOGO");
   const image = sharp(bytes, { limitInputPixels: 16_000_000, animated: true, failOn: "warning" });

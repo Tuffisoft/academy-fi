@@ -13,6 +13,7 @@ type Row = {
   fingerprint?: string;
   resultId?: string;
   operationId?: string;
+  purpose?: string;
 };
 let active = true,
   role = "OWNER",
@@ -54,15 +55,16 @@ const tx = {
     findFirst: async ({ where }: { where: Row }) =>
       assets.find(
         (row) =>
-          row.id === where.id && row.organizationId === where.organizationId,
+          row.id === where.id && row.organizationId === where.organizationId && (!where.purpose || row.purpose === where.purpose),
       ) ?? null,
     create: async ({ data }: { data: Row }) => {
-      const asset = { ...data, id: randomUUID() };
+      const asset = { purpose: "LOGO", ...data, id: randomUUID() };
       assets.push(asset);
       return asset;
     },
   },
   loyaltyOperation: {
+    findFirst: async () => null,
     findUnique: async ({
       where,
     }: {
@@ -104,6 +106,7 @@ mock.module("../src/lib/session.ts", {
   namedExports: { getCurrentSession: async () => ({ user: { id: "actor" } }) },
 });
 mock.module("../src/lib/loyalty/logo-storage.ts", { namedExports: {
+  deleteLogoObject: async () => { throw new Error("Unexpected cleanup in upload-only unit tests"); },
   putLogoObject: async (bytes: Uint8Array, org: string, operation: string, fingerprint: string) => {
     calls++; assert.equal((await sharp(bytes).metadata()).format, "png");
     if (revokeOnUpload) active = false;
@@ -139,6 +142,23 @@ beforeEach(() => {
   operations = [];
 });
 
+test("upload HTTP returns specific DE/EN size, format and damaged-image errors without provider writes", async () => {
+  process.env.BETTER_AUTH_URL = "https://academy.example.invalid";
+  for (const locale of ["de", "en"]) {
+    for (const [file, status, code] of [
+      [new File([new Uint8Array(4 * 1024 * 1024 + 1)], "large.png", { type: "image/png" }), 413, "LOGO_TOO_LARGE"],
+      [new File(["<svg/>"], "image.svg", { type: "image/svg+xml" }), 415, "LOGO_UNSUPPORTED"],
+      [new File(["damaged"], "image.png", { type: "image/png" }), 422, "LOGO_INVALID"],
+    ] as const) {
+      const body = new FormData(); body.set("file", file); body.set("operationId", randomUUID());
+      const response = await post(new Request(`${process.env.BETTER_AUTH_URL}/api`, { method: "POST", headers: { origin: process.env.BETTER_AUTH_URL, "accept-language": locale }, body }), { params: Promise.resolve({ organizationId: "org" }) });
+      assert.equal(response.status, status);
+      const reply = await response.json(); assert.equal(reply.error.code, code); assert.ok(reply.error.message.length > 10);
+    }
+  }
+  assert.equal(calls, 0); assert.equal(assets.length, 0); assert.equal(operations.length, 0);
+});
+
 test("invalid file sizes/provider keys and failed DB commits never return usable assets", async () => {
   active = true;
   role = "ADMIN";
@@ -162,7 +182,7 @@ test("invalid file sizes/provider keys and failed DB commits never return usable
       randomUUID(),
       new OversizedFile(["synthetic"], "large.png", { type: "image/png" }),
     ),
-    /INVALID_INPUT/,
+    /LOGO_TOO_LARGE/,
   );
   assert.equal(read, false);
   assert.equal(calls, beforeCalls);
@@ -196,7 +216,7 @@ test("private reads validate access, object keys, type, PNG signature and size",
   active = true; role = "OWNER";
   const bytes = await sharp({ create: { width: 2, height: 2, channels: 3, background: "blue" } }).png().toBuffer();
   downloadBytes = new Uint8Array(bytes); downloadMode = "ok";
-  const asset = { id: randomUUID(), organizationId: "org", storageKey: logoObjectKey("org",randomUUID(),"0".repeat(64)) };
+  const asset = { id: randomUUID(), organizationId: "org", purpose: "LOGO", storageKey: logoObjectKey("org",randomUUID(),"0".repeat(64)) };
   assets.push(asset);
   const result = await download("actor", "org", asset.id);
   assert.equal(result.headers.get("content-type"), "image/png");
@@ -258,7 +278,7 @@ test("logos normalize before private upload; replay and provider/revocation fail
       randomUUID(),
       new File(["bad"], "bad.png", { type: "image/png" }),
     ),
-    /INVALID_INPUT/,
+    /LOGO_INVALID/,
   );
   assert.equal(calls, beforeCalls);
 });

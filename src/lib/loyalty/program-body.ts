@@ -4,9 +4,10 @@ import { ProgramError } from "./programs";
 export async function boundedBody(
   request: Pick<Request, "body" | "headers">,
   limit: number,
+  tooLarge: "INVALID_INPUT" | "LOGO_TOO_LARGE" = "INVALID_INPUT",
 ) {
   if (Number(request.headers.get("content-length")) > limit)
-    throw new ProgramError("INVALID_INPUT");
+    throw new ProgramError(tooLarge);
   const reader = request.body?.getReader();
   if (!reader) throw new ProgramError("INVALID_INPUT");
   const chunks: Uint8Array[] = [];
@@ -17,7 +18,7 @@ export async function boundedBody(
     size += chunk.value.length;
     if (size > limit) {
       await reader.cancel();
-      throw new ProgramError("INVALID_INPUT");
+      throw new ProgramError(tooLarge);
     }
     chunks.push(chunk.value);
   }

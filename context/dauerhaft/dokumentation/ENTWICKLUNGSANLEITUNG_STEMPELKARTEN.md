@@ -1,7 +1,7 @@
 <!-- Nachweiskürzung 27.10.2026: frühere Einzelbelege auf Auftrag gelöscht; historische Ergebnisangaben sind keine weiterhin verfügbaren Detailbeweise. Siehe ../nachweise/NACHWEISE.md. -->
 # Entwicklungsanleitung: Stempelkarten-SaaS
 
-Version 1.17 · 27.10.2026 · Planungsbasis: e88b052. Ziel: vollständig abgenommenes Modul v1.0.0.
+Version 1.21 · 28.10.2026 · Planungsbasis: e88b052. Ziel: vollständig abgenommenes Modul v1.0.0.
 28 Pakete; nächste offene Version: **v0.5.0**; abgeschlossen: **v0.0.1, v0.0.2, v0.1.0, v0.2.0, v0.3.0 und v0.4.0** (zuletzt [v0.4.0 einschließlich v0.4.8](#v048--vorbereitete-lokale-ubernahmeentscheidung), lokale Entwicklungsübernahme mit befristeter manueller Prüfausnahme). Seitenbasis: /tools/calem/stempelkarten; öffentliche, Unternehmens- und interne Seiten bleiben getrennt autorisiert.
 
 ## A. Arbeitsablauf und Abschluss
@@ -200,7 +200,7 @@ Auftrag: v0.5.0 in Unterschritten v0.5.1 Datenbasis, v0.5.2 Fachservice, v0.5.3 
 
 Explizites Speichern, unmittelbare lokale Vorschau, Warnung bei ungespeicherten Änderungen. Erfolg erst nach Commit; unklare Antwort wiederholt dieselbe Vorgangskennung samt Inhalt. Abweichender Inhalt ergibt Konflikt; erwartete Revision schützt vor Überschreiben, lokale Eingaben bleiben erhalten. Lade-, Leer-, Fehler-, Konflikt- und Erfolgszustände DE/EN, Light/Dark, Tastatur und ab 360px prüfen. Drei Vorschauen teilen normalisierte Daten, kennzeichnen Anbieterabweichungen und behaupten keine Wallet-Ausgabe. Öffentliche Vorschau bleibt synthetisch.
 
-V050-01: Anlage/Speichern/Wiederöffnen identisch. V050-02: Validierung Name 1–40, Beschreibung 0–70, Gratisbelohnung 1–40 Zeichen, Ziel 1–2147483647, keine Steuerzeichen/HTML; Symbole Stempel/Stern/Herz/Geschenk/Kaffee. V050-03: HEX-Farben, Kontrast mindestens 4,5:1. V050-04: optionale Logos PNG/JPEG/WebP bis 4 MiB/16 MP; keine Animation/SVG; normalisierte PNG bis 1024px ohne Metadaten, keine externen Eingabe-URLs. V050-05: fremde IDs, STAFF, Widerruf/Sperre und Rechteentzug während Upload scheitern. V050-06: 20 parallele Wiederholungen genau einmal, unabhängige Vorgänge getrennt und Revisionenkonflikte ohne Datenverlust. V050-07: API/Actions teilen Fachservice; Uploadfehler kein verwendbares Asset. V050-08: Academy-/Upload-/Vorschauregression und vier Checks. LF-F-05/06/28, LF-N-05; T-/AK-03/17 anteilig.
+V050-01: Anlage/Speichern/Wiederöffnen identisch. V050-02: Validierung Name 1–40, Beschreibung 0–70, Gratisbelohnung 1–40 Zeichen, Ziel 1–10, keine Steuerzeichen/HTML; Symbole Stempel/Stern/Herz/Geschenk/Kaffee. V050-03: HEX-Farben, Kontrast mindestens 4,5:1. V050-04: optionale Logos PNG/JPEG/WebP bis 4 MiB/16 MP; keine Animation/SVG; normalisierte PNG bis 1024px ohne Metadaten, keine externen Eingabe-URLs. V050-05: fremde IDs, STAFF, Widerruf/Sperre und Rechteentzug während Upload scheitern. V050-06: 20 parallele Wiederholungen genau einmal, unabhängige Vorgänge getrennt und Revisionenkonflikte ohne Datenverlust. V050-07: API/Actions teilen Fachservice; Uploadfehler kein verwendbares Asset. V050-08: Academy-/Upload-/Vorschauregression und vier Checks. LF-F-05/06/28, LF-N-05; T-/AK-03/17 anteilig.
 
 Migration ausschließlich für die bestätigte getrennte Loyalty-Testdatenbank konkret freigegeben; App-DB-Anwendung weiterhin nicht freigegeben. [Anwendung und DB-Nachweis v0.5.2](../nachweise/NACHWEISE.md#v052--testmigration-und-db-nachweis-27102026). Ergebnisse und Selbstreview ausschließlich in NACHWEISE.md; manuelle Ausnahmen früherer Pakete gelten nicht für v0.5.0.
 
@@ -236,10 +236,10 @@ Folgende Geräteliste einmal auf echtem iPhone/Safari und einmal auf echtem Andr
 - [ ] Name/Beschreibung/Gratisbelohnung eingeben; Web-/Apple-/Google-Vorschau aktualisieren sich unmittelbar mit gleichen Inhalten.
 - [ ] Grenzen 40/70/40 Zeichen: richtige Zähler, gelbe Grenzwarnung; normale Eingabe überschreitet die Grenze nicht.
 - [ ] Pflichtfeld leeren, HTML eingeben, Ziel 0 und unzureichenden Farbkontrast wählen: verständlicher Fehler und Speichersperre.
-- [ ] Ziel 2147483647: kompakter Textstand, keine riesige Symbolreihe oder blockierte Oberfläche.
+- [ ] Stempelziel 1 und 10 zulassen; 0, 11 und Dezimalzahlen verständlich abweisen und Speichern sperren. Kein stilles Ändern alter gespeicherter Ziele.
 - [ ] Farbwähler, Symbolliste und Bildschirmtastatur bedienen; kein Horizontalüberlauf, verdeckte Aktionen oder abgeschnittene Texte.
-- [ ] Explizit speichern, Übersicht öffnen und Entwurf wieder öffnen: bestätigter Erfolg, richtige Inhalte und Revision.
-- [ ] Kleines PNG/JPEG/WebP-Logo hinzufügen, speichern/wiederöffnen, ersetzen und entfernen: richtiger dauerhaft gespeicherter Stand in allen Vorschauen.
+- [ ] Explizit speichern: nach bestätigtem Erfolg direkt zur Übersicht, Entwurf wieder öffnen; richtige Inhalte und Gespeichert, bei lokalen Änderungen Nicht gespeichert. Interne Revision/Replay bleiben korrekt.
+- [ ] Kleines PNG/JPEG/WebP-Logo hinzufügen, speichern/wiederöffnen, ersetzen und entfernen: richtiger dauerhaft gespeicherter Stand in allen Vorschauen; Bestätigungspopup bei Ersatz/Entfernen, Drag-and-drop/Handyauswahl, echter Uploadfortschritt/Verarbeitung und Abbruch; altes ungenutztes Objekt nach Save aus R2 gelöscht, gemeinsam genutztes Logo bleibt erhalten, Bereinigungsfehler sichtbar/wiederholbar.
 - [ ] SVG, beschädigtes Bild und Logo über 4 MiB: kein verwendbares Asset, verständlicher Fehler, Wiederholung/Verwerfen erreichbar.
 - [ ] Dirty-Editor mit Zurück/Vorwärts und verfügbaren Gesten verlassen: Abbruch erhält URL/Eingaben, Bestätigung erreicht das gewählte Ziel; ebenso Übersicht/Sprachwechsel prüfen.
 - [ ] Parallel auf zweitem Gerät speichern, dann veralteten Stand speichern: Konflikt statt Überschreiben, lokale Inhalte erhalten, bewusstes Neuladen bedienbar.
@@ -265,7 +265,7 @@ Nach diesen Belegen: Selbstreview/Teilcheckliste aktualisieren, lokale Übernahm
 | Feld / Nachweisebene | Stand / Beleg |
 | --- | --- |
 | Gegenstand / Verantwortliche | v0.5.0, Unterschritte v0.5.1–v0.5.5; Umsetzung/Prüfung Codex, konkrete Freigaben Auftraggeber. |
-| Commit / Patch / Dokumentstand / Umgebung | Basis und frühere Teilprüfungen im [v0.5.0-Nachweis](../nachweise/NACHWEISE.md#v050--implementierung-27102026), v0.5.5-Basis im [Abschlussprüfstand](../nachweise/NACHWEISE.md#v055--fortsetzung-und-abschlussprüfstand-27102026), QL-018 im [History-Nachweis](../nachweise/NACHWEISE.md#ql-018--historyschutz-27102026), aktueller Stand im [Restprüfungsnachweis](../nachweise/NACHWEISE.md#v055--restprüfungen-27102026); Entwicklungsanleitung 1.17, Lastenheft 1.7, Pflichtenheft 2.5. |
+| Commit / Patch / Dokumentstand / Umgebung | Basis und frühere Teilprüfungen im [v0.5.0-Nachweis](../nachweise/NACHWEISE.md#v050--implementierung-27102026), v0.5.5-Basis im [Abschlussprüfstand](../nachweise/NACHWEISE.md#v055--fortsetzung-und-abschlussprüfstand-27102026), QL-018 im [History-Nachweis](../nachweise/NACHWEISE.md#ql-018--historyschutz-27102026), aktueller Stand im [Restprüfungsnachweis](../nachweise/NACHWEISE.md#v055--restprüfungen-27102026); Entwicklungsanleitung 1.21, Lastenheft 1.11, Pflichtenheft 2.9. |
 | Prüfweg / Anforderungen / Verhalten | Software; V050-01–08 oben, LF-F-05/06/28, LF-N-05, T-/AK-03/17 anteilig. |
 | Abhängigkeiten / externe Voraussetzungen | v0.4.0 lokal übernommen; getrennte vorbereitete Test-DB und privater R2-Testbucket für neue Logos. Bestehende QL-/Betriebsblocker unverändert. |
 | Implementierung | Entwurfsverwaltung, gemeinsamer Editor und private R2-Logos implementiert; Abschlusskorrekturen im v0.5.5-Nachweis. Vollständige Abnahme getrennt offen. Veröffentlichung und Kartenausgabe nicht Teil dieses Pakets. |
@@ -703,3 +703,11 @@ Auftraggeberänderung 27.10.2026, v0.5.3: ausschließlich StempelFi-Logoablage a
 27.10.2026 · 1.16: V055-05/06 für Antwortverlust nach Commit und verbleibende repräsentative Bedien-/Regressionsfälle konkretisiert; bestehende Teilcheckliste auf tatsächliche Restprüfung und separate Geräte-/Bestandsuploadgrenzen aktualisiert. Speicheranbieter unverändert gemäß Auftraggeberbestätigung; keine Migration, Paketübernahme oder Folgeversion.
 
 27.10.2026 · 1.17: manuelle Restcheckliste für iPhone/Safari, Android/Chrome und unveränderte Academy-UploadThing-Uploads im bestehenden Paketabschnitt für Rechnerwechsel ergänzt; Kontextbereitstellung auf ausdrücklichen Auftraggeberwunsch, gemeinsamer Commit mit Code durch Auftraggeber. Keine neue Test-/Übernahmefreigabe.
+
+28.10.2026 · 1.18: ausdrückliche Auftraggeberänderung Stempelziel 1–10 in V050-02 und vorhandener Restcheckliste; konsistent Lastenheft 1.8/Pflichtenheft 2.6. Frühere Ziele lesbar, keine automatische Bestandskorrektur/Migration; aktuelle Prüfergebnisse ausschließlich NACHWEISE.md. Keine Folgeversion oder Abnahme.
+
+28.10.2026 · 1.19: Auftraggeber ändert Speicherabschluss/Status: bestätigter Erfolg führt direkt zur Übersicht, sichtbarer Status Gespeichert/Nicht gespeichert statt Revision. Fehler/Unsicherheit bleiben im Editor, interne Revision unverändert. Lastenheft 1.9/Pflichtenheft 2.7; keine Abnahme/Folgeversion.
+
+28.10.2026 · 1.20: QL-021 Auftraggeberregel für referenzsichere automatische R2-Logobereinigung nach Commit mit Warnung und Fehlerwiederholung; Lastenheft 1.10/Pflichtenheft 2.8. Keine Migration oder automatische Freigabe.
+
+28.10.2026 · 1.21: bestätigte Uploadbedienung mit Popup statt Dauerwarntext, Dropzone, konkreten Fehlern, echtem Transferfortschritt und Abbruch/identischer Wiederholung; Lastenheft 1.11/Pflichtenheft 2.9. Geräte-Nachtest offen, keine Freigabe/Folgeversion.

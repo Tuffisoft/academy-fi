@@ -1,13 +1,16 @@
 import "server-only";
-import { createHash } from "node:crypto";
+import { createHash, randomUUID } from "node:crypto";
 import { prisma } from "@/lib/prisma";
 import {
   ProgramError,
   programAccess,
   programTransactionOptions,
+  cleanupLogos,
+  logoRetired,
 } from "./programs";
 import { operationId as operationSchema, resourceId } from "./program-input";
-import { normalizeLogo, maxLogoBytes } from "./logo";
+import { normalizeLogo } from "./logo";
+import { logoFileError } from "./logo-input";
 import { boundedBody } from "./program-body";
 
 import { getLogoObject, putLogoObject } from "./logo-storage";
@@ -22,12 +25,11 @@ export async function uploadProgramLogo(
   const parsed = operationSchema.safeParse(operationId);
   if (
     !parsed.success ||
-    !(file instanceof File) ||
-    !file.size ||
-    file.size > maxLogoBytes ||
-    !["image/png", "image/jpeg", "image/webp"].includes(file.type)
+    !(file instanceof File)
   )
     throw new ProgramError("INVALID_INPUT");
+  const fileError = logoFileError(file);
+  if (fileError) throw new ProgramError(fileError);
   await prisma.$transaction(
     (tx) => programAccess(tx, actorId, organizationId),
     programTransactionOptions,
@@ -39,7 +41,7 @@ export async function uploadProgramLogo(
       file.type,
     );
   } catch {
-    throw new ProgramError("INVALID_INPUT");
+    throw new ProgramError("LOGO_INVALID");
   }
   const fingerprint = createHash("sha256").update(normalized).digest("hex");
   const key = { organizationId, actorId, operationId: parsed.data };
@@ -70,9 +72,10 @@ export async function uploadProgramLogo(
       )
         throw new ProgramError("IDEMPOTENCY_CONFLICT");
       const asset = await tx.loyaltyAsset.findFirst({
-        where: { id: prior.resultId, organizationId },
+        where: { id: prior.resultId, organizationId, purpose: "LOGO" },
       });
       if (!asset) throw new ProgramError("NOT_FOUND");
+      if (await logoRetired(tx, organizationId, asset.id)) throw new ProgramError("NOT_FOUND");
       return { id: asset.id };
     }, programTransactionOptions);
   if (previous) return (await replay())!;
@@ -86,7 +89,7 @@ export async function uploadProgramLogo(
     throw new Error("LOGO_STORAGE_UNAVAILABLE");
   // Provider I/O stays outside transactions. Unreferenced private files are retained on ambiguous DB outcomes;
   // deleting here could destroy a successfully committed logo after a connection failure.
-  return prisma.$transaction(async (tx) => {
+  const result = await prisma.$transaction(async (tx) => {
     const context = await programAccess(tx, actorId, organizationId);
     const prior = await tx.loyaltyOperation.findUnique({
       where: {
@@ -103,7 +106,15 @@ export async function uploadProgramLogo(
         prior.fingerprint !== fingerprint
       )
         throw new ProgramError("IDEMPOTENCY_CONFLICT");
-      return { id: prior.resultId };
+      const asset = await tx.loyaltyAsset.findFirst({ where: { id: prior.resultId, organizationId } });
+      if (!asset) throw new ProgramError("NOT_FOUND");
+      if (await logoRetired(tx, organizationId, asset.id)) {
+        // An overlapping PUT may have finished after retirement. Retain a new
+        // durable cleanup attempt rather than returning a usable asset again.
+        await tx.loyaltyOperation.create({ data: { organizationId, actorId, operationId: randomUUID(), action: "LOGO_DELETE_PENDING", resultId: asset.id, fingerprint: createHash("sha256").update(asset.storageKey).digest("hex") } });
+        return null;
+      }
+      return { id: asset.id };
     }
     const asset = await tx.loyaltyAsset.create({
       data: { organizationId, storageKey },
@@ -123,6 +134,11 @@ export async function uploadProgramLogo(
     });
     return { id: asset.id };
   }, programTransactionOptions);
+  if (!result) {
+    await cleanupLogos(actorId, organizationId);
+    throw new ProgramError("NOT_FOUND");
+  }
+  return result;
 }
 export async function programLogo(
   actorId: string,
@@ -142,6 +158,7 @@ export async function programLogo(
       },
     });
     if (!row) throw new ProgramError("NOT_FOUND");
+    if (await logoRetired(tx, organizationId, assetId)) throw new ProgramError("NOT_FOUND");
     return row;
   }, programTransactionOptions);
   // Signed server-side R2 read after current tenant authorization; no client URL.

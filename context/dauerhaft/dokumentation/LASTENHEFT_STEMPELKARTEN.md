@@ -4,8 +4,8 @@
 | Dokumentmerkmal | Wert |
 | --- | --- |
 | Projekt | Stempelkarten als SaaS-Modul der Academy Fi |
-| Version | 1.7 |
-| Datum | 27.10.2026 |
+| Version | 1.11 |
+| Datum | 28.10.2026 |
 | Status | Verbindliche Anforderungsgrundlage; lokale Teilpakete umgesetzt, vollständige Produktabnahme offen |
 | Auftraggeber / Betreiber | Das Team hinter der bestehenden Academy Fi |
 | Technisches Gegenstück | [Pflichtenheft](PFLICHTENHEFT_STEMPELKARTEN.md) |
@@ -123,7 +123,7 @@ Eine Kundenkarte zählt über ihre Wallet-Darstellungen hinweg nur einmal. Die K
 
 ### 6.2 Programme und Kundenkarten
 
-Konkretisierung v0.5.0 · 27.10.2026, genehmigter Implementierungsplan: Entwürfe werden ausdrücklich gespeichert und zählen nicht als aktive Programme. Name 1–40, Beschreibung 0–70, Gratisbelohnung 1–40 Zeichen; normalisierte Leerzeichen, keine Steuerzeichen/HTML-Eingaben. Stempelziel 1–2147483647. Symbole: Stempel, Stern, Herz, Geschenk, Kaffee. Freie sechsstellige HEX-Farben mit mindestens 4,5:1 Text-/Hintergrundkontrast. Logo optional: PNG/JPEG/WebP, maximal 4 MiB/16 Megapixel, keine Animation/SVG; kontrollierte PNG bis 1024×1024px ohne Metadaten. Drei Vorschauen ohne Wallet-Ausgabe; Unternehmensinhalte werden nicht automatisch übersetzt. Veröffentlichung und Schutz ausgegebener Sammelbedingungen bleiben unverändert verbindlich und folgen in späteren Paketen. LF-F-05/06/28, LF-N-05; T-/AK-03/17 anteilig. [Prüfstand](../nachweise/NACHWEISE.md#v050--implementierung-27102026).
+Konkretisierung v0.5.0 · 27.10.2026, genehmigter Implementierungsplan: Entwürfe werden ausdrücklich gespeichert und zählen nicht als aktive Programme. Name 1–40, Beschreibung 0–70, Gratisbelohnung 1–40 Zeichen; normalisierte Leerzeichen, keine Steuerzeichen/HTML-Eingaben. Stempelziel 1–10 (Auftraggeberänderung 28.10.2026). Symbole: Stempel, Stern, Herz, Geschenk, Kaffee. Freie sechsstellige HEX-Farben mit mindestens 4,5:1 Text-/Hintergrundkontrast. Logo optional: PNG/JPEG/WebP, maximal 4 MiB/16 Megapixel, keine Animation/SVG; kontrollierte PNG bis 1024×1024px ohne Metadaten. Drei Vorschauen ohne Wallet-Ausgabe; Unternehmensinhalte werden nicht automatisch übersetzt. Veröffentlichung und Schutz ausgegebener Sammelbedingungen bleiben unverändert verbindlich und folgen in späteren Paketen. LF-F-05/06/28, LF-N-05; T-/AK-03/17 anteilig. [Prüfstand](../nachweise/NACHWEISE.md#v050--implementierung-27102026).
 
 | ID | Anforderung | Überprüfbares Ergebnis |
 | --- | --- | --- |
@@ -300,3 +300,17 @@ Auftraggeberänderung 27.10.2026: Programmname maximal 40, Beschreibung maximal 
 Auftraggeberänderung 27.10.2026: aktuelle Textgrenzen Name 40, Beschreibung 70, Gratisbelohnung 40 Zeichen; ersetzt vorherige 40/250/160-Grenzen. Zentrale Zod-/Formulargrenzen, Zähler und Grenzwarnung gelten unverändert gemeinsam; keine Migration oder Datenkürzung. LF-F-06/28, LF-N-05, T-/AK-03/17 anteilig. Ergebnisse ausschließlich NACHWEISE.md.
 
 Auftraggeberänderung 27.10.2026, v0.5.3: ausschließlich StempelFi-Logoablage auf privaten Cloudflare-R2-Testbucket umstellen, gespeicherte STEMPELFI_R2-Konfiguration verwenden und live testen. Ersetzt die UploadThing-Ablage für neue StempelFi-Logos; Academy-Uploads bleiben unverändert. Zod-/Sharp-/Rollen-/Mandanten-/Revisionsregeln bleiben erhalten. Getrennte serverseitige Speicheranbindung mit aws4fetch (MIT), S3-Signaturheader und Region auto, nur HTTPS-R2-Accountendpoints, keine öffentlich ausgegebenen Credentials oder signierten Browserlinks. Objektschlüssel deterministisch nach Unternehmen/Vorgang/normalisiertem Inhalt; DB speichert weiterhin Schlüssel, keine neue Migration. Kein Import/Löschen alter UploadThing-Objekte; alte Schlüssel werden nicht an R2 fehlgeleitet. V053-01–05 gelten weiter; bestehende historische UploadThing-Nachweise belegen R2 nicht. Live-Test nur bestätigter R2-Testbucket und getrennte Loyalty-Test-DB mit Kindprozess-Opt-in; eigene synthetische Dateien/Zeilen bereinigen, Fremdbestand erhalten. Ergebnisse nur NACHWEISE.md.
+
+28.10.2026 · Version 1.8: ausdrücklich Stempelziel auf ganze Zahlen 1–10 begrenzt, DE/EN-Fehler nennen den Bereich. Vorhandene Ziele über 10 bleiben unverändert lesbar; neue Speicherung erst nach bewusster Korrektur, keine automatische Bestands-/Kartenänderung oder Migration. LF-F-05/06/28, LF-N-05; T-/AK-03/17 anteilig. Ergebnisse ausschließlich NACHWEISE.md.
+
+28.10.2026 · Version 1.9: nach bestätigtem Entwurfsspeichern direkt zur eigenen Unternehmensübersicht. Sichtbar Gespeichert/Nicht gespeichert statt Revisionsnummer, interne Revision und Konfliktschutz unverändert. Bei Fehler/unbestätigtem Ergebnis im Editor bleiben; keine Erfolgsnavigation ohne Bestätigung. LF-F-05/06, LF-N-05; T-/AK-03/17 anteilig. Ergebnisse nur NACHWEISE.md.
+
+
+Auftraggeberänderung 28.10.2026 · QL-021: Ersetzte oder entfernte StempelFi-Logos nach bestätigtem Speichern automatisch aus R2 löschen, ausschließlich wenn kein Programm sie mehr verwendet. Neue Auswahl allein löscht kein bisher gespeichertes Logo. Vor beziehungsweise bei Auswahl eines Ersatzes sichtbar warnen, dass das alte Logo nach dem Speichern gelöscht wird, sofern ungenutzt; Hinweis DE/EN zugänglich. Fehler, Konflikte oder unklare Commits dürfen verwendete Logos nicht löschen. Anbieterfehler erhalten einen wiederholbaren Bereinigungsauftrag und einen sichtbaren Hinweis. LF-F-06/28, LF-N-02/05; T-/AK-03/17 anteilig. Academy-Uploads bleiben UploadThing; keine Migration oder pauschale Bucketbereinigung.
+
+28.10.2026 · 1.10: Logoersatz/-entfernung mit referenzsicherer automatischer Bereinigung und Warnung, ersetzt frühere reine Referenzänderung. Ergebnisse nur NACHWEISE.md.
+
+
+Auftraggeberentscheidung 28.10.2026: Logo-Uploadbedienung im bestehenden v0.5.5 mit kompakter Dropzone, Tastatur-/Handy-Dateiauswahl und aktuellem Vorschaubild. Ersetzen/Entfernen jeweils erst nach Bestätigungsdialog mit kurzem rotem Warntext; Abbrechen/Escape erhält altes Logo und startet keinen Upload. Dauerhaften großen Warnhinweis entfernen. Konkrete Größen-/Format-/Bild-/Rechte-/Netz-/Timeout-/Anbieterfehler DE/EN; ein PNG/JPEG/WebP bis 4 MiB unverändert. Echter Transferfortschritt mit Prozent/Balken, übertragenen MB, gemessenen MB/s, vergangener Zeit und geschätzter Restzeit; anschließend explizite Verarbeitung mit Spinner, niemals Asseterfolg allein aus 100 Prozent Transfer ableiten. Laufenden Upload abbrechen, bisherigen Stand erhalten; unklarer Ausgang bleibt bis identischer Wiederholung oder bewusstem Verwerfen gesperrt. LF-F-06/28, LF-N-02/05; T-/AK-03/17 anteilig. R2-Löschung weiterhin ausschließlich nach Programmcommit gemäß QL-021, keine Academy-Änderung/Migration.
+
+28.10.2026 · 1.11: bestätigte Logo-Dialog-/Dropzone-/Fortschritts-/Abbruchanforderungen; ersetzt den dauerhaft eingeblendeten QL-021-Warntext durch Popup vor Aktion. Prüfergebnisse nur NACHWEISE.md.

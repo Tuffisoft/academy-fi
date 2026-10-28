@@ -16,6 +16,8 @@ export const operationId = z
   .uuid()
   .transform((value) => value.toLowerCase());
 export const symbols = ["STAMP", "STAR", "HEART", "GIFT", "COFFEE"] as const;
+export const programTargetLimits = { min: 1, max: 10 } as const;
+export const programTarget = z.number().int().min(programTargetLimits.min).max(programTargetLimits.max);
 export const programTextLimits = {
   name: 40,
   description: 70,
@@ -56,7 +58,7 @@ export function contrast(a: string, b: string) {
 export const programConfig = z
   .object({
     ...programTextFields,
-    target: z.number().int().min(1).max(2147483647),
+    target: programTarget,
     backgroundColor: color,
     textColor: color,
     symbol: z.enum(symbols),
@@ -68,6 +70,11 @@ export const programConfig = z
     message: "CONTRAST",
   });
 export type ProgramConfig = z.infer<typeof programConfig>;
+// Read earlier drafts without silently changing their conditions. All writes use
+// programConfig and require an explicit correction into the current 1–10 range.
+export const storedProgramConfig = programConfig.safeExtend({
+  target: z.number().int().min(1).max(2147483647),
+});
 export type ProgramView = ProgramConfig & { id: string; revision: number };
 export const programCommand = z
   .object({
