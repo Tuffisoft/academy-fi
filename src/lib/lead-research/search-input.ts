@@ -1,3 +1,6 @@
+import { z } from "zod";
+
+export const MAX_LOCATION_LENGTH = 20;
 export const MAX_SEARCH_RESULTS = 2_147_483_647;
 export const AREA_SEARCH_TERM = "__area_search__";
 export const MAX_AREA_SEARCH_RESULTS = 20;
@@ -8,48 +11,23 @@ export function isAreaSearch(industry: string) {
   return industry === AREA_SEARCH_TERM;
 }
 
-export type LeadSearchInput = {
-  location: string;
-  radiusKm: number;
-  industry: string;
-  maxResults: number;
-  analyzeWebsites: boolean;
-};
+export const leadSearchInputSchema = z.object({
+  location: z.string().trim().min(1).max(MAX_LOCATION_LENGTH),
+  radiusKm: z.number().min(0.1).max(Number.MAX_SAFE_INTEGER),
+  industry: z.string().trim().min(1).max(200),
+  maxResults: z.number().int().min(1).max(MAX_SEARCH_RESULTS),
+  analyzeWebsites: z.boolean(),
+}).refine(data => !isAreaSearch(data.industry) || data.maxResults <= MAX_AREA_SEARCH_RESULTS, {
+  path: ["maxResults"],
+  message: "areaResultsInvalid",
+});
+
+export type LeadSearchInput = z.infer<typeof leadSearchInputSchema>;
 
 export function parseLeadSearchInput(input: unknown): LeadSearchInput | null {
-  if (!input || typeof input !== "object") return null;
-  const data = input as Record<string, unknown>;
-  if (typeof data.location !== "string" || typeof data.industry !== "string")
-    return null;
-  const location = data.location.trim();
-  const industry = data.industry.trim();
-  if (!location || location.length > 200 || !industry || industry.length > 200)
-    return null;
-  if (
-    typeof data.radiusKm !== "number" ||
-    !Number.isFinite(data.radiusKm) ||
-    data.radiusKm < 0.1 ||
-    data.radiusKm > Number.MAX_SAFE_INTEGER
-  )
-    return null;
-  if (
-    typeof data.maxResults !== "number" ||
-    !Number.isInteger(data.maxResults) ||
-    data.maxResults < 1 ||
-    data.maxResults > MAX_SEARCH_RESULTS
-  )
-    return null;
-  if (isAreaSearch(industry) && data.maxResults > MAX_AREA_SEARCH_RESULTS)
-    return null;
-  if (typeof data.analyzeWebsites !== "boolean") return null;
   // Whitelist input: ownership and status always come from the server.
-  return {
-    location,
-    industry,
-    radiusKm: data.radiusKm,
-    maxResults: data.maxResults,
-    analyzeWebsites: data.analyzeWebsites,
-  };
+  const result = leadSearchInputSchema.safeParse(input);
+  return result.success ? result.data : null;
 }
 
 export function leadSearchScope(user: { id: string; role?: string | null }) {

@@ -50,3 +50,8 @@ next-env.d.ts
 
 # Local report previews and design backups
 /output/
+
+# Local development logs and lead email verification artifacts
+/tmp/dev-server-*.log
+/tmp/lead-email-verification-*.json
+/tmp/lead-email-template-verification-*.json

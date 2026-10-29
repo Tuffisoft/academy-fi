@@ -15,13 +15,13 @@ import {
   isAreaSearch,
   isLeadSearchMutable,
   MAX_AREA_SEARCH_RESULTS,
+  MAX_LOCATION_LENGTH,
+  leadSearchInputSchema,
   MAX_SEARCH_RESULTS,
 } from "@/lib/lead-research/search-input";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Badge } from "@/components/ui/badge";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   Dialog,
   DialogContent,
@@ -30,14 +30,6 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-
-type SearchPreview = {
-  location: string;
-  radiusKm: number;
-  industry: string;
-  maxResults: number;
-  analyzeWebsites: boolean;
-};
 
 export function LeadSearchDialog({
   search,
@@ -58,7 +50,7 @@ export function LeadSearchDialog({
   const [internalOpen, setInternalOpen] = useState(false);
   const open = controlledOpen ?? internalOpen;
   const setOpen = onOpenChange ?? setInternalOpen;
-  const [preview, setPreview] = useState<SearchPreview | null>(null);
+  const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
   const [isPending, startTransition] = useTransition();
   const submitting = useRef(false);
   const [error, setError] = useState<string | null>(null);
@@ -66,35 +58,44 @@ export function LeadSearchDialog({
 
   function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    setPreview({
-      location: String(data.get("location") ?? "").trim(),
+    if (submitting.current) return;
+    const form = event.currentTarget;
+    const data = new FormData(form);
+    const parsed = leadSearchInputSchema.safeParse({
+      location: String(data.get("location") ?? ""),
       radiusKm: Number(data.get("radiusKm")),
-      industry:
-        searchMode === "area"
-          ? AREA_SEARCH_TERM
-          : String(data.get("industry") ?? "").trim(),
+      industry: searchMode === "area" ? AREA_SEARCH_TERM : String(data.get("industry") ?? ""),
       maxResults: Number(data.get("maxResults")),
       analyzeWebsites: true,
     });
-  }
-
-  function saveSearch() {
-    if (!preview || submitting.current) return;
+    setError(null);
+    setFieldErrors({});
+    if (!parsed.success) {
+      const errors: Record<string, string> = {};
+      for (const issue of parsed.error.issues) {
+        const field = String(issue.path[0]);
+        const key = field === "location" ? "locationInvalid" : field === "industry" ? "industryInvalid" : field === "radiusKm" ? "radiusInvalid" : searchMode === "area" ? "areaResultsInvalid" : "resultsInvalid";
+        errors[field] ??= t(key);
+      }
+      setFieldErrors(errors);
+      const field = form.elements.namedItem(Object.keys(errors)[0]);
+      if (field instanceof HTMLElement) field.focus();
+      return;
+    }
     submitting.current = true;
     setError(null);
     startTransition(async () => {
       try {
         const result = search
-          ? await updateLeadSearchAction(search.id, preview)
-          : await createLeadSearchAction(preview);
+          ? await updateLeadSearchAction(search.id, parsed.data)
+          : await createLeadSearchAction(parsed.data);
         if (!result.success) {
           setError(t(result.error));
           return;
         }
         toast.success(t(search ? "updateSuccess" : "saveSuccess"));
         setOpen(false);
-        setPreview(null);
+        setFieldErrors({});
       } catch {
         setError(t("saveError"));
       } finally {
@@ -109,7 +110,7 @@ export function LeadSearchDialog({
       onOpenChange={(value) => {
         if (submitting.current) return;
         setOpen(value);
-        setPreview(null);
+        setFieldErrors({});
         setError(null);
       }}
     >
@@ -149,9 +150,10 @@ export function LeadSearchDialog({
           </DialogDescription>
         </DialogHeader>
         <form
+          noValidate
           onSubmit={handleSubmit}
           onChange={() => {
-            setPreview(null);
+            setFieldErrors({});
             setError(null);
           }}
           className="flex flex-col gap-5"
@@ -174,7 +176,7 @@ export function LeadSearchDialog({
                   aria-pressed={searchMode === "industry"}
                   onClick={() => {
                     setSearchMode("industry");
-                    setPreview(null);
+                    setFieldErrors({});
                     setError(null);
                   }}
                 >
@@ -187,7 +189,7 @@ export function LeadSearchDialog({
                   aria-pressed={searchMode === "area"}
                   onClick={() => {
                     setSearchMode("area");
-                    setPreview(null);
+                    setFieldErrors({});
                     setError(null);
                   }}
                 >
@@ -201,18 +203,24 @@ export function LeadSearchDialog({
                 <Input
                   id="lead-location"
                   name="location"
+                  aria-invalid={Boolean(fieldErrors.location)}
+                  aria-describedby={fieldErrors.location ? "lead-location-error" : undefined}
                   defaultValue={search?.location}
                   placeholder={t("locationPlaceholder")}
                   required
                   pattern=".*\S.*"
-                  maxLength={200}
+                  maxLength={MAX_LOCATION_LENGTH}
                 />
+                <p className="text-xs text-muted-foreground">{t("locationHelp")}</p>
+                  {fieldErrors.location && <p id="lead-location-error" role="alert" className="text-xs text-destructive">{fieldErrors.location}</p>}
               </div>
               <div className="flex flex-col gap-2">
                 <Label htmlFor="lead-radius">{t("radius")}</Label>
                 <Input
                   id="lead-radius"
                   name="radiusKm"
+                  aria-invalid={Boolean(fieldErrors.radiusKm)}
+                  aria-describedby={fieldErrors.radiusKm ? "lead-radius-error" : undefined}
                   defaultValue={search?.radiusKm}
                   type="number"
                   min={0.1}
@@ -221,6 +229,7 @@ export function LeadSearchDialog({
                   placeholder="20"
                   required
                 />
+                  {fieldErrors.radiusKm && <p id="lead-radius-error" role="alert" className="text-xs text-destructive">{fieldErrors.radiusKm}</p>}
               </div>
               {searchMode === "industry" ? (
                 <div className="flex flex-col gap-2">
@@ -228,6 +237,8 @@ export function LeadSearchDialog({
                   <Input
                     id="lead-industry"
                     name="industry"
+                  aria-invalid={Boolean(fieldErrors.industry)}
+                  aria-describedby={fieldErrors.industry ? "lead-industry-error" : undefined}
                     defaultValue={
                       search && !isAreaSearch(search.industry)
                         ? search.industry
@@ -239,6 +250,7 @@ export function LeadSearchDialog({
                     pattern=".*\S.*"
                     maxLength={200}
                   />
+                  {fieldErrors.industry && <p id="lead-industry-error" role="alert" className="text-xs text-destructive">{fieldErrors.industry}</p>}
                   <datalist id={industryListId}>
                     {INDUSTRY_CATEGORIES.flatMap((category) =>
                       category.items.map((industry) => (
@@ -274,6 +286,8 @@ export function LeadSearchDialog({
                 <Input
                   id="lead-max-results"
                   name="maxResults"
+                  aria-invalid={Boolean(fieldErrors.maxResults)}
+                  aria-describedby={fieldErrors.maxResults ? "lead-max-results-error" : undefined}
                   defaultValue={search?.maxResults}
                   type="number"
                   min={1}
@@ -290,60 +304,14 @@ export function LeadSearchDialog({
                   }
                   required
                 />
+                  {fieldErrors.maxResults && <p id="lead-max-results-error" role="alert" className="text-xs text-destructive">{fieldErrors.maxResults}</p>}
               </div>
             </div>
-            <Button type="submit" className="self-start">
-              {t("previewButton")}
+            <Button type="submit" disabled={isPending} aria-busy={isPending} className="self-start">
+              {isPending ? t("saving") : t(search ? "saveChanges" : "saveSearch")}
             </Button>
           </fieldset>
         </form>
-        <div role="status" aria-live="polite" aria-atomic="true">
-          {preview && (
-            <Card size="sm">
-              <CardHeader>
-                <CardTitle>{t("previewTitle")}</CardTitle>
-                <Badge variant="secondary">{t("unsaved")}</Badge>
-              </CardHeader>
-              <CardContent>
-                <dl className="grid gap-3 sm:grid-cols-2">
-                  {[
-                    [t("location"), preview.location],
-                    [
-                      t("radius"),
-                      t("radiusValue", { value: preview.radiusKm }),
-                    ],
-                    [
-                      t("industry"),
-                      isAreaSearch(preview.industry)
-                        ? t("areaSearch")
-                        : preview.industry,
-                    ],
-                    [t("maxResults"), String(preview.maxResults)],
-                    [
-                      t("analyzeWebsites"),
-                      preview.analyzeWebsites ? t("yes") : t("no"),
-                    ],
-                  ].map(([label, value]) => (
-                    <div key={label} className="min-w-0">
-                      <dt className="text-xs text-muted-foreground">{label}</dt>
-                      <dd className="wrap-break-words font-medium">{value}</dd>
-                    </div>
-                  ))}
-                </dl>
-                <Button
-                  type="button"
-                  onClick={saveSearch}
-                  disabled={isPending}
-                  className="mt-4"
-                >
-                  {isPending
-                    ? t("saving")
-                    : t(search ? "saveChanges" : "saveSearch")}
-                </Button>
-              </CardContent>
-            </Card>
-          )}
-        </div>
         {error && (
           <p role="alert" className="text-sm text-destructive">
             {error}
