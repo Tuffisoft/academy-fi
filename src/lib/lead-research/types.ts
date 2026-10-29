@@ -23,6 +23,7 @@ export type LeadSearchSummary = {
   createdAt: string;
   authorName: string;
   resultCount: number;
+  placeIds?: string[];
   runId: string | null;
   startedAt: string | null;
   finishedAt: string | null;

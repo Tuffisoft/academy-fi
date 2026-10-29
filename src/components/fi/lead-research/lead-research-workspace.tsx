@@ -6,7 +6,6 @@ import { useRef, useState, useTransition } from "react";
 import dynamic from "next/dynamic";
 import { useTranslations } from "next-intl";
 import {
-  ArrowRight,
   BarChart3,
   Bookmark,
   Code2,
@@ -41,6 +40,7 @@ import type { AuditSummary } from "@/lib/lead-research/audit-types";
 import { qualityStyles, qualityTone } from "./quality-presentation";
 import { AuditProgressCard } from "./audit-progress-card";
 import { auditPotential, type AuditPotential } from "@/lib/lead-research/audit-progress";
+import { LeadOverview } from "./lead-overview";
 import { AuditPotentialLeads } from "./audit-potential-leads";
 
 const PdfDesignEditor = dynamic(() =>
@@ -102,6 +102,7 @@ export function LeadResearchWorkspace({
     view === "leads" && Boolean(selected) && selected?.status !== "DRAFT" && !isSearching && !pending,
   );
   const submitting = useRef(false);
+  const searchingOverview = pending || searches.some(search => ["QUEUED", "RUNNING", "PAUSED"].includes(search.status)) || audits.some(audit => ["QUEUED", "RUNNING", "PAUSED"].includes(audit.status));
   const scoredAudits = audits.filter(
     (audit) => audit.status === "COMPLETED" && audit.qualityScore !== null,
   );
@@ -151,7 +152,7 @@ export function LeadResearchWorkspace({
 
   return (
     <div className="flex min-w-0 flex-col gap-5">
-      <AuditProgressCard
+      {(view !== "overview" || searchingOverview) && <AuditProgressCard
         audits={audits}
         selectedPotential={view === "potential" ? potentialFilter?.potential : undefined}
         onSelectPotential={(potential, auditIds) => {
@@ -165,7 +166,7 @@ export function LeadResearchWorkspace({
             ["QUEUED", "RUNNING"].includes(search.status),
           )
         }
-      />
+      />}
       <div className="flex flex-wrap items-center justify-between gap-3 border-b pb-4">
         <nav aria-label={t("navigation")} className="flex flex-wrap gap-1">
           {navigation.map(({ value, icon: Icon }) => (
@@ -221,7 +222,7 @@ export function LeadResearchWorkspace({
       {searches
         .filter(
           (search) =>
-            view === "potential" ? false : view === "leads"
+            view === "potential" ? false : view === "overview" ? ["RUNNING", "QUEUED", "PAUSED"].includes(search.status) : view === "leads"
               ? search.id === selected?.id
               : ["RUNNING", "QUEUED", "PAUSED"].includes(search.status) || search.id === selected?.id,
         )
@@ -246,7 +247,9 @@ export function LeadResearchWorkspace({
         </div>
       )}
 
-      {(view === "overview" || view === "analytics") && (
+      {view === "overview" && <LeadOverview searches={searches} audits={audits} savedLeads={savedLeads} onSaved={() => setView("savedLeads")} onCampaign={showResults} onPotential={(potential) => { setPotentialFilter({ potential, auditIds: audits.map(audit => audit.id) }); setError(null); setView("potential"); }} />}
+
+      {view === "analytics" && (
         <div className="grid gap-4 sm:grid-cols-3">
           {[
             {
@@ -283,29 +286,18 @@ export function LeadResearchWorkspace({
         </div>
       )}
 
-      {(view === "overview" || view === "campaigns") && (
+      {view === "campaigns" && (
         <Card>
           <CardHeader>
             <CardTitle>{t("campaigns")}</CardTitle>
-            {view === "overview" && (
-              <CardAction>
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  onClick={() => setView("campaigns")}
-                >
-                  {t("viewAll")}
-                  <ArrowRight aria-hidden="true" />
-                </Button>
-              </CardAction>
-            )}
+
           </CardHeader>
           <CardContent>
             <CampaignTable
               key={searches.length}
               searches={searches}
               isOwner={isOwner}
-              compact={view === "overview"}
+              compact={false}
               onRun={runSearch}
               onShow={showResults}
               running={pending}
@@ -314,27 +306,19 @@ export function LeadResearchWorkspace({
         </Card>
       )}
 
-      {(view === "overview" || view === "leads" || view === "analytics") && (
+      {(view === "leads" || view === "analytics") && (
         <div
-          className={
-            view === "overview"
-              ? "grid min-w-0 gap-4 lg:grid-cols-3"
-              : "grid min-w-0 gap-4"
-          }
+          className="grid min-w-0 gap-4"
         >
           {view !== "analytics" && !(view === "leads" && (!selected || selected.status === "DRAFT")) && (
             <div
-              className={
-                view === "overview"
-                  ? "min-w-0 space-y-3 lg:col-span-2"
-                  : "min-w-0 space-y-3"
-              }
+              className="min-w-0 space-y-3"
             >
               <PlacesResults
                 key={selected?.id + String(selected?.runId)}
                 result={result}
                 pending={pending || isSearching || loadingDetails}
-                compact={view === "overview"}
+                compact={false}
                 searchId={selected?.id}
                 completedWithoutResults={
                   selected?.status === "COMPLETED" && selected.resultCount === 0

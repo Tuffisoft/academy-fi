@@ -19,6 +19,6 @@ export async function getLeadSearches(): Promise<LeadSearchSummary[]> {
     },
   });
   return searches.map(({ user: author, createdAt, startedAt, finishedAt, googlePlaceIds, ...search }) => ({
-    ...search, authorName: author.name, resultCount: googlePlaceIds.length, createdAt: createdAt.toISOString(), startedAt: startedAt?.toISOString() ?? null, finishedAt: finishedAt?.toISOString() ?? null,
+    ...search, authorName: author.name, resultCount: googlePlaceIds.length, placeIds: googlePlaceIds, createdAt: createdAt.toISOString(), startedAt: startedAt?.toISOString() ?? null, finishedAt: finishedAt?.toISOString() ?? null,
   }));
 }
