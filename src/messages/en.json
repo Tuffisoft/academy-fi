@@ -466,6 +466,7 @@
     "edit": "Edit",
     "editFor": "Edit {industry} in {location}",
     "editSearch": "Edit research",
+    "selectedResearchLoading": "Loading saved research …",
     "saveOnly": "Save",
     "saveAndStart": "Save & start",
     "savingAndStarting": "Saving and starting …",

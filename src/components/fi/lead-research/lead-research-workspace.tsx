@@ -14,6 +14,7 @@ import {
 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { Skeleton } from "@/components/ui/skeleton";
 import {
   Card,
   CardAction,
@@ -77,9 +78,9 @@ export function LeadResearchWorkspace({
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [pending, startTransition] = useTransition();
-  const selected =
-    searches.find((search) => search.id === selectedId) ??
-    searches.find((search) =>
+  const selected = selectedId !== null
+    ? searches.find((search) => search.id === selectedId)
+    : searches.find((search) =>
       ["RUNNING", "QUEUED", "PAUSED"].includes(search.status),
     ) ??
     searches.find((search) => search.resultCount > 0);
@@ -93,7 +94,7 @@ export function LeadResearchWorkspace({
     selected?.id,
     selected?.runId,
     selected?.resultCount ?? 0,
-    view === "leads" && !isSearching && !pending,
+    view === "leads" && Boolean(selected) && selected?.status !== "DRAFT" && !isSearching && !pending,
   );
   const submitting = useRef(false);
   const scoredAudits = audits.filter(
@@ -186,7 +187,7 @@ export function LeadResearchWorkspace({
             </Button>
           ))}
         </nav>
-        <LeadSearchDialog onStarted={showResults} />
+        <LeadSearchDialog onSaved={showResults} />
       </div>
 
       <div className={view === "pdfDesign" ? "contents" : "hidden"}>
@@ -224,12 +225,21 @@ export function LeadResearchWorkspace({
       {searches
         .filter(
           (search) =>
-            ["RUNNING", "QUEUED", "PAUSED"].includes(search.status) ||
-            search.id === selected?.id,
+            view === "leads"
+              ? search.id === selected?.id
+              : ["RUNNING", "QUEUED", "PAUSED"].includes(search.status) || search.id === selected?.id,
         )
         .map((search) => (
           <SearchJobStatus key={search.id + search.runId} search={search} />
         ))}
+
+      {view === "leads" && selectedId !== null && !selected && (
+        <div role="status" aria-label={t("selectedResearchLoading")} className="space-y-3 rounded-xl border p-5">
+          <p className="text-sm text-muted-foreground">{t("selectedResearchLoading")}</p>
+          <Skeleton className="h-6 w-48" />
+          <Skeleton className="h-16 w-full" />
+        </div>
+      )}
 
       {(view === "overview" || view === "analytics") && (
         <div className="grid gap-4 sm:grid-cols-3">
@@ -307,7 +317,7 @@ export function LeadResearchWorkspace({
               : "grid min-w-0 gap-4"
           }
         >
-          {view !== "analytics" && (
+          {view !== "analytics" && !(view === "leads" && (!selected || selected.status === "DRAFT")) && (
             <div
               className={
                 view === "overview"

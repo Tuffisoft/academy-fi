@@ -99,7 +99,7 @@ export function CampaignMenu({
         </DropdownMenuContent>
       </DropdownMenu>
       <LeadSearchDialog
-        onStarted={onShow}
+        onSaved={onShow}
         search={search}
         hideTrigger
         open={dialog === "edit"}

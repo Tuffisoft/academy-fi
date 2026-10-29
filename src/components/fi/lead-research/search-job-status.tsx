@@ -68,12 +68,19 @@ export function SearchJobStatus({ search }: { search: LeadSearchSummary }) {
         </CardAction>
       </CardHeader>
       <CardContent className="space-y-3">
-        <p role="status" className="text-sm">
+        {search.status === "DRAFT" ? <dl className="grid gap-x-6 gap-y-3 text-sm sm:grid-cols-2">
+          {[
+            [t("location"), search.location],
+            [t("industry"), industry],
+            [t("radius"), t("radiusValue", { value: search.radiusKm })],
+            [t(isAreaSearch(search.industry) ? "topResults" : "maxResults"), String(search.maxResults)],
+          ].map(([label, value]) => <div key={label} className="min-w-0"><dt className="text-xs text-muted-foreground">{label}</dt><dd className="wrap-anywhere font-medium">{value}</dd></div>)}
+        </dl> : <p role="status" className="text-sm">
           {t("jobProgress", {
             pages: search.processedPages,
             count: search.resultCount,
           })}
-        </p>
+        </p>}
         {search.errorCode && (
           <p role="alert" className="text-sm text-destructive">
             {t(search.errorCode)}

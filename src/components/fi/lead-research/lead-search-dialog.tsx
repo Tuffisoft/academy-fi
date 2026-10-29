@@ -40,13 +40,13 @@ export function LeadSearchDialog({
   open: controlledOpen,
   onOpenChange,
   hideTrigger = false,
-  onStarted,
+  onSaved,
 }: {
   search?: LeadSearchSummary;
   open?: boolean;
   onOpenChange?: (open: boolean) => void;
   hideTrigger?: boolean;
-  onStarted?: (id: string) => void;
+  onSaved?: (id: string) => void;
 }) {
   const t = useTranslations("leadResearch");
   const uiLanguage = useLocale() === "de" ? "de" : "en";
@@ -118,7 +118,7 @@ export function LeadSearchDialog({
         }
         setOpen(false);
         setFieldErrors({});
-        if ("started" in result && result.started) onStarted?.(result.id);
+        onSaved?.(result.id);
       } catch {
         setError(t("saveError"));
       } finally {

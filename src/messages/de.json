@@ -466,6 +466,7 @@
     "edit": "Bearbeiten",
     "editFor": "{industry} in {location} bearbeiten",
     "editSearch": "Recherche bearbeiten",
+    "selectedResearchLoading": "Gespeicherte Recherche wird geladen …",
     "saveOnly": "Speichern",
     "saveAndStart": "Speichern & starten",
     "savingAndStarting": "Wird gespeichert und gestartet …",
