@@ -1,5 +1,30 @@
 import { Resend } from "resend";
 import { getTranslations } from "next-intl/server";
+import { leadExportEmailContent } from "@/lib/lead-research/email-export";
+
+export function getLeadExportEmailSettings() {
+  const recipient = process.env.LEAD_EXPORT_EMAIL_TO?.trim() ?? "";
+  const validRecipient = /^[^\s@<>;,]+@[^\s@<>;,]+\.[^\s@<>;,]+$/.test(recipient);
+  return {
+    recipient: validRecipient ? recipient : null,
+    configured: Boolean(validRecipient && (process.env.RESEND_KEY || process.env.RESEND_API_KEY) && process.env.RESEND_FROM_EMAIL),
+  };
+}
+
+export async function sendLeadExportEmail(input: {
+  name: string; count: number; missingCount: number; csv: string; requestId: string; userId: string;
+}) {
+  const settings = getLeadExportEmailSettings();
+  if (!settings.configured || !settings.recipient) throw new Error("lead_email_not_configured");
+  const resend = new Resend(process.env.RESEND_KEY || process.env.RESEND_API_KEY);
+  const { data, error } = await resend.emails.send({
+    from: process.env.RESEND_FROM_EMAIL!,
+    to: settings.recipient,
+    ...leadExportEmailContent(input),
+  }, { idempotencyKey: `lead-export/${input.userId}/${input.requestId}` });
+  if (error || !data?.id) throw new Error("lead_email_send_failed");
+  return data.id;
+}
 
 export async function sendResetPasswordEmail({
   to,

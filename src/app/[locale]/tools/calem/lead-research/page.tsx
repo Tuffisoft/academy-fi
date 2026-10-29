@@ -6,6 +6,7 @@ import { LeadResearchWorkspace } from "@/components/fi/lead-research/lead-resear
 import { getLeadSearches } from "@/lib/data/lead-searches";
 import { getSavedLeads } from "@/lib/data/saved-leads";
 import { getWebsiteAudits } from "@/lib/data/website-audits";
+import { getLeadExportEmailSettings } from "@/lib/email";
 
 export const maxDuration = 120;
 
@@ -44,6 +45,7 @@ export default async function LeadResearchPage() {
           userId={user.id}
           isOwner={user.role === "OWNER"}
           googleConfigured={Boolean(process.env.GOOGLE_PLACES_API_KEY?.trim())}
+          leadEmailSettings={getLeadExportEmailSettings()}
         />
       </main>
     </div>
