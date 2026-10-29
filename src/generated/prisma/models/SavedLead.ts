@@ -29,6 +29,8 @@ export type SavedLeadMinAggregateOutputType = {
   userId: string | null
   placeId: string | null
   sourceSearchId: string | null
+  location: string | null
+  industry: string | null
   createdAt: Date | null
 }
 
@@ -37,6 +39,8 @@ export type SavedLeadMaxAggregateOutputType = {
   userId: string | null
   placeId: string | null
   sourceSearchId: string | null
+  location: string | null
+  industry: string | null
   createdAt: Date | null
 }
 
@@ -45,6 +49,8 @@ export type SavedLeadCountAggregateOutputType = {
   userId: number
   placeId: number
   sourceSearchId: number
+  location: number
+  industry: number
   createdAt: number
   _all: number
 }
@@ -55,6 +61,8 @@ export type SavedLeadMinAggregateInputType = {
   userId?: true
   placeId?: true
   sourceSearchId?: true
+  location?: true
+  industry?: true
   createdAt?: true
 }
 
@@ -63,6 +71,8 @@ export type SavedLeadMaxAggregateInputType = {
   userId?: true
   placeId?: true
   sourceSearchId?: true
+  location?: true
+  industry?: true
   createdAt?: true
 }
 
@@ -71,6 +81,8 @@ export type SavedLeadCountAggregateInputType = {
   userId?: true
   placeId?: true
   sourceSearchId?: true
+  location?: true
+  industry?: true
   createdAt?: true
   _all?: true
 }
@@ -152,6 +164,8 @@ export type SavedLeadGroupByOutputType = {
   userId: string
   placeId: string
   sourceSearchId: string | null
+  location: string | null
+  industry: string | null
   createdAt: Date
   _count: SavedLeadCountAggregateOutputType | null
   _min: SavedLeadMinAggregateOutputType | null
@@ -181,6 +195,8 @@ export type SavedLeadWhereInput = {
   userId?: Prisma.StringFilter<"SavedLead"> | string
   placeId?: Prisma.StringFilter<"SavedLead"> | string
   sourceSearchId?: Prisma.StringNullableFilter<"SavedLead"> | string | null
+  location?: Prisma.StringNullableFilter<"SavedLead"> | string | null
+  industry?: Prisma.StringNullableFilter<"SavedLead"> | string | null
   createdAt?: Prisma.DateTimeFilter<"SavedLead"> | Date | string
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   sourceSearch?: Prisma.XOR<Prisma.LeadSearchNullableScalarRelationFilter, Prisma.LeadSearchWhereInput> | null
@@ -191,6 +207,8 @@ export type SavedLeadOrderByWithRelationInput = {
   userId?: Prisma.SortOrder
   placeId?: Prisma.SortOrder
   sourceSearchId?: Prisma.SortOrderInput | Prisma.SortOrder
+  location?: Prisma.SortOrderInput | Prisma.SortOrder
+  industry?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   user?: Prisma.UserOrderByWithRelationInput
   sourceSearch?: Prisma.LeadSearchOrderByWithRelationInput
@@ -205,6 +223,8 @@ export type SavedLeadWhereUniqueInput = Prisma.AtLeast<{
   userId?: Prisma.StringFilter<"SavedLead"> | string
   placeId?: Prisma.StringFilter<"SavedLead"> | string
   sourceSearchId?: Prisma.StringNullableFilter<"SavedLead"> | string | null
+  location?: Prisma.StringNullableFilter<"SavedLead"> | string | null
+  industry?: Prisma.StringNullableFilter<"SavedLead"> | string | null
   createdAt?: Prisma.DateTimeFilter<"SavedLead"> | Date | string
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   sourceSearch?: Prisma.XOR<Prisma.LeadSearchNullableScalarRelationFilter, Prisma.LeadSearchWhereInput> | null
@@ -215,6 +235,8 @@ export type SavedLeadOrderByWithAggregationInput = {
   userId?: Prisma.SortOrder
   placeId?: Prisma.SortOrder
   sourceSearchId?: Prisma.SortOrderInput | Prisma.SortOrder
+  location?: Prisma.SortOrderInput | Prisma.SortOrder
+  industry?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   _count?: Prisma.SavedLeadCountOrderByAggregateInput
   _max?: Prisma.SavedLeadMaxOrderByAggregateInput
@@ -229,12 +251,16 @@ export type SavedLeadScalarWhereWithAggregatesInput = {
   userId?: Prisma.StringWithAggregatesFilter<"SavedLead"> | string
   placeId?: Prisma.StringWithAggregatesFilter<"SavedLead"> | string
   sourceSearchId?: Prisma.StringNullableWithAggregatesFilter<"SavedLead"> | string | null
+  location?: Prisma.StringNullableWithAggregatesFilter<"SavedLead"> | string | null
+  industry?: Prisma.StringNullableWithAggregatesFilter<"SavedLead"> | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"SavedLead"> | Date | string
 }
 
 export type SavedLeadCreateInput = {
   id?: string
   placeId: string
+  location?: string | null
+  industry?: string | null
   createdAt?: Date | string
   user: Prisma.UserCreateNestedOneWithoutSavedLeadsInput
   sourceSearch?: Prisma.LeadSearchCreateNestedOneWithoutSavedLeadsInput
@@ -245,12 +271,16 @@ export type SavedLeadUncheckedCreateInput = {
   userId: string
   placeId: string
   sourceSearchId?: string | null
+  location?: string | null
+  industry?: string | null
   createdAt?: Date | string
 }
 
 export type SavedLeadUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   placeId?: Prisma.StringFieldUpdateOperationsInput | string
+  location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  industry?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   user?: Prisma.UserUpdateOneRequiredWithoutSavedLeadsNestedInput
   sourceSearch?: Prisma.LeadSearchUpdateOneWithoutSavedLeadsNestedInput
@@ -261,6 +291,8 @@ export type SavedLeadUncheckedUpdateInput = {
   userId?: Prisma.StringFieldUpdateOperationsInput | string
   placeId?: Prisma.StringFieldUpdateOperationsInput | string
   sourceSearchId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  industry?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -269,12 +301,16 @@ export type SavedLeadCreateManyInput = {
   userId: string
   placeId: string
   sourceSearchId?: string | null
+  location?: string | null
+  industry?: string | null
   createdAt?: Date | string
 }
 
 export type SavedLeadUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   placeId?: Prisma.StringFieldUpdateOperationsInput | string
+  location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  industry?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -283,6 +319,8 @@ export type SavedLeadUncheckedUpdateManyInput = {
   userId?: Prisma.StringFieldUpdateOperationsInput | string
   placeId?: Prisma.StringFieldUpdateOperationsInput | string
   sourceSearchId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  industry?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -306,6 +344,8 @@ export type SavedLeadCountOrderByAggregateInput = {
   userId?: Prisma.SortOrder
   placeId?: Prisma.SortOrder
   sourceSearchId?: Prisma.SortOrder
+  location?: Prisma.SortOrder
+  industry?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
 }
 
@@ -314,6 +354,8 @@ export type SavedLeadMaxOrderByAggregateInput = {
   userId?: Prisma.SortOrder
   placeId?: Prisma.SortOrder
   sourceSearchId?: Prisma.SortOrder
+  location?: Prisma.SortOrder
+  industry?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
 }
 
@@ -322,6 +364,8 @@ export type SavedLeadMinOrderByAggregateInput = {
   userId?: Prisma.SortOrder
   placeId?: Prisma.SortOrder
   sourceSearchId?: Prisma.SortOrder
+  location?: Prisma.SortOrder
+  industry?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
 }
 
@@ -412,6 +456,8 @@ export type SavedLeadUncheckedUpdateManyWithoutSourceSearchNestedInput = {
 export type SavedLeadCreateWithoutUserInput = {
   id?: string
   placeId: string
+  location?: string | null
+  industry?: string | null
   createdAt?: Date | string
   sourceSearch?: Prisma.LeadSearchCreateNestedOneWithoutSavedLeadsInput
 }
@@ -420,6 +466,8 @@ export type SavedLeadUncheckedCreateWithoutUserInput = {
   id?: string
   placeId: string
   sourceSearchId?: string | null
+  location?: string | null
+  industry?: string | null
   createdAt?: Date | string
 }
 
@@ -457,12 +505,16 @@ export type SavedLeadScalarWhereInput = {
   userId?: Prisma.StringFilter<"SavedLead"> | string
   placeId?: Prisma.StringFilter<"SavedLead"> | string
   sourceSearchId?: Prisma.StringNullableFilter<"SavedLead"> | string | null
+  location?: Prisma.StringNullableFilter<"SavedLead"> | string | null
+  industry?: Prisma.StringNullableFilter<"SavedLead"> | string | null
   createdAt?: Prisma.DateTimeFilter<"SavedLead"> | Date | string
 }
 
 export type SavedLeadCreateWithoutSourceSearchInput = {
   id?: string
   placeId: string
+  location?: string | null
+  industry?: string | null
   createdAt?: Date | string
   user: Prisma.UserCreateNestedOneWithoutSavedLeadsInput
 }
@@ -471,6 +523,8 @@ export type SavedLeadUncheckedCreateWithoutSourceSearchInput = {
   id?: string
   userId: string
   placeId: string
+  location?: string | null
+  industry?: string | null
   createdAt?: Date | string
 }
 
@@ -504,12 +558,16 @@ export type SavedLeadCreateManyUserInput = {
   id?: string
   placeId: string
   sourceSearchId?: string | null
+  location?: string | null
+  industry?: string | null
   createdAt?: Date | string
 }
 
 export type SavedLeadUpdateWithoutUserInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   placeId?: Prisma.StringFieldUpdateOperationsInput | string
+  location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  industry?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sourceSearch?: Prisma.LeadSearchUpdateOneWithoutSavedLeadsNestedInput
 }
@@ -518,6 +576,8 @@ export type SavedLeadUncheckedUpdateWithoutUserInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   placeId?: Prisma.StringFieldUpdateOperationsInput | string
   sourceSearchId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  industry?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -525,6 +585,8 @@ export type SavedLeadUncheckedUpdateManyWithoutUserInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   placeId?: Prisma.StringFieldUpdateOperationsInput | string
   sourceSearchId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  industry?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -532,12 +594,16 @@ export type SavedLeadCreateManySourceSearchInput = {
   id?: string
   userId: string
   placeId: string
+  location?: string | null
+  industry?: string | null
   createdAt?: Date | string
 }
 
 export type SavedLeadUpdateWithoutSourceSearchInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   placeId?: Prisma.StringFieldUpdateOperationsInput | string
+  location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  industry?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   user?: Prisma.UserUpdateOneRequiredWithoutSavedLeadsNestedInput
 }
@@ -546,6 +612,8 @@ export type SavedLeadUncheckedUpdateWithoutSourceSearchInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   userId?: Prisma.StringFieldUpdateOperationsInput | string
   placeId?: Prisma.StringFieldUpdateOperationsInput | string
+  location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  industry?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -553,6 +621,8 @@ export type SavedLeadUncheckedUpdateManyWithoutSourceSearchInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   userId?: Prisma.StringFieldUpdateOperationsInput | string
   placeId?: Prisma.StringFieldUpdateOperationsInput | string
+  location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  industry?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -563,6 +633,8 @@ export type SavedLeadSelect<ExtArgs extends runtime.Types.Extensions.InternalArg
   userId?: boolean
   placeId?: boolean
   sourceSearchId?: boolean
+  location?: boolean
+  industry?: boolean
   createdAt?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   sourceSearch?: boolean | Prisma.SavedLead$sourceSearchArgs<ExtArgs>
@@ -573,6 +645,8 @@ export type SavedLeadSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Ext
   userId?: boolean
   placeId?: boolean
   sourceSearchId?: boolean
+  location?: boolean
+  industry?: boolean
   createdAt?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   sourceSearch?: boolean | Prisma.SavedLead$sourceSearchArgs<ExtArgs>
@@ -583,6 +657,8 @@ export type SavedLeadSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Ext
   userId?: boolean
   placeId?: boolean
   sourceSearchId?: boolean
+  location?: boolean
+  industry?: boolean
   createdAt?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   sourceSearch?: boolean | Prisma.SavedLead$sourceSearchArgs<ExtArgs>
@@ -593,10 +669,12 @@ export type SavedLeadSelectScalar = {
   userId?: boolean
   placeId?: boolean
   sourceSearchId?: boolean
+  location?: boolean
+  industry?: boolean
   createdAt?: boolean
 }
 
-export type SavedLeadOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "placeId" | "sourceSearchId" | "createdAt", ExtArgs["result"]["savedLead"]>
+export type SavedLeadOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "placeId" | "sourceSearchId" | "location" | "industry" | "createdAt", ExtArgs["result"]["savedLead"]>
 export type SavedLeadInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   sourceSearch?: boolean | Prisma.SavedLead$sourceSearchArgs<ExtArgs>
@@ -621,6 +699,8 @@ export type $SavedLeadPayload<ExtArgs extends runtime.Types.Extensions.InternalA
     userId: string
     placeId: string
     sourceSearchId: string | null
+    location: string | null
+    industry: string | null
     createdAt: Date
   }, ExtArgs["result"]["savedLead"]>
   composites: {}
@@ -1051,6 +1131,8 @@ export interface SavedLeadFieldRefs {
   readonly userId: Prisma.FieldRef<"SavedLead", 'String'>
   readonly placeId: Prisma.FieldRef<"SavedLead", 'String'>
   readonly sourceSearchId: Prisma.FieldRef<"SavedLead", 'String'>
+  readonly location: Prisma.FieldRef<"SavedLead", 'String'>
+  readonly industry: Prisma.FieldRef<"SavedLead", 'String'>
   readonly createdAt: Prisma.FieldRef<"SavedLead", 'DateTime'>
 }
     

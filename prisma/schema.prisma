@@ -247,6 +247,8 @@ model SavedLead {
   placeId        String      @db.VarChar(512)
   sourceSearchId String?
   sourceSearch   LeadSearch? @relation(fields: [sourceSearchId], references: [id], onDelete: SetNull)
+  location       String?     @db.VarChar(200)
+  industry       String?     @db.VarChar(200)
   createdAt      DateTime    @default(now())
 
   @@unique([userId, placeId])

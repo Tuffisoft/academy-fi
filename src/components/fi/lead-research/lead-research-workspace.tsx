@@ -57,6 +57,7 @@ export function LeadResearchWorkspace({
   userId,
   isOwner,
   googleConfigured,
+  leadEmailSettings,
 }: {
   searches: LeadSearchSummary[];
   savedLeads: SavedLeadSummary[];
@@ -64,6 +65,7 @@ export function LeadResearchWorkspace({
   userId: string;
   isOwner: boolean;
   googleConfigured: boolean;
+  leadEmailSettings: { recipient: string | null; configured: boolean };
 }) {
   const t = useTranslations("leadResearch");
   const { searches, audits, statusError } = useSearchProgress(
@@ -216,6 +218,7 @@ export function LeadResearchWorkspace({
           audits={audits}
           isOwner={isOwner}
           enabled={view === "savedLeads"}
+          emailSettings={leadEmailSettings}
         />
       </div>
       {searches

@@ -2,10 +2,13 @@
 
 import { Fragment, useEffect, useRef, useState } from "react";
 import { useTranslations } from "next-intl";
-import { Bookmark } from "lucide-react";
+import { Bookmark, Download, LoaderCircle, Mail } from "lucide-react";
+import { emailSavedLeadsAction } from "@/lib/actions/lead-export-email.actions";
+import type { LeadExportEmailInput } from "@/lib/lead-research/email-export";
+import { prepareSavedLeadsExport } from "@/lib/lead-research/export-csv";
 import type { PlaceResult } from "@/lib/lead-research/google-places";
 import type { SavedLeadSummary } from "@/lib/lead-research/types";
-import { loadSavedLeadDetailsAction } from "@/lib/actions/saved-leads.actions";
+import { loadSavedLeadDetailsAction, loadSavedLeadExportDetailsAction } from "@/lib/actions/saved-leads.actions";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardAction, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -19,10 +22,16 @@ import { auditIsActive } from "@/lib/lead-research/audit-progress";
 import { prepareLeadRows } from "@/lib/lead-research/lead-groups";
 import { LeadGroupHeading } from "./lead-group-heading";
 
-export function SavedLeadsView({ leads, audits, isOwner, enabled }: { leads: SavedLeadSummary[]; audits: AuditSummary[]; isOwner: boolean; enabled: boolean }) {
+export function SavedLeadsView({ leads, audits, isOwner, enabled, emailSettings }: { leads: SavedLeadSummary[]; audits: AuditSummary[]; isOwner: boolean; enabled: boolean; emailSettings: { recipient: string | null; configured: boolean } }) {
   const t = useTranslations("leadResearch");
   const [page, setPage] = useState(0);
   const [retry, setRetry] = useState(0);
+  const [exporting, setExporting] = useState<"download" | "email" | null>(null);
+  const exportInFlight = useRef(false);
+  const emailRequest = useRef<LeadExportEmailInput | null>(null);
+  const [exportError, setExportError] = useState<string | null>(null);
+  const [emailSuccess, setEmailSuccess] = useState<string | null>(null);
+  const [exportMissingCount, setExportMissingCount] = useState(0);
   const auditByPlace = new Map(audits.map((audit) => [JSON.stringify([audit.userId, audit.placeId]), audit]));
   const sorted = !audits.some(auditIsActive);
   const grouped = prepareLeadRows(leads, lead => auditByPlace.get(JSON.stringify([lead.userId, lead.placeId])), sorted);
@@ -65,13 +74,71 @@ export function SavedLeadsView({ leads, audits, isOwner, enabled }: { leads: Sav
   const loading = rows.length > 0 && snapshot?.key !== requestKey;
   const places = new Map((snapshot?.key === requestKey ? snapshot.places : []).map((place) => [place.id, place]));
   const error = snapshot?.key === requestKey ? snapshot.error : null;
+  async function exportAll(mode: "download" | "email") {
+    if (!leads.length || exportInFlight.current) return;
+    exportInFlight.current = true;
+    setExporting(mode);
+    setExportError(null);
+    setEmailSuccess(null);
+    setExportMissingCount(0);
+    try {
+      const result = await prepareSavedLeadsExport(leads, cache.current, loadSavedLeadExportDetailsAction);
+      if (mode === "email") {
+        const leadIds = leads.map(lead => lead.id);
+        if (JSON.stringify(emailRequest.current?.leadIds) !== JSON.stringify(leadIds)) emailRequest.current = null;
+        emailRequest.current ??= {
+          requestId: crypto.randomUUID(), leadIds,
+          places: [...new Map(leads.flatMap(lead => {
+            const place = cache.current.get(lead.placeId);
+            if (!place) return [];
+            const exportPlace: PlaceResult = { ...place, attributions: [] };
+            return [[place.id, exportPlace] as const];
+          })).values()],
+        };
+        const response = await emailSavedLeadsAction(emailRequest.current);
+        if (!response.success) {
+          setExportError(response.error);
+          if (response.error === "csvEmailLeadsChanged") emailRequest.current = null;
+          return;
+        }
+        emailRequest.current = null;
+        setEmailSuccess(response.recipient);
+        setExportMissingCount(response.missingCount);
+        return;
+      }
+      const url = URL.createObjectURL(new Blob([result.csv], { type: "text/csv;charset=utf-8" }));
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = `studio-fi-leads-${new Date().toISOString().slice(0, 10)}.csv`;
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      window.setTimeout(() => URL.revokeObjectURL(url), 60_000);
+      setExportMissingCount(result.missingCount);
+    } catch { setExportError(mode === "email" ? "csvEmailError" : "csvError"); }
+    finally { exportInFlight.current = false; setExporting(null); }
+  }
   const columns = isOwner ? 8 : 7;
   return <Card className="min-w-0">
     <CardHeader><CardTitle>{t("savedLeads")}</CardTitle><CardAction><Badge variant="secondary">{t("leadCount", { count: leads.length })}</Badge></CardAction></CardHeader>
     <CardContent className="min-w-0 space-y-4">
+      <div className="flex flex-wrap items-center justify-between gap-3">
+        <div className="space-y-1">
+          <p className="text-xs text-muted-foreground">{t("csvDescription")}</p>
+          <p className="text-xs text-muted-foreground">{emailSettings.configured && emailSettings.recipient ? t("csvEmailRecipient", { email: emailSettings.recipient }) : t("csvEmailNotConfigured")}</p>
+        </div>
+        <div className="flex flex-wrap gap-2">
+          <Button disabled={leads.length === 0 || exporting !== null || !emailSettings.configured} aria-busy={exporting === "email"} onClick={() => void exportAll("email")}>{exporting === "email" ? <LoaderCircle className="animate-spin motion-reduce:animate-none" aria-hidden="true" /> : <Mail aria-hidden="true" />}{t(exporting === "email" ? "csvEmailSending" : "csvTransfer")}</Button>
+          <Button variant="outline" disabled={leads.length === 0 || exporting !== null} aria-busy={exporting === "download"} onClick={() => void exportAll("download")}>{exporting === "download" ? <LoaderCircle className="animate-spin motion-reduce:animate-none" aria-hidden="true" /> : <Download aria-hidden="true" />}{t(exporting === "download" ? "csvPreparing" : "csvDownload")}</Button>
+        </div>
+      </div>
+      {exportError && <p role="alert" className="text-sm text-red-700 dark:text-red-300">{t(exportError)}</p>}
+      {emailSuccess && <p role="status" className="text-sm text-emerald-700 dark:text-emerald-300">{t("csvEmailSuccess", { email: emailSuccess })}</p>}
+      {exportMissingCount > 0 && <p role="status" className="text-sm text-amber-800 dark:text-amber-300">{t("csvIncomplete", { count: exportMissingCount })}</p>}
       {error && <div className="flex flex-wrap items-center gap-3"><p role="alert" className="text-sm text-destructive">{t(error)}</p><Button variant="outline" size="sm" onClick={() => setRetry((value) => value + 1)}>{t("retryDetails")}</Button></div>}
       <Table>
-        <TableHeader><TableRow>{["company", "address", "website", "phone", ...(isOwner ? ["author"] : []), "auditQuality", "selection", "leadDetails"].map((key) => <TableHead key={key} className={key === "selection" ? "w-12" : undefined}>{key === "selection" ? <><Bookmark className="size-4" aria-hidden="true" /><span className="sr-only">{t(key)}</span></> : t(key)}</TableHead>)}</TableRow></TableHeader>
+        <TableHeader><TableRow>
+          {["company", "address", "website", "phone", ...(isOwner ? ["author"] : []), "auditQuality", "selection", "leadDetails"].map((key) => <TableHead key={key} className={key === "selection" ? "w-12" : undefined}>{key === "selection" ? <><Bookmark className="size-4" aria-hidden="true" /><span className="sr-only">{t(key)}</span></> : t(key)}</TableHead>)}</TableRow></TableHeader>
         <TableBody>
           {rows.map(({ item: lead, group }, index) => {
             const place = places.get(lead.placeId);

@@ -2839,6 +2839,8 @@ export const SavedLeadScalarFieldEnum = {
   userId: 'userId',
   placeId: 'placeId',
   sourceSearchId: 'sourceSearchId',
+  location: 'location',
+  industry: 'industry',
   createdAt: 'createdAt'
 } as const
 
