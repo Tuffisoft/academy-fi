@@ -4,8 +4,9 @@ import {
   isAreaSearch,
   type LeadSearchInput,
 } from "./search-input";
+import { parsePlaceSignals, type PlaceSignals, type RawPlaceSignals } from "./place-signals";
 
-export type PlaceResult = {
+export type PlaceResult = PlaceSignals & {
   id: string;
   name: string;
   address: string | null;
@@ -33,7 +34,7 @@ export const GOOGLE_MAX_RESULTS = MAX_AREA_SEARCH_CANDIDATES;
 export const GOOGLE_MAX_RADIUS_KM = 50;
 const ENDPOINT = "https://places.googleapis.com/v1/places:searchText";
 const RESULT_FIELDS =
-  "places.id,places.displayName,places.formattedAddress,places.location,places.websiteUri,places.nationalPhoneNumber,places.googleMapsUri,places.attributions,nextPageToken";
+  "places.id,places.displayName,places.formattedAddress,places.location,places.websiteUri,places.nationalPhoneNumber,places.googleMapsUri,places.attributions,places.businessStatus,places.primaryType,places.primaryTypeDisplayName,places.rating,nextPageToken";
 type Fetcher = (url: string, init: RequestInit) => Promise<Response>;
 export type SearchCheckpoint = {
   center: Point;
@@ -53,7 +54,7 @@ export type SearchProgress = {
 };
 export type SearchDiagnosticContext = { searchId: string; runId: string };
 type Point = { latitude: number; longitude: number };
-type RawPlace = {
+type RawPlace = RawPlaceSignals & {
   id?: unknown;
   displayName?: { text?: unknown };
   formattedAddress?: unknown;
@@ -252,7 +253,7 @@ export async function searchGooglePlaces(
         },
         includeContactDetails
           ? RESULT_FIELDS
-          : "places.id,places.displayName,places.location,nextPageToken",
+          : "places.id,places.displayName,places.location,places.businessStatus,places.primaryType,places.primaryTypeDisplayName,nextPageToken",
         "business",
       );
     } catch (error) {
@@ -302,6 +303,7 @@ export async function searchGooglePlaces(
       results.push({
         id,
         name,
+        ...parsePlaceSignals(raw),
         address: text(raw.formattedAddress),
         website: safePlacesUrl(raw.websiteUri),
         phone: text(raw.nationalPhoneNumber),
@@ -384,14 +386,14 @@ export async function loadGooglePlaceDetails(
   let partialError: PlacesErrorCode | null = null;
   let processedCount = 0;
   const fields =
-    "id,displayName,formattedAddress,websiteUri,nationalPhoneNumber,googleMapsUri,attributions";
+    "id,displayName,formattedAddress,websiteUri,nationalPhoneNumber,googleMapsUri,attributions,businessStatus,primaryType,primaryTypeDisplayName,rating";
   // Batches of three, at most ten explicitly requested Places Details calls.
   for (let offset = 0; offset < Math.min(ids.length, 10); offset += 3) {
     const batch = await Promise.all(
       ids.slice(offset, Math.min(offset + 3, 10)).map(async (id) => {
         try {
           const response = await fetcher(
-            `https://places.googleapis.com/v1/places/${encodeURIComponent(id)}`,
+            `https://places.googleapis.com/v1/places/${encodeURIComponent(id)}?languageCode=de`,
             {
               method: "GET",
               cache: "no-store",
@@ -414,6 +416,7 @@ export async function loadGooglePlaceDetails(
             place: {
               id,
               name,
+              ...parsePlaceSignals(raw),
               address: text(raw.formattedAddress),
               website: safePlacesUrl(raw.websiteUri),
               phone: text(raw.nationalPhoneNumber),

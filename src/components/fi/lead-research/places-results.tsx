@@ -2,7 +2,6 @@
 
 import { Fragment, useState } from "react";
 import { useTranslations } from "next-intl";
-import { Bookmark, ExternalLink } from "lucide-react";
 import type { searchGooglePlaces } from "@/lib/lead-research/google-places";
 import type { SavedLeadSummary } from "@/lib/lead-research/types";
 import { SaveLeadButton } from "./save-lead-button";
@@ -18,7 +17,6 @@ import {
 import { Input } from "@/components/ui/input";
 import { Skeleton } from "@/components/ui/skeleton";
 import {
-  Table,
   TableBody,
   TableCell,
   TableHead,
@@ -27,15 +25,17 @@ import {
 } from "@/components/ui/table";
 import { AuditScore, LeadDetailsDialog } from "./lead-details-dialog";
 import type { AuditSummary } from "@/lib/lead-research/audit-types";
-import { auditIsActive } from "@/lib/lead-research/audit-progress";
 import { isAreaSearch } from "@/lib/lead-research/search-input";
 
 import {
   prepareAreaLeadRows,
   prepareLeadRows,
-  websiteOpportunityScore,
+  isRankableLead,
 } from "@/lib/lead-research/lead-groups";
 import { LeadGroupHeading } from "./lead-group-heading";
+import { LeadPotential } from "./lead-potential";
+import { LeadColumnLabel, LeadListTable, LeadWebsiteLink } from "./lead-list-table";
+import { PlaceBusinessStatus, PlaceGoogleRating } from "./place-signals";
 
 export type LivePlacesResult = Awaited<ReturnType<typeof searchGooglePlaces>>;
 
@@ -50,6 +50,7 @@ export function PlacesResults({
   userId,
   audits = [],
   context,
+  supplementary = false,
 }: {
   result: LivePlacesResult | null;
   pending: boolean;
@@ -61,6 +62,7 @@ export function PlacesResults({
   userId?: string;
   audits?: AuditSummary[];
   context?: { location: string; industry: string };
+  supplementary?: boolean;
 }) {
   const t = useTranslations("leadResearch");
   const [query, setQuery] = useState("");
@@ -72,7 +74,7 @@ export function PlacesResults({
         .toLocaleLowerCase()
         .includes(query.toLocaleLowerCase()),
     ) ?? [];
-  const sorted = !pending && !audits.some(auditIsActive);
+  const sorted = true;
   const areaSearch = Boolean(context && isAreaSearch(context.industry));
   const grouped = areaSearch
     ? prepareAreaLeadRows(
@@ -82,17 +84,14 @@ export function PlacesResults({
       )
     : prepareLeadRows(visible, (place) => auditsByPlace.get(place.id), sorted);
   const rankedRows = areaSearch
-    ? grouped.rows.filter((row) => websiteOpportunityScore(row.audit) !== null)
+    ? grouped.rows.filter((row) => isRankableLead(row.audit))
     : grouped.rows;
   const unrankedRows = areaSearch
-    ? grouped.rows.filter((row) => websiteOpportunityScore(row.audit) === null)
+    ? grouped.rows.filter((row) => !isRankableLead(row.audit))
     : [];
-  const rankedCount = areaSearch ? rankedRows.length : 0;
   const targetCount = targetResults ?? 20;
   const shortlistRows = areaSearch
-    ? sorted
-      ? rankedRows.slice(0, targetCount)
-      : grouped.rows.slice(0, targetCount)
+    ? rankedRows.slice(0, targetCount)
     : grouped.rows;
   const currentPage = Math.min(
     page,
@@ -108,7 +107,7 @@ export function PlacesResults({
   return (
     <Card className={compact ? "min-w-0 lg:col-span-2" : "min-w-0"}>
       <CardHeader>
-        <CardTitle>{t(areaSearch ? "rankedLeads" : "leads")}</CardTitle>
+        <CardTitle>{t(supplementary ? "additionalCandidates" : areaSearch ? "rankedLeads" : "leads")}</CardTitle>
         <CardAction>
           <Badge variant="secondary">
             {t(areaSearch ? "candidateCount" : "leadCount", {
@@ -118,15 +117,6 @@ export function PlacesResults({
         </CardAction>
       </CardHeader>
       <CardContent className="min-w-0 space-y-3">
-        {areaSearch && result && (
-          <p className="text-sm text-muted-foreground">
-            {t("areaSearchRanking", {
-              ranked: Math.min(rankedCount, targetCount),
-              target: targetCount,
-              candidates: result.results.length,
-            })}
-          </p>
-        )}
         {result?.partialError && (
           <p role="alert" className="text-sm text-destructive">
             {t("partialResults")} {t(result.partialError)}
@@ -144,30 +134,25 @@ export function PlacesResults({
             disabled={!result}
           />
         )}
-        <Table>
+        <LeadListTable>
           <TableHeader>
             <TableRow>
               {[
                 "company",
-                "address",
+                "industry",
                 "website",
-                "phone",
+                "businessStatus",
+                "googleStars",
                 "auditQuality",
-                "selection",
+                "potentialColumn",
+                "storageStatus",
                 "leadDetails",
               ].map((key) => (
                 <TableHead
                   key={key}
-                  className={key === "selection" ? "w-12" : undefined}
+                  title={t(key)}
                 >
-                  {key === "selection" ? (
-                    <>
-                      <Bookmark className="size-4" aria-hidden="true" />
-                      <span className="sr-only">{t(key)}</span>
-                    </>
-                  ) : (
-                    t(key)
-                  )}
+                  <LeadColumnLabel column={key} label={t(key)} />
                 </TableHead>
               ))}
             </TableRow>
@@ -176,24 +161,16 @@ export function PlacesResults({
             {rows.map(({ item: place, group, audit }, index) => (
               <Fragment key={place.id}>
                 {sorted &&
-                  !areaSearch &&
                   (index === 0 || rows[index - 1].group !== group) && (
                     <LeadGroupHeading
                       group={group}
-                      count={grouped.counts[group]}
-                      columns={7}
+                      count={shortlistRows.filter(row => row.group === group).length}
+                      columns={9}
                     />
                   )}
                 <TableRow>
-                  <TableCell className="min-w-40 max-w-52 whitespace-normal">
-                    <p className="wrap-anywhere font-medium">{place.name}</p>
-                    {areaSearch &&
-                      sorted &&
-                      websiteOpportunityScore(audit) !== null && (
-                        <Badge variant="outline" className="mt-1">
-                          {t("rankedOpportunity")}
-                        </Badge>
-                      )}
+                  <TableCell>
+                    <p title={place.name} className="wrap-anywhere font-medium">{place.name}</p>
                     {place.attributions.map((a, index) => (
                       <p
                         key={index}
@@ -214,34 +191,20 @@ export function PlacesResults({
                       </p>
                     ))}
                   </TableCell>
-                  <TableCell className="min-w-36 max-w-56 wrap-anywhere whitespace-normal">
-                    {place.address ?? t("notProvided")}
-                  </TableCell>
+                  <TableCell>{place.category ?? (context?.industry && !isAreaSearch(context.industry) ? context.industry : t("notProvided"))}</TableCell>
                   <TableCell>
                     {place.website ? (
-                      <Button
-                        nativeButton={false}
-                        variant="link"
-                        size="sm"
-                        render={
-                          <a
-                            href={place.website}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                          />
-                        }
-                      >
-                        {t("openWebsite")}
-                        <ExternalLink aria-hidden="true" />
-                      </Button>
+                      <LeadWebsiteLink website={place.website} />
                     ) : (
                       t("notProvided")
                     )}
                   </TableCell>
-                  <TableCell>{place.phone ?? t("notProvided")}</TableCell>
+                  <TableCell><PlaceBusinessStatus place={place} /></TableCell>
+                  <TableCell><PlaceGoogleRating place={place} /></TableCell>
                   <TableCell>
-                    <AuditScore audit={auditsByPlace.get(place.id)} />
+                    <AuditScore numberOnly audit={auditsByPlace.get(place.id)} />
                   </TableCell>
+                  <TableCell><LeadPotential audit={audit} place={place} /></TableCell>
                   <TableCell>
                     <SaveLeadButton
                       searchId={searchId}
@@ -252,6 +215,7 @@ export function PlacesResults({
                   </TableCell>
                   <TableCell>
                     <LeadDetailsDialog
+                      compactTrigger
                       place={place}
                       audit={auditsByPlace.get(place.id)}
                       context={context}
@@ -265,7 +229,7 @@ export function PlacesResults({
                 { length: Math.min(4, 10 - rows.length) },
                 (_, row) => (
                   <TableRow key={`loading-${row}`}>
-                    {[0, 1, 2, 3, 4, 5, 6].map((col) => (
+                    {[0, 1, 2, 3, 4, 5, 6, 7, 8].map((col) => (
                       <TableCell key={col} className="py-4">
                         <Skeleton className="h-5 w-24" />
                       </TableCell>
@@ -276,7 +240,7 @@ export function PlacesResults({
             {!pending && shortlistRows.length === 0 && (
               <TableRow>
                 <TableCell
-                  colSpan={7}
+                  colSpan={9}
                   className="h-52 whitespace-normal text-center text-muted-foreground"
                 >
                   {areaSearch && unrankedRows.length > 0
@@ -288,7 +252,7 @@ export function PlacesResults({
               </TableRow>
             )}
           </TableBody>
-        </Table>
+        </LeadListTable>
         {shortlistRows.length > 0 && (
           <div className="flex flex-wrap items-center justify-between gap-3">
             <p className="text-xs text-muted-foreground">
@@ -318,37 +282,11 @@ export function PlacesResults({
             </div>
           </div>
         )}
-        {areaSearch && sorted && unrankedRows.length > 0 && (
-          <details className="text-sm">
-            <summary className="cursor-pointer text-muted-foreground">
-              {t("unrankedCandidates", { count: unrankedRows.length })}
-            </summary>
-            <ul className="mt-2 space-y-2">
-              {unrankedRows.map(({ item: place, audit }) => (
-                <li
-                  key={place.id}
-                  className="flex flex-wrap items-baseline gap-x-3 gap-y-1"
-                >
-                  <a
-                    href={place.mapsUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="underline"
-                  >
-                    {place.name}
-                  </a>
-                  <span className="text-muted-foreground">
-                    {auditsByPlace.get(place.id)?.errorCode
-                      ? t(auditsByPlace.get(place.id)!.errorCode!)
-                      : audit?.status === "NO_WEBSITE"
-                        ? t("auditNoWebsite")
-                        : t("unverifiedCandidate")}
-                  </span>
-                </li>
-              ))}
-            </ul>
-          </details>
-        )}
+        {areaSearch && result && unrankedRows.length > 0 && <PlacesResults
+          supplementary result={{ ...result, results: unrankedRows.map(row => row.item), partialError: null }}
+          pending={pending} compact={false} searchId={searchId} completedWithoutResults={false}
+          savedLeads={savedLeads} userId={userId} audits={audits}
+        />}
         <p role="status" className="sr-only">
           {pending
             ? t("searching")

@@ -1,0 +1,130 @@
+.frame {
+  overflow: hidden;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--card);
+}
+
+.table {
+  width: 100%;
+  table-layout: fixed;
+  min-width: 58rem;
+  font-size: 0.8125rem;
+  line-height: 1.4;
+}
+
+.table th,
+.table td {
+  min-width: 0;
+  padding: 0.625rem 0.5rem;
+  white-space: normal;
+  overflow-wrap: anywhere;
+  vertical-align: middle;
+}
+
+.table th {
+  height: 2.75rem;
+  background: var(--muted);
+  color: var(--muted-foreground);
+  font-size: 0.75rem;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.table th:first-child,
+.table td:first-child {
+  padding-inline-start: 0.875rem;
+}
+
+.table td:first-child > p:first-child {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+  font-weight: 600;
+}
+
+.table td:nth-child(2) {
+  color: var(--muted-foreground);
+  overflow-wrap: break-word;
+  word-break: normal;
+  hyphens: auto;
+}
+
+.table td > *,
+.table [data-slot="skeleton"] {
+  max-width: 100%;
+}
+
+.table th:nth-child(n + 4),
+.table td:nth-child(n + 4):not([colspan]) {
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+}
+
+.table th > svg,
+.table td:nth-child(n + 4) [data-slot="skeleton"] {
+  margin-inline: auto;
+}
+
+.table [data-slot="badge"] {
+  min-width: 0;
+  max-width: 100%;
+  white-space: normal;
+}
+
+.table [data-slot="button"] {
+  min-height: 2rem;
+  min-width: 2rem;
+}
+
+.table [data-slot="button"]:active {
+  background: var(--accent);
+}
+
+.table td > span[title] {
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.website {
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+  min-height: 2rem;
+  min-width: 0;
+  color: var(--foreground);
+  text-decoration: none;
+  border-radius: calc(var(--radius) / 2);
+}
+
+.website span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.website svg {
+  width: 0.75rem;
+  height: 0.75rem;
+  flex-shrink: 0;
+  color: var(--muted-foreground);
+}
+
+.website:hover {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.website:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 2px;
+}
+
+.table td:nth-child(5) > span {
+  display: inline-flex;
+  justify-content: center;
+  vertical-align: middle;
+}

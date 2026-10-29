@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { useFormatter, useLocale, useTranslations } from "next-intl";
-import { Building2, Download, Gauge, Globe } from "lucide-react";
+import { Building2, Download, Eye, Gauge, Globe, Phone } from "lucide-react";
 import type { PlaceResult } from "@/lib/lead-research/google-places";
 import type { AuditSummary } from "@/lib/lead-research/audit-types";
 import type { WebsiteReport } from "@/lib/lead-research/website-quality";
@@ -13,18 +13,20 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Skeleton } from "@/components/ui/skeleton";
 import { qualityStyles, qualityTone } from "./quality-presentation";
-import { WebsiteAuditOverview, WebsiteAuditResults } from "./website-audit-results";
+import { WebsiteAuditHighlights, WebsiteAuditOverview, WebsiteAuditResults } from "./website-audit-results";
 import { isAreaSearch } from "@/lib/lead-research/search-input";
+import { LeadPotential } from "./lead-potential";
+import { PlaceBusinessStatus, PlaceGoogleRating } from "./place-signals";
 
-export function AuditScore({ audit }: { audit?: AuditSummary }) {
+export function AuditScore({ audit, numberOnly = false }: { audit?: AuditSummary; numberOnly?: boolean }) {
   const t = useTranslations("leadResearch");
   const tone = qualityTone(audit?.status === "COMPLETED" ? audit.qualityScore : null);
   return <Badge variant="outline" className={qualityStyles[tone].badge}>
-    {audit?.status === "COMPLETED" ? audit.qualityScore === null ? t("auditIncomplete") : `${audit.qualityScore}/100` : t(`auditStatuses.${audit?.status ?? "NOT_STARTED"}`)}
+    {numberOnly ? (audit?.status === "COMPLETED" ? audit.qualityScore ?? 0 : 0) : audit?.status === "COMPLETED" ? audit.qualityScore === null ? t("auditIncomplete") : `${audit.qualityScore}/100` : t(`auditStatuses.${audit?.status ?? "NOT_STARTED"}`)}
   </Badge>;
 }
 
-export function LeadDetailsDialog({ place, audit, context }: { place: PlaceResult; audit?: AuditSummary; context?: { industry: string; location: string } }) {
+export function LeadDetailsDialog({ place, audit, context, compactTrigger = false }: { place: PlaceResult; audit?: AuditSummary; context?: { industry: string; location: string }; compactTrigger?: boolean }) {
   const t = useTranslations("leadResearch");
   const format = useFormatter();
   const locale = useLocale();
@@ -58,7 +60,7 @@ export function LeadDetailsDialog({ place, audit, context }: { place: PlaceResul
   const error = snapshot?.key === key && snapshot.error;
   const tone = qualityTone(completed ? audit?.qualityScore : null);
   const style = qualityStyles[tone];
-  const detailRows = [[t("address"), place.address ?? t("notProvided")], [t("phone"), place.phone ?? t("notProvided")], [t("industry"), context?.industry ? isAreaSearch(context.industry) ? t("areaSearch") : context.industry : t("notProvided")], [t("location"), context?.location ?? t("notProvided")]];
+  const detailRows = [[t("address"), place.address ?? t("notProvided")], [t("phone"), place.phone ?? t("notProvided")], [t("industry"), place.category ?? (context?.industry ? isAreaSearch(context.industry) ? t("areaSearch") : context.industry : t("notProvided"))], [t("location"), context?.location ?? t("notProvided")]];
   async function downloadPdf() {
     if (!auditId || exporting) return;
     setExporting(true); setExportError(false);
@@ -75,14 +77,17 @@ export function LeadDetailsDialog({ place, audit, context }: { place: PlaceResul
     finally { setExporting(false); }
   }
   return <Dialog open={open} onOpenChange={setOpen}>
-    <DialogTrigger render={<Button variant="outline" size="sm" aria-label={t("leadDetailsFor", { name: place.name })}>{t("leadDetails")}</Button>} />
+    <DialogTrigger render={<Button variant="outline" size={compactTrigger ? "icon-sm" : "sm"} title={t("leadDetailsFor", { name: place.name })} aria-label={t("leadDetailsFor", { name: place.name })}>{compactTrigger ? <Eye aria-hidden="true" /> : t("leadDetails")}</Button>} />
     <DialogContent className="flex max-h-[90dvh] flex-col gap-0 overflow-hidden p-0 sm:max-w-5xl">
       <DialogHeader className="shrink-0 border-b px-5 py-5 pr-12 sm:px-6 sm:pr-12">
         <DialogTitle className="wrap-anywhere text-xl">{place.name}</DialogTitle>
+        <div className="flex flex-wrap items-center gap-x-5 gap-y-2 text-sm"><PlaceBusinessStatus place={place} /><PlaceGoogleRating place={place} /></div>
         <DialogDescription className="sr-only">{t("auditDetailsDescription")}</DialogDescription>
       </DialogHeader>
-      <div className="min-h-0 space-y-7 overflow-y-auto p-5 sm:p-8">
-        <Card className={style.surface}>
+      <div className="min-h-0 space-y-4 overflow-y-auto p-4 sm:p-5">
+        <LeadPotential detailed audit={audit} place={place} />
+        <div className="grid items-start gap-4 md:grid-cols-[minmax(0,0.8fr)_minmax(0,1.2fr)]">
+        <Card size="sm" className={style.surface}>
           <CardContent className="space-y-3">
             <div className="flex items-center justify-between gap-3">
               <div className="min-w-0 space-y-2">
@@ -95,23 +100,25 @@ export function LeadDetailsDialog({ place, audit, context }: { place: PlaceResul
           </CardContent>
         </Card>
 
-        {report && <WebsiteAuditOverview report={report} />}
-
         <Card size="sm">
           <CardHeader><CardTitle className="flex items-center gap-2 text-base"><Building2 className="size-4 text-muted-foreground" aria-hidden="true" />{t("auditBusinessDetails")}</CardTitle></CardHeader>
           <CardContent className="space-y-4">
-            <dl className="grid gap-x-6 gap-y-4 sm:grid-cols-2">{detailRows.map(([label, value]) => <div key={label} className="min-w-0"><dt className="mb-1 text-xs text-muted-foreground">{label}</dt><dd className="wrap-anywhere text-sm font-medium">{value}</dd></div>)}</dl>
-            <div className="flex flex-wrap gap-2 border-t pt-4">
+            <dl className="grid gap-x-6 gap-y-2 sm:grid-cols-2">{detailRows.map(([label, value]) => <div key={label} className="min-w-0"><dt className="mb-1 text-xs text-muted-foreground">{label}</dt><dd className="wrap-anywhere text-sm font-medium">{label === t("phone") && place.phone ? <a className="underline underline-offset-4" href={`tel:${place.phone.replace(/[^+0-9]/g, "")}`}>{value}</a> : value}</dd></div>)}</dl>
+            <div className="flex flex-wrap gap-2 border-t pt-3">
+              {place.phone && <Button nativeButton={false} variant="outline" size="sm" render={<a href={`tel:${place.phone.replace(/[^+0-9]/g, "")}`} />}><Phone aria-hidden="true" />{t("phone")}</Button>}
               {place.website && <Button nativeButton={false} variant="outline" size="sm" render={<a href={place.website} target="_blank" rel="noopener noreferrer" />}><Globe aria-hidden="true" />{t("openWebsite")}</Button>}
               <Button nativeButton={false} variant="outline" size="sm" render={<a href={place.mapsUrl} target="_blank" rel="noopener noreferrer" />}>{t("maps")}</Button>
             </div>
-            <p className="wrap-anywhere text-xs text-muted-foreground">{t("auditPlaceId")}: {place.id}</p>
           </CardContent>
         </Card>
 
+        </div>
+
+        {report && <div className="grid items-start gap-4 md:grid-cols-2"><WebsiteAuditHighlights report={report} /><WebsiteAuditOverview compact report={report} /></div>}
+
         {audit?.errorCode && <p role="alert" className="rounded-lg border border-destructive/25 bg-destructive/10 p-3 text-sm text-destructive">{t(audit.errorCode)}</p>}
         {audit?.status === "NO_WEBSITE" && <p className="rounded-lg border bg-muted/30 p-3 text-sm">{t("auditNoWebsite")}</p>}
-        {completed && !report && !error && <div aria-label={t("auditReportLoading")} className="space-y-3"><div className="grid grid-cols-2 gap-3 sm:grid-cols-3">{[0, 1, 2, 3, 4].map((index) => <Skeleton key={index} className="h-24 w-full" />)}</div><Skeleton className="h-40 w-full" /></div>}
+        {completed && !report && !error && <div aria-label={t("auditReportLoading")} className="space-y-3"><div className="grid grid-cols-2 gap-3 sm:grid-cols-3">{[0, 1, 2, 3, 4].map((index) => <Skeleton key={index} className="h-10 w-full" />)}</div><Skeleton className="h-16 w-full" /></div>}
         {error && <div className="space-y-2"><p role="alert" className="text-sm text-destructive">{t("auditReportError")}</p><Button variant="outline" size="sm" onClick={() => setRetry((value) => value + 1)}>{t("retryDetails")}</Button></div>}
 
         {report && <>
@@ -123,6 +130,7 @@ export function LeadDetailsDialog({ place, audit, context }: { place: PlaceResul
 
           <p className="wrap-anywhere text-xs text-muted-foreground">{t("auditMeasuredUrl", { url: report.url })}</p>
         </>}
+        <details className="rounded-xl border px-4 py-3 text-xs text-muted-foreground"><summary className="cursor-pointer">{t("leadSourceDetails")}</summary><p className="mt-2 wrap-anywhere">{t("auditPlaceId")}: {place.id}</p></details>
         {place.attributions.length > 0 && <div className="border-t pt-3 text-xs text-muted-foreground">{place.attributions.map((a, index) => <p key={index}>{a.uri ? <a href={a.uri} target="_blank" rel="noopener noreferrer" className="underline">{a.name}</a> : a.name}</p>)}</div>}
       </div>
     </DialogContent>
