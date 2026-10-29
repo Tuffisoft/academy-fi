@@ -186,7 +186,7 @@ export function LeadResearchWorkspace({
             </Button>
           ))}
         </nav>
-        <LeadSearchDialog />
+        <LeadSearchDialog onStarted={showResults} />
       </div>
 
       <div className={view === "pdfDesign" ? "contents" : "hidden"}>

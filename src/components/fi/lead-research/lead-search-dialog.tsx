@@ -2,20 +2,23 @@
 
 import { useRef, useState, useTransition, type FormEvent } from "react";
 import { useLocale, useTranslations } from "next-intl";
-import { Pencil, Plus } from "lucide-react";
+import { Pencil, Play, Plus } from "lucide-react";
 import { toast } from "sonner";
 import {
   createLeadSearchAction,
   updateLeadSearchAction,
+  saveAndStartLeadSearchAction,
 } from "@/lib/actions/lead-searches.actions";
+import { searchFieldErrors } from "@/lib/lead-research/search-field-errors";
 import type { LeadSearchSummary } from "@/lib/lead-research/types";
-import { INDUSTRY_CATEGORIES } from "@/lib/lead-research/industry-catalog";
+import { CityCombobox } from "./city-combobox";
+import { IndustryCombobox } from "./industry-combobox";
+import { industryLanguageForLocation, translateCatalogIndustry } from "@/lib/lead-research/location-industry-language";
 import {
   AREA_SEARCH_TERM,
   isAreaSearch,
   isLeadSearchMutable,
   MAX_AREA_SEARCH_RESULTS,
-  MAX_LOCATION_LENGTH,
   leadSearchInputSchema,
   MAX_SEARCH_RESULTS,
   MAX_SEARCH_RADIUS_KM,
@@ -37,14 +40,19 @@ export function LeadSearchDialog({
   open: controlledOpen,
   onOpenChange,
   hideTrigger = false,
+  onStarted,
 }: {
   search?: LeadSearchSummary;
   open?: boolean;
   onOpenChange?: (open: boolean) => void;
   hideTrigger?: boolean;
+  onStarted?: (id: string) => void;
 }) {
   const t = useTranslations("leadResearch");
-  const locale = useLocale() === "de" ? "de" : "en";
+  const uiLanguage = useLocale() === "de" ? "de" : "en";
+  const [location, setLocation] = useState(search?.location ?? "");
+  const industryLanguage = industryLanguageForLocation(location, uiLanguage);
+  const [industry, setIndustry] = useState(() => translateCatalogIndustry(search && !isAreaSearch(search.industry) ? search.industry : "", industryLanguage));
   const [searchMode, setSearchMode] = useState<"industry" | "area">(
     search && isAreaSearch(search.industry) ? "area" : "industry",
   );
@@ -53,30 +61,36 @@ export function LeadSearchDialog({
   const setOpen = onOpenChange ?? setInternalOpen;
   const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
   const [isPending, startTransition] = useTransition();
+  const [starting, setStarting] = useState(false);
   const submitting = useRef(false);
   const [error, setError] = useState<string | null>(null);
-  const industryListId = `lead-industry-options-${search?.id ?? "new"}`;
+
+  function clearFieldError(name: string) {
+    setFieldErrors(previous => { const next = { ...previous }; delete next[name]; return next; });
+    setError(null);
+  }
 
   function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     if (submitting.current) return;
     const form = event.currentTarget;
+    const submitter = (event.nativeEvent as SubmitEvent).submitter;
+    const startNow = submitter instanceof HTMLButtonElement && submitter.value === "start";
     const data = new FormData(form);
-    const parsed = leadSearchInputSchema.safeParse({
+    const input = {
       location: String(data.get("location") ?? ""),
-      radiusKm: Number(data.get("radiusKm")),
+      radiusKm: String(data.get("radiusKm") ?? "").trim() ? Number(data.get("radiusKm")) : undefined,
       industry: searchMode === "area" ? AREA_SEARCH_TERM : String(data.get("industry") ?? ""),
-      maxResults: Number(data.get("maxResults")),
+      maxResults: String(data.get("maxResults") ?? "").trim() ? Number(data.get("maxResults")) : undefined,
       analyzeWebsites: true,
-    });
+    };
+    const parsed = leadSearchInputSchema.safeParse(input);
     setError(null);
     setFieldErrors({});
     if (!parsed.success) {
       const errors: Record<string, string> = {};
-      for (const issue of parsed.error.issues) {
-        const field = String(issue.path[0]);
-        const key = field === "location" ? "locationInvalid" : field === "industry" ? "industryInvalid" : field === "radiusKm" ? "radiusInvalid" : searchMode === "area" ? "areaResultsInvalid" : "resultsInvalid";
-        errors[field] ??= t(key);
+      for (const [field, message] of Object.entries(searchFieldErrors(input, parsed.error.issues))) {
+        errors[field] = t(message.key, message.values);
       }
       setFieldErrors(errors);
       const field = form.elements.namedItem(Object.keys(errors)[0]);
@@ -84,19 +98,27 @@ export function LeadSearchDialog({
       return;
     }
     submitting.current = true;
+    setStarting(startNow);
     setError(null);
     startTransition(async () => {
       try {
-        const result = search
+        const result = startNow
+          ? await saveAndStartLeadSearchAction(parsed.data, search?.id)
+          : search
           ? await updateLeadSearchAction(search.id, parsed.data)
           : await createLeadSearchAction(parsed.data);
         if (!result.success) {
           setError(t(result.error));
           return;
         }
-        toast.success(t(search ? "updateSuccess" : "saveSuccess"));
+        if ("startError" in result && typeof result.startError === "string") {
+          toast.warning(t("savedStartBlocked", { reason: t(result.startError) }), { duration: 10000 });
+        } else {
+          toast.success(t("started" in result ? "savedAndStarted" : search ? "updateSuccess" : "saveSuccess"));
+        }
         setOpen(false);
         setFieldErrors({});
+        if ("started" in result && result.started) onStarted?.(result.id);
       } catch {
         setError(t("saveError"));
       } finally {
@@ -153,9 +175,9 @@ export function LeadSearchDialog({
         <form
           noValidate
           onSubmit={handleSubmit}
-          onChange={() => {
-            setFieldErrors({});
-            setError(null);
+          onChange={(event) => {
+            const target = event.target;
+            if (target instanceof HTMLInputElement) clearFieldError(target.name);
           }}
           className="flex flex-col gap-5"
         >
@@ -201,18 +223,16 @@ export function LeadSearchDialog({
             <div className="grid gap-4 sm:grid-cols-2">
               <div className="flex flex-col gap-2">
                 <Label htmlFor="lead-location">{t("location")}</Label>
-                <Input
-                  id="lead-location"
-                  name="location"
-                  aria-invalid={Boolean(fieldErrors.location)}
-                  aria-describedby={fieldErrors.location ? "lead-location-error" : undefined}
+                <CityCombobox
                   defaultValue={search?.location}
-                  placeholder={t("locationPlaceholder")}
-                  required
-                  pattern=".*\S.*"
-                  maxLength={MAX_LOCATION_LENGTH}
+                  disabled={isPending}
+                  error={fieldErrors.location}
+                  onChange={(value) => {
+                    setLocation(value);
+                    setIndustry(current => translateCatalogIndustry(current, industryLanguageForLocation(value, uiLanguage)));
+                    clearFieldError("location");
+                  }}
                 />
-                <p className="text-xs text-muted-foreground">{t("locationHelp")}</p>
                   {fieldErrors.location && <p id="lead-location-error" role="alert" className="text-xs text-destructive">{fieldErrors.location}</p>}
               </div>
               <div className="flex flex-col gap-2">
@@ -221,7 +241,7 @@ export function LeadSearchDialog({
                   id="lead-radius"
                   name="radiusKm"
                   aria-invalid={Boolean(fieldErrors.radiusKm)}
-                  aria-describedby={fieldErrors.radiusKm ? "lead-radius-help lead-radius-error" : "lead-radius-help"}
+                  aria-describedby={fieldErrors.radiusKm ? "lead-radius-error" : undefined}
                   defaultValue={search?.radiusKm}
                   type="number"
                   min={0.1}
@@ -230,43 +250,19 @@ export function LeadSearchDialog({
                   placeholder="20"
                   required
                 />
-                <p id="lead-radius-help" className="text-xs text-muted-foreground">{t("radiusLimit", { max: MAX_SEARCH_RADIUS_KM })}</p>
                   {fieldErrors.radiusKm && <p id="lead-radius-error" role="alert" className="text-xs text-destructive">{fieldErrors.radiusKm}</p>}
               </div>
               {searchMode === "industry" ? (
                 <div className="flex flex-col gap-2">
                   <Label htmlFor="lead-industry">{t("industry")}</Label>
-                  <Input
-                    id="lead-industry"
-                    name="industry"
-                  aria-invalid={Boolean(fieldErrors.industry)}
-                  aria-describedby={fieldErrors.industry ? "lead-industry-error" : undefined}
-                    defaultValue={
-                      search && !isAreaSearch(search.industry)
-                        ? search.industry
-                        : undefined
-                    }
-                    placeholder={t("industryPlaceholder")}
-                    list={industryListId}
-                    required
-                    pattern=".*\S.*"
-                    maxLength={200}
+                  <IndustryCombobox
+                    value={industry}
+                    language={industryLanguage}
+                    disabled={isPending}
+                    error={fieldErrors.industry}
+                    onChange={(value) => { setIndustry(value); clearFieldError("industry"); }}
                   />
                   {fieldErrors.industry && <p id="lead-industry-error" role="alert" className="text-xs text-destructive">{fieldErrors.industry}</p>}
-                  <datalist id={industryListId}>
-                    {INDUSTRY_CATEGORIES.flatMap((category) =>
-                      category.items.map((industry) => (
-                        <option
-                          key={industry.key}
-                          value={industry[locale]}
-                          label={`${t(`industryCategories.${category.key}`)} · ${t(`industryOptions.${industry.key}`)}`}
-                        />
-                      )),
-                    )}
-                  </datalist>
-                  <p className="text-xs text-muted-foreground">
-                    {t("industryHelp")}
-                  </p>
                 </div>
               ) : (
                 <div className="flex flex-col gap-2">
@@ -276,9 +272,6 @@ export function LeadSearchDialog({
                     name="industry"
                     value={AREA_SEARCH_TERM}
                   />
-                  <p className="text-xs text-muted-foreground">
-                    {t("areaSearchHelp")}
-                  </p>
                 </div>
               )}
               <div className="flex flex-col gap-2">
@@ -289,7 +282,7 @@ export function LeadSearchDialog({
                   id="lead-max-results"
                   name="maxResults"
                   aria-invalid={Boolean(fieldErrors.maxResults)}
-                  aria-describedby={fieldErrors.maxResults ? "lead-max-results-help lead-max-results-error" : "lead-max-results-help"}
+                  aria-describedby={fieldErrors.maxResults ? "lead-max-results-error" : undefined}
                   defaultValue={search?.maxResults}
                   type="number"
                   min={1}
@@ -306,13 +299,17 @@ export function LeadSearchDialog({
                   }
                   required
                 />
-                <p id="lead-max-results-help" className="text-xs text-muted-foreground">{t("resultsLimit", { max: searchMode === "area" ? MAX_AREA_SEARCH_RESULTS : MAX_SEARCH_RESULTS })}</p>
                   {fieldErrors.maxResults && <p id="lead-max-results-error" role="alert" className="text-xs text-destructive">{fieldErrors.maxResults}</p>}
               </div>
             </div>
-            <Button type="submit" disabled={isPending} aria-busy={isPending} className="self-start">
-              {isPending ? t("saving") : t(search ? "saveChanges" : "saveSearch")}
-            </Button>
+            <div className="flex flex-wrap gap-2">
+              <Button type="submit" name="intent" value="save" variant="outline" disabled={isPending} aria-busy={isPending && !starting}>
+                {isPending && !starting ? t("saving") : t("saveOnly")}
+              </Button>
+              <Button type="submit" name="intent" value="start" disabled={isPending} aria-busy={isPending && starting}>
+                <Play aria-hidden="true" />{isPending && starting ? t("savingAndStarting") : t("saveAndStart")}
+              </Button>
+            </div>
           </fieldset>
         </form>
         {error && (

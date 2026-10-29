@@ -282,33 +282,36 @@ export async function loadLeadSearchResultsAction(
 export async function createLeadSearchAction(
   input: unknown,
 ): Promise<
-  { success: true } | { success: false; error: "invalidInput" | "saveError" }
+  { success: true; id: string } | { success: false; error: "invalidInput" | "saveError" }
 > {
   const user = await requireUser();
   const data = parseLeadSearchInput(input);
   if (!data) return { success: false, error: "invalidInput" };
 
+  let id: string;
   try {
-    await prisma.leadSearch.create({
+    const created = await prisma.leadSearch.create({
       data: {
         ...data,
         analyzeWebsites: true,
         userId: user.id,
         status: "DRAFT",
       },
+      select: { id: true },
     });
+    id = created.id;
   } catch {
     return { success: false, error: "saveError" };
   }
   revalidatePath("/[locale]/tools/calem/lead-research", "page");
-  return { success: true };
+  return { success: true, id };
 }
 
 export async function updateLeadSearchAction(
   id: unknown,
   input: unknown,
 ): Promise<
-  | { success: true }
+  | { success: true; id: string }
   | { success: false; error: "invalidInput" | "saveError" | "notEditable" }
 > {
   const user = await requireUser();
@@ -340,7 +343,22 @@ export async function updateLeadSearchAction(
     return { success: false, error: "saveError" };
   }
   revalidatePath("/[locale]/tools/calem/lead-research", "page");
-  return { success: true };
+  return { success: true, id: where.id };
+}
+
+export async function saveAndStartLeadSearchAction(input: unknown, id?: string) {
+  const saved = id === undefined
+    ? await createLeadSearchAction(input)
+    : await updateLeadSearchAction(id, input);
+  if (!saved.success) return saved;
+  try {
+    const started = await runLeadSearchAction(saved.id);
+    if (!started.success) return { success: true as const, id: saved.id, started: false as const, startError: started.error };
+    return { success: true as const, id: saved.id, started: true as const };
+  } catch {
+    // Saving succeeded. Never repeat the save or automatically start a paid job again.
+    return { success: true as const, id: saved.id, started: false as const, startError: "googleUnavailable" as const };
+  }
 }
 
 export async function deleteLeadSearchAction(

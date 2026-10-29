@@ -6,6 +6,8 @@ Serverseitig in `.env` bzw. den Hosting-Secrets konfigurieren und den Server neu
 
 ```dotenv
 GOOGLE_PLACES_API_KEY=...
+# Google-Stadtvorschläge abschalten (deutscher Katalog bleibt verfügbar):
+GOOGLE_CITY_AUTOCOMPLETE_ENABLED=false
 PAGESPEED_API_KEY=...
 # Für die KI-Designbewertung:
 OPENAI_API_KEY=...
@@ -20,7 +22,9 @@ Places API (New), PageSpeed Insights API und die erforderliche Google-Abrechnung
 
 ## Nutzung
 
-- Kampagne als Entwurf speichern und Google-Suche ausdrücklich starten. Neue Treffer werden automatisch auf Website-Qualität geprüft.
+- Das Ortsfeld kombiniert den deutschen Städtekatalog mit Google-Places-Vorschlägen für weitere deutsche und internationale Städte. Freie Eingaben bleiben möglich. Google-Anfragen erfolgen nur bei geöffnetem Auswahlfeld ab drei Zeichen nach 350 ms Tipp-Pause; überholte Anfragen werden abgebrochen und es gibt keine automatischen Wiederholungen. `GOOGLE_CITY_AUTOCOMPLETE_ENABLED=false` schaltet alle Google-Stadtvorschläge serverseitig vollständig ab, ohne Unternehmensrecherche oder Katalog zu verändern. Nicht gesetzt oder `true` aktiviert sie. Nach Änderung den Server neu starten und den Dialog erneut öffnen. Autocomplete-Anfragen werden einzeln abgerechnet, da keine Place-Details-Sitzung für die Textauswahl nötig ist.
+
+- Neue und bearbeitete Recherchen bieten „Speichern“ (Entwurf) und „Speichern & starten“. Nach erfolgreichem Start schließt sich der Dialog und zeigt die Recherche. Ist der Start wegen einer laufenden Recherche, Website-Analyse oder fehlender Konfiguration nicht möglich, bleibt der Entwurf gespeichert und ein Hinweis nennt den Grund. Neue Treffer werden automatisch auf Website-Qualität geprüft.
 - Suchläufe und Website-Prüfungen lassen sich pausieren, fortsetzen und abbrechen. Bereits gestartete Anbieteranfragen können weiterhin Kosten verursachen; keine automatischen kostenpflichtigen Wiederholungen.
 - „Behalten“ speichert einen Lead in der persönlichen Auswahl. Owner sehen alle Einträge, andere Nutzer ihre eigenen.
 - Branche und Suchort werden beim Behalten am Lead gespeichert und bleiben nach Bearbeitung oder Löschung der Kampagne erhalten. Migration `20261029160000_preserve_saved_lead_context` ergänzt die Spalten und übernimmt bestehende Kampagnendaten. Bei bereits gelöschten Kampagnen können fehlende Werte nicht rekonstruiert werden.
@@ -49,3 +53,5 @@ npm test
 ```
 
 Weitere Details zu Bewertung und PDF-Design: [README](README.md).
+
+- Bei einem Ort mit erkanntem Land außerhalb Deutschlands werden Katalogbranchen auf Englisch angeboten und ausgewählte Katalogbegriffe übersetzt. Deutsche Katalogorte und Ortsangaben mit Deutschland/Germany verwenden deutsche Branchen. Freie Branchen werden nicht verändert; bei einem Ort ohne erkennbares Land wird die Oberflächensprache verwendet. Zusätzliche Google-Vorschläge für deutsche Städte erscheinen nur, wenn die Stadt nicht im lokalen Katalog vorhanden ist.

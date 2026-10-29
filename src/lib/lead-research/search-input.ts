@@ -12,6 +12,11 @@ export function isAreaSearch(industry: string) {
   return industry === AREA_SEARCH_TERM;
 }
 
+const areaLimitFieldsSchema = z.object({
+  industry: z.string().trim(),
+  maxResults: z.number(),
+});
+
 export const leadSearchInputSchema = z.object({
   location: z.string().trim().min(1).max(MAX_LOCATION_LENGTH),
   radiusKm: z.number().min(0.1).max(MAX_SEARCH_RADIUS_KM),
@@ -21,6 +26,8 @@ export const leadSearchInputSchema = z.object({
 }).refine(data => !isAreaSearch(data.industry) || data.maxResults <= MAX_AREA_SEARCH_RESULTS, {
   path: ["maxResults"],
   message: "areaResultsInvalid",
+  // Check the area limit even when an unrelated field is empty or invalid.
+  when: payload => areaLimitFieldsSchema.safeParse(payload.value).success,
 });
 
 export type LeadSearchInput = z.infer<typeof leadSearchInputSchema>;
