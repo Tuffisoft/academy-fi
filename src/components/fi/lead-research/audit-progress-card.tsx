@@ -2,10 +2,12 @@
 
 import { useEffect, useState } from "react";
 import { useTranslations } from "next-intl";
+import { Tooltip } from "@base-ui/react/tooltip";
 import {
   CheckCircle2,
   Clock3,
   ExternalLink,
+  Info,
   LoaderCircle,
   Pause,
   Square,
@@ -15,6 +17,7 @@ import type { AuditSummary } from "@/lib/lead-research/audit-types";
 import {
   formatRemainingTime,
   getAuditProgress,
+  type AuditPotential,
 } from "@/lib/lead-research/audit-progress";
 import { Card, CardContent } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
@@ -22,9 +25,13 @@ import { Progress } from "@/components/ui/progress";
 export function AuditProgressCard({
   audits,
   searching,
+  onSelectPotential,
+  selectedPotential,
 }: {
   audits: AuditSummary[];
   searching: boolean;
+  onSelectPotential?: (potential: AuditPotential, auditIds: string[]) => void;
+  selectedPotential?: AuditPotential;
 }) {
   const t = useTranslations("leadResearch");
   const [now, setNow] = useState<number | null>(null);
@@ -44,6 +51,7 @@ export function AuditProgressCard({
         ? Square
         : CheckCircle2;
   const percentage = searching ? null : progress!.percentage;
+  const finished = !searching && progress!.done === progress!.total;
   const remaining =
     searching || progress?.remainingSeconds == null
       ? null
@@ -70,9 +78,18 @@ export function AuditProgressCard({
                         : "auditProgressComplete",
               )}
             </h2>
-            <p className="text-sm text-muted-foreground">
-              {t("auditProgressScope")}
-            </p>
+            <Tooltip.Provider delay={200}>
+              <Tooltip.Root>
+                <Tooltip.Trigger type="button" className="inline-flex items-center gap-1 rounded text-xs text-muted-foreground outline-none focus-visible:ring-2 focus-visible:ring-ring">
+                  {t("auditCrossCampaign")}<Info className="size-3" aria-hidden="true" />
+                </Tooltip.Trigger>
+                <Tooltip.Portal>
+                  <Tooltip.Positioner sideOffset={6} className="z-[100]">
+                    <Tooltip.Popup className="max-w-72 rounded-md border bg-popover px-3 py-2 text-xs text-popover-foreground shadow-md">{t("auditProgressScope")}</Tooltip.Popup>
+                  </Tooltip.Positioner>
+                </Tooltip.Portal>
+              </Tooltip.Root>
+            </Tooltip.Provider>
             {!searching && (
               <p className="text-sm text-muted-foreground">
                 {t("auditCompletedCount", {
@@ -117,7 +134,12 @@ export function AuditProgressCard({
               </details>
             )}
           </div>
-          <div className="flex items-start gap-5 sm:gap-8">
+          {finished ? <dl aria-label={t("auditPotentialDistribution")} className="grid grid-cols-2 gap-x-6 gap-y-3 sm:grid-cols-4">
+            {(["highPotential", "mediumPotential", "lowPotential", "unrated"] as const).map(key => <div key={key} className="relative rounded-lg p-2 transition-colors hover:bg-primary/10 has-focus-visible:ring-2 has-focus-visible:ring-ring">
+              <dt className="text-xs text-muted-foreground">{t(key)}</dt>
+              <dd><button type="button" disabled={!onSelectPotential || progress!.potential[key] === 0} aria-label={t("showPotentialLeads", { potential: t(key), count: progress!.potential[key] })} aria-pressed={selectedPotential === key} onClick={() => onSelectPotential?.(key, progress!.auditIds)} className={`text-2xl font-semibold tabular-nums outline-none after:absolute after:inset-0 disabled:cursor-default disabled:opacity-50 ${key === "highPotential" ? "text-emerald-700 dark:text-emerald-400" : key === "mediumPotential" ? "text-amber-800 dark:text-amber-300" : "text-foreground"}`}>{progress!.potential[key]}</button></dd>
+            </div>)}
+          </dl> : <div className="flex items-start gap-5 sm:gap-8">
             <div className="space-y-1">
               <p className="text-xs text-muted-foreground">
                 {t("auditProgressPercent")}
@@ -138,7 +160,7 @@ export function AuditProgressCard({
                 {remaining === null ? "—:—" : remaining}
               </p>
             </div>
-          </div>
+          </div>}
         </div>
         <Progress value={percentage} aria-label={t("auditProgressPercent")} />
         <AuditBatchControls audits={audits} />

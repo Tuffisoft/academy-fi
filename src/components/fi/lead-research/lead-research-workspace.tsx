@@ -39,6 +39,8 @@ import type { AuditSummary } from "@/lib/lead-research/audit-types";
 import { qualityStyles, qualityTone } from "./quality-presentation";
 import { AuditProgressCard } from "./audit-progress-card";
 import { isAreaSearch } from "@/lib/lead-research/search-input";
+import { auditPotential, type AuditPotential } from "@/lib/lead-research/audit-progress";
+import { AuditPotentialLeads } from "./audit-potential-leads";
 
 const PdfDesignEditor = dynamic(() =>
   import("./pdf-design-editor").then((module) => module.PdfDesignEditor),
@@ -49,7 +51,8 @@ type View =
   | "leads"
   | "savedLeads"
   | "analytics"
-  | "pdfDesign";
+  | "pdfDesign"
+  | "potential";
 
 export function LeadResearchWorkspace({
   searches: initialSearches,
@@ -76,6 +79,7 @@ export function LeadResearchWorkspace({
   const [view, setView] = useState<View>("overview");
   const [pdfEditorOpened, setPdfEditorOpened] = useState(false);
   const [selectedId, setSelectedId] = useState<string | null>(null);
+  const [potentialFilter, setPotentialFilter] = useState<{ potential: AuditPotential; auditIds: string[] } | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [pending, startTransition] = useTransition();
   const selected = selectedId !== null
@@ -163,6 +167,12 @@ export function LeadResearchWorkspace({
     <div className="flex min-w-0 flex-col gap-5">
       <AuditProgressCard
         audits={audits}
+        selectedPotential={view === "potential" ? potentialFilter?.potential : undefined}
+        onSelectPotential={(potential, auditIds) => {
+          setPotentialFilter({ potential, auditIds });
+          setError(null);
+          setView("potential");
+        }}
         searching={
           pending ||
           searches.some((search) =>
@@ -225,13 +235,22 @@ export function LeadResearchWorkspace({
       {searches
         .filter(
           (search) =>
-            view === "leads"
+            view === "potential" ? false : view === "leads"
               ? search.id === selected?.id
               : ["RUNNING", "QUEUED", "PAUSED"].includes(search.status) || search.id === selected?.id,
         )
         .map((search) => (
           <SearchJobStatus key={search.id + search.runId} search={search} />
         ))}
+
+      {view === "potential" && potentialFilter && <AuditPotentialLeads
+        key={JSON.stringify(potentialFilter)}
+        potential={potentialFilter.potential}
+        audits={audits.filter(audit => potentialFilter.auditIds.includes(audit.id) && auditPotential(audit) === potentialFilter.potential)}
+        savedLeads={savedLeads}
+        userId={userId}
+        onClear={() => { setPotentialFilter(null); setView(selected ? "leads" : "overview"); }}
+      />}
 
       {view === "leads" && selectedId !== null && !selected && (
         <div role="status" aria-label={t("selectedResearchLoading")} className="space-y-3 rounded-xl border p-5">

@@ -9,6 +9,13 @@ const batchKey = (audit: AuditSummary) =>
   JSON.stringify([audit.userId, audit.batchId]);
 const timestamp = (value: string | null) => (value ? Date.parse(value) : NaN);
 
+export type AuditPotential = "highPotential" | "mediumPotential" | "lowPotential" | "unrated";
+export function auditPotential(audit: Pick<AuditSummary, "status" | "qualityScore">): AuditPotential {
+  const score = audit.qualityScore;
+  if (audit.status !== "COMPLETED" || score === null || !Number.isFinite(score) || score < 0 || score > 100) return "unrated";
+  return score < 40 ? "highPotential" : score < 70 ? "mediumPotential" : "lowPotential";
+}
+
 export function getAuditProgress(
   audits: readonly AuditSummary[],
   now: number | null,
@@ -25,6 +32,8 @@ export function getAuditProgress(
   const done = batch.length - pending.length;
   const percentage = Math.floor((done / batch.length) * 100);
   const failed = batch.filter((audit) => audit.status === "FAILED").length;
+  const potential = { highPotential: 0, mediumPotential: 0, lowPotential: 0, unrated: 0 };
+  for (const audit of batch) potential[auditPotential(audit)]++;
   let remainingSeconds: number | null = pending.length ? null : 0;
   if (pending.length && !paused && now !== null) {
     const durations = audits
@@ -65,6 +74,8 @@ export function getAuditProgress(
     cancelled: batch.filter((audit) => audit.status === "CANCELLED").length,
     active: pending.some(auditIsActive),
     remainingSeconds,
+    potential,
+    auditIds: batch.map(audit => audit.id),
   };
 }
 
