@@ -2,7 +2,7 @@
 
 import { Fragment, useEffect, useRef, useState } from "react";
 import { useTranslations } from "next-intl";
-import { Bookmark, Download, LoaderCircle, Mail } from "lucide-react";
+import { Download, ExternalLink, LoaderCircle, Mail } from "lucide-react";
 import { emailSavedLeadsAction } from "@/lib/actions/lead-export-email.actions";
 import type { LeadExportEmailInput } from "@/lib/lead-research/email-export";
 import { prepareSavedLeadsExport } from "@/lib/lead-research/export-csv";
@@ -13,10 +13,13 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardAction, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { LeadColumnLabel, LeadListTable } from "./lead-list-table";
+import { PlaceBusinessStatus, PlaceGoogleRating } from "./place-signals";
 import { SaveLeadButton } from "./save-lead-button";
 import { AuditScore, LeadDetailsDialog } from "./lead-details-dialog";
 import type { AuditSummary } from "@/lib/lead-research/audit-types";
+import { isAreaSearch } from "@/lib/lead-research/search-input";
 import { auditIsActive } from "@/lib/lead-research/audit-progress";
 
 import { prepareLeadRows } from "@/lib/lead-research/lead-groups";
@@ -118,7 +121,7 @@ export function SavedLeadsView({ leads, audits, isOwner, enabled, emailSettings 
     } catch { setExportError(mode === "email" ? "csvEmailError" : "csvError"); }
     finally { exportInFlight.current = false; setExporting(null); }
   }
-  const columns = isOwner ? 8 : 7;
+  const columns = isOwner ? 9 : 8;
   return <Card className="min-w-0">
     <CardHeader><CardTitle>{t("savedLeads")}</CardTitle><CardAction><Badge variant="secondary">{t("leadCount", { count: leads.length })}</Badge></CardAction></CardHeader>
     <CardContent className="min-w-0 space-y-4">
@@ -136,9 +139,9 @@ export function SavedLeadsView({ leads, audits, isOwner, enabled, emailSettings 
       {emailSuccess && <p role="status" className="text-sm text-emerald-700 dark:text-emerald-300">{t("csvEmailSuccess", { email: emailSuccess })}</p>}
       {exportMissingCount > 0 && <p role="status" className="text-sm text-amber-800 dark:text-amber-300">{t("csvIncomplete", { count: exportMissingCount })}</p>}
       {error && <div className="flex flex-wrap items-center gap-3"><p role="alert" className="text-sm text-destructive">{t(error)}</p><Button variant="outline" size="sm" onClick={() => setRetry((value) => value + 1)}>{t("retryDetails")}</Button></div>}
-      <Table>
+      <LeadListTable showAuthor={isOwner}>
         <TableHeader><TableRow>
-          {["company", "address", "website", "phone", ...(isOwner ? ["author"] : []), "auditQuality", "selection", "leadDetails"].map((key) => <TableHead key={key} className={key === "selection" ? "w-12" : undefined}>{key === "selection" ? <><Bookmark className="size-4" aria-hidden="true" /><span className="sr-only">{t(key)}</span></> : t(key)}</TableHead>)}</TableRow></TableHeader>
+          {["company", "industry", "website", "businessStatus", "googleStars", ...(isOwner ? ["author"] : []), "auditQuality", "storageStatus", "leadDetails"].map((key) => <TableHead key={key} title={t(key)}><LeadColumnLabel column={key} label={t(key)} /></TableHead>)}</TableRow></TableHeader>
         <TableBody>
           {rows.map(({ item: lead, group }, index) => {
             const place = places.get(lead.placeId);
@@ -146,22 +149,23 @@ export function SavedLeadsView({ leads, audits, isOwner, enabled, emailSettings 
             return <Fragment key={lead.id}>
               {sorted && (index === 0 || rows[index - 1].group !== group) && <LeadGroupHeading group={group} count={grouped.counts[group]} columns={columns} />}
               <TableRow>
-              <TableCell className="min-w-40 max-w-52 whitespace-normal">{loading ? <Skeleton className="h-5 w-32" /> : <>
+              <TableCell>{loading ? <Skeleton className="h-5 w-32" /> : <>
                 <p className="wrap-anywhere font-medium">{place?.name ?? t("savedLeadUnavailable")}</p>
                 {place?.attributions.map((a, index) => <p key={index} className="text-xs text-muted-foreground">{a.uri ? <a href={a.uri} className="underline" target="_blank" rel="noopener noreferrer">{a.name}</a> : a.name}</p>)}
               </>}</TableCell>
-              <TableCell className="min-w-36 max-w-52 wrap-anywhere whitespace-normal">{loading ? <Skeleton className="h-5 w-28" /> : place?.address ?? t("notProvided")}</TableCell>
-              <TableCell>{loading ? <Skeleton className="h-5 w-20" /> : place?.website ? <Button nativeButton={false} variant="link" size="sm" render={<a href={place.website} target="_blank" rel="noopener noreferrer" />}>{t("openWebsite")}</Button> : t("notProvided")}</TableCell>
-              <TableCell>{loading ? <Skeleton className="h-5 w-24" /> : place?.phone ?? t("notProvided")}</TableCell>
-              {isOwner && <TableCell>{lead.authorName}</TableCell>}
-              <TableCell><AuditScore audit={audit} /></TableCell>
+              <TableCell>{loading ? <Skeleton className="h-5 w-24" /> : place?.category ?? (lead.industry && !isAreaSearch(lead.industry) ? lead.industry : t("notProvided"))}</TableCell>
+              <TableCell>{loading ? <Skeleton className="h-5 w-20" /> : place?.website ? <Button nativeButton={false} variant="link" size="sm" title={t("openWebsite")} aria-label={t("openWebsite")} render={<a href={place.website} target="_blank" rel="noopener noreferrer" />}><span className="block truncate">{place.website.replace(/^https?:\/\//, "").replace(/\/$/, "")}</span><ExternalLink aria-hidden="true" /></Button> : t("notProvided")}</TableCell>
+              <TableCell>{loading ? <Skeleton className="h-5 w-24" /> : <PlaceBusinessStatus place={place ?? {}} />}</TableCell>
+              <TableCell>{loading ? <Skeleton className="h-5 w-20" /> : <PlaceGoogleRating place={place ?? {}} />}</TableCell>
+              {isOwner && <TableCell><span className="block truncate" title={lead.authorName}>{lead.authorName}</span></TableCell>}
+              <TableCell><AuditScore numberOnly audit={audit} /></TableCell>
               <TableCell><SaveLeadButton savedId={lead.id} placeId={lead.placeId} name={place?.name ?? t("savedLeads")} /></TableCell>
-              <TableCell>{loading ? <Skeleton className="h-8 w-24" /> : place ? <LeadDetailsDialog place={place} audit={audit} context={lead.location && lead.industry ? { location: lead.location, industry: lead.industry } : undefined} /> : t("notProvided")}</TableCell>
+              <TableCell>{loading ? <Skeleton className="h-8 w-8" /> : place ? <LeadDetailsDialog compactTrigger place={place} audit={audit} context={lead.location && lead.industry ? { location: lead.location, industry: lead.industry } : undefined} /> : t("notProvided")}</TableCell>
             </TableRow></Fragment>;
           })}
           {rows.length === 0 && <TableRow><TableCell colSpan={columns} className="h-40 whitespace-normal text-center text-muted-foreground">{t("noSavedLeads")}</TableCell></TableRow>}
         </TableBody>
-      </Table>
+      </LeadListTable>
       {rows.length > 0 && <div className="flex flex-wrap items-center justify-between gap-3">
         <p className="text-xs text-muted-foreground">{t("pagination", { from: offset + 1, to: offset + rows.length, total: leads.length })}</p>
         <div className="flex gap-2"><Button variant="outline" size="sm" disabled={currentPage === 0} onClick={() => setPage(currentPage - 1)}>{t("previous")}</Button><Button variant="outline" size="sm" disabled={offset + 10 >= leads.length} onClick={() => setPage(currentPage + 1)}>{t("next")}</Button></div>

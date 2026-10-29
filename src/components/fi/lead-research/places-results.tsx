@@ -2,7 +2,7 @@
 
 import { Fragment, useState } from "react";
 import { useTranslations } from "next-intl";
-import { Bookmark, ExternalLink } from "lucide-react";
+import { ExternalLink } from "lucide-react";
 import type { searchGooglePlaces } from "@/lib/lead-research/google-places";
 import type { SavedLeadSummary } from "@/lib/lead-research/types";
 import { SaveLeadButton } from "./save-lead-button";
@@ -18,7 +18,6 @@ import {
 import { Input } from "@/components/ui/input";
 import { Skeleton } from "@/components/ui/skeleton";
 import {
-  Table,
   TableBody,
   TableCell,
   TableHead,
@@ -36,6 +35,8 @@ import {
   websiteOpportunityScore,
 } from "@/lib/lead-research/lead-groups";
 import { LeadGroupHeading } from "./lead-group-heading";
+import { LeadColumnLabel, LeadListTable } from "./lead-list-table";
+import { PlaceBusinessStatus, PlaceGoogleRating } from "./place-signals";
 
 export type LivePlacesResult = Awaited<ReturnType<typeof searchGooglePlaces>>;
 
@@ -144,30 +145,24 @@ export function PlacesResults({
             disabled={!result}
           />
         )}
-        <Table>
+        <LeadListTable>
           <TableHeader>
             <TableRow>
               {[
                 "company",
-                "address",
+                "industry",
                 "website",
-                "phone",
+                "businessStatus",
+                "googleStars",
                 "auditQuality",
-                "selection",
+                "storageStatus",
                 "leadDetails",
               ].map((key) => (
                 <TableHead
                   key={key}
-                  className={key === "selection" ? "w-12" : undefined}
+                  title={t(key)}
                 >
-                  {key === "selection" ? (
-                    <>
-                      <Bookmark className="size-4" aria-hidden="true" />
-                      <span className="sr-only">{t(key)}</span>
-                    </>
-                  ) : (
-                    t(key)
-                  )}
+                  <LeadColumnLabel column={key} label={t(key)} />
                 </TableHead>
               ))}
             </TableRow>
@@ -181,11 +176,11 @@ export function PlacesResults({
                     <LeadGroupHeading
                       group={group}
                       count={grouped.counts[group]}
-                      columns={7}
+                      columns={8}
                     />
                   )}
                 <TableRow>
-                  <TableCell className="min-w-40 max-w-52 whitespace-normal">
+                  <TableCell>
                     <p className="wrap-anywhere font-medium">{place.name}</p>
                     {areaSearch &&
                       sorted &&
@@ -214,15 +209,15 @@ export function PlacesResults({
                       </p>
                     ))}
                   </TableCell>
-                  <TableCell className="min-w-36 max-w-56 wrap-anywhere whitespace-normal">
-                    {place.address ?? t("notProvided")}
-                  </TableCell>
+                  <TableCell>{place.category ?? (context?.industry && !isAreaSearch(context.industry) ? context.industry : t("notProvided"))}</TableCell>
                   <TableCell>
                     {place.website ? (
                       <Button
                         nativeButton={false}
                         variant="link"
                         size="sm"
+                        title={t("openWebsite")}
+                        aria-label={t("openWebsite")}
                         render={
                           <a
                             href={place.website}
@@ -231,16 +226,16 @@ export function PlacesResults({
                           />
                         }
                       >
-                        {t("openWebsite")}
-                        <ExternalLink aria-hidden="true" />
+                        <span className="block truncate">{place.website.replace(/^https?:\/\//, "").replace(/\/$/, "")}</span><ExternalLink aria-hidden="true" />
                       </Button>
                     ) : (
                       t("notProvided")
                     )}
                   </TableCell>
-                  <TableCell>{place.phone ?? t("notProvided")}</TableCell>
+                  <TableCell><PlaceBusinessStatus place={place} /></TableCell>
+                  <TableCell><PlaceGoogleRating place={place} /></TableCell>
                   <TableCell>
-                    <AuditScore audit={auditsByPlace.get(place.id)} />
+                    <AuditScore numberOnly audit={auditsByPlace.get(place.id)} />
                   </TableCell>
                   <TableCell>
                     <SaveLeadButton
@@ -252,6 +247,7 @@ export function PlacesResults({
                   </TableCell>
                   <TableCell>
                     <LeadDetailsDialog
+                      compactTrigger
                       place={place}
                       audit={auditsByPlace.get(place.id)}
                       context={context}
@@ -265,7 +261,7 @@ export function PlacesResults({
                 { length: Math.min(4, 10 - rows.length) },
                 (_, row) => (
                   <TableRow key={`loading-${row}`}>
-                    {[0, 1, 2, 3, 4, 5, 6].map((col) => (
+                    {[0, 1, 2, 3, 4, 5, 6, 7].map((col) => (
                       <TableCell key={col} className="py-4">
                         <Skeleton className="h-5 w-24" />
                       </TableCell>
@@ -276,7 +272,7 @@ export function PlacesResults({
             {!pending && shortlistRows.length === 0 && (
               <TableRow>
                 <TableCell
-                  colSpan={7}
+                  colSpan={8}
                   className="h-52 whitespace-normal text-center text-muted-foreground"
                 >
                   {areaSearch && unrankedRows.length > 0
@@ -288,7 +284,7 @@ export function PlacesResults({
               </TableRow>
             )}
           </TableBody>
-        </Table>
+        </LeadListTable>
         {shortlistRows.length > 0 && (
           <div className="flex flex-wrap items-center justify-between gap-3">
             <p className="text-xs text-muted-foreground">

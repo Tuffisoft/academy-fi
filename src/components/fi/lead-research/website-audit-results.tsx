@@ -16,9 +16,19 @@ export function TopicScore({ value }: { value: number | null }) {
   </Badge>;
 }
 
-export function WebsiteAuditOverview({ report: input }: { report: WebsiteReport }) {
+export function WebsiteAuditOverview({ report: input, compact = false }: { report: WebsiteReport; compact?: boolean }) {
   const t = useTranslations("leadResearch");
   const report = normalizeWebsiteReport(input);
+  if (compact) return <section aria-label={t("auditBreakdown")} className="rounded-xl border p-4">
+    <h2 className="mb-3 text-sm font-semibold">{t("auditBreakdown")}</h2>
+    <div className="grid grid-cols-[minmax(0,1fr)_auto_auto] items-center gap-x-4 gap-y-2 text-sm">
+      <span /><span className="text-xs text-muted-foreground">{t("auditMobileDevice")}</span><span className="text-xs text-muted-foreground">{t("auditDesktopDevice")}</span>
+      {DEVICE_TOPICS.map(topic => <div key={topic} className="contents"><span>{t(TOPIC_LABELS[topic])}</span><TopicScore value={report.mobile[topic]} /><TopicScore value={report.desktop[topic]} /></div>)}
+      <span>{t("auditDesign")}</span><div className="col-span-2"><TopicScore value={report.parts.design} /></div>
+    </div>
+    {report.parts.design === null && <p className="mt-3 text-xs text-muted-foreground">{t(`auditVisualStatuses.${report.visual?.status ?? "not_evaluated"}`)}</p>}
+    {report.parts.design === null && report.qualityScore !== null && <p className="mt-2 text-xs text-muted-foreground">{t("auditPageSpeedOnly")}</p>}
+  </section>;
   return <section aria-label={t("auditBreakdown")} className="space-y-5">
     {report.parts.design === null && report.qualityScore !== null && <p className="text-sm text-muted-foreground">{t("auditPageSpeedOnly")}</p>}
     <div className="grid gap-5 md:grid-cols-2">{(["mobile", "desktop"] as const).map(device => {
@@ -40,6 +50,19 @@ export function WebsiteAuditOverview({ report: input }: { report: WebsiteReport 
       <TopicScore value={report.parts.design} />
       {report.visual?.status !== "completed" && <p className="w-full text-sm text-muted-foreground">{t(`auditVisualStatuses.${report.visual?.status ?? "not_evaluated"}`)}</p>}
     </article>
+  </section>;
+}
+
+export function WebsiteAuditHighlights({ report }: { report: WebsiteReport }) {
+  const t = useTranslations("leadResearch");
+  const issues = [...new Map([...report.mobile.issues, ...report.desktop.issues].map(issue => [issue.id, issue])).values()].slice(0, 3);
+  const findings = report.visual?.status === "completed" ? report.visual.findings?.slice(0, 2) ?? [] : [];
+  return <section className="rounded-xl border p-4" aria-label={t("leadQuickFindings")}>
+    <h2 className="mb-3 text-sm font-semibold">{t("leadQuickFindings")}</h2>
+    {issues.length || findings.length ? <ul className="space-y-2 text-sm">
+      {issues.map(issue => <li key={issue.id} className="border-l-2 border-amber-500 pl-3">{t.has(`auditSimpleIssues.${issue.id}`) ? t(`auditSimpleIssues.${issue.id}`) : issue.title}</li>)}
+      {findings.map((finding, index) => <li key={index} className="border-l-2 border-amber-500 pl-3"><p>{finding.observation}</p><p className="text-xs text-muted-foreground">{finding.recommendation}</p></li>)}
+    </ul> : <p className="text-sm text-muted-foreground">{t("leadNoQuickFindings")}</p>}
   </section>;
 }
 
