@@ -179,6 +179,8 @@
       "RUNNING": "Wird geprüft",
       "COMPLETED": "Geprüft",
       "NO_WEBSITE": "Keine Website angegeben",
+      "INACTIVE": "Website-Prüfung übersprungen: Betrieb derzeit nicht aktiv",
+      "LOW_RATING": "Website-Prüfung übersprungen: weniger als 3 Google-Sterne",
       "FAILED": "Nicht prüfbar"
     },
     "auditMetrics": {
@@ -219,6 +221,35 @@
     "notProvided": "Nicht angegeben",
     "liveDescription": "Alle gefundenen Unternehmen werden automatisch geladen und mit zehn Leads pro Seite angezeigt. Behalte die Treffer, die du weiterverfolgen möchtest.",
     "savedLeads": "Gespeicherte Leads",
+    "businessStatus": "Betriebsstatus",
+    "googleStars": "Google-Sterne",
+    "businessStatuses": {
+      "OPERATIONAL": "In Betrieb",
+      "CLOSED_TEMPORARILY": "Vorübergehend geschlossen",
+      "CLOSED_PERMANENTLY": "Dauerhaft geschlossen",
+      "FUTURE_OPENING": "Eröffnet demnächst",
+      "UNKNOWN": "Betriebsstatus unbekannt"
+    },
+    "googleStarsValue": "{value} / 5 Google-Sterne",
+    "googleStarsUnknown": "Keine Google-Sterne verfügbar",
+    "allBusinessStatuses": "Alle Betriebsstatus",
+    "minimumGoogleStars": "Mindeststerne für brauchbare Leads",
+    "allGoogleStars": "Alle, auch ohne Bewertung",
+    "leadSuitability": {
+      "usable": "Brauchbar nach Betriebsstatus und Sternen",
+      "review": "Manuell prüfen",
+      "unusable": "Unbrauchbar nach Betriebsstatus oder Sternen"
+    },
+    "leadSuitabilityHelp": "Dauerhaft geschlossene Unternehmen und Bewertungen unter der Sternegrenze werden aussortiert. Fehlende Bewertungen und unbekannte oder vorübergehend inaktive Betriebe bleiben zur manuellen Prüfung erhalten. Der Website-Score bleibt separat.",
+    "unusableLeadsCount": "{count} unbrauchbare Leads aussortiert – anzeigen",
+    "minimumGoogleStarsValue": "Ab {value} Sternen",
+    "leadSignalSort": "Sortierung",
+    "leadSignalSortOptions": {
+      "default": "Website-Potenzial",
+      "status": "Betriebsstatus: aktive zuerst",
+      "starsHigh": "Google-Sterne: höchste zuerst",
+      "starsLow": "Google-Sterne: niedrigste zuerst"
+    },
     "csvTransfer": "An Studio Fi übertragen",
     "csvDescription": "Alle gespeicherten Leads als CSV per E-Mail an Studio Fi übertragen oder herunterladen. Noch fehlende Firmendaten werden beim Export geladen.",
     "csvDownload": "CSV herunterladen",

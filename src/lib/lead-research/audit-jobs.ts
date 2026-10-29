@@ -191,8 +191,8 @@ export async function processWebsiteAudit(ticket: AuditTicket) {
               select: { id: true },
             }),
           ),
-        complete: async (report) => {
-          const status = report ? "COMPLETED" : "NO_WEBSITE";
+        complete: async (report, skipReason) => {
+          const status = skipReason ?? (report ? "COMPLETED" : "NO_WEBSITE");
           const result = await prisma.websiteAudit.updateMany({
             where: running,
             data: {

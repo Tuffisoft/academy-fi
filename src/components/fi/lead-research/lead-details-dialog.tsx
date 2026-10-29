@@ -15,6 +15,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { qualityStyles, qualityTone } from "./quality-presentation";
 import { WebsiteAuditOverview, WebsiteAuditResults } from "./website-audit-results";
 import { isAreaSearch } from "@/lib/lead-research/search-input";
+import { PlaceSignalsSummary } from "./place-signals";
 
 export function AuditScore({ audit }: { audit?: AuditSummary }) {
   const t = useTranslations("leadResearch");
@@ -58,7 +59,7 @@ export function LeadDetailsDialog({ place, audit, context }: { place: PlaceResul
   const error = snapshot?.key === key && snapshot.error;
   const tone = qualityTone(completed ? audit?.qualityScore : null);
   const style = qualityStyles[tone];
-  const detailRows = [[t("address"), place.address ?? t("notProvided")], [t("phone"), place.phone ?? t("notProvided")], [t("industry"), context?.industry ? isAreaSearch(context.industry) ? t("areaSearch") : context.industry : t("notProvided")], [t("location"), context?.location ?? t("notProvided")]];
+  const detailRows = [[t("address"), place.address ?? t("notProvided")], [t("phone"), place.phone ?? t("notProvided")], [t("industry"), place.category ?? (context?.industry ? isAreaSearch(context.industry) ? t("areaSearch") : context.industry : t("notProvided"))], [t("location"), context?.location ?? t("notProvided")]];
   async function downloadPdf() {
     if (!auditId || exporting) return;
     setExporting(true); setExportError(false);
@@ -79,6 +80,7 @@ export function LeadDetailsDialog({ place, audit, context }: { place: PlaceResul
     <DialogContent className="flex max-h-[90dvh] flex-col gap-0 overflow-hidden p-0 sm:max-w-5xl">
       <DialogHeader className="shrink-0 border-b px-5 py-5 pr-12 sm:px-6 sm:pr-12">
         <DialogTitle className="wrap-anywhere text-xl">{place.name}</DialogTitle>
+        <PlaceSignalsSummary place={place} />
         <DialogDescription className="sr-only">{t("auditDetailsDescription")}</DialogDescription>
       </DialogHeader>
       <div className="min-h-0 space-y-7 overflow-y-auto p-5 sm:p-8">

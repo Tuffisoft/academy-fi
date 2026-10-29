@@ -1,6 +1,12 @@
 import type { PlaceResult } from "./google-places";
 import type { SavedLeadSummary } from "./types";
 import { isAreaSearch } from "./search-input";
+import type { BusinessStatus } from "./place-signals";
+
+const businessLabels: Record<BusinessStatus, string> = {
+  OPERATIONAL: "In Betrieb", CLOSED_TEMPORARILY: "Vorübergehend geschlossen",
+  CLOSED_PERMANENTLY: "Dauerhaft geschlossen", FUTURE_OPENING: "Eröffnet demnächst",
+};
 
 function csvCell(value: string | null) {
   const text = value ?? "";
@@ -10,8 +16,8 @@ function csvCell(value: string | null) {
 
 export function savedLeadsCsv(leads: { lead: SavedLeadSummary; place?: PlaceResult }[]) {
   const rows = [
-    ["Firma", "Adresse", "Website", "Telefon", "Branche", "Suchort", "Google Maps", "Google Place ID"],
-    ...leads.map(({ lead, place }) => [place?.name ?? null, place?.address ?? null, place?.website ?? null, place?.phone ?? null, lead.industry && isAreaSearch(lead.industry) ? "Alle Branchen" : lead.industry, lead.location, place?.mapsUrl ?? `https://www.google.com/maps/search/?api=1&query=Company&query_place_id=${encodeURIComponent(lead.placeId)}`, lead.placeId]),
+    ["Firma", "Adresse", "Website", "Telefon", "Branche", "Suchort", "Google Maps", "Google Place ID", "Betriebsstatus", "Google-Sterne"],
+    ...leads.map(({ lead, place }) => [place?.name ?? null, place?.address ?? null, place?.website ?? null, place?.phone ?? null, place?.category ?? (lead.industry && isAreaSearch(lead.industry) ? "Alle Branchen" : lead.industry), lead.location, place?.mapsUrl ?? `https://www.google.com/maps/search/?api=1&query=Company&query_place_id=${encodeURIComponent(lead.placeId)}`, lead.placeId, place?.businessStatus ? businessLabels[place.businessStatus] : "Unbekannt", place?.rating != null ? String(place.rating) : null]),
   ];
   return "\uFEFF" + rows.map(row => row.map(csvCell).join(";")).join("\r\n") + "\r\n";
 }

@@ -1,4 +1,5 @@
 import type { PlaceResult } from "./google-places";
+import { BUSINESS_STATUSES, parsePlaceSignals, type BusinessStatus } from "./place-signals";
 
 export type LeadExportEmailInput = {
   requestId: string;
@@ -24,10 +25,18 @@ export function parseLeadExportEmailInput(input: unknown): LeadExportEmailInput 
     for (const [key, limit] of [["address", 2000], ["website", 4096], ["phone", 200]] as const) {
       if (place[key] !== null && (typeof place[key] !== "string" || place[key].length > limit)) return null;
     }
+    for (const key of ["category", "primaryType"] as const) {
+      if (place[key] != null && (typeof place[key] !== "string" || place[key].length > 200)) return null;
+    }
+    if (place.businessStatus != null && !BUSINESS_STATUSES.includes(place.businessStatus as BusinessStatus)) return null;
+    if (place.rating != null && (typeof place.rating !== "number" || !Number.isFinite(place.rating) || place.rating < 1 || place.rating > 5)) return null;
     // Only CSV fields are accepted. No attachment URLs or HTML are supplied by clients.
     places.push({ id: place.id, name: place.name, mapsUrl: place.mapsUrl,
       address: place.address as string | null, website: place.website as string | null,
-      phone: place.phone as string | null, attributions: [] });
+      phone: place.phone as string | null, attributions: [],
+      ...parsePlaceSignals({ businessStatus: place.businessStatus, primaryType: place.primaryType,
+        primaryTypeDisplayName: { text: place.category }, rating: place.rating }),
+    });
   }
   if (new Set(places.map(place => place.id)).size !== places.length) return null;
   const result = { requestId: data.requestId, leadIds: data.leadIds as string[], places };

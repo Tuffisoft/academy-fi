@@ -14,7 +14,7 @@ type AreaAudit = GroupAudit &
 
 export function leadGroup(audit?: GroupAudit): LeadGroup {
   if (audit?.status === "NO_WEBSITE") return "newWebsite";
-  if (audit?.status === "FAILED") return "manualReview";
+  if (audit?.status === "FAILED" || audit?.status === "INACTIVE" || audit?.status === "LOW_RATING") return "manualReview";
   if (audit?.status === "COMPLETED")
     return validScore(audit.qualityScore) === null ? "manualReview" : "rated";
   return "pending";

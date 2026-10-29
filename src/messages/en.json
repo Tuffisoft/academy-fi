@@ -179,6 +179,8 @@
       "RUNNING": "Checking",
       "COMPLETED": "Checked",
       "NO_WEBSITE": "No website provided",
+      "INACTIVE": "Website audit skipped: business currently inactive",
+      "LOW_RATING": "Website audit skipped: fewer than 3 Google stars",
       "FAILED": "Not auditable"
     },
     "auditMetrics": {
@@ -219,6 +221,35 @@
     "notProvided": "Not provided",
     "liveDescription": "All businesses are loaded automatically and displayed with ten leads per page. Keep the results you want to pursue.",
     "savedLeads": "Saved leads",
+    "businessStatus": "Business status",
+    "googleStars": "Google stars",
+    "businessStatuses": {
+      "OPERATIONAL": "Operational",
+      "CLOSED_TEMPORARILY": "Temporarily closed",
+      "CLOSED_PERMANENTLY": "Permanently closed",
+      "FUTURE_OPENING": "Opening soon",
+      "UNKNOWN": "Business status unknown"
+    },
+    "googleStarsValue": "{value} / 5 Google stars",
+    "googleStarsUnknown": "No Google rating available",
+    "allBusinessStatuses": "All business statuses",
+    "minimumGoogleStars": "Minimum stars for usable leads",
+    "allGoogleStars": "All, including unrated",
+    "leadSuitability": {
+      "usable": "Usable by business status and stars",
+      "review": "Manual review",
+      "unusable": "Unusable by business status or stars"
+    },
+    "leadSuitabilityHelp": "Permanently closed businesses and ratings below the threshold are set aside. Missing ratings and unknown or temporarily inactive businesses remain for manual review. The website score stays separate.",
+    "unusableLeadsCount": "{count} unusable leads set aside – show",
+    "minimumGoogleStarsValue": "At least {value} stars",
+    "leadSignalSort": "Sort by",
+    "leadSignalSortOptions": {
+      "default": "Website opportunity",
+      "status": "Business status: operational first",
+      "starsHigh": "Google stars: highest first",
+      "starsLow": "Google stars: lowest first"
+    },
     "csvTransfer": "Transfer to Studio Fi",
     "csvDescription": "Email all saved leads to Studio Fi as CSV or download the file. Missing business details are loaded during export.",
     "csvDownload": "Download CSV",

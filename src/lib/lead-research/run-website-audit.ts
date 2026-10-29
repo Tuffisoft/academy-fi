@@ -1,4 +1,5 @@
 import { loadGooglePlaceDetails, PlacesError } from "./google-places";
+import { businessIsInactive, leadSuitability } from "./place-signals";
 import {
   inspectWebsite,
   QualityError,
@@ -9,7 +10,7 @@ export type AuditStore = {
   auditId?: string;
   claim: () => Promise<"claimed" | "busy" | "skip">;
   active: () => Promise<boolean>;
-  complete: (report: WebsiteReport | null) => Promise<void>;
+  complete: (report: WebsiteReport | null, skipReason?: "INACTIVE" | "LOW_RATING") => Promise<void>;
   fail: (code: string) => Promise<void>;
 };
 export async function executeWebsiteAudit(
@@ -28,6 +29,14 @@ export async function executeWebsiteAudit(
     if (!(await store.active())) return "skip";
     const place = result.results.find((item) => item.id === placeId);
     if (!place) throw new QualityError("auditUnavailable");
+    if (businessIsInactive(place)) {
+      await store.complete(null, "INACTIVE");
+      return "done";
+    }
+    if (leadSuitability(place) === "unusable") {
+      await store.complete(null, "LOW_RATING");
+      return "done";
+    }
     if (!place.website) {
       await store.complete(null);
       return "done";
