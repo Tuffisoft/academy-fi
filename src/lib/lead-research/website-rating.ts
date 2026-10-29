@@ -13,9 +13,13 @@ export function calculateDeviceScore(device: Pick<WebsiteReport["mobile"], typeo
 }
 
 export function calculateQuality(parts: QualityParts): number | null {
-  const topics = Object.keys(QUALITY_WEIGHTS) as QualityTopic[];
+  // Missing AI design must not discard successful PageSpeed measurements.
+  const topics: QualityTopic[] = validScore(parts.design) === null
+    ? [...DEVICE_TOPICS]
+    : Object.keys(QUALITY_WEIGHTS) as QualityTopic[];
   if (topics.some(key => validScore(parts[key]) === null)) return null;
-  return Math.round(topics.reduce((sum, key) => sum + parts[key]! * QUALITY_WEIGHTS[key], 0) / 100);
+  const totalWeight = topics.reduce((sum, key) => sum + QUALITY_WEIGHTS[key], 0);
+  return Math.round(topics.reduce((sum, key) => sum + parts[key]! * QUALITY_WEIGHTS[key], 0) / totalWeight);
 }
 
 // Legacy reports keep their measurements, but never keep the old weighting.

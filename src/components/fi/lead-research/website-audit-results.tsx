@@ -20,6 +20,7 @@ export function WebsiteAuditOverview({ report: input }: { report: WebsiteReport 
   const t = useTranslations("leadResearch");
   const report = normalizeWebsiteReport(input);
   return <section aria-label={t("auditBreakdown")} className="space-y-5">
+    {report.parts.design === null && report.qualityScore !== null && <p className="text-sm text-muted-foreground">{t("auditPageSpeedOnly")}</p>}
     <div className="grid gap-5 md:grid-cols-2">{(["mobile", "desktop"] as const).map(device => {
       const data = report[device];
       const value = calculateDeviceScore(data);

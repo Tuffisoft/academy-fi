@@ -14,6 +14,7 @@ import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, Di
 import { Skeleton } from "@/components/ui/skeleton";
 import { qualityStyles, qualityTone } from "./quality-presentation";
 import { WebsiteAuditOverview, WebsiteAuditResults } from "./website-audit-results";
+import { isAreaSearch } from "@/lib/lead-research/search-input";
 
 export function AuditScore({ audit }: { audit?: AuditSummary }) {
   const t = useTranslations("leadResearch");
@@ -57,7 +58,7 @@ export function LeadDetailsDialog({ place, audit, context }: { place: PlaceResul
   const error = snapshot?.key === key && snapshot.error;
   const tone = qualityTone(completed ? audit?.qualityScore : null);
   const style = qualityStyles[tone];
-  const detailRows = [[t("address"), place.address ?? t("notProvided")], [t("phone"), place.phone ?? t("notProvided")], [t("industry"), context?.industry ?? t("notProvided")], [t("location"), context?.location ?? t("notProvided")]];
+  const detailRows = [[t("address"), place.address ?? t("notProvided")], [t("phone"), place.phone ?? t("notProvided")], [t("industry"), context?.industry ? isAreaSearch(context.industry) ? t("areaSearch") : context.industry : t("notProvided")], [t("location"), context?.location ?? t("notProvided")]];
   async function downloadPdf() {
     if (!auditId || exporting) return;
     setExporting(true); setExportError(false);

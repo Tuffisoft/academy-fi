@@ -26,14 +26,14 @@ export async function saveLeadAction(searchId: unknown, placeId: unknown) {
       ...leadSearchScope(user),
       googlePlaceIds: { has: placeId },
     },
-    select: { id: true },
+    select: { id: true, location: true, industry: true },
   });
   if (!search)
     return { success: false as const, error: "notEditable" as const };
   try {
     await prisma.savedLead.upsert({
       where: { userId_placeId: { userId: user.id, placeId } },
-      create: { userId: user.id, placeId, sourceSearchId: search.id },
+      create: { userId: user.id, placeId, sourceSearchId: search.id, location: search.location, industry: search.industry },
       update: {},
     });
   } catch {
@@ -103,5 +103,28 @@ export async function loadSavedLeadDetailsAction(ids: unknown) {
           ? error.code
           : ("googleUnavailable" as const),
     };
+  }
+}
+
+// Exporting contact data must not schedule new website audits.
+export async function loadSavedLeadExportDetailsAction(ids: unknown) {
+  const user = await requireUser();
+  if (!Array.isArray(ids) || ids.length === 0 || ids.length > 10 ||
+    !ids.every(validId) || new Set(ids).size !== ids.length) {
+    return { success: false as const, error: "invalidInput" as const };
+  }
+  const leads = await prisma.savedLead.findMany({
+    where: { id: { in: ids }, ...leadSearchScope(user) },
+    select: { placeId: true },
+  });
+  if (leads.length !== ids.length) return { success: false as const, error: "notEditable" as const };
+  try {
+    const result = await loadGooglePlaceDetails(
+      [...new Set(leads.map(lead => lead.placeId))],
+      process.env.GOOGLE_PLACES_API_KEY,
+    );
+    return { success: true as const, results: result.results, partialError: result.partialError };
+  } catch (error) {
+    return { success: false as const, error: error instanceof PlacesError ? error.code : "googleUnavailable" as const };
   }
 }

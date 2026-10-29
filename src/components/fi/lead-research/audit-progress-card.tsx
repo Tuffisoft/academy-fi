@@ -82,13 +82,13 @@ export function AuditProgressCard({
               </p>
             )}
             {!searching && progress!.failed > 0 && (
-              <p className="text-xs text-destructive">
+              <p className="text-sm font-medium text-red-700 dark:text-red-300">
                 {t("auditFailureCount", { count: progress!.failed })}
               </p>
             )}
             {!searching && progress!.failedAudits.length > 0 && (
               <details className="text-sm">
-                <summary className="cursor-pointer text-destructive underline">
+                <summary className="cursor-pointer font-medium text-red-700 underline underline-offset-4 dark:text-red-300">
                   {t("auditFailureDetails", {
                     count: progress!.failedAudits.length,
                   })}
@@ -99,7 +99,7 @@ export function AuditProgressCard({
                       key={audit.id}
                       className="flex flex-wrap items-baseline gap-x-3 gap-y-1"
                     >
-                      <span className="text-destructive">
+                      <span className="text-red-700 dark:text-red-300">
                         {t(audit.errorCode ?? "auditUnavailable")}
                       </span>
                       <a
