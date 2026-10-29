@@ -18,6 +18,7 @@ import {
   MAX_LOCATION_LENGTH,
   leadSearchInputSchema,
   MAX_SEARCH_RESULTS,
+  MAX_SEARCH_RADIUS_KM,
 } from "@/lib/lead-research/search-input";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -220,15 +221,16 @@ export function LeadSearchDialog({
                   id="lead-radius"
                   name="radiusKm"
                   aria-invalid={Boolean(fieldErrors.radiusKm)}
-                  aria-describedby={fieldErrors.radiusKm ? "lead-radius-error" : undefined}
+                  aria-describedby={fieldErrors.radiusKm ? "lead-radius-help lead-radius-error" : "lead-radius-help"}
                   defaultValue={search?.radiusKm}
                   type="number"
                   min={0.1}
                   step="any"
-                  max={Number.MAX_SAFE_INTEGER}
+                  max={MAX_SEARCH_RADIUS_KM}
                   placeholder="20"
                   required
                 />
+                <p id="lead-radius-help" className="text-xs text-muted-foreground">{t("radiusLimit", { max: MAX_SEARCH_RADIUS_KM })}</p>
                   {fieldErrors.radiusKm && <p id="lead-radius-error" role="alert" className="text-xs text-destructive">{fieldErrors.radiusKm}</p>}
               </div>
               {searchMode === "industry" ? (
@@ -287,7 +289,7 @@ export function LeadSearchDialog({
                   id="lead-max-results"
                   name="maxResults"
                   aria-invalid={Boolean(fieldErrors.maxResults)}
-                  aria-describedby={fieldErrors.maxResults ? "lead-max-results-error" : undefined}
+                  aria-describedby={fieldErrors.maxResults ? "lead-max-results-help lead-max-results-error" : "lead-max-results-help"}
                   defaultValue={search?.maxResults}
                   type="number"
                   min={1}
@@ -304,6 +306,7 @@ export function LeadSearchDialog({
                   }
                   required
                 />
+                <p id="lead-max-results-help" className="text-xs text-muted-foreground">{t("resultsLimit", { max: searchMode === "area" ? MAX_AREA_SEARCH_RESULTS : MAX_SEARCH_RESULTS })}</p>
                   {fieldErrors.maxResults && <p id="lead-max-results-error" role="alert" className="text-xs text-destructive">{fieldErrors.maxResults}</p>}
               </div>
             </div>

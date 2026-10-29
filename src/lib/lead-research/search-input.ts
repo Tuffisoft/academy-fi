@@ -1,7 +1,8 @@
 import { z } from "zod";
 
-export const MAX_LOCATION_LENGTH = 20;
-export const MAX_SEARCH_RESULTS = 2_147_483_647;
+export const MAX_LOCATION_LENGTH = 100;
+export const MAX_SEARCH_RADIUS_KM = 50;
+export const MAX_SEARCH_RESULTS = 200;
 export const AREA_SEARCH_TERM = "__area_search__";
 export const MAX_AREA_SEARCH_RESULTS = 20;
 export const MAX_AREA_SEARCH_CANDIDATES = 60;
@@ -13,7 +14,7 @@ export function isAreaSearch(industry: string) {
 
 export const leadSearchInputSchema = z.object({
   location: z.string().trim().min(1).max(MAX_LOCATION_LENGTH),
-  radiusKm: z.number().min(0.1).max(Number.MAX_SAFE_INTEGER),
+  radiusKm: z.number().min(0.1).max(MAX_SEARCH_RADIUS_KM),
   industry: z.string().trim().min(1).max(200),
   maxResults: z.number().int().min(1).max(MAX_SEARCH_RESULTS),
   analyzeWebsites: z.boolean(),
