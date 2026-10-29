@@ -1,12 +1,22 @@
 "use client";
 
 import { useRef, useState, useTransition, type FormEvent } from "react";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { Pencil, Plus } from "lucide-react";
 import { toast } from "sonner";
-import { createLeadSearchAction, updateLeadSearchAction } from "@/lib/actions/lead-searches.actions";
+import {
+  createLeadSearchAction,
+  updateLeadSearchAction,
+} from "@/lib/actions/lead-searches.actions";
 import type { LeadSearchSummary } from "@/lib/lead-research/types";
-import { isLeadSearchMutable, MAX_SEARCH_RESULTS } from "@/lib/lead-research/search-input";
+import { INDUSTRY_CATEGORIES } from "@/lib/lead-research/industry-catalog";
+import {
+  AREA_SEARCH_TERM,
+  isAreaSearch,
+  isLeadSearchMutable,
+  MAX_AREA_SEARCH_RESULTS,
+  MAX_SEARCH_RESULTS,
+} from "@/lib/lead-research/search-input";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -29,13 +39,22 @@ type SearchPreview = {
   analyzeWebsites: boolean;
 };
 
-export function LeadSearchDialog({ search, open: controlledOpen, onOpenChange, hideTrigger = false }: {
+export function LeadSearchDialog({
+  search,
+  open: controlledOpen,
+  onOpenChange,
+  hideTrigger = false,
+}: {
   search?: LeadSearchSummary;
   open?: boolean;
   onOpenChange?: (open: boolean) => void;
   hideTrigger?: boolean;
 }) {
   const t = useTranslations("leadResearch");
+  const locale = useLocale() === "de" ? "de" : "en";
+  const [searchMode, setSearchMode] = useState<"industry" | "area">(
+    search && isAreaSearch(search.industry) ? "area" : "industry",
+  );
   const [internalOpen, setInternalOpen] = useState(false);
   const open = controlledOpen ?? internalOpen;
   const setOpen = onOpenChange ?? setInternalOpen;
@@ -43,6 +62,7 @@ export function LeadSearchDialog({ search, open: controlledOpen, onOpenChange, h
   const [isPending, startTransition] = useTransition();
   const submitting = useRef(false);
   const [error, setError] = useState<string | null>(null);
+  const industryListId = `lead-industry-options-${search?.id ?? "new"}`;
 
   function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -50,7 +70,10 @@ export function LeadSearchDialog({ search, open: controlledOpen, onOpenChange, h
     setPreview({
       location: String(data.get("location") ?? "").trim(),
       radiusKm: Number(data.get("radiusKm")),
-      industry: String(data.get("industry") ?? "").trim(),
+      industry:
+        searchMode === "area"
+          ? AREA_SEARCH_TERM
+          : String(data.get("industry") ?? "").trim(),
       maxResults: Number(data.get("maxResults")),
       analyzeWebsites: true,
     });
@@ -90,82 +113,188 @@ export function LeadSearchDialog({ search, open: controlledOpen, onOpenChange, h
         setError(null);
       }}
     >
-      {!hideTrigger && <DialogTrigger
-        render={
-          <Button variant={search ? "outline" : "default"} size={search ? "sm" : "default"} disabled={search ? !isLeadSearchMutable(search.status) : false} aria-label={search ? t("editFor", { location: search.location, industry: search.industry }) : undefined}>
-            {search ? <Pencil aria-hidden="true" /> : <Plus aria-hidden="true" />}
-            {t(search ? "edit" : "newSearch")}
-          </Button>
-        }
-      />}
+      {!hideTrigger && (
+        <DialogTrigger
+          render={
+            <Button
+              variant={search ? "outline" : "default"}
+              size={search ? "sm" : "default"}
+              disabled={search ? !isLeadSearchMutable(search.status) : false}
+              aria-label={
+                search
+                  ? t("editFor", {
+                      location: search.location,
+                      industry: isAreaSearch(search.industry)
+                        ? t("areaSearch")
+                        : search.industry,
+                    })
+                  : undefined
+              }
+            >
+              {search ? (
+                <Pencil aria-hidden="true" />
+              ) : (
+                <Plus aria-hidden="true" />
+              )}
+              {t(search ? "edit" : "newSearch")}
+            </Button>
+          }
+        />
+      )}
       <DialogContent className="max-h-[90dvh] overflow-y-auto sm:max-w-xl">
         <DialogHeader>
           <DialogTitle>{t(search ? "editSearch" : "newSearch")}</DialogTitle>
-          <DialogDescription className="sr-only">{t("formDescription")}</DialogDescription>
+          <DialogDescription className="sr-only">
+            {t("formDescription")}
+          </DialogDescription>
         </DialogHeader>
         <form
           onSubmit={handleSubmit}
-          onChange={() => { setPreview(null); setError(null); }}
+          onChange={() => {
+            setPreview(null);
+            setError(null);
+          }}
           className="flex flex-col gap-5"
         >
-          <fieldset disabled={isPending} className="flex min-w-0 flex-col gap-5">
-          <div className="grid gap-4 sm:grid-cols-2">
+          <fieldset
+            disabled={isPending}
+            className="flex min-w-0 flex-col gap-5"
+          >
             <div className="flex flex-col gap-2">
-              <Label htmlFor="lead-location">{t("location")}</Label>
-              <Input
-                id="lead-location"
-                name="location"
-                defaultValue={search?.location}
-                placeholder={t("locationPlaceholder")}
-                required
-                pattern=".*\S.*"
-                maxLength={200}
-              />
+              <Label>{t("searchMode")}</Label>
+              <div
+                role="group"
+                aria-label={t("searchMode")}
+                className="flex w-fit rounded-md border p-1"
+              >
+                <Button
+                  type="button"
+                  size="sm"
+                  variant={searchMode === "industry" ? "secondary" : "ghost"}
+                  aria-pressed={searchMode === "industry"}
+                  onClick={() => {
+                    setSearchMode("industry");
+                    setPreview(null);
+                    setError(null);
+                  }}
+                >
+                  {t("industrySearch")}
+                </Button>
+                <Button
+                  type="button"
+                  size="sm"
+                  variant={searchMode === "area" ? "secondary" : "ghost"}
+                  aria-pressed={searchMode === "area"}
+                  onClick={() => {
+                    setSearchMode("area");
+                    setPreview(null);
+                    setError(null);
+                  }}
+                >
+                  {t("areaSearch")}
+                </Button>
+              </div>
             </div>
-            <div className="flex flex-col gap-2">
-              <Label htmlFor="lead-radius">{t("radius")}</Label>
-              <Input
-                id="lead-radius"
-                name="radiusKm"
-                defaultValue={search?.radiusKm}
-                type="number"
-                min={0.1}
-                step="any"
-                max={Number.MAX_SAFE_INTEGER}
-                placeholder="20"
-                required
-              />
+            <div className="grid gap-4 sm:grid-cols-2">
+              <div className="flex flex-col gap-2">
+                <Label htmlFor="lead-location">{t("location")}</Label>
+                <Input
+                  id="lead-location"
+                  name="location"
+                  defaultValue={search?.location}
+                  placeholder={t("locationPlaceholder")}
+                  required
+                  pattern=".*\S.*"
+                  maxLength={200}
+                />
+              </div>
+              <div className="flex flex-col gap-2">
+                <Label htmlFor="lead-radius">{t("radius")}</Label>
+                <Input
+                  id="lead-radius"
+                  name="radiusKm"
+                  defaultValue={search?.radiusKm}
+                  type="number"
+                  min={0.1}
+                  step="any"
+                  max={Number.MAX_SAFE_INTEGER}
+                  placeholder="20"
+                  required
+                />
+              </div>
+              {searchMode === "industry" ? (
+                <div className="flex flex-col gap-2">
+                  <Label htmlFor="lead-industry">{t("industry")}</Label>
+                  <Input
+                    id="lead-industry"
+                    name="industry"
+                    defaultValue={
+                      search && !isAreaSearch(search.industry)
+                        ? search.industry
+                        : undefined
+                    }
+                    placeholder={t("industryPlaceholder")}
+                    list={industryListId}
+                    required
+                    pattern=".*\S.*"
+                    maxLength={200}
+                  />
+                  <datalist id={industryListId}>
+                    {INDUSTRY_CATEGORIES.flatMap((category) =>
+                      category.items.map((industry) => (
+                        <option
+                          key={industry.key}
+                          value={industry[locale]}
+                          label={`${t(`industryCategories.${category.key}`)} · ${t(`industryOptions.${industry.key}`)}`}
+                        />
+                      )),
+                    )}
+                  </datalist>
+                  <p className="text-xs text-muted-foreground">
+                    {t("industryHelp")}
+                  </p>
+                </div>
+              ) : (
+                <div className="flex flex-col gap-2">
+                  <Label>{t("areaSearch")}</Label>
+                  <input
+                    type="hidden"
+                    name="industry"
+                    value={AREA_SEARCH_TERM}
+                  />
+                  <p className="text-xs text-muted-foreground">
+                    {t("areaSearchHelp")}
+                  </p>
+                </div>
+              )}
+              <div className="flex flex-col gap-2">
+                <Label htmlFor="lead-max-results">
+                  {t(searchMode === "area" ? "topResults" : "maxResults")}
+                </Label>
+                <Input
+                  id="lead-max-results"
+                  name="maxResults"
+                  defaultValue={search?.maxResults}
+                  type="number"
+                  min={1}
+                  step={1}
+                  max={
+                    searchMode === "area"
+                      ? MAX_AREA_SEARCH_RESULTS
+                      : MAX_SEARCH_RESULTS
+                  }
+                  placeholder={
+                    searchMode === "area"
+                      ? String(MAX_AREA_SEARCH_RESULTS)
+                      : "100"
+                  }
+                  required
+                />
+              </div>
             </div>
-            <div className="flex flex-col gap-2">
-              <Label htmlFor="lead-industry">{t("industry")}</Label>
-              <Input
-                id="lead-industry"
-                name="industry"
-                defaultValue={search?.industry}
-                placeholder={t("industryPlaceholder")}
-                required
-                pattern=".*\S.*"
-                maxLength={200}
-              />
-            </div>
-            <div className="flex flex-col gap-2">
-              <Label htmlFor="lead-max-results">{t("maxResults")}</Label>
-              <Input
-                id="lead-max-results"
-                name="maxResults"
-                defaultValue={search?.maxResults}
-                type="number"
-                min={1}
-                step={1}
-                max={MAX_SEARCH_RESULTS}
-                placeholder="100"
-                required
-              />
-            </div>
-          </div>
-          <Button type="submit" className="self-start">
-            {t("previewButton")}
-          </Button>
+            <Button type="submit" className="self-start">
+              {t("previewButton")}
+            </Button>
           </fieldset>
         </form>
         <div role="status" aria-live="polite" aria-atomic="true">
@@ -183,7 +312,12 @@ export function LeadSearchDialog({ search, open: controlledOpen, onOpenChange, h
                       t("radius"),
                       t("radiusValue", { value: preview.radiusKm }),
                     ],
-                    [t("industry"), preview.industry],
+                    [
+                      t("industry"),
+                      isAreaSearch(preview.industry)
+                        ? t("areaSearch")
+                        : preview.industry,
+                    ],
                     [t("maxResults"), String(preview.maxResults)],
                     [
                       t("analyzeWebsites"),
@@ -196,14 +330,25 @@ export function LeadSearchDialog({ search, open: controlledOpen, onOpenChange, h
                     </div>
                   ))}
                 </dl>
-                <Button type="button" onClick={saveSearch} disabled={isPending} className="mt-4">
-                  {isPending ? t("saving") : t(search ? "saveChanges" : "saveSearch")}
+                <Button
+                  type="button"
+                  onClick={saveSearch}
+                  disabled={isPending}
+                  className="mt-4"
+                >
+                  {isPending
+                    ? t("saving")
+                    : t(search ? "saveChanges" : "saveSearch")}
                 </Button>
               </CardContent>
             </Card>
           )}
         </div>
-        {error && <p role="alert" className="text-sm text-destructive">{error}</p>}
+        {error && (
+          <p role="alert" className="text-sm text-destructive">
+            {error}
+          </p>
+        )}
       </DialogContent>
     </Dialog>
   );
