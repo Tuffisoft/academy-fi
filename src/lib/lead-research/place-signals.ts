@@ -31,8 +31,8 @@ export type PlaceSort = "default" | "status" | "starsHigh" | "starsLow";
 export type LeadSuitability = "usable" | "review" | "unusable";
 export function leadSuitability(place: PlaceSignals, minimumStars = DEFAULT_MINIMUM_GOOGLE_STARS): LeadSuitability {
   const rating = parsePlaceSignals(place).rating;
-  if (place.businessStatus === "CLOSED_PERMANENTLY" || (rating != null && rating < minimumStars)) return "unusable";
-  if (place.businessStatus !== "OPERATIONAL" || rating == null) return "review";
+  if (place.businessStatus === "CLOSED_PERMANENTLY") return "unusable";
+  if (place.businessStatus !== "OPERATIONAL" || rating == null || rating < minimumStars) return "review";
   return "usable";
 }
 export function matchesPlaceSignals(place: PlaceSignals, status: string, minimumStars: number) {

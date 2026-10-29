@@ -1,5 +1,5 @@
 import { loadGooglePlaceDetails, PlacesError } from "./google-places";
-import { businessIsInactive, leadSuitability } from "./place-signals";
+import { businessIsInactive } from "./place-signals";
 import {
   inspectWebsite,
   QualityError,
@@ -31,10 +31,6 @@ export async function executeWebsiteAudit(
     if (!place) throw new QualityError("auditUnavailable");
     if (businessIsInactive(place)) {
       await store.complete(null, "INACTIVE");
-      return "done";
-    }
-    if (leadSuitability(place) === "unusable") {
-      await store.complete(null, "LOW_RATING");
       return "done";
     }
     if (!place.website) {

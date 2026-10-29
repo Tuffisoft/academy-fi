@@ -1,3 +1,4 @@
+import { websiteNeed, countWebsiteNeeds, type WebsiteNeed } from "./lead-assessment";
 import type { AuditSummary } from "./audit-types";
 import { MAX_PARALLEL_WEBSITE_AUDITS } from "./audit-scheduling";
 
@@ -9,12 +10,8 @@ const batchKey = (audit: AuditSummary) =>
   JSON.stringify([audit.userId, audit.batchId]);
 const timestamp = (value: string | null) => (value ? Date.parse(value) : NaN);
 
-export type AuditPotential = "highPotential" | "mediumPotential" | "lowPotential" | "unrated";
-export function auditPotential(audit: Pick<AuditSummary, "status" | "qualityScore">): AuditPotential {
-  const score = audit.qualityScore;
-  if (audit.status !== "COMPLETED" || score === null || !Number.isFinite(score) || score < 0 || score > 100) return "unrated";
-  return score < 40 ? "highPotential" : score < 70 ? "mediumPotential" : "lowPotential";
-}
+export type AuditPotential = WebsiteNeed;
+export function auditPotential(audit: Pick<AuditSummary, "status" | "qualityScore">): AuditPotential { return websiteNeed(audit).need; }
 
 export function getAuditProgress(
   audits: readonly AuditSummary[],
@@ -32,8 +29,7 @@ export function getAuditProgress(
   const done = batch.length - pending.length;
   const percentage = Math.floor((done / batch.length) * 100);
   const failed = batch.filter((audit) => audit.status === "FAILED").length;
-  const potential = { highPotential: 0, mediumPotential: 0, lowPotential: 0, unrated: 0 };
-  for (const audit of batch) potential[auditPotential(audit)]++;
+  const potential = countWebsiteNeeds(batch);
   let remainingSeconds: number | null = pending.length ? null : 0;
   if (pending.length && !paused && now !== null) {
     const durations = audits

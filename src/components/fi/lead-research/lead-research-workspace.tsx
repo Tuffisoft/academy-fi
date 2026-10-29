@@ -1,5 +1,7 @@
 "use client";
 
+import { NEED_GROUPS, countWebsiteNeeds } from "@/lib/lead-research/lead-assessment";
+
 import { useRef, useState, useTransition } from "react";
 import dynamic from "next/dynamic";
 import { useTranslations } from "next-intl";
@@ -38,7 +40,6 @@ import { SavedLeadsView } from "./saved-leads-view";
 import type { AuditSummary } from "@/lib/lead-research/audit-types";
 import { qualityStyles, qualityTone } from "./quality-presentation";
 import { AuditProgressCard } from "./audit-progress-card";
-import { isAreaSearch } from "@/lib/lead-research/search-input";
 import { auditPotential, type AuditPotential } from "@/lib/lead-research/audit-progress";
 import { AuditPotentialLeads } from "./audit-potential-leads";
 
@@ -112,23 +113,8 @@ export function LeadResearchWorkspace({
         ),
       )
     : "—";
-  const distribution = [
-    {
-      key: "highPotential",
-      count: scoredAudits.filter((audit) => audit.qualityScore! < 40).length,
-    },
-    {
-      key: "mediumPotential",
-      count: scoredAudits.filter(
-        (audit) => audit.qualityScore! >= 40 && audit.qualityScore! < 70,
-      ).length,
-    },
-    {
-      key: "lowPotential",
-      count: scoredAudits.filter((audit) => audit.qualityScore! >= 70).length,
-    },
-    { key: "unrated", count: audits.length - scoredAudits.length },
-  ];
+  const needCounts = countWebsiteNeeds(audits);
+  const distribution = NEED_GROUPS.map(key => ({ key, count: needCounts[key] }));
   function runSearch(id: string) {
     if (submitting.current) return;
     submitting.current = true;
@@ -363,9 +349,7 @@ export function LeadResearchWorkspace({
                   selected
                     ? {
                         location: selected.location,
-                        industry: isAreaSearch(selected.industry)
-                          ? t("areaSearch")
-                          : selected.industry,
+                        industry: selected.industry,
                       }
                     : undefined
                 }
@@ -378,7 +362,7 @@ export function LeadResearchWorkspace({
                 <CardTitle>{t("distribution")}</CardTitle>
               </CardHeader>
               <CardContent className="flex flex-1 flex-col gap-6">
-                {scoredAudits.length === 0 && (
+                {audits.length === 0 && (
                   <div className="flex min-h-36 flex-1 flex-col items-center justify-center rounded-lg border border-dashed bg-muted/30 px-4 py-6 text-center">
                     <BarChart3
                       className="mb-3 size-7 text-muted-foreground"

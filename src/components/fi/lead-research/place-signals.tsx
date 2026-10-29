@@ -39,7 +39,7 @@ export function PlaceGoogleRating({ place }: { place: PlaceSignals }) {
   const t = useTranslations("leadResearch");
   const format = useFormatter();
   const value = place.rating != null ? format.number(place.rating, { minimumFractionDigits: 1, maximumFractionDigits: 1 }) : null;
-  return value !== null ? <span className="inline-flex items-center gap-1.5 whitespace-nowrap tabular-nums" aria-label={t("googleStarsValue", { value })}><Star className="size-4 shrink-0 fill-amber-500 text-amber-600 dark:fill-amber-300 dark:text-amber-300" aria-hidden="true" /><span className="font-medium">{value}<span className="font-normal text-muted-foreground"> / 5</span></span></span> : <span className="text-muted-foreground">{t("googleStarsUnknown")}</span>;
+  return value !== null ? <span className="inline-flex items-center gap-1.5 whitespace-nowrap tabular-nums" aria-label={t("googleStarsValue", { value })}><Star className="size-4 shrink-0 fill-amber-500 text-amber-600 dark:fill-amber-300 dark:text-amber-300" aria-hidden="true" /><span className="font-medium">{value}<span className="font-normal text-muted-foreground"> / 5</span></span></span> : <span className="inline-flex items-center text-muted-foreground" title={t("googleStarsUnknown")}><Star className="size-4" aria-hidden="true" /><span className="sr-only">{t("googleStarsUnknown")}</span></span>;
 }
 
 export function PlaceSignalsSummary({ place, minimumStars = DEFAULT_MINIMUM_GOOGLE_STARS }: { place: PlaceSignals; minimumStars?: number }) {

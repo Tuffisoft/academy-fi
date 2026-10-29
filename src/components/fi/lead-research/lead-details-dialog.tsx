@@ -15,13 +15,14 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { qualityStyles, qualityTone } from "./quality-presentation";
 import { WebsiteAuditHighlights, WebsiteAuditOverview, WebsiteAuditResults } from "./website-audit-results";
 import { isAreaSearch } from "@/lib/lead-research/search-input";
+import { LeadPotential } from "./lead-potential";
 import { PlaceBusinessStatus, PlaceGoogleRating } from "./place-signals";
 
 export function AuditScore({ audit, numberOnly = false }: { audit?: AuditSummary; numberOnly?: boolean }) {
   const t = useTranslations("leadResearch");
   const tone = qualityTone(audit?.status === "COMPLETED" ? audit.qualityScore : null);
   return <Badge variant="outline" className={qualityStyles[tone].badge}>
-    {audit?.status === "COMPLETED" ? audit.qualityScore === null ? t("auditIncomplete") : numberOnly ? audit.qualityScore : `${audit.qualityScore}/100` : t(`auditStatuses.${audit?.status ?? "NOT_STARTED"}`)}
+    {numberOnly ? (audit?.status === "COMPLETED" ? audit.qualityScore ?? 0 : 0) : audit?.status === "COMPLETED" ? audit.qualityScore === null ? t("auditIncomplete") : `${audit.qualityScore}/100` : t(`auditStatuses.${audit?.status ?? "NOT_STARTED"}`)}
   </Badge>;
 }
 
@@ -84,6 +85,7 @@ export function LeadDetailsDialog({ place, audit, context, compactTrigger = fals
         <DialogDescription className="sr-only">{t("auditDetailsDescription")}</DialogDescription>
       </DialogHeader>
       <div className="min-h-0 space-y-4 overflow-y-auto p-4 sm:p-5">
+        <LeadPotential detailed audit={audit} place={place} />
         <div className="grid items-start gap-4 md:grid-cols-[minmax(0,0.8fr)_minmax(0,1.2fr)]">
         <Card size="sm" className={style.surface}>
           <CardContent className="space-y-3">

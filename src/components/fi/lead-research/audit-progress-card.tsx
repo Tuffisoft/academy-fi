@@ -2,11 +2,11 @@
 
 import { useEffect, useState } from "react";
 import { useTranslations } from "next-intl";
+import { NEED_GROUPS } from "@/lib/lead-research/lead-assessment";
 import { Tooltip } from "@base-ui/react/tooltip";
 import {
   CheckCircle2,
   Clock3,
-  ExternalLink,
   Info,
   LoaderCircle,
   Pause,
@@ -78,7 +78,7 @@ export function AuditProgressCard({
                         : "auditProgressComplete",
               )}
             </h2>
-            <Tooltip.Provider delay={200}>
+            {!finished && <Tooltip.Provider delay={200}>
               <Tooltip.Root>
                 <Tooltip.Trigger type="button" className="inline-flex items-center gap-1 rounded text-xs text-muted-foreground outline-none focus-visible:ring-2 focus-visible:ring-ring">
                   {t("auditCrossCampaign")}<Info className="size-3" aria-hidden="true" />
@@ -89,53 +89,18 @@ export function AuditProgressCard({
                   </Tooltip.Positioner>
                 </Tooltip.Portal>
               </Tooltip.Root>
-            </Tooltip.Provider>
+            </Tooltip.Provider>}
             {!searching && (
               <p className="text-sm text-muted-foreground">
-                {t("auditCompletedCount", {
+                {finished ? t("auditFoundLeadCount", { count: progress!.total }) : t("auditCompletedCount", {
                   done: progress!.done,
                   total: progress!.total,
                 })}
               </p>
             )}
-            {!searching && progress!.failed > 0 && (
-              <p className="text-sm font-medium text-red-700 dark:text-red-300">
-                {t("auditFailureCount", { count: progress!.failed })}
-              </p>
-            )}
-            {!searching && progress!.failedAudits.length > 0 && (
-              <details className="text-sm">
-                <summary className="cursor-pointer font-medium text-red-700 underline underline-offset-4 dark:text-red-300">
-                  {t("auditFailureDetails", {
-                    count: progress!.failedAudits.length,
-                  })}
-                </summary>
-                <ul className="mt-2 space-y-2">
-                  {progress!.failedAudits.map((audit) => (
-                    <li
-                      key={audit.id}
-                      className="flex flex-wrap items-baseline gap-x-3 gap-y-1"
-                    >
-                      <span className="text-red-700 dark:text-red-300">
-                        {t(audit.errorCode ?? "auditUnavailable")}
-                      </span>
-                      <a
-                        href={`https://www.google.com/maps/search/?api=1&query_place_id=${encodeURIComponent(audit.placeId)}`}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="inline-flex items-center gap-1 text-xs underline"
-                      >
-                        {t("auditViewPlace")}
-                        <ExternalLink className="size-3" aria-hidden="true" />
-                      </a>
-                    </li>
-                  ))}
-                </ul>
-              </details>
-            )}
           </div>
-          {finished ? <dl aria-label={t("auditPotentialDistribution")} className="grid grid-cols-2 gap-x-6 gap-y-3 sm:grid-cols-4">
-            {(["highPotential", "mediumPotential", "lowPotential", "unrated"] as const).map(key => <div key={key} className="relative rounded-lg p-2 transition-colors hover:bg-primary/10 has-focus-visible:ring-2 has-focus-visible:ring-ring">
+          {finished ? <dl aria-label={t("auditPotentialDistribution")} className="grid grid-cols-2 gap-x-6 gap-y-3 sm:grid-cols-5">
+            {NEED_GROUPS.map(key => <div key={key} className="relative rounded-lg p-2 transition-colors hover:bg-primary/10 has-focus-visible:ring-2 has-focus-visible:ring-ring">
               <dt className="text-xs text-muted-foreground">{t(key)}</dt>
               <dd><button type="button" disabled={!onSelectPotential || progress!.potential[key] === 0} aria-label={t("showPotentialLeads", { potential: t(key), count: progress!.potential[key] })} aria-pressed={selectedPotential === key} onClick={() => onSelectPotential?.(key, progress!.auditIds)} className={`text-2xl font-semibold tabular-nums outline-none after:absolute after:inset-0 disabled:cursor-default disabled:opacity-50 ${key === "highPotential" ? "text-emerald-700 dark:text-emerald-400" : key === "mediumPotential" ? "text-amber-800 dark:text-amber-300" : "text-foreground"}`}>{progress!.potential[key]}</button></dd>
             </div>)}
@@ -162,8 +127,10 @@ export function AuditProgressCard({
             </div>
           </div>}
         </div>
-        <Progress value={percentage} aria-label={t("auditProgressPercent")} />
-        <AuditBatchControls audits={audits} />
+        {!finished && <>
+          <Progress value={percentage} aria-label={t("auditProgressPercent")} />
+          <AuditBatchControls audits={audits} />
+        </>}
       </CardContent>
     </Card>
   );
