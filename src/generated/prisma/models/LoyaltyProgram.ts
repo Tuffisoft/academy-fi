@@ -40,6 +40,8 @@ export type LoyaltyProgramMinAggregateOutputType = {
   id: string | null
   organizationId: string | null
   status: string | null
+  blockedAt: Date | null
+  conditionsBoundAt: Date | null
   name: string | null
   description: string | null
   reward: string | null
@@ -57,6 +59,8 @@ export type LoyaltyProgramMaxAggregateOutputType = {
   id: string | null
   organizationId: string | null
   status: string | null
+  blockedAt: Date | null
+  conditionsBoundAt: Date | null
   name: string | null
   description: string | null
   reward: string | null
@@ -74,6 +78,8 @@ export type LoyaltyProgramCountAggregateOutputType = {
   id: number
   organizationId: number
   status: number
+  blockedAt: number
+  conditionsBoundAt: number
   name: number
   description: number
   reward: number
@@ -103,6 +109,8 @@ export type LoyaltyProgramMinAggregateInputType = {
   id?: true
   organizationId?: true
   status?: true
+  blockedAt?: true
+  conditionsBoundAt?: true
   name?: true
   description?: true
   reward?: true
@@ -120,6 +128,8 @@ export type LoyaltyProgramMaxAggregateInputType = {
   id?: true
   organizationId?: true
   status?: true
+  blockedAt?: true
+  conditionsBoundAt?: true
   name?: true
   description?: true
   reward?: true
@@ -137,6 +147,8 @@ export type LoyaltyProgramCountAggregateInputType = {
   id?: true
   organizationId?: true
   status?: true
+  blockedAt?: true
+  conditionsBoundAt?: true
   name?: true
   description?: true
   reward?: true
@@ -241,6 +253,8 @@ export type LoyaltyProgramGroupByOutputType = {
   id: string
   organizationId: string
   status: string
+  blockedAt: Date | null
+  conditionsBoundAt: Date | null
   name: string
   description: string
   reward: string
@@ -281,6 +295,8 @@ export type LoyaltyProgramWhereInput = {
   id?: Prisma.StringFilter<"LoyaltyProgram"> | string
   organizationId?: Prisma.StringFilter<"LoyaltyProgram"> | string
   status?: Prisma.StringFilter<"LoyaltyProgram"> | string
+  blockedAt?: Prisma.DateTimeNullableFilter<"LoyaltyProgram"> | Date | string | null
+  conditionsBoundAt?: Prisma.DateTimeNullableFilter<"LoyaltyProgram"> | Date | string | null
   name?: Prisma.StringFilter<"LoyaltyProgram"> | string
   description?: Prisma.StringFilter<"LoyaltyProgram"> | string
   reward?: Prisma.StringFilter<"LoyaltyProgram"> | string
@@ -300,6 +316,8 @@ export type LoyaltyProgramOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   organizationId?: Prisma.SortOrder
   status?: Prisma.SortOrder
+  blockedAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  conditionsBoundAt?: Prisma.SortOrderInput | Prisma.SortOrder
   name?: Prisma.SortOrder
   description?: Prisma.SortOrder
   reward?: Prisma.SortOrder
@@ -323,6 +341,8 @@ export type LoyaltyProgramWhereUniqueInput = Prisma.AtLeast<{
   NOT?: Prisma.LoyaltyProgramWhereInput | Prisma.LoyaltyProgramWhereInput[]
   organizationId?: Prisma.StringFilter<"LoyaltyProgram"> | string
   status?: Prisma.StringFilter<"LoyaltyProgram"> | string
+  blockedAt?: Prisma.DateTimeNullableFilter<"LoyaltyProgram"> | Date | string | null
+  conditionsBoundAt?: Prisma.DateTimeNullableFilter<"LoyaltyProgram"> | Date | string | null
   name?: Prisma.StringFilter<"LoyaltyProgram"> | string
   description?: Prisma.StringFilter<"LoyaltyProgram"> | string
   reward?: Prisma.StringFilter<"LoyaltyProgram"> | string
@@ -342,6 +362,8 @@ export type LoyaltyProgramOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   organizationId?: Prisma.SortOrder
   status?: Prisma.SortOrder
+  blockedAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  conditionsBoundAt?: Prisma.SortOrderInput | Prisma.SortOrder
   name?: Prisma.SortOrder
   description?: Prisma.SortOrder
   reward?: Prisma.SortOrder
@@ -367,6 +389,8 @@ export type LoyaltyProgramScalarWhereWithAggregatesInput = {
   id?: Prisma.StringWithAggregatesFilter<"LoyaltyProgram"> | string
   organizationId?: Prisma.StringWithAggregatesFilter<"LoyaltyProgram"> | string
   status?: Prisma.StringWithAggregatesFilter<"LoyaltyProgram"> | string
+  blockedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"LoyaltyProgram"> | Date | string | null
+  conditionsBoundAt?: Prisma.DateTimeNullableWithAggregatesFilter<"LoyaltyProgram"> | Date | string | null
   name?: Prisma.StringWithAggregatesFilter<"LoyaltyProgram"> | string
   description?: Prisma.StringWithAggregatesFilter<"LoyaltyProgram"> | string
   reward?: Prisma.StringWithAggregatesFilter<"LoyaltyProgram"> | string
@@ -383,6 +407,8 @@ export type LoyaltyProgramScalarWhereWithAggregatesInput = {
 export type LoyaltyProgramCreateInput = {
   id?: string
   status?: string
+  blockedAt?: Date | string | null
+  conditionsBoundAt?: Date | string | null
   name: string
   description: string
   reward: string
@@ -401,6 +427,8 @@ export type LoyaltyProgramUncheckedCreateInput = {
   id?: string
   organizationId: string
   status?: string
+  blockedAt?: Date | string | null
+  conditionsBoundAt?: Date | string | null
   name: string
   description: string
   reward: string
@@ -417,6 +445,8 @@ export type LoyaltyProgramUncheckedCreateInput = {
 export type LoyaltyProgramUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.StringFieldUpdateOperationsInput | string
+  blockedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  conditionsBoundAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
   reward?: Prisma.StringFieldUpdateOperationsInput | string
@@ -435,6 +465,8 @@ export type LoyaltyProgramUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   organizationId?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.StringFieldUpdateOperationsInput | string
+  blockedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  conditionsBoundAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
   reward?: Prisma.StringFieldUpdateOperationsInput | string
@@ -452,6 +484,8 @@ export type LoyaltyProgramCreateManyInput = {
   id?: string
   organizationId: string
   status?: string
+  blockedAt?: Date | string | null
+  conditionsBoundAt?: Date | string | null
   name: string
   description: string
   reward: string
@@ -468,6 +502,8 @@ export type LoyaltyProgramCreateManyInput = {
 export type LoyaltyProgramUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.StringFieldUpdateOperationsInput | string
+  blockedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  conditionsBoundAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
   reward?: Prisma.StringFieldUpdateOperationsInput | string
@@ -484,6 +520,8 @@ export type LoyaltyProgramUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   organizationId?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.StringFieldUpdateOperationsInput | string
+  blockedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  conditionsBoundAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
   reward?: Prisma.StringFieldUpdateOperationsInput | string
@@ -516,6 +554,8 @@ export type LoyaltyProgramCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   organizationId?: Prisma.SortOrder
   status?: Prisma.SortOrder
+  blockedAt?: Prisma.SortOrder
+  conditionsBoundAt?: Prisma.SortOrder
   name?: Prisma.SortOrder
   description?: Prisma.SortOrder
   reward?: Prisma.SortOrder
@@ -538,6 +578,8 @@ export type LoyaltyProgramMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   organizationId?: Prisma.SortOrder
   status?: Prisma.SortOrder
+  blockedAt?: Prisma.SortOrder
+  conditionsBoundAt?: Prisma.SortOrder
   name?: Prisma.SortOrder
   description?: Prisma.SortOrder
   reward?: Prisma.SortOrder
@@ -555,6 +597,8 @@ export type LoyaltyProgramMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   organizationId?: Prisma.SortOrder
   status?: Prisma.SortOrder
+  blockedAt?: Prisma.SortOrder
+  conditionsBoundAt?: Prisma.SortOrder
   name?: Prisma.SortOrder
   description?: Prisma.SortOrder
   reward?: Prisma.SortOrder
@@ -660,6 +704,8 @@ export type LoyaltyProgramUncheckedUpdateManyWithoutLogoNestedInput = {
 export type LoyaltyProgramCreateWithoutOrganizationInput = {
   id?: string
   status?: string
+  blockedAt?: Date | string | null
+  conditionsBoundAt?: Date | string | null
   name: string
   description: string
   reward: string
@@ -676,6 +722,8 @@ export type LoyaltyProgramCreateWithoutOrganizationInput = {
 export type LoyaltyProgramUncheckedCreateWithoutOrganizationInput = {
   id?: string
   status?: string
+  blockedAt?: Date | string | null
+  conditionsBoundAt?: Date | string | null
   name: string
   description: string
   reward: string
@@ -722,6 +770,8 @@ export type LoyaltyProgramScalarWhereInput = {
   id?: Prisma.StringFilter<"LoyaltyProgram"> | string
   organizationId?: Prisma.StringFilter<"LoyaltyProgram"> | string
   status?: Prisma.StringFilter<"LoyaltyProgram"> | string
+  blockedAt?: Prisma.DateTimeNullableFilter<"LoyaltyProgram"> | Date | string | null
+  conditionsBoundAt?: Prisma.DateTimeNullableFilter<"LoyaltyProgram"> | Date | string | null
   name?: Prisma.StringFilter<"LoyaltyProgram"> | string
   description?: Prisma.StringFilter<"LoyaltyProgram"> | string
   reward?: Prisma.StringFilter<"LoyaltyProgram"> | string
@@ -738,6 +788,8 @@ export type LoyaltyProgramScalarWhereInput = {
 export type LoyaltyProgramCreateWithoutLogoInput = {
   id?: string
   status?: string
+  blockedAt?: Date | string | null
+  conditionsBoundAt?: Date | string | null
   name: string
   description: string
   reward: string
@@ -754,6 +806,8 @@ export type LoyaltyProgramCreateWithoutLogoInput = {
 export type LoyaltyProgramUncheckedCreateWithoutLogoInput = {
   id?: string
   status?: string
+  blockedAt?: Date | string | null
+  conditionsBoundAt?: Date | string | null
   name: string
   description: string
   reward: string
@@ -795,6 +849,8 @@ export type LoyaltyProgramUpdateManyWithWhereWithoutLogoInput = {
 export type LoyaltyProgramCreateManyOrganizationInput = {
   id?: string
   status?: string
+  blockedAt?: Date | string | null
+  conditionsBoundAt?: Date | string | null
   name: string
   description: string
   reward: string
@@ -811,6 +867,8 @@ export type LoyaltyProgramCreateManyOrganizationInput = {
 export type LoyaltyProgramUpdateWithoutOrganizationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.StringFieldUpdateOperationsInput | string
+  blockedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  conditionsBoundAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
   reward?: Prisma.StringFieldUpdateOperationsInput | string
@@ -827,6 +885,8 @@ export type LoyaltyProgramUpdateWithoutOrganizationInput = {
 export type LoyaltyProgramUncheckedUpdateWithoutOrganizationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.StringFieldUpdateOperationsInput | string
+  blockedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  conditionsBoundAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
   reward?: Prisma.StringFieldUpdateOperationsInput | string
@@ -843,6 +903,8 @@ export type LoyaltyProgramUncheckedUpdateWithoutOrganizationInput = {
 export type LoyaltyProgramUncheckedUpdateManyWithoutOrganizationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.StringFieldUpdateOperationsInput | string
+  blockedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  conditionsBoundAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
   reward?: Prisma.StringFieldUpdateOperationsInput | string
@@ -859,6 +921,8 @@ export type LoyaltyProgramUncheckedUpdateManyWithoutOrganizationInput = {
 export type LoyaltyProgramCreateManyLogoInput = {
   id?: string
   status?: string
+  blockedAt?: Date | string | null
+  conditionsBoundAt?: Date | string | null
   name: string
   description: string
   reward: string
@@ -874,6 +938,8 @@ export type LoyaltyProgramCreateManyLogoInput = {
 export type LoyaltyProgramUpdateWithoutLogoInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.StringFieldUpdateOperationsInput | string
+  blockedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  conditionsBoundAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
   reward?: Prisma.StringFieldUpdateOperationsInput | string
@@ -890,6 +956,8 @@ export type LoyaltyProgramUpdateWithoutLogoInput = {
 export type LoyaltyProgramUncheckedUpdateWithoutLogoInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.StringFieldUpdateOperationsInput | string
+  blockedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  conditionsBoundAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
   reward?: Prisma.StringFieldUpdateOperationsInput | string
@@ -905,6 +973,8 @@ export type LoyaltyProgramUncheckedUpdateWithoutLogoInput = {
 export type LoyaltyProgramUncheckedUpdateManyWithoutLogoInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.StringFieldUpdateOperationsInput | string
+  blockedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  conditionsBoundAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
   reward?: Prisma.StringFieldUpdateOperationsInput | string
@@ -923,6 +993,8 @@ export type LoyaltyProgramSelect<ExtArgs extends runtime.Types.Extensions.Intern
   id?: boolean
   organizationId?: boolean
   status?: boolean
+  blockedAt?: boolean
+  conditionsBoundAt?: boolean
   name?: boolean
   description?: boolean
   reward?: boolean
@@ -942,6 +1014,8 @@ export type LoyaltyProgramSelectCreateManyAndReturn<ExtArgs extends runtime.Type
   id?: boolean
   organizationId?: boolean
   status?: boolean
+  blockedAt?: boolean
+  conditionsBoundAt?: boolean
   name?: boolean
   description?: boolean
   reward?: boolean
@@ -961,6 +1035,8 @@ export type LoyaltyProgramSelectUpdateManyAndReturn<ExtArgs extends runtime.Type
   id?: boolean
   organizationId?: boolean
   status?: boolean
+  blockedAt?: boolean
+  conditionsBoundAt?: boolean
   name?: boolean
   description?: boolean
   reward?: boolean
@@ -980,6 +1056,8 @@ export type LoyaltyProgramSelectScalar = {
   id?: boolean
   organizationId?: boolean
   status?: boolean
+  blockedAt?: boolean
+  conditionsBoundAt?: boolean
   name?: boolean
   description?: boolean
   reward?: boolean
@@ -993,7 +1071,7 @@ export type LoyaltyProgramSelectScalar = {
   updatedAt?: boolean
 }
 
-export type LoyaltyProgramOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "organizationId" | "status" | "name" | "description" | "reward" | "target" | "backgroundColor" | "textColor" | "symbol" | "logoAssetId" | "revision" | "createdAt" | "updatedAt", ExtArgs["result"]["loyaltyProgram"]>
+export type LoyaltyProgramOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "organizationId" | "status" | "blockedAt" | "conditionsBoundAt" | "name" | "description" | "reward" | "target" | "backgroundColor" | "textColor" | "symbol" | "logoAssetId" | "revision" | "createdAt" | "updatedAt", ExtArgs["result"]["loyaltyProgram"]>
 export type LoyaltyProgramInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   organization?: boolean | Prisma.OrganizationDefaultArgs<ExtArgs>
   logo?: boolean | Prisma.LoyaltyProgram$logoArgs<ExtArgs>
@@ -1017,6 +1095,8 @@ export type $LoyaltyProgramPayload<ExtArgs extends runtime.Types.Extensions.Inte
     id: string
     organizationId: string
     status: string
+    blockedAt: Date | null
+    conditionsBoundAt: Date | null
     name: string
     description: string
     reward: string
@@ -1456,6 +1536,8 @@ export interface LoyaltyProgramFieldRefs {
   readonly id: Prisma.FieldRef<"LoyaltyProgram", 'String'>
   readonly organizationId: Prisma.FieldRef<"LoyaltyProgram", 'String'>
   readonly status: Prisma.FieldRef<"LoyaltyProgram", 'String'>
+  readonly blockedAt: Prisma.FieldRef<"LoyaltyProgram", 'DateTime'>
+  readonly conditionsBoundAt: Prisma.FieldRef<"LoyaltyProgram", 'DateTime'>
   readonly name: Prisma.FieldRef<"LoyaltyProgram", 'String'>
   readonly description: Prisma.FieldRef<"LoyaltyProgram", 'String'>
   readonly reward: Prisma.FieldRef<"LoyaltyProgram", 'String'>

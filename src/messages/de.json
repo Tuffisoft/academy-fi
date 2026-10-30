@@ -93,6 +93,9 @@
         "FORBIDDEN": "Keine Berechtigung für diese Aktion.",
         "NOT_FOUND": "Entwurf oder Logo nicht gefunden.",
         "REVISION_CONFLICT": "Der Entwurf wurde inzwischen geändert. Bitte den gespeicherten Stand erneut laden.",
+        "PROGRAM_LIMIT": "Das Limit für aktive Programme ist erreicht. Bitte zuerst ein anderes Programm archivieren.",
+        "STATE_CONFLICT": "Diese Aktion ist im aktuellen Programmstatus nicht möglich. Bitte den gespeicherten Stand erneut laden.",
+        "CONDITIONS_BOUND": "Stempelziel und Belohnung sind seit der ersten Kartenausgabe festgelegt. Bitte für neue Bedingungen ein neues Programm anlegen.",
         "IDEMPOTENCY_CONFLICT": "Diese Vorgangskennung gehört zu anderen Eingaben. Bitte den gespeicherten Stand erneut laden.",
         "UNAUTHENTICATED": "Bitte erneut anmelden.",
         "UNAVAILABLE": "Der Vorgang konnte nicht bestätigt werden. Bitte mit denselben Eingaben erneut versuchen."

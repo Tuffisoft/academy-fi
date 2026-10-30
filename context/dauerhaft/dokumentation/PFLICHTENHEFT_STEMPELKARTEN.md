@@ -4,10 +4,10 @@
 | Dokumentmerkmal | Wert |
 | --- | --- |
 | Projekt | Stempelkarten als SaaS-Modul der Academy Fi |
-| Version | 2.9 |
-| Datum | 28.10.2026 |
+| Version | 2.13 |
+| Datum | 30.10.2026 |
 | Status | Technische Umsetzungsspezifikation; keine Bestätigung einer bereits erfolgten Implementierung |
-| Fachliche Grundlage | [Lastenheft Version 1.11](LASTENHEFT_STEMPELKARTEN.md) |
+| Fachliche Grundlage | [Lastenheft Version 1.12](LASTENHEFT_STEMPELKARTEN.md) |
 | Zielplattform | Bestehende Academy-Fi-Anwendung mit eigenständigem Geschäftskundenbereich |
 
 ## 1. Zweck und Geltungsbereich
@@ -202,6 +202,12 @@ Schreibende Browseraufrufe verwenden POST/PATCH/DELETE, Origin-Prüfung und den 
 ## 6. Programme, Karten und transaktionale Fachabläufe
 
 ### 6.1 Editor und Lebenszyklus
+
+Fortschreibung v0.6.2 · 30.10.2026: `programLifecycleCommand` und `changeProgramLifecycle` implementieren die fünf expliziten Aktionen serverintern mit aktuellen OWNER-/ADMIN-Rechten, Organisations-/Programmsperre, Revision und inhaltsgebundener Vorgangskennung. Aktivierung validiert gespeicherte Konfiguration und prüft context.limits.programs; Sperren belegen weiterhin aktive Plätze, Reaktivieren entfernt keine Sperre. `ProgramStateView` liefert status/blockedAt/conditionsBoundAt, Zeitpunkte serialisiert. Lesen/Save-Replay über alle Zustände, Branding-Save weist geänderte gebundene Ziel-/Belohnungswerte ab. `bindProgramConditions` ist ausschließlich serverintern innerhalb der Ausgabetransaktion, prüft aktive Organisation und veröffentlichten ungesperrten Zustand, markiert Bindung samt Revision dauerhaft. Keine Ausgabe-/HTTP-/Action-/UI-Freischaltung in v0.6.2. Migration 20261030120000 auf ausdrücklich bestätigter getrennter Loyalty-Test-DB angewendet, App-DB weiterhin nicht freigegeben; maßgeblicher Ergebnis-/Prüfstand im [Nachweis](../nachweise/NACHWEISE.md#v062--fachservice-und-testmigration-30102026).
+
+Technische Vorbereitung v0.6.0 · 30.10.2026: [Umsetzungsschritte v0.6.1–v0.6.5](ENTWICKLUNGSANLEITUNG_STEMPELKARTEN.md#technische-umsetzungsvorbereitung--30102026). Geplant: nullable `blockedAt`/`conditionsBoundAt`, gezielte Erweiterung des Statuschecks und DB-Schutz einer einmal gesetzten Bindung einschließlich target/reward; keine Rücknahme durch Kartenzählung. Explizites POST-Lebenszykluskommando an `/api/loyalty/organizations/[organizationId]/programs/[id]/lifecycle`, gemeinsame Services/Revision/Idempotenz; öffentliche Darstellung am bereits vorgesehenen join-Pfad ohne Ausgabe. Save-Replay muss auch nach späterem Lebenszykluswechsel den aktuellen autorisierten Stand liefern, ohne alten Zustand zu restaurieren. FREE-only-DB-/Anwendungssicherung bleibt erhalten, weitere Tarifprofile ausschließlich isoliert simuliert. Rollback verweigert destruktive Rückstufung nicht mehr kompatibler Daten. Stand dieser Vorbereitung: keine Migration erstellt/angewendet. Fortschreibung v0.6.1: Migration `20261030120000_prepare_loyalty_program_lifecycle` und Prisma-Erweiterung inzwischen vorbereitet, nicht angewendet; echter DB-Test `tests/loyalty/program-schema.integration.test.ts` vorbereitet. Nullable Marker TIMESTAMP(3), Index Unternehmen/Status, transaktionale Statuscheckerweiterung und BEFORE-UPDATE-Trigger für permanente Bindung; echte DB-Nachweise und Fachservice weiterhin offen.
+
+Spezifikation v0.6.0 · 30.10.2026: [V060-01–08 mit Rollen, Übergängen und Negativfällen](ENTWICKLUNGSANLEITUNG_STEMPELKARTEN.md#v060--veröffentlichen-archivieren-und-bedingungen-schützen) konkretisieren LF-F-05/07/21/22 und T-/AK-03/10/13 anteilig. Gemeinsamer serverseitiger Lebenszyklusservice mit Zod-Eingaben, Mandanten-/Rechteprüfung, erwarteter Revision, Vorgangskennung und atomarem Audit; Sperrreihenfolge Unternehmen → Programm auch für spätere Ausgabe. PUBLISHED zählt unabhängig von ausdrücklicher Sperre zum wirksamen Programmlimit. Veröffentlichung/Reaktivierung und Bedingungsbindung unter denselben Sperren serialisieren; dauerhafte Erstausgabebindung unabhängig von verbleibenden Karten speichern. Programm-/Unternehmenssperre überlagert den Lebenszyklus; Reaktivierung entfernt sie nicht. Bestehende DRAFT-only-DB-Sicherung vor Umsetzung gezielt prüfen und additive reversible Erweiterung vorbereiten; keine Migrationsanwendung durch diesen Auftrag freigegeben. Öffentliche Darstellung nur für freigegebene Daten und mit erneutem Zustandscheck beim begrenzten Logoabruf aus privatem R2; keine privaten Assetendpunkte öffnen. GET ohne Mutation, Kartenausgabe/Sitzung/Wallet erst spätere Pakete. Echte DB-Parallelität und direkte Action-/API-Negativfälle nach V060-07 erforderlich; derzeit ausschließlich Spezifikation.
 
 Technische Ergänzung 2.3 · 27.10.2026, v0.5.0: echte Entwürfe unter `/app/[organizationSlug]/programs/new` und `/programs/[programId]`; ausschließlich OWNER/ADMIN mit aktuellem aktivem Schreibkontext. `LoyaltyProgram` und `LoyaltyAsset` mit zusammengesetzter Mandanten-FK; separate `LoyaltyOperation` mit unternehmensweit eindeutiger Vorgangskennung, Akteur, Aktion und Fingerabdruck, ohne Änderung bestehender Mitarbeiterhistorie. Speichern per Action sowie `POST /programs`/`PATCH /programs/[id]` im bestehenden Unternehmens-API-Präfix; vollständige normalisierte `config`, `operationId`, bei Änderungen `expectedRevision`. Abweichender Inhalt/Akteur ergibt `IDEMPOTENCY_CONFLICT`, veraltete Revision `REVISION_CONFLICT`. Unternehmens-/Identitäts-/Mitgliedschaftssperre und erneute Rechteprüfung vor Wiederholung; bestätigtes Ergebnis erst nach Transaktionscommit. Listen paginiert (50, ID-Cursor), kein Aktivierungslimit für Entwürfe. DB erlaubt in diesem Paket ausschließlich DRAFT; spätere Lebenszyklusmigration muss diesen Check gezielt erweitern.
 
@@ -569,3 +575,12 @@ Auftraggeberentscheidung 28.10.2026: Logo-Uploadbedienung im bestehenden v0.5.5 
 Technik: XMLHttpRequest-Uploadprogress für Browser-zu-Server-Übertragung, keine Simulation. Multipartfortschritt proportional auf Dateibytes abbilden; Rate/Restzeit erst ab ausreichender Messdauer schätzen und als Schätzung kennzeichnen, Verarbeitung ohne fiktive Restzeit. Erfolg nur nach Zod-geprüfter Serverantwort. Gemeinsame Zod-Dateimetadaten; Server normalisiert weiterhin mit Sharp. Fehlercodes LOGO_TOO_LARGE (413), LOGO_UNSUPPORTED (415), LOGO_INVALID (422), begrenztes Multipartlesen liefert Größenfehler. Abbruch stoppt Browseranfrage, garantiert keinen serverseitigen Rollback; gleiche Datei/Vorgangskennung für unklare Wiederholung erhalten, alte Programmreferenz bleibt unverändert. Kein neuer Anbieter/keine Bibliothek oder Schemaänderung.
 
 R2-Kompatibilität im lokalen Next-Portal: signierte SDK-URL und Header mit ursprünglichen begrenzten Binärbytes an fetch übergeben; keine Weitergabe eines Request.body-Streams für PUT. Dadurch bleibt die bekannte Körperlänge bei der Framework-Rekonstruktion erhalten. HTTPS, AWS-Signatur, privater Schlüsselraum, Timeout, Redirectsperre und keine automatischen Schreibretries unverändert. Tests allein mit nativem Node-fetch ersetzen den echten Portal-Upload nicht.
+
+
+30.10.2026 · 2.10: v0.6.0 mit gemeinsamen Transaktionsgrenzen, Idempotenz, Zustandsprüfung und isoliertem Parallelitätsnachweis spezifiziert; Lastenheftbezug 1.12. Keine Umsetzung/Migrationsfreigabe.
+
+30.10.2026 · 2.11: geplante Lebenszyklusfelder, DB-Bindungsschutz, HTTP-Vertrag und Replay nach Zustandswechsel konkretisiert; Bestandsprüfung im zentralen Nachweis.
+
+30.10.2026 · 2.12: vorbereiteten v0.6.1-Stand mit Migration, Trigger und Schema-Integrationstest nachgeführt; keine Anwendung.
+
+30.10.2026 · 2.13: implementierte serverinterne Lebenszyklus-/Bindungsservices und Test-DB-Anwendung nach konkreter Freigabe dokumentiert; keine App-DB-/Produktautorisierung.

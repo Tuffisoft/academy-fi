@@ -36,9 +36,10 @@ const tx = {
     create: async ({ data }: { data: Row }) => { const row = { id: randomUUID(), ...data }; operations.push(row); return row; },
   },
   loyaltyProgram: {
+    count: async ({ where }: { where: Row }) => programs.filter(row => match(row, where)).length,
     findFirst: async ({ where }: { where: Row }) => programs.find(row => match(row, where)) ?? null,
     findMany: async ({ where, take }: { where: Row; take: number }) => programs.filter(row => match(row, where)).sort((a, b) => String(a.id).localeCompare(String(b.id))).slice(0, take),
-    create: async ({ data }: { data: Row }) => { const row = { ...data, id: randomUUID(), status: "DRAFT", revision: 1 }; programs.push(row); return row; },
+    create: async ({ data }: { data: Row }) => { const row = { ...data, id: randomUUID(), status: "DRAFT", blockedAt: null, conditionsBoundAt: null, revision: 1 }; programs.push(row); return row; },
     update: async ({ where, data }: { where: Row; data: Row }) => { const row = programs.find(row => match(row, where))!; Object.assign(row, { ...data, revision: Number(row.revision) + 1 }); return row; },
   },
   loyaltyAsset: {
@@ -65,8 +66,10 @@ let save: typeof import("../src/lib/loyalty/programs").saveProgram;
 let read: typeof import("../src/lib/loyalty/programs").readPrograms;
 let action: typeof import("../src/lib/loyalty/program.actions").saveProgramAction;
 let http: typeof import("../src/lib/loyalty/program-http").programHttp;
+let lifecycle: typeof import("../src/lib/loyalty/programs").changeProgramLifecycle;
 before(async () => {
   ({ saveProgram: save, readPrograms: read } = await import("../src/lib/loyalty/programs"));
+  lifecycle = (await import("../src/lib/loyalty/programs")).changeProgramLifecycle;
   action = (await import("../src/lib/loyalty/program.actions")).saveProgramAction;
   http = (await import("../src/lib/loyalty/program-http")).programHttp;
 });
@@ -83,6 +86,53 @@ test("drafts save, reopen, replay, reject changed operation contents and stale r
   await assert.rejects(save("actor", { ...command(), config: { ...input.config, logoAssetId: "foreign" } }), /INVALID_INPUT/);
   assets.push({ id: "foreign", organizationId: "foreign-org", mediaType: "image/png", purpose: "LOGO" });
   await assert.rejects(save("actor", { ...command(), config: { ...input.config, logoAssetId: "foreign" } }), /INVALID_INPUT/);
+});
+
+test("lifecycle enforces limits, independent blocks, current-state replay and binding", async () => {
+  programs = []; operations = []; audits = []; assets = []; role = "OWNER"; active = true;
+  const input = command(), draft = (await save("actor", input)).program;
+  const publish = { organizationId: "org", programId: draft.id, operationId: randomUUID(), expectedRevision: 1, action: "PUBLISH" };
+  const published = await lifecycle("actor", publish);
+  assert.equal(published.program.status, "PUBLISHED");
+  assert.equal((await lifecycle("actor", publish)).replayed, true);
+  assert.equal((await save("actor", input)).program.status, "PUBLISHED");
+  const second = (await save("actor", command())).program;
+  await assert.rejects(lifecycle("actor", { ...publish, programId: second.id, operationId: randomUUID() }), /PROGRAM_LIMIT/);
+  const block = { ...publish, action: "BLOCK", expectedRevision: 2, operationId: randomUUID() };
+  const blocked = await lifecycle("actor", block);
+  assert.ok(blocked.program.blockedAt);
+  const auditCount = audits.length;
+  const noOp = { ...block, expectedRevision: 3, operationId: randomUUID() };
+  assert.equal((await lifecycle("actor", noOp)).unchanged, true);
+  assert.equal(audits.length, auditCount);
+  assert.equal((await lifecycle("actor", noOp)).replayed, true);
+  const archived = await lifecycle("actor", { ...noOp, action: "ARCHIVE", operationId: randomUUID() });
+  assert.ok(archived.program.blockedAt);
+  assert.equal(archived.program.status, "ARCHIVED");
+  assert.equal((await lifecycle("actor", publish)).program.status, "ARCHIVED");
+  await assert.rejects(lifecycle("actor", { ...publish, expectedRevision: 4, operationId: randomUUID() }), /STATE_CONFLICT/);
+  const reactivated = await lifecycle("actor", { ...publish, action: "REACTIVATE", expectedRevision: 4, operationId: randomUUID() });
+  assert.ok(reactivated.program.blockedAt);
+  programs.find(row => row.id === draft.id)!.conditionsBoundAt = new Date();
+  await assert.rejects(save("actor", { ...command(), programId: draft.id, expectedRevision: 5, config: { ...input.config, reward: "Other" } }), /CONDITIONS_BOUND/);
+  assert.equal((await save("actor", { ...command(), programId: draft.id, expectedRevision: 5, config: { ...input.config, name: "Branding" } })).program.name, "Branding");
+  role = "STAFF";
+  await assert.rejects(lifecycle("actor", publish), /FORBIDDEN/);
+  role = "OWNER"; active = false;
+  await assert.rejects(lifecycle("actor", publish), /FORBIDDEN/);
+  active = true;
+  await assert.rejects(lifecycle("actor", { ...publish, organizationId: "foreign" }), /FORBIDDEN/);
+  await assert.rejects(lifecycle("actor", { ...publish, action: "DELETE" }), /INVALID_INPUT/);
+  await assert.rejects(lifecycle("actor", { ...publish, operationId: randomUUID() }), /REVISION_CONFLICT/);
+  await assert.rejects(lifecycle("otherActor", publish), /IDEMPOTENCY_CONFLICT/);
+  const revision = Number(programs.find(row => row.id === draft.id)!.revision);
+  const failed = { ...publish, action: "UNBLOCK", expectedRevision: revision, operationId: randomUUID() };
+  failAudit = true;
+  await assert.rejects(lifecycle("actor", failed), /AUDIT_UNAVAILABLE/);
+  failAudit = false;
+  assert.equal(programs.find(row => row.id === draft.id)!.revision, revision);
+  assert.equal(operations.some(row => row.operationId === failed.operationId), false);
+  assert.equal((await lifecycle("actor", failed)).program.blockedAt, null);
 });
 test("service, action and HTTP reject STAFF, revoked access and foreign IDs", async () => {
   const input = command(); role = "STAFF";

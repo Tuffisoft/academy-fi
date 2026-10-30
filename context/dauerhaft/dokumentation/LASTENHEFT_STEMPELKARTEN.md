@@ -4,8 +4,8 @@
 | Dokumentmerkmal | Wert |
 | --- | --- |
 | Projekt | Stempelkarten als SaaS-Modul der Academy Fi |
-| Version | 1.11 |
-| Datum | 28.10.2026 |
+| Version | 1.12 |
+| Datum | 30.10.2026 |
 | Status | Verbindliche Anforderungsgrundlage; lokale Teilpakete umgesetzt, vollständige Produktabnahme offen |
 | Auftraggeber / Betreiber | Das Team hinter der bestehenden Academy Fi |
 | Technisches Gegenstück | [Pflichtenheft](PFLICHTENHEFT_STEMPELKARTEN.md) |
@@ -122,6 +122,8 @@ Eine Kundenkarte zählt über ihre Wallet-Darstellungen hinweg nur einmal. Die K
 | LF-F-04 | Unternehmensinhaber und Administratoren müssen Mitarbeiter per E-Mail einladen, verwalten und entfernen können. | Rollenrechte und Tarifgrenzen werden eingehalten; nur der Inhaber verwaltet Eigentümerschaft und Abrechnung. |
 
 ### 6.2 Programme und Kundenkarten
+
+Konkretisierung v0.6.0 · 30.10.2026: OWNER/ADMIN verwalten Veröffentlichung, Archivierung, Reaktivierung und eine davon unabhängige ausdrückliche Programmsperre. Entwürfe und archivierte Programme zählen nicht zum aktiven Programmlimit; veröffentlichte gesperrte Programme zählen weiterhin. Reaktivierung prüft das Limit erneut, hebt keine Sperre auf. Bestehende Karten bleiben bei Archivierung nutzbar; ausdrückliche Sperren verhindern Buchungen. Die erste Ausgabe bindet Ziel und Belohnungsbedingungen dauerhaft, auch nach Löschung aller Karten; Branding bleibt separat bearbeitbar. Öffentliche Programmseite/Aufnahme-Link geben ausschließlich freigegebene Inhalte aus und erzeugen in v0.6.0 noch keine Karte. Verhalten, Rollen und prüfbare Fälle V060-01–08 im [Paketplan](ENTWICKLUNGSANLEITUNG_STEMPELKARTEN.md#v060--veröffentlichen-archivieren-und-bedingungen-schützen); LF-F-05/07/21/22, T-/AK-03/10/13 anteilig. Spezifikation, keine Abnahme; verschobene v0.5.5-Gerätetests bleiben offen.
 
 Konkretisierung v0.5.0 · 27.10.2026, genehmigter Implementierungsplan: Entwürfe werden ausdrücklich gespeichert und zählen nicht als aktive Programme. Name 1–40, Beschreibung 0–70, Gratisbelohnung 1–40 Zeichen; normalisierte Leerzeichen, keine Steuerzeichen/HTML-Eingaben. Stempelziel 1–10 (Auftraggeberänderung 28.10.2026). Symbole: Stempel, Stern, Herz, Geschenk, Kaffee. Freie sechsstellige HEX-Farben mit mindestens 4,5:1 Text-/Hintergrundkontrast. Logo optional: PNG/JPEG/WebP, maximal 4 MiB/16 Megapixel, keine Animation/SVG; kontrollierte PNG bis 1024×1024px ohne Metadaten. Drei Vorschauen ohne Wallet-Ausgabe; Unternehmensinhalte werden nicht automatisch übersetzt. Veröffentlichung und Schutz ausgegebener Sammelbedingungen bleiben unverändert verbindlich und folgen in späteren Paketen. LF-F-05/06/28, LF-N-05; T-/AK-03/17 anteilig. [Prüfstand](../nachweise/NACHWEISE.md#v050--implementierung-27102026).
 
@@ -314,3 +316,6 @@ Auftraggeberänderung 28.10.2026 · QL-021: Ersetzte oder entfernte StempelFi-Lo
 Auftraggeberentscheidung 28.10.2026: Logo-Uploadbedienung im bestehenden v0.5.5 mit kompakter Dropzone, Tastatur-/Handy-Dateiauswahl und aktuellem Vorschaubild. Ersetzen/Entfernen jeweils erst nach Bestätigungsdialog mit kurzem rotem Warntext; Abbrechen/Escape erhält altes Logo und startet keinen Upload. Dauerhaften großen Warnhinweis entfernen. Konkrete Größen-/Format-/Bild-/Rechte-/Netz-/Timeout-/Anbieterfehler DE/EN; ein PNG/JPEG/WebP bis 4 MiB unverändert. Echter Transferfortschritt mit Prozent/Balken, übertragenen MB, gemessenen MB/s, vergangener Zeit und geschätzter Restzeit; anschließend explizite Verarbeitung mit Spinner, niemals Asseterfolg allein aus 100 Prozent Transfer ableiten. Laufenden Upload abbrechen, bisherigen Stand erhalten; unklarer Ausgang bleibt bis identischer Wiederholung oder bewusstem Verwerfen gesperrt. LF-F-06/28, LF-N-02/05; T-/AK-03/17 anteilig. R2-Löschung weiterhin ausschließlich nach Programmcommit gemäß QL-021, keine Academy-Änderung/Migration.
 
 28.10.2026 · 1.11: bestätigte Logo-Dialog-/Dropzone-/Fortschritts-/Abbruchanforderungen; ersetzt den dauerhaft eingeblendeten QL-021-Warntext durch Popup vor Aktion. Prüfergebnisse nur NACHWEISE.md.
+
+
+30.10.2026 · 1.12: Lebenszyklus, aktive Programmzählung, unabhängige Sperre und dauerhafter Bedingungsschutz für v0.6.0 konkretisiert; Kriterien im Paketplan, Ergebnis ausschließlich NACHWEISE.md.

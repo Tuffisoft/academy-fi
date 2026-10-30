@@ -49,6 +49,7 @@ function tests(paths, env) {
       "tests/loyalty/memberships.integration.test.ts",
       "tests/loyalty/membership-matrix.integration.test.ts",
       "tests/loyalty/program-asset-store.integration.test.ts",
+      "tests/loyalty/program-lifecycle.integration.test.ts",
     ].includes(path),
   )
     ? ["--experimental-test-module-mocks"]

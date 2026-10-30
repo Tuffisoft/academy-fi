@@ -93,6 +93,9 @@
         "FORBIDDEN": "You do not have permission for this action.",
         "NOT_FOUND": "Draft or logo not found.",
         "REVISION_CONFLICT": "This draft has changed. Please reload the saved version.",
+        "PROGRAM_LIMIT": "The active program limit has been reached. Please archive another program first.",
+        "STATE_CONFLICT": "This action is unavailable in the current program state. Please reload the saved version.",
+        "CONDITIONS_BOUND": "The stamp target and reward have been fixed since the first card was issued. Please create a new program for different conditions.",
         "IDEMPOTENCY_CONFLICT": "This operation ID belongs to different input. Please reload the saved version.",
         "UNAUTHENTICATED": "Please sign in again.",
         "UNAVAILABLE": "The operation could not be confirmed. Please retry with the same input."

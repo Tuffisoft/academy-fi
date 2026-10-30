@@ -76,6 +76,19 @@ export const storedProgramConfig = programConfig.safeExtend({
   target: z.number().int().min(1).max(2147483647),
 });
 export type ProgramView = ProgramConfig & { id: string; revision: number };
+export const programStatus = z.enum(["DRAFT", "PUBLISHED", "ARCHIVED"]);
+export const programLifecycleCommand = z.object({
+  organizationId: resourceId,
+  programId: resourceId,
+  operationId,
+  expectedRevision: z.number().int().positive(),
+  action: z.enum(["PUBLISH", "ARCHIVE", "REACTIVATE", "BLOCK", "UNBLOCK"]),
+}).strict();
+export type ProgramStateView = ProgramView & {
+  status: z.infer<typeof programStatus>;
+  blockedAt: string | null;
+  conditionsBoundAt: string | null;
+};
 export const programCommand = z
   .object({
     organizationId: resourceId,

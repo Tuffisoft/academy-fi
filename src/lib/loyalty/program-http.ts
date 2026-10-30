@@ -23,6 +23,9 @@ export function programResponse<T>(reply: ProgramReply<T>) {
           NOT_FOUND: 404,
           REVISION_CONFLICT: 409,
           IDEMPOTENCY_CONFLICT: 409,
+          PROGRAM_LIMIT: 409,
+          STATE_CONFLICT: 409,
+          CONDITIONS_BOUND: 409,
           UNAUTHENTICATED: 401,
           UNAVAILABLE: 503,
         } as const

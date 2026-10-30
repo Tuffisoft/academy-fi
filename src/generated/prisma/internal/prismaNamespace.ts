@@ -3654,6 +3654,8 @@ export const LoyaltyProgramScalarFieldEnum = {
   id: 'id',
   organizationId: 'organizationId',
   status: 'status',
+  blockedAt: 'blockedAt',
+  conditionsBoundAt: 'conditionsBoundAt',
   name: 'name',
   description: 'description',
   reward: 'reward',

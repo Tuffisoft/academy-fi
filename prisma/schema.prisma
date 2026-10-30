@@ -430,6 +430,8 @@ model LoyaltyProgram {
   id String @id @default(cuid())
   organizationId String
   status String @default("DRAFT") @db.VarChar(20)
+  blockedAt DateTime? @db.Timestamp(3)
+  conditionsBoundAt DateTime? @db.Timestamp(3)
   name String @db.VarChar(80)
   description String @db.VarChar(500)
   reward String @db.VarChar(160)
@@ -445,6 +447,7 @@ model LoyaltyProgram {
   logo LoyaltyAsset? @relation(fields: [organizationId, logoAssetId], references: [organizationId, id], onDelete: Restrict)
   @@unique([organizationId, id])
   @@index([organizationId, createdAt, id])
+  @@index([organizationId, status])
 }
 
 model OrganizationInvitation {
