@@ -4,7 +4,7 @@
 | Dokumentmerkmal | Wert |
 | --- | --- |
 | Projekt | Stempelkarten als SaaS-Modul der Academy Fi |
-| Version | 2.13 |
+| Version | 2.14 |
 | Datum | 30.10.2026 |
 | Status | Technische Umsetzungsspezifikation; keine Bestätigung einer bereits erfolgten Implementierung |
 | Fachliche Grundlage | [Lastenheft Version 1.12](LASTENHEFT_STEMPELKARTEN.md) |
@@ -168,6 +168,8 @@ Kartenzustand, Ereignis, Belohnungszustand, Anfrageentscheidung und benötigte O
 Alle Stempelkarten-Seiten liegen unter src/app/[locale]/tools/calem/stempelkarten. Der gemeinsame Pfad gewährt keine Zugriffsrechte: Produktseiten bleiben öffentlich, Unternehmensseiten prüfen Mitgliedschaften und /admin prüft den internen Plattform-Owner. Kein gemeinsames Layout darf öffentliche Karten hinter die Academy-Anmeldung sperren. API-/Wallet-Endpunkte und gemeinsame Serverlogik behalten ihre separaten technischen Pfade. Die bestehenden Academy-URLs bleiben bestehen. Der Login entscheidet anhand der globalen Identität und Mitgliedschaften über das passende Ziel; ein Geschäftskonto landet nicht im internen Academy-Dashboard. Nicht autorisierte direkte Aufrufe werden unabhängig von Navigation und Layout abgewehrt.
 
 ### 5.2 Fachliche HTTP-Verträge
+
+Fortschreibung v0.6.3 · 30.10.2026: POST `/api/loyalty/organizations/[organizationId]/programs/[id]/lifecycle` und `changeProgramLifecycleAction` rufen denselben Lebenszyklusservice auf. Body nur `{ action, expectedRevision, operationId }`, erlaubte Aktionen PUBLISH/ARCHIVE/REACTIVATE/BLOCK/UNBLOCK; Route liefert Organisations-/Programmkennung, serverseitige Sitzung liefert Akteur. Strikte Zod-Prüfung, keine Clientrollen, Action-Sprache DE/EN ebenfalls laufzeitgeprüft. HTTP mit aktueller Session, festem Originvergleich, Medientyp application/json (Parameter zulässig), begrenztem Body 16 KiB und privaten nicht cachebaren Antworten. 401/403/404/409/422 gemäß [v0.6.3-Vertrag und Kriterien](ENTWICKLUNGSANLEITUNG_STEMPELKARTEN.md#v063--server-action-und-http-endpunkt--30102026); Fehler sprachgerecht. Framework bietet für den neuen Pfad ausschließlich POST, GET ändert nichts und erhält 405. Next-Server-Action nutzt vorhandenen Framework-Origin-/CSRF-Schutz. Kein neuer Fachregel-/Schema-/UI- oder Migrationsumfang.
 
 Konkretisierung v0.4.7 · 27.10.2026: Der Portal-Leseservice liefert `canManageMembers` aus aktueller Unternehmensrolle und gemeinsam geprüftem unterstütztem Tarif. Die Navigation verbindet diese Angabe mit dem bestehenden Feature-Schalter; bei fehlendem/noch nicht unterstütztem Tarif oder deaktivierter Funktion erscheint für OWNER/ADMIN ein Nicht-verfügbar-Hinweis statt eines nicht nutzbaren Mitarbeiterlinks. `isSupportedLoyaltyPlan` wird zugleich vom unverändert auf FREE beschränkten Schreibkontext verwendet. Kein neues Tarifrecht. Befund und Nachtest ausschließlich im [v0.4.7-Nachweis](../nachweise/NACHWEISE.md#v047--bedienprufung-27102026).
 
@@ -584,3 +586,5 @@ R2-Kompatibilität im lokalen Next-Portal: signierte SDK-URL und Header mit ursp
 30.10.2026 · 2.12: vorbereiteten v0.6.1-Stand mit Migration, Trigger und Schema-Integrationstest nachgeführt; keine Anwendung.
 
 30.10.2026 · 2.13: implementierte serverinterne Lebenszyklus-/Bindungsservices und Test-DB-Anwendung nach konkreter Freigabe dokumentiert; keine App-DB-/Produktautorisierung.
+
+30.10.2026 · 2.14: tatsächlich implementierten Lifecycle-Action-/POST-Vertrag, Vertrauensgrenzen und Fehlerstatus nachgeführt; keine Migration/UI-/Tariffreigabe.

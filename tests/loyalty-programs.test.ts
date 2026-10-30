@@ -1,12 +1,14 @@
 import assert from "node:assert/strict";
 import { randomUUID } from "node:crypto";
 import { before, mock, test } from "node:test";
+import { z } from "zod";
 import { defaultProgram } from "../src/lib/loyalty/program-input";
 import { logoObjectKey } from "../src/lib/loyalty/logo-storage-config";
 
 // Adapter/service behavior only; real constraints and concurrency have a separate DB test.
 type Row = Record<string, unknown>;
 let role = "OWNER", active = true, session = true, banned = false;
+let hasMembership = true, organizationActive = true, globalRole = "CUSTOMER";
 let operations: Row[] = [], programs: Row[] = [], assets: Row[] = [];
 let audits: Row[] = [];
 let transactionCalls = 0, failAudit = false, commitFailures = 0;
@@ -23,10 +25,10 @@ const match = (row: Row, where: Row): boolean => Object.entries(where).every(([k
     : value !== null && typeof value === "object" && "gt" in value ? String(row[key]) > String(value.gt) : row[key] === value);
 const tx = {
   $queryRaw: async () => [],
-  user: { findUnique: async ({ where }: { where: { id: string } }) => ["actor", "otherActor"].includes(where.id) ? { id: where.id, role: "CUSTOMER", banned } : null },
+  user: { findUnique: async ({ where }: { where: { id: string } }) => ["actor", "otherActor"].includes(where.id) ? { id: where.id, role: globalRole, banned } : null },
   organizationMembership: { findUnique: async ({ where }: { where: { organizationId_userId: { organizationId: string; userId: string } } }) => {
     const key = where.organizationId_userId;
-    return key.organizationId === "org" && ["actor", "otherActor"].includes(key.userId) ? { id: "member", role, status: active ? "ACTIVE" : "REVOKED", organization: { status: "ACTIVE", entitlement: { plan: "FREE" } } } : null;
+    return hasMembership && key.organizationId === "org" && ["actor", "otherActor"].includes(key.userId) ? { id: "member", role, status: active ? "ACTIVE" : "REVOKED", organization: { status: organizationActive ? "ACTIVE" : "SUSPENDED", entitlement: { plan: "FREE" } } } : null;
   } },
   loyaltyOperation: {
     findUnique: async ({ where }: { where: Row }) => operations.find(row => match(row, where)) ?? null,
@@ -67,13 +69,108 @@ let read: typeof import("../src/lib/loyalty/programs").readPrograms;
 let action: typeof import("../src/lib/loyalty/program.actions").saveProgramAction;
 let http: typeof import("../src/lib/loyalty/program-http").programHttp;
 let lifecycle: typeof import("../src/lib/loyalty/programs").changeProgramLifecycle;
+let lifecycleAction: typeof import("../src/lib/loyalty/program.actions").changeProgramLifecycleAction;
+let lifecyclePost: typeof import("../src/app/api/loyalty/organizations/[organizationId]/programs/[id]/lifecycle/route").POST;
 before(async () => {
   ({ saveProgram: save, readPrograms: read } = await import("../src/lib/loyalty/programs"));
   lifecycle = (await import("../src/lib/loyalty/programs")).changeProgramLifecycle;
   action = (await import("../src/lib/loyalty/program.actions")).saveProgramAction;
   http = (await import("../src/lib/loyalty/program-http")).programHttp;
+  lifecycleAction = (await import("../src/lib/loyalty/program.actions")).changeProgramLifecycleAction;
+  lifecyclePost = (await import("../src/app/api/loyalty/organizations/[organizationId]/programs/[id]/lifecycle/route")).POST;
 });
 const command = () => ({ organizationId: "org", operationId: randomUUID(), config: { ...defaultProgram, name: "Coffee", reward: "Coffee" } });
+
+test("direct lifecycle action and route enforce authentication, trust boundaries and replay", async () => {
+  programs = []; operations = []; audits = []; assets = [];
+  role = "OWNER"; active = true; session = true; banned = false;
+  hasMembership = true; organizationActive = true; globalRole = "CUSTOMER";
+  process.env.BETTER_AUTH_URL = "https://academy.example.invalid";
+  const draft = (await save("actor", command())).program;
+  const body = { action: "PUBLISH", expectedRevision: 1, operationId: randomUUID() };
+  const full = { ...body, organizationId: "org", programId: draft.id };
+  const request = (value: unknown = body, locale = "de", origin: string | null = process.env.BETTER_AUTH_URL!, contentType = "application/json") => new Request(`${process.env.BETTER_AUTH_URL}/api`, {
+    method: "POST", headers: { ...(origin ? { origin } : {}), "content-type": contentType, "accept-language": locale }, body: JSON.stringify(value),
+  });
+  const post = (req: Request, organizationId = "org", id = draft.id) => lifecyclePost(req, { params: Promise.resolve({ organizationId, id }) });
+  const snapshot = () => structuredClone({ programs, operations, audits });
+  const denied = async (input: unknown, req: Request, code: string, status: number, locale: "de" | "en") => {
+    const beforeState = snapshot();
+    const reply = await lifecycleAction(input, locale);
+    assert.equal(reply.ok, false);
+    if (!reply.ok) { assert.equal(reply.error.code, code); assert.ok(reply.error.message.length); }
+    const response = await post(req);
+    assert.equal(response.status, status);
+    assert.equal(response.headers.get("cache-control"), "private, no-store");
+    assert.equal(z.object({ ok: z.literal(false), error: z.object({ code: z.string(), message: z.string().min(1) }) }).parse(await response.json()).error.code, code);
+    assert.deepEqual(snapshot(), beforeState);
+  };
+  for (const locale of ["de", "en"] as const) {
+    session = false;
+    await denied(full, request(body, locale), "UNAUTHENTICATED", 401, locale);
+    session = true;
+    for (const action of ["PUBLISH", "ARCHIVE", "REACTIVATE", "BLOCK", "UNBLOCK"]) {
+      role = "STAFF";
+      await denied({ ...full, action }, request({ ...body, action }, locale), "FORBIDDEN", 403, locale);
+      role = "ADMIN"; active = false;
+      await denied({ ...full, action }, request({ ...body, action }, locale), "FORBIDDEN", 403, locale);
+      active = true;
+    }
+    for (const internalRole of ["OWNER", "INTERN"]) {
+      globalRole = internalRole; hasMembership = false;
+      await denied(full, request(body, locale), "FORBIDDEN", 403, locale);
+    }
+    globalRole = "CUSTOMER"; hasMembership = true;
+    organizationActive = false;
+    await denied(full, request(body, locale), "FORBIDDEN", 403, locale);
+    organizationActive = true; banned = true;
+    await denied(full, request(body, locale), "FORBIDDEN", 403, locale);
+    banned = false;
+  }
+  for (const invalid of [
+    { action: "DELETE" }, { expectedRevision: 0 }, { expectedRevision: 1.5 },
+    { operationId: "bad" }, { actorId: "otherActor" }, { role: "OWNER" },
+    { config: command().config }, { unknown: true },
+  ]) await denied({ ...full, ...invalid }, request({ ...body, ...invalid }), "INVALID_INPUT", 422, "de");
+  const beforeInvalid = snapshot();
+  for (const req of [
+    request(body, "de", "https://foreign.invalid"), request(body, "de", null),
+  ]) assert.equal((await post(req)).status, 403);
+  for (const req of [
+    request(body, "de", process.env.BETTER_AUTH_URL, "text/plain"),
+    request(body, "de", process.env.BETTER_AUTH_URL, "application/json-invalid"),
+    request(null), request([]), request({ ...body, organizationId: "foreign" }), request({ ...body, programId: "foreign" }),
+    request({ padding: "x".repeat(16385) }),
+    new Request(`${process.env.BETTER_AUTH_URL}/api`, { method: "POST", headers: { origin: process.env.BETTER_AUTH_URL!, "content-type": "application/json" }, body: "{" }),
+  ]) assert.equal((await post(req)).status, 422);
+  assert.equal((await post(request(), "foreign")).status, 403);
+  assert.equal((await post(request(), "org", "foreign-program")).status, 404);
+  assert.equal((await post(request(), "org", "../invalid")).status, 422);
+  assert.deepEqual(snapshot(), beforeInvalid);
+  // Reflect supplies an untyped client argument to exercise the runtime locale boundary.
+  const invalidLocale: unknown = await Reflect.apply(lifecycleAction, undefined, [full, "fr"]);
+  assert.equal(z.object({ ok: z.literal(false), error: z.object({ code: z.literal("INVALID_INPUT") }) }).parse(invalidLocale).error.code, "INVALID_INPUT");
+  assert.deepEqual(snapshot(), beforeInvalid);
+  const success = await lifecycleAction(full, "de");
+  assert.equal(success.ok, true);
+  const response = await post(request());
+  assert.equal(response.status, 200);
+  const replay = z.object({ ok: z.literal(true), data: z.object({ replayed: z.boolean(), program: z.object({ revision: z.number().int() }) }) }).parse(await response.json());
+  assert.equal(replay.data.replayed, true);
+  assert.equal(replay.data.program.revision, 2);
+  await denied({ ...full, action: "BLOCK" }, request({ ...body, action: "BLOCK" }), "IDEMPOTENCY_CONFLICT", 409, "de");
+  await denied({ ...full, operationId: randomUUID() }, request({ ...body, operationId: randomUUID() }), "REVISION_CONFLICT", 409, "en");
+  role = "STAFF";
+  await denied(full, request(), "FORBIDDEN", 403, "de");
+  role = "ADMIN";
+  const archive = { action: "ARCHIVE", expectedRevision: 2, operationId: randomUUID() };
+  assert.equal((await post(request(archive))).status, 200);
+  const archiveReplay = await lifecycleAction({ ...archive, organizationId: "org", programId: draft.id }, "en");
+  assert.equal(archiveReplay.ok, true);
+  if (archiveReplay.ok) assert.equal(archiveReplay.data.replayed, true);
+  assert.equal(audits.filter(row => row.action === "PROGRAM_PUBLISH").length, 1);
+  assert.equal(audits.filter(row => row.action === "PROGRAM_ARCHIVE").length, 1);
+});
 test("drafts save, reopen, replay, reject changed operation contents and stale revisions", async () => {
   programs = []; operations = []; assets = []; role = "OWNER"; active = true;
   const input = command(), first = await save("actor", input);

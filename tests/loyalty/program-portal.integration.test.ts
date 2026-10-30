@@ -248,11 +248,36 @@ test(
         ).status,
         422,
       );
+      // Exercise the actual lifecycle route with real authentication and commit loss.
+      const lifecyclePath = `${path}/${id}/lifecycle`;
+      const publish = { action: "PUBLISH", expectedRevision: 2, operationId: randomUUID() };
+      assert.equal((await request(lifecyclePath)).status, 405);
+      assert.equal((await request(lifecyclePath, "POST", publish, false)).status, 401);
+      assert.equal((await request(lifecyclePath, "POST", { ...publish, actorId: actor })).status, 422);
+      assert.equal((await request(lifecyclePath, "POST", { ...publish, organizationId: foreign })).status, 422);
+      assert.equal((await request(`/api/loyalty/organizations/${foreign}/programs/${id}/lifecycle`, "POST", publish)).status, 404);
+      dropNextWrite = true;
+      await assert.rejects(request(lifecyclePath, "POST", publish), TypeError);
+      assert.equal(droppedResponses, 3);
+      assert.equal((await prisma.loyaltyProgram.findUniqueOrThrow({ where: { id } })).status, "PUBLISHED");
+      const lifecycleReplay = await request(lifecyclePath, "POST", publish);
+      assert.equal(lifecycleReplay.status, 200);
+      assert.equal(lifecycleReplay.headers.get("cache-control"), "private, no-store");
+      const lifecycleData = z.object({ ok: z.literal(true), data: z.object({ replayed: z.boolean(), program: z.object({ status: z.literal("PUBLISHED"), revision: z.literal(3) }) }) }).parse(await lifecycleReplay.json());
+      assert.equal(lifecycleData.data.replayed, true);
+      assert.equal(await prisma.organizationAuditLog.count({ where: { organizationId: org, action: "PROGRAM_PUBLISH" } }), 1);
+      assert.equal((await request(lifecyclePath, "POST", { ...publish, action: "BLOCK" })).status, 409);
+      assert.equal((await request(lifecyclePath, "POST", { ...publish, operationId: randomUUID() })).status, 409);
+      for (const [action, expectedRevision] of [["BLOCK", 3], ["ARCHIVE", 4], ["REACTIVATE", 5], ["UNBLOCK", 6]] as const) {
+        assert.equal((await request(lifecyclePath, "POST", { action, expectedRevision, operationId: randomUUID() })).status, 200);
+      }
+      assert.equal((await prisma.loyaltyProgram.findUniqueOrThrow({ where: { id } })).revision, 7);
       await prisma.organization.update({
         where: { id: org },
         data: { status: "SUSPENDED" },
       });
       assert.equal((await request(path, "POST", input)).status, 403);
+      assert.equal((await request(lifecyclePath, "POST", publish)).status, 403);
       const forbiddenPage = await request(`${portal}/programs/${id}`);
       // Next may already have streamed the layout (200) before notFound().
       // Require its explicit 404 boundary as well as absence of tenant data.

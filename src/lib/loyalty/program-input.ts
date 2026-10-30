@@ -77,6 +77,7 @@ export const storedProgramConfig = programConfig.safeExtend({
 });
 export type ProgramView = ProgramConfig & { id: string; revision: number };
 export const programStatus = z.enum(["DRAFT", "PUBLISHED", "ARCHIVED"]);
+export const programLocale = z.enum(["de", "en"]);
 export const programLifecycleCommand = z.object({
   organizationId: resourceId,
   programId: resourceId,

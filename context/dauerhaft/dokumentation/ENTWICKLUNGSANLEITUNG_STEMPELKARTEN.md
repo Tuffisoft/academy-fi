@@ -1,7 +1,7 @@
 <!-- Nachweiskürzung 27.10.2026: frühere Einzelbelege auf Auftrag gelöscht; historische Ergebnisangaben sind keine weiterhin verfügbaren Detailbeweise. Siehe ../nachweise/NACHWEISE.md. -->
 # Entwicklungsanleitung: Stempelkarten-SaaS
 
-Version 1.25 · 30.10.2026 · Planungsbasis: e88b052. Ziel: vollständig abgenommenes Modul v1.0.0.
+Version 1.26 · 30.10.2026 · Planungsbasis: e88b052. Ziel: vollständig abgenommenes Modul v1.0.0.
 28 Pakete; nächste offene Version: **v0.5.0**; abgeschlossen: **v0.0.1, v0.0.2, v0.1.0, v0.2.0, v0.3.0 und v0.4.0** (zuletzt [v0.4.0 einschließlich v0.4.8](#v048--vorbereitete-lokale-ubernahmeentscheidung), lokale Entwicklungsübernahme mit befristeter manueller Prüfausnahme). Seitenbasis: /tools/calem/stempelkarten; öffentliche, Unternehmens- und interne Seiten bleiben getrennt autorisiert.
 
 ## A. Arbeitsablauf und Abschluss
@@ -58,7 +58,7 @@ Direkte technische Voraussetzungen; weitere folgen transitiv. Reihenfolge ist St
 | v0.3.0 | v0.2.0 | E-Mail-Testzugang | abgeschlossen, lokal als Entwicklungspaket übernommen; [Archiv](ARCHIV_STEMPELKARTEN.md#v030--mitarbeiter-einladungen-und-eigentümerschaft), [Freigabe/Ausnahme](#unterschritt-037--lokal-übernommen) |
 | v0.4.0 | v0.3.0 | [Befristete Ausnahme und Übernahme](#v048--vorbereitete-lokale-ubernahmeentscheidung) | abgeschlossen, lokal übernommen; [Archiv](ARCHIV_STEMPELKARTEN.md#v040--kundenportal-und-interne-unternehmensubersicht); manuelle Restprüfungen offen |
 | v0.5.0 | v0.4.0 | – | Implementierung vorbereitet; DB-Nachweis v0.5.2 separat, Anbieter-/Bedienabnahme und Übernahme offen; [Stand](../nachweise/NACHWEISE.md#v052--testmigration-und-db-nachweis-27102026) |
-| v0.6.0 | v0.5.0 | – | In Arbeit: v0.6.1 auf bestätigter Test-DB angewendet, v0.6.2 Fachservice vorbereitet; v0.5.0-Abnahme bleibt offen; [Plan](#v060--veröffentlichen-archivieren-und-bedingungen-schützen) |
+| v0.6.0 | v0.5.0 | – | In Arbeit: v0.6.1 auf bestätigter Test-DB angewendet, v0.6.3 Action/API implementiert, Prüfstand im Paketnachweis; v0.5.0-Abnahme bleibt offen; [Plan](#v060--veröffentlichen-archivieren-und-bedingungen-schützen) |
 | v0.7.0 | v0.6.0 | – | offen |
 | v0.8.0 | v0.7.0 | – | offen |
 | v0.9.0 | v0.8.0 | – | offen |
@@ -324,6 +324,14 @@ Gemeinsamer `changeProgramLifecycle`-Service für PUBLISH/ARCHIVE/REACTIVATE/BLO
 
 Diese Vorbereitung ergänzt noch keinen Lifecycle-HTTP-/Server-Action-Einstieg und keine Bedienoberfläche. V0.6.3 direkte Action-/HTTP-Prüfung und v0.6.4 Statusdarstellung/Bedienung bleiben offen; bestehende Entwurfsbeschriftung ist noch nicht die neue Lebenszyklusoberfläche. Keine App-/Produktfreigabe aus einem isolierten Fachservice ableiten. DB-Prüfung explizit über `tests/loyalty/program-schema.integration.test.ts`, `tests/loyalty/programs.integration.test.ts` und `tests/loyalty/program-lifecycle.integration.test.ts`; Pro/Business ausschließlich isoliert simulierte Limits bei persistiertem FREE. Keine Ausweitung der Migrationsfreigabe.
 
+### v0.6.3 – Server-Action und HTTP-Endpunkt · 30.10.2026
+
+Beauftragt sind die Adapter für den vorhandenen Lebenszyklusservice samt direkten Negativtests, V060-06/07, LF-F-01–05/07/21/22, LF-N-01/02; T-/AK-01/02/03/10/13 anteilig. Serverseitige Identität aus aktueller Session, Ressourcen aus validierten IDs; keine Rolle aus dem Client. Prüfbare Kriterien: Action/POST müssen STAFF, interne Rollen ohne Mitgliedschaft, fremde Mandanten/Programmkennungen, Rechteentzug auch beim Replay, gesperrte Unternehmen und ungültige Daten ohne Schreibwirkung abweisen. DE/EN-Fehlercodes und HTTP-Status, Erfolgsbestätigung erst nach Commit, identische Wiederholung nach Antwortverlust genau einmal wirksam. GET darf keine Aktion auslösen.
+
+Implementiert: `changeProgramLifecycleAction(raw, locale)` und POST `/api/loyalty/organizations/[organizationId]/programs/[id]/lifecycle`, beide ausschließlich über `changeProgramLifecycle`. Zod prüft Kommando/IDs/Revision/Vorgangskennung und die Action-Sprache DE/EN. HTTP-Body ausschließlich action/expectedRevision/operationId; IDs aus Route, Akteur aus Session, fremde Body-IDs/Clientrollen/zusätzliche Felder abgewiesen. Gemeinsamer HTTP-Adapter erhält Origin-/16-KiB-Body-/Sessiongrenzen, akzeptiert den Medientyp application/json mit optionalen Parametern und weist ähnliche falsche Typen ab. 401 Anmeldung, 403 Rechte/Origin, 404 nicht zugängliches Programm, 409 Fach-/Revisions-/Replaykonflikt, 422 Eingabe; Fehler DE/EN, private/no-store und no-referrer. Kein neuer Lifecycle-GET/PATCH/DELETE-Handler, keine UI-/Ausgabe-/Tariffreischaltung.
+
+Direkte Unitmatrix im bestehenden `tests/loyalty-programs.test.ts`, echter DB-Action-/POST-Test `tests/loyalty/program-lifecycle-access.integration.test.ts` (nur Sitzungskontext simuliert, Rechte/Transaktionen echt); echter HTTP-/Session-/Commitverlustnachweis im erweiterten `tests/loyalty/program-portal.integration.test.ts`. Neue DB-Datei ausdrücklich im getrennten Loyalty-Prüfweg aufrufen, kein Bestandteil der regulären Unitliste. Ergebnisse/Review/Fingerprint ausschließlich im [v0.6.3-Nachweis](../nachweise/NACHWEISE.md#v063--server-action-und-http-endpunkt-30102026). V0.6.4 Oberflächen/öffentliche Darstellung und offene Geräte-/Academy-Abnahmen bleiben offen; keinerlei neue Migrationsanwendung oder App-DB-/Übernahmefreigabe.
+
 ### Technische Umsetzungsvorbereitung · 30.10.2026
 
 Bestandsprüfung und Grenzen im [zentralen Nachweis](../nachweise/NACHWEISE.md#v060--technische-bestandsprüfung-und-umsetzungsvorbereitung-30102026). Die folgenden Unterschritte gehören ausschließlich zu v0.6.0 und sind noch nicht implementiert:
@@ -344,13 +352,13 @@ Bestandsprüfung und Grenzen im [zentralen Nachweis](../nachweise/NACHWEISE.md#v
 
 | Nachweisebene | Stand |
 | --- | --- |
-| Gegenstand / Verantwortung | v0.6.0; Spezifikation Codex, konkrete Übernahme-/Migrationsfreigaben Auftraggeber. |
-| Stand / Prüfweg | Dokumentstände und Commit im verlinkten Nachweis; Software-/Schemapfad, aktuelle Ergebnisse im v0.6.2-Nachweis. |
-| Implementierung / Automatik | v0.6.1 auf bestätigter Test-DB angewendet, v0.6.2 Fachservice vorbereitet; Action/API und Oberflächen offen. Aktuelle Automatik-/DB-Ergebnisse im v0.6.2-Nachweis. |
+| Gegenstand / Verantwortung | v0.6.0; Umsetzung/Prüfung Codex, konkrete Übernahme-/Migrationsfreigaben Auftraggeber. |
+| Stand / Prüfweg | Dokumentstände und Commit im verlinkten Nachweis; Software-/Schemapfad, aktuelle Ergebnisse im v0.6.3-Nachweis. |
+| Implementierung / Automatik | v0.6.1 auf bestätigter Test-DB angewendet, v0.6.2 Fachservice und v0.6.3 Action/API implementiert; Oberflächen offen. Aktuelle Automatik-/DB-/HTTP-Ergebnisse im v0.6.3-Nachweis. |
 | DB / Migration / Anbieter | Migration 20261030120000 konkret autorisiert und ausschließlich auf bestätigter getrennter Loyalty-Test-DB angewendet; Ergebnisse im v0.6.2-Nachweis. Keine App-DB-/Produktivfreigabe. |
-| Geräte / DE/EN / Academy | Für neue Oberflächen noch nicht geprüft; offene v0.5.5-Geräte- und Academy-Restfälle bleiben zusätzlich erhalten. |
-| Review / Ergebnis | Dokumentreview im Nachweis; keine Software-, Geräte-, Produkt- oder Betriebsabnahme. |
-| Übernahme / nächster Schritt | Nicht erteilt. Nächster Schritt: technische Bestands-/Abhängigkeitsprüfung und reversible Umsetzungsvorbereitung innerhalb v0.6.0; kein Merge/Deployment und keine automatische Folgeversion. |
+| Geräte / DE/EN / Academy | Adapterfehler DE/EN und bestehende Portal-/API-Regression im v0.6.3-Nachweis; neue Oberflächen/echte Geräte noch nicht geprüft, v0.5.5-Geräte- und Academy-Restfälle bleiben offen. |
+| Review / Ergebnis | Codex-Selbstreview von Code/Dokumenten im aktuellen Nachweis; keine Übernahme-/Geräte-/Produkt-/Betriebsfreigabe. |
+| Übernahme / nächster Schritt | Nicht erteilt. Nächster Unterschritt v0.6.4: Portal-/öffentliche Darstellung; kein Merge/Deployment und keine automatische Folgeversion. |
 
 **Ergebnis:** Programme erhalten ihren fachlich gültigen Lebenszyklus. **Zuordnung:** LF-F-05, LF-F-07, LF-F-21, LF-F-22; T-03, T-10, T-13 / AK-03, AK-10, AK-13 anteilig; Pflichtenheft 4, 6.1, 10.1.
 
@@ -781,3 +789,5 @@ Auftraggeberänderung 27.10.2026, v0.5.3: ausschließlich StempelFi-Logoablage a
 30.10.2026 · 1.24: v0.6.1 Prisma-/Migrationsvorbereitung und separat auszuführenden DB-Test ergänzt; Anwendung und DB-Nachweis bleiben offen.
 
 30.10.2026 · 1.25: v0.6.2-Fachservice, getrennte Status-/Sperr-/Bindungsdaten und konkrete Testmigrationsfreigabe fortgeschrieben; Action/API/Oberfläche bleiben offen. Ergebnisse nur NACHWEISE.md.
+
+30.10.2026 · 1.26: v0.6.3 Server-Action/POST-Vertrag und direkte Unit-/DB-/HTTP-Negativprüfungen konkretisiert; Ergebnis zentral, Oberfläche weiter offen.

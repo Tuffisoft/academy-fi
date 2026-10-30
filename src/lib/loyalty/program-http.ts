@@ -1,6 +1,6 @@
 import "server-only";
 import { getCurrentSession } from "@/lib/session";
-import { ProgramError, saveProgram } from "./programs";
+import { changeProgramLifecycle, ProgramError, saveProgram } from "./programs";
 import { programFailure, type ProgramReply } from "./program-reply";
 import { boundedBody } from "./program-body";
 export { boundedBody } from "./program-body";
@@ -46,6 +46,14 @@ export async function programHttp(
   organizationId: string,
   programId?: string,
 ) {
+  return programCommandHttp(request, organizationId, programId, false);
+}
+
+export async function programLifecycleHttp(request: Request, organizationId: string, programId: string) {
+  return programCommandHttp(request, organizationId, programId, true);
+}
+
+async function programCommandHttp(request: Request, organizationId: string, programId: string | undefined, lifecycle: boolean) {
   const locale = request.headers.get("accept-language")?.startsWith("de")
     ? "de"
     : "en";
@@ -62,7 +70,7 @@ export async function programHttp(
               : "Please sign in again.",
         },
       });
-    if (!request.headers.get("content-type")?.startsWith("application/json"))
+    if (request.headers.get("content-type")?.split(";")[0].trim().toLowerCase() !== "application/json")
       throw new ProgramError("INVALID_INPUT");
     let raw: unknown;
     try {
@@ -81,7 +89,7 @@ export async function programHttp(
       throw new ProgramError("INVALID_INPUT");
     return programResponse({
       ok: true,
-      data: await saveProgram(actor, {
+      data: await (lifecycle ? changeProgramLifecycle : saveProgram)(actor, {
         ...raw,
         organizationId,
         ...(programId ? { programId } : {}),
